@@ -57,3 +57,9 @@
 - Next per protocol: adversarial domain review (fresh agent, contract+gate only), then iterate
   eval-only (metric recalibration = disclosed pre-registration amendment; no refit needed) or
   prune per e1.yaml prune_rule.
+- OBSERVATION (unconverged thread "meta-tokens", HANDOFF §5): slice page for the instructed-fire
+  prompt tracks 51 distinct CJK chars incl. 火/焰/炎 (fire/flame/blaze) and weather terms
+  (热/冷/晴) — Nanda-style dense Chinese tokens surface as lens verbalizations on Qwen3-4B.
+  Consequence for H_modulation: the hit criterion counts only the ENGLISH first-token id;
+  cross-lingual verbalization (fire -> 火) is structurally missed. Second candidate explanation
+  for the 0.0 hit-rate, alongside the degenerate band inheritance. Artifact: outputs/l1/slice_sample.html.
