@@ -1,10 +1,23 @@
 # E1 pre-registration (R4). Tier: screen. Family: {H_report, H_bands, H_modulation}.
 seeds: [42]
 hypotheses:
-  H_report:    {metric: spearman_rho_late_third, threshold_min: 0.5}
-  H_bands:     {metric: cka_band_contrast, threshold_min: 0.15, qualitative: three_band_structure}
+  H_report:    {metric: spearman_rho_late_third, threshold_min: 0.5, n_prompts: 16}
+  H_bands:     {metric: cka_band_contrast, threshold_min: 0.15, n_prompts: 16,
+                qualitative: three_band_structure}
   H_modulation: {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5, n_prompts: 40}
 stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
 budget_gpu_hours: 2.0
+# Evaluator knobs (config over constants; the pre-registered gate is the thresholds above).
+top_k: 50            # H_report: rho over the union of lens/model top-K token sets
+cka_min_band_size: 2 # H_bands: min layers per band (auto-relaxed + logged on shallow models)
+cka_skip_first: 1    # H_bands: leading positions dropped (attention sinks, cf. jlens skip_first)
+# H_modulation vocabulary: common, single-token-ish English nouns (first-token fallback is a
+# logged deviation) crossed with instruction templates -> 40 prompts (= n_prompts above).
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+templates:
+  - "Think about {concept}. The weather today is"
+  - "Remember the word {concept}. My favourite food is"
+  - "Keep {concept} in mind. The story begins when"
+  - "Focus on {concept}. The capital of France is"
 prune_rule: "if any two hypotheses fail after size-matched retry vs Nanda config -> prune instrument-on-this-size, escalate to 27B decision at gate"
 deviations: []

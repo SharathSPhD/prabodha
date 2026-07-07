@@ -113,6 +113,23 @@ class LensAdapter:
             model, prompt, layers=layers, positions=list(positions))
         return lens_logits
 
+    @property
+    def source_layers(self) -> list[int]:
+        """Fitted layer indices (vendor JacobianLens.source_layers). Requires fit/load."""
+        assert self._lens is not None, "fit or load first"
+        return list(self._lens.source_layers)
+
+    def read_with_model(self, hf, tok, prompt: str, positions=(-1,), layers=None):
+        """Like read(), but also returns the model's ACTUAL final logits at the same
+        positions -- vendor apply() computes both in one forward pass (E1 H_report needs
+        the lens/model pair; jacobian backend only)."""
+        assert self._lens is not None, "fit or load first"
+        import jlens
+        model = jlens.from_hf(hf, tok)
+        lens_logits, model_logits, _ = self._lens.apply(
+            model, prompt, layers=layers, positions=list(positions))
+        return lens_logits, model_logits
+
     def load(self, path: str | Path):
         import jlens
         self._lens = jlens.JacobianLens.from_pretrained(str(Path(path).parent),
