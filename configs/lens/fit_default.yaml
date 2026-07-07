@@ -1,6 +1,6 @@
 # Jacobian lens fitting (vendor defaults; paper uses 1000x128-token prompts, quality saturates ~100;
 # Nanda: n≈1–10 near-parity — we pre-register n_prompts here)
-n_prompts: 64
+n_prompts: 16
 seq_len: 128
 corpus: pretraining_like   # resolver in lens adapter; smoke uses synthetic text
 # Generated on the Spark by scripts/tools/make_fit_corpus.py from the local wikitext-2-raw-v1

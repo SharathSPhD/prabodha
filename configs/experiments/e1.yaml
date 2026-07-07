@@ -20,4 +20,9 @@ templates:
   - "Keep {concept} in mind. The story begins when"
   - "Focus on {concept}. The capital of France is"
 prune_rule: "if any two hypotheses fail after size-matched retry vs Nanda config -> prune instrument-on-this-size, escalate to 27B decision at gate"
-deviations: []
+deviations:
+  - "fit n_prompts 64->16 (2026-07-07, mid-run at the prompt-16 checkpoint, resumed not refit):
+    shared-GPU pace ~210s/prompt under contention=psalm put the pre-registered 64 prompts at
+    ~3.7 GPU-h vs the 2.0 GPU-h budget cap (also pre-registered; budget wins). Nanda's Qwen
+    replication reports n~1-10 near-parity; 16 preserves headroom for iteration."
+
