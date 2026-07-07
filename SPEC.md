@@ -90,6 +90,7 @@ All configs YAML; schema-validated; seeds explicit.
 ## 9. Evolution Log (append-only)
 - v0.1 (L0 start): initial draft from scoping doc + interview decisions (E1 first; GB10 only;
   hybrid ralph with dual closure; GitHub MCP pending auth).
+- v0.3 (L0.1): GPU guard v2 SHARED mode (operator sublation); dockerized GB10 execution (NGC aarch64 base, compose courtesy caps); publish handoff documented (sandbox has no Spark route/credentials).
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.

@@ -4,8 +4,9 @@ R1. **Dual closure.** No loop closes on green tests alone; the domain gate (rese
     or direction honestly pruned with statistics) must also pass. → Enforced by
     `src/prabodha/contracts/closure.py` (gate JSON invalid without both verdicts) + human sign-off
     line in the contract card. Test: tests/test_closure.py.
-R2. **GPU guard mandatory.** No script may invoke CUDA without sourcing scripts/lib/gpu_guard.sh and
-    passing its check. Detects prabhasa (`train_130m`), PSALM, and any python holding >10% GPU mem.
+R2. **GPU guard mandatory (shared mode).** No script may invoke CUDA without sourcing scripts/lib/gpu_guard.sh and
+    passing its check. GB10 is SHARED with prabhasa/PSALM (operator instruction 2026-07-07): proceed at
+    low priority with contention recorded in the gate JSON; refuse only on kill-switch or <24GiB free.
     → Enforced by dispatch scripts; violation = loop failure. Test: tests/test_gpu_guard.py (dry-run).
 R3. **Svātantrya budget.** Any steering experiment must report output entropy + distinct-n vs
     unsteered baseline; steering that collapses diversity beyond epsilon in configs/experiments/*.yaml

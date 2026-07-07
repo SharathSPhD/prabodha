@@ -10,3 +10,15 @@
 - Infrastructure honest negative: SMB projects mount cannot host live git (unlink/lock semantics) —
   canonical repo lives in dev VM + GitHub; mount gets rsync mirror + git bundle. Sublated the
   "repo lives on the drive" assumption with evidence (failed lock/rm operations logged in session).
+
+## 2026-07-07 — GPU policy sublation + GB10 handoff
+- SUBLATION (bādha): v1 guard rule "real runs require idle GPU" (precision: cautious default) is
+  sublated by operator instruction "share with prabhasa, don't hesitate" (higher precision: owner's
+  explicit policy). v2 = shared mode: proceed under co-residency at nice=10 with contention recorded
+  in gate JSON; refuse only on kill-switch or <24GiB free unified memory. Old rule preserved here,
+  not deleted.
+- GitHub repo SharathSPhD/prabodha exists (public, empty — awaiting first push). Cowork sandbox has
+  no push credentials and no network route to the Spark (tailnet unreachable); publish handoff runs
+  via the GB10-side session or operator (see docs/gb10_handoff.md).
+- Dockerized: Dockerfile (NGC pytorch aarch64) + docker-compose (courtesy caps 48g/10cpu). Docker is
+  the preferred GB10 execution route (operator instruction; replaces venv route).
