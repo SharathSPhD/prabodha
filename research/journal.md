@@ -40,3 +40,20 @@
   Nanda reports n≈1–10 near-parity.
 - Shared-mode reality at dispatch: PSALM GPT-BERT run live (train_100m_gb10.py); prabhasa
   train_130m not running. Guard: proceed, nice=10, contention=psalm recorded.
+
+- 2026-07-07 E1 gate written (gates/gate_L1.json): code=pass domain=fail contention=psalm
+
+## 2026-07-07 — L1 first gate: code=pass, domain=fail (1/3 hypotheses) — and what it teaches
+- gates/gate_L1.json: H_report -0.32 (thr 0.5) FAIL; H_bands contrast 0.42 (thr 0.15) PASS but
+  degenerate partition [0,2)/[2,6)/[6,36); H_modulation 0.0 FAIL — read at band_layers=[2..5]
+  inherited from that partition (failure is downstream). contention=psalm throughout.
+- DIAGNOSIS (verified on CPU with synthetic logits): the union-top-K Spearman metric has a
+  structural null floor of ≈ -0.72 (disjoint top-K sets anti-correlate over the union support);
+  zero correspondence reads as -0.7, not 0. Observed curve rises monotonically layer 0 (-0.69,
+  ≈ the null floor) -> layer 34 (+0.43): the QUALITATIVE verbal-report signature (rho rising
+  with depth) is PRESENT; the 0.5 threshold was mis-calibrated for this metric geometry.
+- GPU ledger: L1_spent 1.3h of 2.0h cap (incl. 12min lost to the honest-contention restart and
+  the 64->16 prompt sublation at the prompt-16 checkpoint).
+- Next per protocol: adversarial domain review (fresh agent, contract+gate only), then iterate
+  eval-only (metric recalibration = disclosed pre-registration amendment; no refit needed) or
+  prune per e1.yaml prune_rule.

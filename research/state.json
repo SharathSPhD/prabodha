@@ -1,6 +1,19 @@
 {
  "current_loop": "L1",
- "loops": {"L0": {"status": "closed", "gate": "gates/gate_L0.json"}, "L1": {"status": "open", "contract": "contracts/L1_qwen_replication.md", "worktree": "loop/l1-e1-qwen"}},
- "gpu_budget_hours": {"L1_spent": 0, "L1_cap": 2},
+ "loops": {
+  "L0": {
+   "status": "closed",
+   "gate": "gates/gate_L0.json"
+  },
+  "L1": {
+   "status": "open",
+   "contract": "contracts/L1_qwen_replication.md",
+   "worktree": "loop/l1-e1-qwen"
+  }
+ },
+ "gpu_budget_hours": {
+  "L1_spent": 1.3,
+  "L1_cap": 2
+ },
  "kill_switch": false
 }
