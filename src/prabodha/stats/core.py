@@ -17,7 +17,8 @@ def permutation_p(x: np.ndarray, y: np.ndarray, n_resamples: int = 10_000,
         signs = rng.choice([-1.0, 1.0], size=(n_resamples, d.size))
         null = np.abs((signs * d).mean(axis=1))
     else:
-        pooled = np.concatenate([x, y]); nx = x.size
+        pooled = np.concatenate([x, y])
+        nx = x.size
         obs = abs(x.mean() - y.mean())
         null = np.empty(n_resamples)
         for i in range(n_resamples):
@@ -48,7 +49,8 @@ def boot_ci_g(x: np.ndarray, y: np.ndarray, n_boot: int = 2000, alpha: float = 0
 def holm(pvals: dict[str, float], alpha: float = 0.05) -> dict[str, bool]:
     """Holm-Bonferroni: name -> reject-null decision at family alpha."""
     items = sorted(pvals.items(), key=lambda kv: kv[1])
-    m = len(items); out: dict[str, bool] = {}
+    m = len(items)
+    out: dict[str, bool] = {}
     still = True
     for i, (name, p) in enumerate(items):
         thresh = alpha / (m - i)

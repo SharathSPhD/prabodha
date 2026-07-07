@@ -6,8 +6,10 @@ from prabodha.lens.adapter import LensAdapter, build_model
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", required=True); ap.add_argument("--lens", required=True)
-    ap.add_argument("--out", required=True); ap.add_argument("--resume", action="store_true")
+    ap.add_argument("--model", required=True)
+    ap.add_argument("--lens", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--resume", action="store_true")
     a = ap.parse_args()
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     hf, tok = build_model(load(a.model))

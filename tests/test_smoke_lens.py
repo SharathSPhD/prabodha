@@ -16,7 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_tiny_fit_and_read(tmp_path):
     hf, tok = build_model(load(ROOT / "configs/models/tiny_smoke.yaml"))
-    lens_cfg = {"n_prompts": 2, "corpus": "synthetic_smoke", "seed": 42}
+    # skip_first=2: vendor default (16) would reject every prompt shorter than 18
+    # tokens (jlens.fitting.valid_position_mask); prompt_len=24 < model seq_len=32.
+    lens_cfg = {"n_prompts": 2, "corpus": "synthetic_smoke", "seed": 42,
+                "prompt_len": 24, "skip_first": 2}
     ad = LensAdapter("jacobian").fit(hf, tok, lens_cfg, out=tmp_path / "tiny.pt")
     out = ad.read(hf, tok, "nadī agni vāyu soma", positions=[-1])
     assert isinstance(out, dict) and len(out) > 0
