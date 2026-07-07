@@ -61,11 +61,34 @@ def spearman_rho(a: np.ndarray, b: np.ndarray) -> float:
 
 
 def topk_union_indices(a: np.ndarray, b: np.ndarray, k: int) -> np.ndarray:
-    """Sorted indices of the union of a's and b's top-k sets (the comparison support:
-    ranking agreement is measured where either side puts mass, not over the full vocab)."""
+    """Sorted indices of the union of a's and b's top-k sets. CAVEAT (L1 iteration finding,
+    verified synthetically): when the two top-k sets are disjoint, rho over the union support
+    is structurally ~ -0.72, NOT 0 — each side ranks its own set high and the other's low.
+    Kept as secondary evidence; the calibrated primary support is topk_indices(model)."""
     top_a = np.argsort(np.asarray(a))[-k:]
     top_b = np.argsort(np.asarray(b))[-k:]
     return np.unique(np.concatenate([top_a, top_b]))
+
+
+def topk_indices(a: np.ndarray, k: int) -> np.ndarray:
+    """Indices of a's top-k. Used as the H_report comparison support: 'does the lens rank
+    the MODEL's report candidates the way the model does' — null (independent lens) ~ 0."""
+    return np.argsort(np.asarray(a))[-k:]
+
+
+def permutation_p_mean_rho(pairs: list[tuple[np.ndarray, np.ndarray]], observed: float,
+                           n_resamples: int, seed: int) -> float:
+    """One-sided permutation p for a mean Spearman rho over (lens, model) support pairs:
+    shuffling each lens vector within its support breaks correspondence while preserving
+    marginals. p = P(mean rho_null >= observed). Add-one correction (Phipson & Smyth)."""
+    rng = np.random.default_rng(seed)
+    hits = 0
+    for _ in range(n_resamples):
+        s = float(np.mean([spearman_rho(rng.permutation(lens_v), model_v)
+                           for lens_v, model_v in pairs]))
+        if s >= observed:
+            hits += 1
+    return (hits + 1) / (n_resamples + 1)
 
 
 def linear_cka(x: np.ndarray, y: np.ndarray) -> float:
@@ -158,26 +181,48 @@ def instruction_end_position(tok: Any, prompt: str, concept: str) -> int:
 
 
 def evaluate_h_report(hf: Any, tok: Any, lens: Any, prompts: list[str],
-                      top_k: int) -> dict:
+                      top_k: int, *, permutation_resamples: int = 0,
+                      seed: int = 42) -> dict:
     """H_report: verbal-report correspondence. Per prompt, Spearman rho between the lens
-    readout at position -1 and the model's actual final next-token logits, computed over
-    the union of both top-K token sets, per layer. Value = mean rho over the late third
-    of fitted layers; the full per-layer curve (should RISE with depth) ships as evidence."""
-    per_layer: dict[int, list[float]] = {}
+    readout at position -1 and the model's actual final next-token logits, per layer.
+    PRIMARY support (L1 iteration amendment, adversarial-review driven): the MODEL's top-K
+    token set — null (independent lens) ~ 0, so thresholds mean what they say. The union-
+    support rho ships as secondary evidence (its null floor is ~ -0.72; see topk_union_indices).
+    Value = mean primary rho over the late third of fitted layers; per-prompt late-third
+    means and a permutation p (lens shuffled within support) ship as evidence."""
+    per_layer_model: dict[int, list[float]] = {}
+    per_layer_union: dict[int, list[float]] = {}
+    support_pairs: list[tuple[int, np.ndarray, np.ndarray]] = []  # (layer, lens_v, model_v)
     for prompt in prompts:
         lens_logits, model_logits = lens.read_with_model(hf, tok, prompt, positions=[-1])
         m = model_logits[0].numpy()
+        m_idx = topk_indices(m, top_k)
         for layer, t in lens_logits.items():
             v = t[0].numpy()
-            idx = topk_union_indices(v, m, top_k)
-            per_layer.setdefault(int(layer), []).append(spearman_rho(v[idx], m[idx]))
-    layers = sorted(per_layer)
-    curve = {layer: float(np.mean(per_layer[layer])) for layer in layers}
+            per_layer_model.setdefault(int(layer), []).append(spearman_rho(v[m_idx], m[m_idx]))
+            u_idx = topk_union_indices(v, m, top_k)
+            per_layer_union.setdefault(int(layer), []).append(spearman_rho(v[u_idx], m[u_idx]))
+            support_pairs.append((int(layer), v[m_idx], m[m_idx]))
+    layers = sorted(per_layer_model)
     late = layers[-max(1, math.ceil(len(layers) / 3)):]
+    curve = {layer: float(np.mean(per_layer_model[layer])) for layer in layers}
+    curve_union = {layer: float(np.mean(per_layer_union[layer])) for layer in layers}
+    per_prompt = [float(np.mean([per_layer_model[layer][i] for layer in late]))
+                  for i in range(len(prompts))]
     value = float(np.mean([curve[layer] for layer in late]))
-    return {"spearman_rho_late_third": value,
-            "per_layer_rho": {layer: round(curve[layer], 4) for layer in layers},
-            "late_third_layers": late, "top_k": top_k, "n_prompts": len(prompts)}
+    out = {"spearman_rho_model_topk_late_third": value,
+           "spearman_rho_late_third_union_secondary":
+               float(np.mean([curve_union[layer] for layer in late])),
+           "per_layer_rho_model_topk": {layer: round(curve[layer], 4) for layer in layers},
+           "per_layer_rho_union": {layer: round(curve_union[layer], 4) for layer in layers},
+           "per_prompt_rho_late_third": [round(x, 4) for x in per_prompt],
+           "late_third_layers": late, "top_k": top_k, "n_prompts": len(prompts)}
+    if permutation_resamples:
+        late_pairs = [(lv, mv) for layer, lv, mv in support_pairs if layer in set(late)]
+        out["permutation_p"] = permutation_p_mean_rho(
+            late_pairs, value, permutation_resamples, seed)
+        out["permutation_resamples"] = permutation_resamples
+    return out
 
 
 def evaluate_h_bands(hf: Any, tok: Any, prompts: list[str], *,
@@ -212,19 +257,44 @@ def evaluate_h_bands(hf: Any, tok: Any, prompts: list[str], *,
             "n_prompts": len(prompts), "deviations": deviations}
 
 
+def _concept_candidate_ids(tok: Any, concept: str, translations: dict[str, str] | None,
+                           deviations: list[str]) -> dict[str, int]:
+    """First-token ids for the concept's surface variants: English mid-sentence (' fire'),
+    English bare ('fire'), and — L1 iteration amendment (CJK meta-token observation:
+    Qwen verbalizes concepts in dense Chinese tokens, e.g. fire -> 火) — the configured
+    translation. Multi-token variants fall back to their first id, logged once."""
+    variants = {"en_mid": " " + concept, "en_bare": concept}
+    if translations and concept in translations:
+        variants["zh"] = str(translations[concept])
+    ids: dict[str, int] = {}
+    for name, text in variants.items():
+        cids = _token_ids(tok, text)
+        if len(cids) > 1:
+            deviations.append(f"H_modulation: variant {name} of '{concept}' is "
+                              f"{len(cids)} tokens; using first id only (scoping doc #10.3)")
+        if cids:
+            ids[name] = cids[0]
+    return ids
+
+
 def evaluate_h_modulation(hf: Any, tok: Any, lens: Any,
-                          pairs: list[tuple[str, str]], band_layers: list[int]) -> dict:
-    """H_modulation: directed modulation. Hit iff the instructed concept's token id is in
-    the lens top-5 at ANY band layer, read at the last instruction-span position. Concept
-    id = first token of ' '+concept (mid-sentence form; single-token limitation disclosed)."""
+                          pairs: list[tuple[str, str]], band_layers: list[int],
+                          *, translations: dict[str, str] | None = None,
+                          null_shuffles: int = 0, seed: int = 42) -> dict:
+    """H_modulation: directed modulation. Hit iff ANY candidate id of the instructed
+    concept (English mid/bare + configured translation) is in the lens top-5 at ANY band
+    layer, read at the last instruction-span position. Evidence carries the per-prompt
+    hit table and a shuffled-concept null baseline (same readouts, deranged concepts) —
+    both demanded by the L1 adversarial review."""
     import torch
     deviations: list[str] = []
+    all_concepts = sorted({c for _, c in pairs})
+    candidate_ids = {c: _concept_candidate_ids(tok, c, translations, deviations)
+                     for c in all_concepts}
+    per_prompt: list[dict[str, Any]] = []
+    topsets: list[set[int]] = []  # union of band-layer top-5 ids per prompt (for the null)
     hits = 0
     for prompt, concept in pairs:
-        cids = _token_ids(tok, " " + concept)
-        if len(cids) > 1:
-            deviations.append(f"H_modulation: concept '{concept}' is {len(cids)} tokens; "
-                              "using first id only (scoping doc #10.3)")
         pos = instruction_end_position(tok, prompt, concept)
         n_total = len(_token_ids(tok, prompt))
         if pos >= n_total:
@@ -232,10 +302,30 @@ def evaluate_h_modulation(hf: Any, tok: Any, lens: Any,
                               f"for prompt '{prompt[:40]}...'")
             pos = n_total - 1
         readout = lens.read(hf, tok, prompt, positions=[pos], layers=band_layers)
-        if any(cids[0] in torch.topk(t[0], k=5).indices.tolist() for t in readout.values()):
-            hits += 1
-    return {"instructed_concept_hit_rate_at5": hits / len(pairs), "n_prompts": len(pairs),
-            "band_layers": list(band_layers), "n_hits": hits, "deviations": deviations}
+        top = {int(i) for t in readout.values() for i in torch.topk(t[0], k=5).indices.tolist()}
+        topsets.append(top)
+        matched = sorted(n for n, cid in candidate_ids[concept].items() if cid in top)
+        hits += bool(matched)
+        per_prompt.append({"concept": concept, "hit": bool(matched), "matched": matched})
+    out: dict[str, Any] = {
+        "instructed_concept_hit_rate_at5": hits / len(pairs), "n_prompts": len(pairs),
+        "band_layers": list(band_layers), "n_hits": hits, "per_prompt": per_prompt,
+        "concept_variants": {c: sorted(v) for c, v in candidate_ids.items()},
+        "deviations": deviations}
+    if null_shuffles:
+        import random as _random
+        rng = _random.Random(seed)
+        concepts = [c for _, c in pairs]
+        null_rates = []
+        for _ in range(null_shuffles):
+            shuffled = concepts[:]
+            rng.shuffle(shuffled)
+            null_rates.append(sum(
+                any(cid in topsets[i] for cid in candidate_ids[c].values())
+                for i, c in enumerate(shuffled)) / len(pairs))
+        out["null_hit_rate_mean"] = float(np.mean(null_rates))
+        out["null_shuffles"] = null_shuffles
+    return out
 
 
 # ---------------------------------------------------------------- assembly
@@ -261,23 +351,31 @@ def run_e1(hf: Any, tok: Any, lens_adapter: Any, exp_cfg: dict) -> dict:
     pairs = concept_prompt_pairs(exp_cfg)
     prompts = [p for p, _ in pairs]
 
-    r_report = evaluate_h_report(hf, tok, lens_adapter,
-                                 prompts[:int(hyp["H_report"]["n_prompts"])],
-                                 top_k=int(exp_cfg["top_k"]))
+    stats_cfg = exp_cfg.get("stats", {})
+    seed = int(exp_cfg["seeds"][0])
+    r_report = evaluate_h_report(
+        hf, tok, lens_adapter, prompts[:int(hyp["H_report"]["n_prompts"])],
+        top_k=int(exp_cfg["top_k"]),
+        permutation_resamples=int(stats_cfg.get("permutation_resamples", 0)), seed=seed)
     r_bands = evaluate_h_bands(hf, tok, prompts[:int(hyp["H_bands"]["n_prompts"])],
                                skip_first=int(exp_cfg["cka_skip_first"]),
                                min_band_size=int(exp_cfg["cka_min_band_size"]))
     band_layers = _middle_band_layers(lens_adapter.source_layers, r_bands)
-    r_mod = evaluate_h_modulation(hf, tok, lens_adapter,
-                                  pairs[:int(hyp["H_modulation"]["n_prompts"])], band_layers)
+    r_mod = evaluate_h_modulation(
+        hf, tok, lens_adapter, pairs[:int(hyp["H_modulation"]["n_prompts"])], band_layers,
+        translations=exp_cfg.get("concepts_zh"),
+        null_shuffles=int(exp_cfg.get("modulation_null_shuffles", 0)), seed=seed)
 
     results: dict[str, Any] = {}
     deviations: list[str] = []
     for name, r in (("H_report", r_report), ("H_bands", r_bands), ("H_modulation", r_mod)):
         value = float(r[hyp[name]["metric"]])
         threshold = float(hyp[name]["threshold_min"])
+        ok = value >= threshold
+        if "p_max" in hyp[name] and "permutation_p" in r:
+            ok = ok and r["permutation_p"] <= float(hyp[name]["p_max"])
         results[name] = {"value": value, "threshold": threshold,
-                         "pass": bool(value >= threshold), "evidence": r}
+                         "pass": bool(ok), "evidence": r}
         for d in r.pop("deviations", []):  # hoist into the gate-level list, deduplicated
             if d not in deviations:
                 deviations.append(d)

@@ -8,10 +8,13 @@ import numpy as np
 import pytest
 
 from prabodha.lens.e1_metrics import (
+    _concept_candidate_ids,
     best_band_partition,
     cka_matrix,
     linear_cka,
+    permutation_p_mean_rho,
     spearman_rho,
+    topk_indices,
     topk_union_indices,
 )
 
@@ -37,6 +40,48 @@ def test_topk_union_logic():
     assert spearman_rho(a[idx], b[idx]) == pytest.approx(-1.0)
     # identical inputs: the union collapses to a single top-k set
     assert len(topk_union_indices(a, a, 5)) == 5
+
+
+def test_union_support_null_floor_is_negative_but_model_topk_null_is_zero():
+    """L1 run-1 finding (amendment A1): disjoint top-k sets anti-correlate over the UNION
+    support (~ -0.72 floor), while the MODEL-top-k support has a ~0 null — thresholds only
+    mean what they say on the calibrated support."""
+    rng = np.random.default_rng(0)
+    v = rng.normal(0, 1, 30000)
+    m = rng.normal(0, 1, 30000)
+    v[:50] += 20    # lens mass on tokens 0..49
+    m[50:100] += 20  # model mass on tokens 50..99 (disjoint)
+    u = topk_union_indices(v, m, 50)
+    assert spearman_rho(v[u], m[u]) < -0.6  # structural anti-correlation
+    idx = topk_indices(m, 50)
+    assert abs(spearman_rho(v[idx], m[idx])) < 0.3  # null ~ 0 on model support
+    assert spearman_rho(m[idx], m[idx]) == pytest.approx(1.0)
+
+
+def test_permutation_p_separates_signal_from_null():
+    rng = np.random.default_rng(2)
+    m = rng.normal(0, 1, 50)
+    signal_pairs = [(m + 0.1 * rng.normal(0, 1, 50), m) for _ in range(8)]
+    observed = float(np.mean([spearman_rho(a, b) for a, b in signal_pairs]))
+    assert permutation_p_mean_rho(signal_pairs, observed, 200, seed=0) < 0.05
+    null_pairs = [(rng.normal(0, 1, 50), m) for _ in range(8)]
+    null_obs = float(np.mean([spearman_rho(a, b) for a, b in null_pairs]))
+    assert permutation_p_mean_rho(null_pairs, null_obs, 200, seed=0) > 0.05
+
+
+def test_concept_candidate_ids_includes_translation():
+    class Tok:  # minimal __call__ surface (BatchEncoding-like dict)
+        vocab = {" fire": [11], "fire": [12], "火": [13], " water": [21, 22],
+                 "water": [23], "水": [24]}
+        def __call__(self, text, **kw):
+            return {"input_ids": self.vocab[text]}
+    devs: list[str] = []
+    ids = _concept_candidate_ids(Tok(), "fire", {"fire": "火"}, devs)
+    assert ids == {"en_mid": 11, "en_bare": 12, "zh": 13}
+    assert devs == []
+    ids2 = _concept_candidate_ids(Tok(), "water", {"water": "水"}, devs)
+    assert ids2 == {"en_mid": 21, "en_bare": 23, "zh": 24}
+    assert any("first id only" in d for d in devs)  # ' water' was multi-token
 
 
 def test_cka_identical_inputs_is_one():
@@ -91,7 +136,10 @@ def test_e1_pipeline_end_to_end_tiny(tmp_path):
         assert isinstance(results[h]["pass"], bool)
     assert isinstance(results["deviations"], list)
     # full per-layer rho curve ships as gate evidence (rise-toward-late check is human/GB10)
-    assert set(results["H_report"]["evidence"]["per_layer_rho"]) == set(adapter.source_layers)
+    assert set(results["H_report"]["evidence"]["per_layer_rho_model_topk"]) \
+        == set(adapter.source_layers)
+    assert len(results["H_modulation"]["evidence"]["per_prompt"]) \
+        == results["H_modulation"]["evidence"]["n_prompts"]
     assert len(results["H_bands"]["evidence"]["cka_matrix"]) == hf.config.n_layer
 
     # e1_cli end-to-end: gate JSON must validate as a GateReport. A RANDOM tiny model
