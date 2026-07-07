@@ -91,3 +91,12 @@
 - Disposition (a: proceed to L2 with caveats / b: 27B retry / c: prune-at-4B) is the operator's
   per prune_rule "escalate to 27B decision at gate". Contract card updated; sign-off pending.
 - Loop L1 status: review-complete, sign-off pending. All state in repo; fresh-agent re-entry safe.
+
+## 2026-07-07 — L2 scouting (read-only, pre-contract)
+- PWM Phase-7 TTFT cascade model identified: fast path C1/C2 = nemotron-mini:4b via OLLAMA
+  (quantized blob, OpenAI-compatible HTTP at :11434; engine.py:41,251-269; ADR-001), slow path
+  nemotron-3-super:120b (local GGUF symlink, pwm-phase3/models). CONSTRAINT for L2: the J-lens
+  needs white-box access (residual streams + backward) — impossible over Ollama HTTP. L2 must
+  fit on the HF bf16 checkpoint of the same architecture (nvidia Nemotron-Mini-4B family),
+  with the bf16-vs-Ollama-quant mismatch disclosed as a deviation. To be encoded in the L2
+  contract card at loop start.
