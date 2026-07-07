@@ -80,3 +80,14 @@
   present and significant vs null; quantitatively weaker on 4B than thresholds implicitly
   calibrated to Nanda's 27B replication. The prune_rule's size-matched (27B) retry cannot fit
   L1's residual budget (spent 1.45h of 2.0h cap) — escalation is an operator decision.
+
+## 2026-07-07 — L1 adversarial reviews + disposition handoff
+- Review #1 (fresh agent, contract+gate only): converged independently on the support-calibration
+  artifact ("polarity"), degenerate bands, and modulation protocol opacity; five evidence demands.
+- Review #2 (same reviewer, amended gate): demands 1,2,4,5 met; demand 3 (functional band
+  validation) unmet — refitting bands and re-targeting modulation in the same run is circular.
+  NEXT-LOOP RULE: pre-register fixed bands before scoring modulation. Composite verdict:
+  "UNDERPOWERED, not broken"; recommendation (b) 27B size-matched retry (~6–7 GPU-h shared).
+- Disposition (a: proceed to L2 with caveats / b: 27B retry / c: prune-at-4B) is the operator's
+  per prune_rule "escalate to 27B decision at gate". Contract card updated; sign-off pending.
+- Loop L1 status: review-complete, sign-off pending. All state in repo; fresh-agent re-entry safe.

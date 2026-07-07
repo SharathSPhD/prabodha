@@ -43,3 +43,10 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.3 (L1 review-complete): H1 partially met — lens fits+reads Qwen3-4B on GB10 inside guard
+  budget (1.45/2.0 GPU-h, contention=psalm disclosed); replication gate FAIL at pre-registered
+  thresholds with all signatures present and significant vs null ("underpowered, not broken" —
+  adversarial review). NEW RISK: thresholds implicitly calibrated to Nanda's 27B; 4B effect
+  sizes ~40–80% weaker → mitigation: null-calibrated metrics + permutation gates (done), size
+  question escalated to operator (27B retry vs proceed vs prune). Slice-vis page shipped;
+  CJK meta-token observation (fire→火/焰) recorded as free sphurattā-detector lead for L2+.

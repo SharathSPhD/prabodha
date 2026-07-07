@@ -94,3 +94,15 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.4 (L1 review-complete, GB10 session): E1 run on Qwen3-4B — instrument mechanically sound;
+  three signatures qualitatively present and significant vs null (H_report p≈1e-4 rising to
+  ρ=0.62@L34; bands [0,6)/[6,30)/[30,36); modulation ~10× chance) but below 27B-calibrated
+  thresholds. METHOD LEARNING folded into §4: comparison-support calibration is mandatory —
+  rho over a union-top-K support has a structural null floor ≈ -0.72, so thresholds must be
+  stated against a verified null (model-top-K support, permutation p). Guard v2.1: GB10
+  unified-memory fallback (/proc/meminfo) + pid:host in compose so contention is never
+  under-reported. Fit-corpus resolver: flat seeded wikitext windows (dataset-lib-free runtime).
+  Amendments A1–A3 in e1.yaml; adversarial reviews 1–2 in contract card; disposition
+  (a/b/c: proceed-with-caveats / 27B retry / prune) awaits operator sign-off. NEXT-LOOP RULE
+  from review #2: pre-register FIXED bands before running modulation (no band refit in the
+  same run that scores modulation).

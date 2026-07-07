@@ -6,9 +6,14 @@
    "gate": "gates/gate_L0.json"
   },
   "L1": {
-   "status": "open",
+   "status": "review-complete-signoff-pending",
    "contract": "contracts/L1_qwen_replication.md",
-   "worktree": "loop/l1-e1-qwen"
+   "worktree": "loop/l1-e1-qwen",
+   "gate": "gates/gate_L1.json",
+   "runs": [
+    "gates/gate_L1_run1.json",
+    "gates/gate_L1.json"
+   ]
   }
  },
  "gpu_budget_hours": {
