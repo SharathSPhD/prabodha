@@ -63,3 +63,20 @@
   Consequence for H_modulation: the hit criterion counts only the ENGLISH first-token id;
   cross-lingual verbalization (fire -> 火) is structurally missed. Second candidate explanation
   for the 0.0 hit-rate, alongside the degenerate band inheritance. Artifact: outputs/l1/slice_sample.html.
+
+- 2026-07-07 E1 gate written (gates/gate_L1.json): code=pass domain=fail contention=psalm
+
+## 2026-07-07 — L1 run 2 (eval-only, amendments A1–A3): the picture becomes coherent
+- gates/gate_L1.json regenerated (run-1 preserved as gate_L1_run1.json). Still domain=fail
+  (1/3), but now INTERPRETABLE:
+  - H_report (calibrated support, null~0): 0.180 vs thr 0.4 — FAIL, but permutation p≈1e-4:
+    correspondence is REAL and rising (layer 33: 0.39, layer 34: 0.62); it is concentrated in
+    the last ~3 layers rather than the whole late third. Per-prompt spread -0.20..0.42.
+  - H_bands: PASS 0.306 with SANE bands [0,6)/[6,30)/[30,36) after min_band_size 6 —
+    early/middle/late three-band structure present (run-1's degenerate cut eliminated).
+  - H_modulation: 0.10 (4/40) vs shuffled-concept null 0.0104 — ~10x chance, far below 0.5.
+    Hits: water, music x2, bread (all en_mid variant; zh variants did not fire).
+- Screen-tier reading: instrument mechanically sound; all three signatures qualitatively
+  present and significant vs null; quantitatively weaker on 4B than thresholds implicitly
+  calibrated to Nanda's 27B replication. The prune_rule's size-matched (27B) retry cannot fit
+  L1's residual budget (spent 1.45h of 2.0h cap) — escalation is an operator decision.
