@@ -22,3 +22,21 @@
   via the GB10-side session or operator (see docs/gb10_handoff.md).
 - Dockerized: Dockerfile (NGC pytorch aarch64) + docker-compose (courtesy caps 48g/10cpu). Docker is
   the preferred GB10 execution route (operator instruction; replaces venv route).
+
+## 2026-07-07 — L1 GB10 session start (Claude Code on the Spark)
+- Bundle history published: main @ abf8f5d pushed to github.com/SharathSPhD/prabodha (was empty).
+  Session works in a Claude Code worktree; commit identity set to qbz506@york.ac.uk.
+- INFRA CORRECTION (bādha, evidence: df -T): /home/sharaths/projects on the Spark is native ext4,
+  not SMB — the .smbdelete ghosts are relics of the mirror copy. The parent checkout
+  ~/projects/prabodha has an odd all-deleted index state (mirror-copy artifact); left untouched
+  (harness denied hard reset — operator may want to re-clone from GitHub instead).
+- FIX: gpu_guard v2.1 — GB10 nvidia-smi reports [N/A] for memory.used/total (unified memory);
+  fallback to /proc/meminfo MemAvailable as the free-memory floor. v2 semantics preserved.
+- BUILT: pretraining_like corpus resolver (deferred at L0 by design). Decision: flat
+  one-prompt-per-line file generated once by scripts/tools/make_fit_corpus.py from the LOCAL
+  wikitext-2-raw-v1 arrow cache (seed 42, 64 non-overlapping 128-word windows) — keeps dataset
+  libs out of the runtime image, fit corpus inspectable. Known deviation from paper protocol
+  (model's own pretraining distribution, n≈1000): wikitext-2 proxy at n=64, screen tier;
+  Nanda reports n≈1–10 near-parity.
+- Shared-mode reality at dispatch: PSALM GPT-BERT run live (train_100m_gb10.py); prabhasa
+  train_130m not running. Guard: proceed, nice=10, contention=psalm recorded.
