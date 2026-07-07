@@ -23,6 +23,10 @@ def test_kill_switch_refuses(tmp_path):
     finally:
         ks.unlink()
 
-def test_no_gpu_host_refuses_real():
-    r = _run(args="real 30 L1")  # sandbox has no nvidia-smi
-    assert r.returncode != 0
+def test_no_gpu_host_refuses_real(tmp_path):
+    # Simulate a no-GPU host on ANY machine (incl. the Spark) by emptying PATH so
+    # `command -v nvidia-smi` fails; the guard must refuse before touching pgrep.
+    cmd = f'source {GUARD} && gpu_guard_check real 30 L1'
+    r = subprocess.run(["/bin/bash", "-c", cmd], capture_output=True, text=True,
+                       env={"PATH": str(tmp_path), "PRABODHA_ROOT": str(ROOT)})
+    assert r.returncode != 0 and "no nvidia-smi" in r.stdout
