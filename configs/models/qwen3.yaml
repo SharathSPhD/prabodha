@@ -1,0 +1,5 @@
+# L1 target model (GB10-sized; adjust size only via this file — R4 pre-registration)
+hf_id: Qwen/Qwen3-4B-Instruct-2507
+dtype: bf16
+device: cuda
+trust_remote_code: false

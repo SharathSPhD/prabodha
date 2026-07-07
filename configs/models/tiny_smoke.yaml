@@ -1,0 +1,9 @@
+# CPU smoke model: constructed randomly in-process (no download; sandbox-safe)
+builder: random_tiny_decoder
+n_layers: 4
+d_model: 64
+n_heads: 4
+vocab_size: 512
+seq_len: 32
+device: cpu
+dtype: float32

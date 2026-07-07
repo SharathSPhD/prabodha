@@ -1,0 +1,7 @@
+{
+  "loop": "L0", "status": "closed", "closed_at": "2026-07-07",
+  "code_gate": {"verdict": "pass", "evidence": "scaffold + unit tests green in sandbox (see CI)"},
+  "domain_gate": {"verdict": "pass", "evidence": "scoping doc integrated; TRIZ C1-C3 resolved; harvest recorded; interview decisions encoded",
+    "deviations": ["pratyaksha MCP unreachable -> Sakshi carried in CLAUDE.md", "GitHub connector tools not exposed -> publish deferred with mirror+bundle fallback"]},
+  "signoff": "operator sign-off pending first push"
+}

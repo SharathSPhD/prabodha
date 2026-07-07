@@ -1,0 +1,10 @@
+# E1 pre-registration (R4). Tier: screen. Family: {H_report, H_bands, H_modulation}.
+seeds: [42]
+hypotheses:
+  H_report:    {metric: spearman_rho_late_third, threshold_min: 0.5}
+  H_bands:     {metric: cka_band_contrast, threshold_min: 0.15, qualitative: three_band_structure}
+  H_modulation: {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5, n_prompts: 40}
+stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
+budget_gpu_hours: 2.0
+prune_rule: "if any two hypotheses fail after size-matched retry vs Nanda config -> prune instrument-on-this-size, escalate to 27B decision at gate"
+deviations: []

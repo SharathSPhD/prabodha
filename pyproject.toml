@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prabodha"
+version = "0.1.0"
+description = "Recognition-gated workspace steering for language models (PWM x J-space x GNW)"
+authors = [{name = "Sharath S", email = "qbz506@york.ac.uk"}]
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "pyyaml>=6", "pydantic>=2.5"]
+
+[project.optional-dependencies]
+lens = ["torch>=2.1", "transformers>=4.40"]
+dev = ["pytest>=8", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+markers = ["smoke: end-to-end tiny-model tests (needs torch/transformers/jlens)"]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

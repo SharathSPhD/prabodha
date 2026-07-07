@@ -1,0 +1,8 @@
+prabodha — Copyright 2026 Sharath S <qbz506@york.ac.uk>
+
+This repository vendors anthropics/jacobian-lens (vendor/jacobian-lens), Copyright Anthropic,
+licensed under the Apache License 2.0 — companion code for "Verbalizable Representations Form a
+Global Workspace in Language Models" (transformer-circuits.pub/2026/workspace). Vendored unmodified
+(RULES R7); all adaptations live under src/prabodha/.
+Conceptual machinery ported from the Pratyabhijñā World Model (PWM) project and sibling projects by
+the same author (see docs/prior_art_internal.md).

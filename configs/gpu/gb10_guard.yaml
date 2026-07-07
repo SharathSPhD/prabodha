@@ -1,0 +1,10 @@
+# GPU contention policy — GB10 (DGX Spark). TRIZ C3. RULES R2.
+device: gb10
+trainer_patterns: ["train_130m", "psalm", "PSALM"]   # live-trainer process greps (extendable)
+gpu_mem_busy_fraction: 0.10       # any process holding >10% GPU mem counts as busy
+smoke_max_minutes: 5              # auto-allowed only when no trainer live
+require_idle_for_real_runs: true
+kill_switch_file: research/KILL_SWITCH
+budgets_hours: {L1: 2.0, L2: 4.0, L3: 8.0}
+pulse: {max_burst_minutes: 30, yield_seconds: 60, checkpoint_resume: true}
+precision: bf16                   # FP8 unsupported on sm_121

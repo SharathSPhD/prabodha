@@ -1,0 +1,9 @@
+__pycache__/
+*.egg-info/
+outputs/
+.worktrees/
+*.pt
+!gates/*.json
+.pytest_cache/
+.ruff_cache/
+nohup.out

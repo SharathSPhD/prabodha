@@ -1,0 +1,7 @@
+# Jacobian lens fitting (vendor defaults; paper uses 1000x128-token prompts, quality saturates ~100;
+# Nanda: n≈1–10 near-parity — we pre-register n_prompts here)
+n_prompts: 64
+seq_len: 128
+corpus: pretraining_like   # resolver in lens adapter; smoke uses synthetic text
+checkpoint_every: 8
+seed: 42
