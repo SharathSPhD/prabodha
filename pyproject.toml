@@ -31,3 +31,4 @@ target-version = "py310"
 # importorskip must run before prabodha.lens imports (torch/jlens optional on CPU CI)
 "tests/test_smoke_lens.py" = ["E402"]
 "tests/test_smoke_vis.py" = ["E402"]
+"tests/test_smoke_steering.py" = ["E402"]

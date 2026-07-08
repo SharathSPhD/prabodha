@@ -1,0 +1,39 @@
+# E3 pre-registration (R4). Tier: screen. THE H5b REDO: same content, written at the mouth
+# (v2, output logit bias) vs into the workspace band (v3, residual write at the band's own
+# lens direction), on the PWM twin. Registered BEFORE any steering run exists.
+# Design notes (rationale in contracts/L3_vimarsa_bridge.md):
+# - Generation prompts are BARE stubs — no instruction; the concept can reach the output only
+#   through the write. Removes the instruction confound entirely.
+# - v2 is a mechanism-matched simplification of PWM's trained bridge (which needs the full WM
+#   stack): additive output-logit bias on the concept ids. The contrast tested is the WRITE
+#   SITE, holding content and (reported) entropy cost visible.
+# - Readback through the BAND-TARGETED lens (L2b: final-target lenses are blind to the band).
+seeds: [42]
+write_layer: 20            # interior of the middle band [6,26); mid-lens covers 0..25
+readback_span: 5           # readback at layers 21..25 (band exit side)
+alpha: 0.1                 # requested relative write strength
+norm_cap_rel: 0.1          # svātantrya cap: ||delta|| <= 0.1 * ||h||
+entropy_epsilon: 0.5       # nats; per-write output-entropy budget
+v2_bias: 6.0               # output logit bias (vaikharī arm)
+max_new_tokens: 40
+uptake_top_m: 10           # readback: concept must reach lens top-10 in the band
+uptake_min_rank_gain: 100  # and improve by >= 100 ranks vs pre-write
+hypotheses:
+  H_uptake:           {metric: uptake_rate, threshold_min: 0.5}
+  # The doctrine's claim: at real behavioral lift, the workspace write damages camatkāra
+  # LESS than the mouth write. pass = lift_v3 >= min_lift AND
+  # (camatk_drop_v2 - camatk_drop_v3) >= min_drop_advantage.
+  H_quality_per_lift: {metric: camatk_drop_advantage, min_lift: 0.2,
+                       min_drop_advantage: 0.05, threshold_min: 0.05}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "if H_uptake fails with anava-dominant malas AND lift_v3 ~ 0 across the alpha grid (see sweep note) -> band writes on this plant are pruned; escalate: plant switch or write-site sweep at gate"
+# Registered secondary sweep (evidence, not gate): if H_uptake fails at alpha 0.1, a single
+# follow-up run at alpha 0.2 is permitted and must be reported alongside (no silent retry).
+deviations: []
+budget_gpu_hours: 1.5
