@@ -85,6 +85,34 @@ def test_concept_candidate_ids_includes_translation():
     assert any("first id only" in d for d in devs)  # ' water' was multi-token
 
 
+def test_articulation_negentropy_orders_sharpness():
+    """E7 primitive: negentropy of the renormalized top-K lens readout must rank a sharp
+    (concentrated) distribution above a flat one, and be 0 for uniform."""
+    from prabodha.lens.e1_metrics import topk_negentropy
+    rng = np.random.default_rng(3)
+    flat = rng.normal(0, 0.01, 1000)
+    sharp = rng.normal(0, 0.01, 1000)
+    sharp[7] += 30.0  # one dominant token
+    assert topk_negentropy(sharp, k=50) > topk_negentropy(flat, k=50)
+    uniform = np.zeros(1000)
+    assert topk_negentropy(uniform, k=50) == pytest.approx(0.0, abs=1e-9)
+
+
+def test_articulation_gradient_detects_planted_depth_trend():
+    """E7 assembly: layers whose readouts sharpen with depth -> rho ~ +1, small p;
+    shuffled depth order -> rho near 0, large p."""
+    from prabodha.lens.e1_metrics import articulation_gradient
+    rng = np.random.default_rng(4)
+    # scores rising with layer index (with mild noise), 3 prompts x 12 layers
+    layers = list(range(12))
+    scores = {layer: [layer / 12 + 0.01 * rng.normal() for _ in range(3)] for layer in layers}
+    rho, p = articulation_gradient(scores, permutation_resamples=200, seed=0)
+    assert rho > 0.9 and p < 0.05
+    noise = {layer: [rng.normal() for _ in range(3)] for layer in layers}
+    rho_n, p_n = articulation_gradient(noise, permutation_resamples=200, seed=0)
+    assert abs(rho_n) < 0.6 and p_n > 0.05
+
+
 def test_modulation_band_modes():
     """L1b circularity rule (review #2): depth_middle_third must IGNORE the CKA result;
     cka_middle must follow it. Unknown modes are errors, not silent fallbacks."""

@@ -1,0 +1,36 @@
+# E2+E7 pre-registration (R4). Tier: screen. Model: nvidia/Nemotron-Mini-4B-Instruct
+# (HF bf16 twin of PWM's served nemotron-mini:4b — deviation disclosed in contract L2).
+# Family: {H_report, H_bands, H_modulation, H_articulation}. L1b caveats baked in as
+# registrations (contract L2 "Carried caveats"): last3 report window, fixed modulation band,
+# uninstructed control with margin.
+seeds: [42]
+hypotheses:
+  H_report:      {metric: spearman_rho_model_topk_last3, threshold_min: 0.4, p_max: 0.05,
+                  n_prompts: 16}
+  H_bands:       {metric: cka_band_contrast, threshold_min: 0.15, n_prompts: 16,
+                  qualitative: three_band_structure}
+  H_modulation:  {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5,
+                  control_margin_min: 0.2, n_prompts: 40}
+  # E7 (scoping §2.5): articulation gradient — Spearman rho between layer depth and mean
+  # top-k negentropy of the lens readout. GNW predicts NO laminated gradient; the vāk
+  # hierarchy predicts a rise. Registered before any nemotron data exists.
+  H_articulation: {metric: articulation_gradient_rho, threshold_min: 0.5, p_max: 0.05,
+                   n_prompts: 16}
+stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
+budget_gpu_hours: 2.0
+top_k: 50
+cka_min_band_size: 6
+cka_skip_first: 1
+report_window: last3
+modulation_band: depth_middle_third
+modulation_uninstructed_control: true
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+modulation_null_shuffles: 200
+templates:
+  - "Think about {concept}. The weather today is"
+  - "Remember the word {concept}. My favourite food is"
+  - "Keep {concept} in mind. The story begins when"
+  - "Focus on {concept}. The capital of France is"
+prune_rule: "split verdicts reportable (calibration lineage); if H_bands AND H_articulation both fail on the PWM stack, the L3 write-site plan (workspace-onset band) loses its empirical basis -> L3 blocked pending redesign, escalate at gate"
+deviations: []

@@ -1,0 +1,6 @@
+# L2 target: HF bf16 twin of PWM's cascade fast model (Ollama nemotron-mini:4b).
+# 32 layers, d3072, nemotron arch, standard AutoModelForCausalLM, not gated.
+hf_id: nvidia/Nemotron-Mini-4B-Instruct
+dtype: bf16
+device: cuda
+trust_remote_code: false

@@ -23,20 +23,24 @@
    "comparison": "research/l1_vs_l1b_comparison.md"
   },
   "L2": {
-   "status": "next",
+   "status": "open",
    "target_model": "nvidia/Nemotron-Mini-4B-Instruct",
    "carried_caveats": [
     "uninstructed-prompt modulation control",
     "same-band-mode for cross-size comparisons",
     "registered alternative H_report metric before report claims"
-   ]
+   ],
+   "contract": "contracts/L2_pwm_stack.md",
+   "worktree": "loop/l2-pwm-stack"
   }
  },
  "gpu_budget_hours": {
   "L1_spent": 1.45,
   "L1_cap": 2,
   "L1b_spent": 6.1,
-  "L1b_cap": 7.0
+  "L1b_cap": 7.0,
+  "L2_spent": 0,
+  "L2_cap": 2.0
  },
  "kill_switch": false
 }
