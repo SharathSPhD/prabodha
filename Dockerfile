@@ -16,4 +16,9 @@ RUN pip install --no-cache-dir -e .[dev] && \
     pip install --no-cache-dir -e vendor/jacobian-lens
 # HF cache mounted at runtime; models pulled on the Spark, not baked in.
 ENV HF_HOME=/workspace/hf_cache
+# qwen3_5 hybrid-arch fast path (L1b): BOTH libs required or transformers falls back to a
+# torch recurrent scan (~52 min/prompt on 27B vs kernels). causal-conv1d needs
+# --no-build-isolation to compile against the container torch (sm_121).
+RUN pip install --no-cache-dir flash-linear-attention && \
+    pip install --no-cache-dir --no-build-isolation causal-conv1d
 ENTRYPOINT ["bash"]

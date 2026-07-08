@@ -100,3 +100,65 @@
   fit on the HF bf16 checkpoint of the same architecture (nvidia Nemotron-Mini-4B family),
   with the bf16-vs-Ollama-quant mismatch disclosed as a deviation. To be encoded in the L2
   contract card at loop start.
+
+## 2026-07-08 — L1 signed off (disposition b); L1b opened
+- Operator sign-off in-session; PR #1 squash-merged to main (aea5c1b). Disposition (b):
+  27B size-matched retry, new budget line L1b_cap=6.0 GPU-h.
+- L1b pre-registered (configs/experiments/e1b.yaml) INCLUDING the decision rule and the
+  review-#2 circularity fix: modulation band FIXED a priori (depth_middle_third).
+- Target: Qwen/Qwen3.6-27B (Nanda's exact reference; apache-2.0, safetensors). bf16 ~54GB
+  weights -> idle-window job: guard min_free=80GiB (new per-job floor arg); compose service
+  l1b without courtesy caps. PSALM at step ~41k/48.3k (~3.3s/step) -> idle window expected
+  in ~6-7h; weights downloading meanwhile (network-only, no GPU touch).
+- L1b pre-flight (CPU, no GPU touch): qwen3_5 is a HYBRID arch (linear-attention layers; HF
+  falls back to slow torch path absent fla/causal-conv1d kernels — fit will run slower than
+  a pure-transformer estimate). jlens layout detection + fit + apply verified on a shrunken
+  random Qwen3_5ForCausalLM. Checkpoint keys are model.language_model.* with mtp.*/model.visual.*
+  in _keys_to_ignore_on_load_unexpected -> AutoModelForCausalLM.from_pretrained loads the text
+  backbone cleanly (vision tower + MTP head dropped by design). Weights (54GB) cached locally.
+  Idle-window watcher armed (PSALM exit + >=80GiB free).
+- L2 target identified (subagent scout): Ollama nemotron-mini:4b == HF nvidia/Nemotron-Mini-4B-Instruct
+  (nemotron arch, 32 layers, d3072, ~8GB bf16, NOT gated, plain AutoModelForCausalLM, no
+  trust_remote_code; lineage Minitron-4B-Base <- Nemotron-4 15B distillation). Weights being
+  cached. L2 deviation to pre-register at loop open: lens on bf16 HF twin vs Ollama-quantized
+  production serving.
+- L1b dispatched in the idle window (PSALM completed 10:32 BST, ~6h earlier than projected —
+  watcher had a pgrep self-match bug, caught by manual check). Guard: contention=none, 115GiB.
+
+## 2026-07-08 — L1b run 2 (fast-path kernels): pace and budget
+- Torch-fallback run 1 aborted after prompt 1 measured 52 min (13.8h projected). fla 0.5.1 +
+  causal-conv1d 1.6.2 baked into image ("Blackwell detected" — kernels engage on GB10).
+- Run 2 prompt 1: 1103s (18.4 min) — 2.8x faster. Projection 0.9h (aborted attempt) + 4.9h fit
+  + ~0.5h eval ≈ 6.3h. L1b cap raised 6.0 -> 7.0 GPU-h, inside the operator-cleared "~6-7"
+  range (contract sign-off), to preserve the pre-registered 16-prompt fit (n-comparability
+  with L1) instead of cutting prompts again. Disclosed here and in e1b.yaml.
+
+- 2026-07-08 E1 gate written (gates/gate_L1b.json): code=pass domain=fail contention=none
+
+## 2026-07-08 — L1b gate: SPLIT verdict, and it is the finding
+- gates/gate_L1b.json (27B, idle window, contention=none; NOTE: internal loop field reads "L1"
+  — compose_gate hardcoded the label; plumbed --loop for future runs, JSON left untouched as a
+  generated artifact). GPU: 6.1h of 7.0h cap (0.9h aborted torch-fallback attempt + 5.2h run).
+- H_modulation 0.55 PASS (22/40 vs shuffled null 0.068; FIXED depth-middle-third band, layers
+  21..41 of 63 — no CKA circularity). On 4B: 0.10. DIRECTED MODULATION SCALES WITH SIZE and
+  passes on Nanda's reference — first full hypothesis pass; validates the workspace-band
+  loading concept the steering doctrine (L3+) depends on. All hits en_mid/en_bare; zh variants
+  never fired on either size (cross-lingual verbalization NOT confirmed at readout level).
+- H_bands 0.269 PASS, bands [0,8)/[8,54)/[54,64) — three-band architecture replicates across
+  sizes with similar proportions (4B: [0,6)/[6,30)/[30,36)).
+- H_report 0.124 FAIL (p≈1e-4 above null; curve rises only in final ~3 layers to 0.353 at
+  L62). Same weak regime as 4B (0.180, last-layer 0.617). The late-third-mean metric fails on
+  BOTH sizes while significant-above-null on both: the anomaly is now isolated to the METRIC
+  SHAPE (or a genuinely-final-layers-only consolidation), NOT model size.
+- Decision-rule readout: none of the three registered branches fired cleanly (rule anticipated
+  uniform scaling); the split IS the result. Comparison: research/l1_vs_l1b_comparison.md.
+
+## 2026-07-08 — L1b closed VALID_WITH_CAVEATS (adversarial review #3)
+- Review verdicts: modulation-scaling VALID (with null-comparability attack — rebutted: S/N
+  ratios comparable 9.6x/8.1x, absolute threshold uniquely crossed at 27B, band confound runs
+  AGAINST the claim); bands UNDERDETERMINED; H_report metric-shape UNDERDETERMINED; honesty
+  VALID. Full record in contracts/L1b_size_matched_retry.md.
+- Caveats carried to L2 pre-registration (also in research/state.json): uninstructed-prompt
+  modulation control; same-band-mode comparisons; registered alternative H_report metric.
+- Milestone merge to main per operator /goal directive; formal sign-off line remains open in
+  the contract card for the operator.

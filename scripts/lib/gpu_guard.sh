@@ -6,7 +6,7 @@
 #   source gpu_guard.sh && gpu_guard_check <smoke|real> <est_minutes> [loop_id]
 # Exports: GUARD_CONTENTION ("none" | comma-list of co-resident trainer patterns) for gate JSON.
 gpu_guard_check() {
-  local mode="${1:?smoke|real}" est_min="${2:?minutes}" loop="${3:-L1}"
+  local mode="${1:?smoke|real}" est_min="${2:?minutes}" loop="${3:-L1}" min_free="${4:-24}"
   local root="${PRABODHA_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || echo .)}"
   export GUARD_CONTENTION="none"
   [[ -f "$root/research/KILL_SWITCH" ]] && { echo "GUARD: kill switch present — refusing"; return 1; }
@@ -30,7 +30,8 @@ gpu_guard_check() {
     free_gib=$(awk '/MemAvailable/ {print int($2/1048576)}' /proc/meminfo)
     echo "GUARD: unified-memory host (nvidia-smi N/A) — MemAvailable=${free_gib}GiB"
   fi
-  local min_free=24
+  # min_free is per-job (4th arg): 24 default; large-model jobs (e.g. L1b 27B bf16 ~54GB
+  # weights) pass a floor that guarantees they cannot crowd a co-resident trainer.
   (( free_gib >= min_free )) || { echo "GUARD: only ${free_gib}GiB free (<${min_free}) — refusing to crowd co-residents"; return 1; }
   if [[ "$mode" == "real" ]] && command -v jq >/dev/null && [[ -f "$root/research/state.json" ]]; then
     local spent cap
