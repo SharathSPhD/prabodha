@@ -51,5 +51,4 @@ GPU budget: 6.0 GPU-h cap (L1b line, operator-cleared), idle-window only.
   (3) H_report metric shape needs a registered alternative (e.g. last-k-layers mean or
   layer-of-half-max) BEFORE any further report-correspondence claims.
 
-Operator sign-off: ______  Date: ______ (milestone merge pre-authorized by operator /goal
-directive 2026-07-08 "milestone merge to main and push"; formal sign-off line remains open)
+Operator sign-off: SharathSPhD (in-session)  Date: 2026-07-09
