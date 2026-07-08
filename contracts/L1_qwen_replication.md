@@ -50,4 +50,4 @@ Builder's note: (a) keeps momentum toward the actual target (PWM stack, L2) and 
 question to the EFE selector at L5; (b) is the reviewer's recommendation for gate credibility;
 next pre-registration MUST fix bands before modulation (review #2's circularity finding).
 
-Operator sign-off: ______  Date: ______
+Operator sign-off: SharathSPhD (in-session, disposition (b): 27B size-matched retry cleared, new budget line L1b)  Date: 2026-07-08
