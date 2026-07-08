@@ -1,0 +1,31 @@
+{
+  "check": "selectivity_at5",
+  "layer": 6,
+  "value": 0.0125,
+  "per_prompt": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "thresholds": {
+    "go": 0.75,
+    "no_go": 0.6
+  },
+  "verdict": "NO_GO",
+  "n_prompts": 16,
+  "date": "2026-07-08",
+  "lineage": "contracts/L2_pwm_stack.md L3 ENTRY GATE (review #4)"
+}
