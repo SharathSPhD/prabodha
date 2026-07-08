@@ -1,0 +1,9 @@
+# L2b mid-target lens: target_layer 26 = the PWM twin's band exit ([6,26) middle band,
+# gates/gate_L2.json). Same corpus/seed as all other fits (comparability).
+n_prompts: 16
+seq_len: 128
+corpus: pretraining_like
+corpus_file: outputs/corpora/wikitext2_64x128.txt
+target_layer: 26
+checkpoint_every: 8
+seed: 42

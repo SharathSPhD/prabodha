@@ -89,7 +89,10 @@ class LensAdapter:
         # Config over constants: vendor skip_first defaults to 16 (attention-sink
         # exclusion, jlens/fitting.py) — short smoke prompts must override it.
         for key, jlens_kw in (("skip_first", "skip_first"), ("seq_len", "max_seq_len"),
-                              ("dim_batch", "dim_batch"), ("checkpoint_every", "checkpoint_every")):
+                              ("dim_batch", "dim_batch"), ("checkpoint_every", "checkpoint_every"),
+                              # L2b: intermediate-target lenses (each band its own decoder;
+                              # vendor default target = final layer)
+                              ("target_layer", "target_layer")):
             if key in lens_cfg:
                 kwargs[jlens_kw] = lens_cfg[key]
         self._lens = jlens.fit(model, prompts, **kwargs)

@@ -61,6 +61,11 @@
     "PWM twin has ZERO instructed loadability \u2014 no instruction-priming in v3 design",
     "weak band contrast on distilled lineage \u2014 consider larger cascade model if readiness fails"
    ]
+  },
+  "L2b": {
+   "status": "open",
+   "probe": "scripts/tools/midlens_probe.py",
+   "registered_in": "midlens_probe.py docstring (outcomes i/ii)"
   }
  },
  "gpu_budget_hours": {
@@ -69,7 +74,9 @@
   "L1b_spent": 6.1,
   "L1b_cap": 7.0,
   "L2_spent": 0.5,
-  "L2_cap": 2.0
+  "L2_cap": 2.0,
+  "L2b_spent": 0,
+  "L2b_cap": 1.0
  },
  "kill_switch": false
 }
