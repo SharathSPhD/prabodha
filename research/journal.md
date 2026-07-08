@@ -219,3 +219,18 @@
   (b) switch plant to Qwen3-4B (known modulation 0.10 > 0, same consolidation shape though);
   (c) intermediate-target lenses first (reading (ii)) — cheapest, ~1 GPU-h, and it
   discriminates between the two readings before any interventional spend.
+
+## 2026-07-08 — L2b mid-lens probe: the band speaks when asked in its own voice
+- gates/gate_L2b.json: mid-target lens (target_layer 26 = band exit) in band [6,26):
+  instructed hit rate 0.200 across SEVEN distinct concepts (iron/fire/water/bread/snow/gold/
+  moon, both English variants), uninstructed control 0.000, shuffled null 0.023. The SAME
+  probe through the FINAL-target lens read 0.000 (gate_L2.json run 3).
+- Registered rule files this as outcome (ii) (hit 0.2 < 0.3 threshold) — recorded as such,
+  no goalpost moves. But the evidence pattern materially supports weak reading (i): the band
+  DOES carry directed, verbalizable loading that a final-target lens is blind to. Vāk
+  reading: madhyamā content is audible only to a madhyamā-tuned instrument; the final-target
+  lens hears only vaikharī. (Connects W-space-beyond-J-space, scoping §10.3.)
+- L3 DESIGN CONSEQUENCE (firm): the readback verifier must read through BAND-TARGETED lenses.
+  Write-site choice remains the operator's fork, now better informed: writes at the band with
+  band-lens readback are instrumentally possible; final-behavior effect size is the open
+  question the L3 experiment itself answers. Cost: 0.35 GPU-h (fit 47s/prompt + probe).
