@@ -31,3 +31,16 @@ services:
       - ./gates:/workspace/prabodha/gates
       - ./research:/workspace/prabodha/research
     command: ["scripts/dispatch/l1b/run.sh"]
+  l2:
+    build: .
+    image: prabodha/gb10:0.1
+    gpus: all
+    pid: host
+    mem_limit: 48g
+    cpus: "10"
+    volumes:
+      - ${HF_CACHE:-~/.cache/huggingface}:/workspace/hf_cache
+      - ./outputs:/workspace/prabodha/outputs
+      - ./gates:/workspace/prabodha/gates
+      - ./research:/workspace/prabodha/research
+    command: ["scripts/dispatch/l2/run.sh"]

@@ -162,3 +162,41 @@
   modulation control; same-band-mode comparisons; registered alternative H_report metric.
 - Milestone merge to main per operator /goal directive; formal sign-off line remains open in
   the contract card for the operator.
+
+- 2026-07-08 E1 gate written (gates/gate_L2.json): code=pass domain=fail contention=none
+
+- 2026-07-08 E1 gate written (gates/gate_L2.json): code=pass domain=fail contention=none
+
+## 2026-07-08 — L2 gate (runs 1+2): articulation passes; the control does its job
+- Run 1: H_modulation 0.0 with shuffled null AND uninstructed control BOTH exactly 0.0 —
+  the all-zeros signature diagnosed as BOS pollution (30/30 candidate variants flagged
+  multi-token; SentencePiece prepends <s>). Fixed (specials=False for candidate ids only),
+  regression-tested, run-1 gate preserved (gates/gate_L2_run1.json), eval-only rerun.
+- Run 2 (gates/gate_L2.json, contention=none, ~0.4 GPU-h of 2.0 cap):
+  - H_articulation PASS 0.639 (p≈2e-4): top-k negentropy of the lens readout RISES with
+    depth on the PWM twin — the vāk-hierarchy (paśyantī→madhyamā→vaikharī) laminated
+    articulation gradient E7 predicted and GNW does not. First pass of the program's
+    discriminating observable.
+  - H_report(last3) 0.384 vs 0.4 — near-miss, p≈1e-4, last layer 0.614: the final-layer
+    consolidation shape replicates on a third model/architecture.
+  - H_bands 0.137 vs 0.15 — near-miss with visually sane bands [0,6)/[6,26)/[26,32):
+    the pruned/distilled Minitron lineage shows WEAKER (smeared) band contrast than either
+    Qwen — candidate architectural finding (pruning homogenizes inter-layer structure?).
+  - H_modulation 0.20 = shuffled null 0.196 = uninstructed control 0.20 → NO directed
+    modulation on the PWM twin (margin 0.0; all 'hits' are two CJK piece-ids appearing
+    regardless of instruction). The L1b-caveat control caught exactly what it was built to
+    catch: incidental capacity masquerading as loading. Contrast: Qwen3.6-27B 0.55 vs null
+    0.068. Directed loadability now looks size- AND lineage-dependent.
+- prune_rule check: articulation PASSED, so L3 is NOT blocked; workspace-onset layer for the
+  L3 write site = 6 (band map recorded in state.json), with the weak-contrast caveat.
+
+- 2026-07-08 E1 gate written (gates/gate_L2.json): code=pass domain=fail contention=none
+
+## 2026-07-08 — L2 closed (split-as-registered); review #4; L3 entry gate adopted
+- Run 3 (single_token_only candidates): modulation 0.0 = null = control — the run-2 0.2 was
+  zh byte-fallback noise, as review #4 suspected. Conclusion CLEAN: zero instructed
+  loadability on the PWM twin, with candidates that fire on both Qwens.
+- Review #4: articulation ARTIFACT-SUSPECT (lens-construction tautology + non-monotonic
+  start) -> registered follow-up null (shuffled final logits); bands near-miss VALID;
+  honesty VALID. L3 entry gate: Selectivity@5 at layer 6 (details in contract card).
+- Milestone merge to main per standing directive. Full record: contracts/L2_pwm_stack.md.

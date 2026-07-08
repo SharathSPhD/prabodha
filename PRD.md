@@ -43,6 +43,13 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.5 (L2 close): H1 instrument delivered for the PWM stack (band map + onset layer +
+  articulation profile + slice page). CRITICAL H2 INPUT: the production-twin model does NOT
+  load instructed concepts into its workspace band (0.0 with controls) — VimarsaBridge v3
+  cannot assume instruction-priming; direct lens-writes + readback verification carry the
+  design (Selectivity@5 entry gate before L3 writes). NEW RISK: distilled/pruned models may
+  have degraded workspace structure — if Selectivity@5 fails, consider PWM's larger cascade
+  model as the L3 plant instead.
 - v0.4 (L1b close): H1 replication gate resolved as calibration — instrument validated on
   Nanda's reference size (modulation PASS 0.55, bands replicate); thresholds now known to be
   size-sensitive for modulation and metric-shape-sensitive for report-ordering. Risk table

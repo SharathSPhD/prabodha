@@ -1,5 +1,5 @@
 {
- "current_loop": "L2",
+ "current_loop": "L3",
  "loops": {
   "L0": {
    "status": "closed",
@@ -23,12 +23,43 @@
    "comparison": "research/l1_vs_l1b_comparison.md"
   },
   "L2": {
-   "status": "next",
+   "status": "closed-split-as-registered",
    "target_model": "nvidia/Nemotron-Mini-4B-Instruct",
    "carried_caveats": [
     "uninstructed-prompt modulation control",
     "same-band-mode for cross-size comparisons",
     "registered alternative H_report metric before report claims"
+   ],
+   "contract": "contracts/L2_pwm_stack.md",
+   "worktree": "loop/l2-pwm-stack",
+   "workspace_onset_layer": 6,
+   "band_map": [
+    [
+     0,
+     6
+    ],
+    [
+     6,
+     26
+    ],
+    [
+     26,
+     32
+    ]
+   ],
+   "gate": "gates/gate_L2.json",
+   "runs": [
+    "gates/gate_L2_run1.json",
+    "gates/gate_L2.json"
+   ]
+  },
+  "L3": {
+   "status": "next",
+   "entry_gate": "Selectivity@5 at layer 6 (gate_L3_readiness.json): GO>=0.75, NO-GO<0.60, else readback-gated",
+   "carried_caveats": [
+    "articulation needs shuffled-final-logits null before claims leave screen tier",
+    "PWM twin has ZERO instructed loadability \u2014 no instruction-priming in v3 design",
+    "weak band contrast on distilled lineage \u2014 consider larger cascade model if readiness fails"
    ]
   }
  },
@@ -36,7 +67,9 @@
   "L1_spent": 1.45,
   "L1_cap": 2,
   "L1b_spent": 6.1,
-  "L1b_cap": 7.0
+  "L1b_cap": 7.0,
+  "L2_spent": 0.5,
+  "L2_cap": 2.0
  },
  "kill_switch": false
 }
