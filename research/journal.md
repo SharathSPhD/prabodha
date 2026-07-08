@@ -110,3 +110,10 @@
   weights -> idle-window job: guard min_free=80GiB (new per-job floor arg); compose service
   l1b without courtesy caps. PSALM at step ~41k/48.3k (~3.3s/step) -> idle window expected
   in ~6-7h; weights downloading meanwhile (network-only, no GPU touch).
+- L1b pre-flight (CPU, no GPU touch): qwen3_5 is a HYBRID arch (linear-attention layers; HF
+  falls back to slow torch path absent fla/causal-conv1d kernels — fit will run slower than
+  a pure-transformer estimate). jlens layout detection + fit + apply verified on a shrunken
+  random Qwen3_5ForCausalLM. Checkpoint keys are model.language_model.* with mtp.*/model.visual.*
+  in _keys_to_ignore_on_load_unexpected -> AutoModelForCausalLM.from_pretrained loads the text
+  backbone cleanly (vision tower + MTP head dropped by design). Weights (54GB) cached locally.
+  Idle-window watcher armed (PSALM exit + >=80GiB free).
