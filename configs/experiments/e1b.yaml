@@ -32,4 +32,11 @@ templates:
   - "Keep {concept} in mind. The story begins when"
   - "Focus on {concept}. The capital of France is"
 prune_rule: "decision rule in header comment; disposition at gate is the operator's"
-deviations: []
+deviations:
+  - "fast-path kernels installed pre-data (2026-07-08): torch-fallback pace for the qwen3_5
+    hybrid arch measured 52 min/prompt on the 27B (13.8h projected vs 6.0h cap). fla 0.5.1 +
+    causal-conv1d 1.6.2 (built --no-build-isolation) enable the architecture's intended
+    kernels; fit restarted from zero prompts (no torch-fallback Jacobians retained; the one
+    slow prompt was never checkpointed). Numerics validated finite on a tiny qwen3_5 GPU
+    smoke. 0.9 GPU-h of the L1b budget consumed by the aborted slow attempt (ledgered)."
+
