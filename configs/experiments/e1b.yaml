@@ -1,0 +1,35 @@
+# E1b pre-registration (R4): SIZE-MATCHED RETRY of E1 on Nanda's reference (Qwen3.6-27B).
+# Lineage: identical to e1.yaml as amended (A1-A3 baked in as the pre-registration here);
+# ONLY the model changes (decision rule below), plus one methodological fix mandated by
+# L1 adversarial review #2: the H_modulation band is FIXED a priori (depth_middle_third),
+# never derived from this run's CKA (circularity rule).
+# Decision rule (registered before the run, per reviewer):
+#   27B rho >= 0.4 and hit_rate >= 0.3  -> instrument fine, 4B-specific weakness (size matters);
+#   27B ~ 4B levels (rho ~0.2, hit ~0.1) -> thresholds miscalibrated for the method at this
+#     fit scale; proceed to L2 with disclosed caveats;
+#   27B WORSE than 4B                    -> instrument/scale interaction; prune decision at gate.
+seeds: [42]
+hypotheses:
+  H_report:    {metric: spearman_rho_model_topk_late_third, threshold_min: 0.4, p_max: 0.05,
+                n_prompts: 16}
+  H_bands:     {metric: cka_band_contrast, threshold_min: 0.15, n_prompts: 16,
+                qualitative: three_band_structure}
+  H_modulation: {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5, n_prompts: 40}
+stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
+budget_gpu_hours: 6.0
+top_k: 50
+cka_min_band_size: 6
+cka_skip_first: 1
+# FIXED modulation band (review #2 circularity rule): middle third of fitted layers by depth,
+# decided here, before any 27B data exists. H_bands stays a purely structural test.
+modulation_band: depth_middle_third
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+modulation_null_shuffles: 200
+templates:
+  - "Think about {concept}. The weather today is"
+  - "Remember the word {concept}. My favourite food is"
+  - "Keep {concept} in mind. The story begins when"
+  - "Focus on {concept}. The capital of France is"
+prune_rule: "decision rule in header comment; disposition at gate is the operator's"
+deviations: []

@@ -100,3 +100,13 @@
   fit on the HF bf16 checkpoint of the same architecture (nvidia Nemotron-Mini-4B family),
   with the bf16-vs-Ollama-quant mismatch disclosed as a deviation. To be encoded in the L2
   contract card at loop start.
+
+## 2026-07-08 — L1 signed off (disposition b); L1b opened
+- Operator sign-off in-session; PR #1 squash-merged to main (aea5c1b). Disposition (b):
+  27B size-matched retry, new budget line L1b_cap=6.0 GPU-h.
+- L1b pre-registered (configs/experiments/e1b.yaml) INCLUDING the decision rule and the
+  review-#2 circularity fix: modulation band FIXED a priori (depth_middle_third).
+- Target: Qwen/Qwen3.6-27B (Nanda's exact reference; apache-2.0, safetensors). bf16 ~54GB
+  weights -> idle-window job: guard min_free=80GiB (new per-job floor arg); compose service
+  l1b without courtesy caps. PSALM at step ~41k/48.3k (~3.3s/step) -> idle window expected
+  in ~6-7h; weights downloading meanwhile (network-only, no GPU touch).

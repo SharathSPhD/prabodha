@@ -12,6 +12,7 @@ from prabodha.lens.e1_metrics import (
     best_band_partition,
     cka_matrix,
     linear_cka,
+    modulation_band_layers,
     permutation_p_mean_rho,
     spearman_rho,
     topk_indices,
@@ -82,6 +83,20 @@ def test_concept_candidate_ids_includes_translation():
     ids2 = _concept_candidate_ids(Tok(), "water", {"water": "水"}, devs)
     assert ids2 == {"en_mid": 21, "en_bare": 23, "zh": 24}
     assert any("first id only" in d for d in devs)  # ' water' was multi-token
+
+
+def test_modulation_band_modes():
+    """L1b circularity rule (review #2): depth_middle_third must IGNORE the CKA result;
+    cka_middle must follow it. Unknown modes are errors, not silent fallbacks."""
+    layers = list(range(36))
+    bands = {"boundaries": [6, 30]}
+    fixed = modulation_band_layers("depth_middle_third", layers, bands)
+    assert fixed == layers[12:24]  # depth rule, CKA result ignored
+    assert modulation_band_layers("depth_middle_third", layers, None) == fixed
+    cka = modulation_band_layers("cka_middle", layers, bands)
+    assert cka == list(range(6, 30))  # follows the CKA middle band
+    with pytest.raises(ValueError):
+        modulation_band_layers("nope", layers, bands)
 
 
 def test_cka_identical_inputs_is_one():

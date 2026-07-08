@@ -1,0 +1,6 @@
+# L1b size-matched retry target: Nanda's exact reference model (contract L1b; prune_rule
+# escalation cleared by operator 2026-07-08). bf16 ~54GB weights — idle-window job on GB10.
+hf_id: Qwen/Qwen3.6-27B
+dtype: bf16
+device: cuda
+trust_remote_code: false

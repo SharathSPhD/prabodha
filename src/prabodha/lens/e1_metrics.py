@@ -344,6 +344,20 @@ def _middle_band_layers(source_layers: list[int], bands_result: dict | None) -> 
     return source_layers[third:n - third] or [source_layers[n // 2]]
 
 
+def modulation_band_layers(mode: str, source_layers: list[int],
+                           bands_result: dict | None) -> list[int]:
+    """H_modulation read-out band, by pre-registered mode (L1 review #2 rule: deriving the
+    band from the same run's CKA and then scoring modulation in it is circular; a FIXED
+    depth rule breaks the loop):
+    - 'depth_middle_third': middle third of fitted layers, decided a priori (L1b default);
+    - 'cka_middle': the H_bands middle band (L1 legacy; circularity disclosed)."""
+    if mode == "depth_middle_third":
+        return _middle_band_layers(source_layers, None)
+    if mode == "cka_middle":
+        return _middle_band_layers(source_layers, bands_result)
+    raise ValueError(f"unknown modulation_band mode: {mode!r}")
+
+
 def run_e1(hf: Any, tok: Any, lens_adapter: Any, exp_cfg: dict) -> dict:
     """Run all three E1 evaluators; assemble {hypothesis: {value, threshold, pass, evidence}}
     plus a deduplicated deviations list. Thresholds and all knobs come from exp_cfg (R4)."""
@@ -360,7 +374,8 @@ def run_e1(hf: Any, tok: Any, lens_adapter: Any, exp_cfg: dict) -> dict:
     r_bands = evaluate_h_bands(hf, tok, prompts[:int(hyp["H_bands"]["n_prompts"])],
                                skip_first=int(exp_cfg["cka_skip_first"]),
                                min_band_size=int(exp_cfg["cka_min_band_size"]))
-    band_layers = _middle_band_layers(lens_adapter.source_layers, r_bands)
+    band_layers = modulation_band_layers(exp_cfg.get("modulation_band", "cka_middle"),
+                                         lens_adapter.source_layers, r_bands)
     r_mod = evaluate_h_modulation(
         hf, tok, lens_adapter, pairs[:int(hyp["H_modulation"]["n_prompts"])], band_layers,
         translations=exp_cfg.get("concepts_zh"),
