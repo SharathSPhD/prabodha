@@ -31,7 +31,22 @@
     "registered alternative H_report metric before report claims"
    ],
    "contract": "contracts/L2_pwm_stack.md",
-   "worktree": "loop/l2-pwm-stack"
+   "worktree": "loop/l2-pwm-stack",
+   "workspace_onset_layer": 6,
+   "band_map": [
+    [
+     0,
+     6
+    ],
+    [
+     6,
+     26
+    ],
+    [
+     26,
+     32
+    ]
+   ]
   }
  },
  "gpu_budget_hours": {
@@ -39,7 +54,7 @@
   "L1_cap": 2,
   "L1b_spent": 6.1,
   "L1b_cap": 7.0,
-  "L2_spent": 0,
+  "L2_spent": 0.4,
   "L2_cap": 2.0
  },
  "kill_switch": false
