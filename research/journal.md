@@ -117,3 +117,10 @@
   in _keys_to_ignore_on_load_unexpected -> AutoModelForCausalLM.from_pretrained loads the text
   backbone cleanly (vision tower + MTP head dropped by design). Weights (54GB) cached locally.
   Idle-window watcher armed (PSALM exit + >=80GiB free).
+- L2 target identified (subagent scout): Ollama nemotron-mini:4b == HF nvidia/Nemotron-Mini-4B-Instruct
+  (nemotron arch, 32 layers, d3072, ~8GB bf16, NOT gated, plain AutoModelForCausalLM, no
+  trust_remote_code; lineage Minitron-4B-Base <- Nemotron-4 15B distillation). Weights being
+  cached. L2 deviation to pre-register at loop open: lens on bf16 HF twin vs Ollama-quantized
+  production serving.
+- L1b dispatched in the idle window (PSALM completed 10:32 BST, ~6h earlier than projected —
+  watcher had a pgrep self-match bug, caught by manual check). Guard: contention=none, 115GiB.
