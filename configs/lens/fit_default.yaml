@@ -1,7 +1,10 @@
 # Jacobian lens fitting (vendor defaults; paper uses 1000x128-token prompts, quality saturates ~100;
 # Nanda: n≈1–10 near-parity — we pre-register n_prompts here)
-n_prompts: 64
+n_prompts: 16
 seq_len: 128
 corpus: pretraining_like   # resolver in lens adapter; smoke uses synthetic text
+# Generated on the Spark by scripts/tools/make_fit_corpus.py from the local wikitext-2-raw-v1
+# arrow cache (seed 42, non-overlapping 128-word windows). outputs/ is volume-mounted in docker.
+corpus_file: outputs/corpora/wikitext2_64x128.txt
 checkpoint_every: 8
 seed: 42

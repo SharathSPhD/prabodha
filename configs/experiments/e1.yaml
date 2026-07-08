@@ -1,23 +1,51 @@
 # E1 pre-registration (R4). Tier: screen. Family: {H_report, H_bands, H_modulation}.
+# AMENDED 2026-07-07 after run 1 + adversarial review (see deviations; run-1 gate preserved
+# as gates/gate_L1_run1.json). Amendments are eval-only: the fitted lens is unchanged.
 seeds: [42]
 hypotheses:
-  H_report:    {metric: spearman_rho_late_third, threshold_min: 0.5, n_prompts: 16}
+  # AMENDMENT A1: primary support changed union-top-K -> MODEL top-K. Verified synthetically:
+  # rho over the union support has a structural null floor of ~ -0.72 (disjoint sets
+  # anti-correlate), so the original 0.5 threshold never meant what it said. On model-top-K
+  # support the null is ~0; 0.4 sits between null and the identity limit, and the
+  # pre-registered (previously unused) 10k permutation resamples now gate via p_max.
+  # The union-support curve still ships as secondary evidence.
+  H_report:    {metric: spearman_rho_model_topk_late_third, threshold_min: 0.4, p_max: 0.05,
+                n_prompts: 16}
   H_bands:     {metric: cka_band_contrast, threshold_min: 0.15, n_prompts: 16,
                 qualitative: three_band_structure}
   H_modulation: {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5, n_prompts: 40}
 stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
 budget_gpu_hours: 2.0
 # Evaluator knobs (config over constants; the pre-registered gate is the thresholds above).
-top_k: 50            # H_report: rho over the union of lens/model top-K token sets
-cka_min_band_size: 2 # H_bands: min layers per band (auto-relaxed + logged on shallow models)
+top_k: 50            # H_report: comparison support size (model top-K primary, union secondary)
+# AMENDMENT A2: cka_min_band_size 2 -> 6. Run-1 partition [0,2)/[2,6)/[6,36) maximized contrast
+# with a 2-layer "sensory" and a 30-layer "motor" band — degenerate w.r.t. the qualitative
+# three_band_structure requirement, and it fed band_layers=[2..5] into H_modulation. 6 forces
+# three substantive bands on a 36-layer model (auto-relaxed + logged on shallow smoke models).
+cka_min_band_size: 6
 cka_skip_first: 1    # H_bands: leading positions dropped (attention sinks, cf. jlens skip_first)
 # H_modulation vocabulary: common, single-token-ish English nouns (first-token fallback is a
 # logged deviation) crossed with instruction templates -> 40 prompts (= n_prompts above).
 concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+# AMENDMENT A3: cross-lingual concept variants + shuffled-concept null. Run-1 slice page showed
+# Qwen verbalizing instructed concepts in dense CJK tokens (fire -> 火/焰); the English-only
+# first-token hit criterion structurally undercounts. Hit = any variant (en mid/bare, zh) in
+# lens top-5 at any band layer; chance level reported via 200 concept shuffles on the same
+# readouts (adversarial-review demand: baseline + per-prompt table now in evidence).
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+modulation_null_shuffles: 200
 templates:
   - "Think about {concept}. The weather today is"
   - "Remember the word {concept}. My favourite food is"
   - "Keep {concept} in mind. The story begins when"
   - "Focus on {concept}. The capital of France is"
 prune_rule: "if any two hypotheses fail after size-matched retry vs Nanda config -> prune instrument-on-this-size, escalate to 27B decision at gate"
-deviations: []
+deviations:
+  - "fit n_prompts 64->16 (2026-07-07, mid-run at the prompt-16 checkpoint, resumed not refit):
+    shared-GPU pace ~210s/prompt under contention=psalm put the pre-registered 64 prompts at
+    ~3.7 GPU-h vs the 2.0 GPU-h budget cap (also pre-registered; budget wins). Nanda's Qwen
+    replication reports n~1-10 near-parity; 16 preserves headroom for iteration."
+  - "post-run-1 amendments A1 (H_report support: union->model top-K, threshold 0.5->0.4 +
+    permutation p<=0.05), A2 (cka_min_band_size 2->6), A3 (H_modulation cross-lingual variants
+    + shuffled-concept null): adversarial-review-driven, eval-only (lens unchanged), run-1 gate
+    preserved as gates/gate_L1_run1.json. Screen-tier learning, disclosed rather than silent."

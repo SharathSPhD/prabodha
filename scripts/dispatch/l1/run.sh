@@ -5,7 +5,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"; export PRABODHA_ROOT="$ROOT"
 source "$ROOT/scripts/lib/gpu_guard.sh"
-gpu_guard_check real 90 L1
+gpu_guard_check real "${L1_EST_MIN:-90}" L1
 cd "$ROOT"
 NICE="nice -n ${GUARD_NICE:-10}"
 $NICE python -m prabodha.lens.fit_cli --model configs/models/qwen3.yaml \

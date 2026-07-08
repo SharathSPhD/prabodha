@@ -4,6 +4,9 @@ services:
     build: .
     image: prabodha/gb10:0.1
     gpus: all
+    # Host PID namespace: gpu_guard's pgrep must see co-resident trainers (PSALM/prabhasa)
+    # or the gate falsely records contention=none (R5 honesty; HANDOFF §3 "don't pretend isolation").
+    pid: host
     # bandwidth-bound courtesy caps (TRIZ C3 / shared mode):
     mem_limit: 48g
     cpus: "10"

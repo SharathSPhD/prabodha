@@ -22,7 +22,14 @@ gpu_guard_check() {
   local used total free_gib
   used=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits | head -1)
   total=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -1)
-  free_gib=$(( (total - used) / 1024 ))
+  if [[ "$used" =~ ^[0-9]+$ && "$total" =~ ^[0-9]+$ ]]; then
+    free_gib=$(( (total - used) / 1024 ))
+  else
+    # GB10 unified memory: nvidia-smi reports [N/A] for memory.used/total; system
+    # MemAvailable IS the GPU-visible headroom on a unified-memory host.
+    free_gib=$(awk '/MemAvailable/ {print int($2/1048576)}' /proc/meminfo)
+    echo "GUARD: unified-memory host (nvidia-smi N/A) — MemAvailable=${free_gib}GiB"
+  fi
   local min_free=24
   (( free_gib >= min_free )) || { echo "GUARD: only ${free_gib}GiB free (<${min_free}) — refusing to crowd co-residents"; return 1; }
   if [[ "$mode" == "real" ]] && command -v jq >/dev/null && [[ -f "$root/research/state.json" ]]; then

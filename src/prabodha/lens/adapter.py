@@ -153,5 +153,14 @@ def _prompts(lens_cfg: dict) -> list[str]:
         import random
         rng = random.Random(lens_cfg.get("seed", 42))
         return [" ".join(rng.choices(words, k=k)) for _ in range(n)]
-    raise NotImplementedError("pretraining_like corpus resolver lands with L1 GB10 pack "
-                              "(uses local text corpus on the Spark; R4: declared here)")
+    if lens_cfg.get("corpus") == "pretraining_like":
+        # One prompt per line, generated once by scripts/tools/make_fit_corpus.py from a
+        # local pretraining-like corpus (seeded, non-overlapping windows). Reading a flat
+        # file keeps the runtime image free of dataset libraries and the fit inspectable.
+        path = Path(lens_cfg["corpus_file"])
+        lines = [ln.strip() for ln in path.read_text(encoding="utf-8").splitlines()
+                 if ln.strip()]
+        if len(lines) < n:
+            raise ValueError(f"corpus_file {path} has {len(lines)} prompts < n_prompts={n}")
+        return lines[:n]
+    raise NotImplementedError(f"unknown corpus: {lens_cfg.get('corpus')!r}")

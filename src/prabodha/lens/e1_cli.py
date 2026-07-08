@@ -54,7 +54,12 @@ def main(argv=None) -> None:
     try:
         hf, tok = build_model(load(a.model))
         adapter = LensAdapter("jacobian").load(a.lens_file)
-        report = compose_gate(run_e1(hf, tok, adapter, exp), a.contention)
+        results = run_e1(hf, tok, adapter, exp)
+        # Pre-registration deviations/amendments (e1.yaml) flow into the gate record too —
+        # adversarial-review finding: an empty gate deviations list on an amended config
+        # misreports the run (R5 honesty).
+        results["deviations"] = list(exp.get("deviations", [])) + list(results["deviations"])
+        report = compose_gate(results, a.contention)
     except Exception:
         report = compose_gate(None, a.contention, error=traceback.format_exc(limit=3))
     with open(a.out, "w") as f:
