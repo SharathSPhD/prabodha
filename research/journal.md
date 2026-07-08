@@ -200,3 +200,22 @@
   start) -> registered follow-up null (shuffled final logits); bands near-miss VALID;
   honesty VALID. L3 entry gate: Selectivity@5 at layer 6 (details in contract card).
 - Milestone merge to main per standing directive. Full record: contracts/L2_pwm_stack.md.
+
+## 2026-07-08 — L3 readiness: NO_GO at layer 6; selectivity sweep reframes the write-site question
+- gates/gate_L3_readiness.json: Selectivity@5(layer 6) = 0.013 -> NO_GO (review-#4 gate).
+- Full sweep (outputs/l2/selectivity_sweep.json): 0.00 for layers 0-5, rises smoothly through
+  the "workspace band" (0.01@6 ... 0.36@25), crosses 0.60/0.75 ONLY at layer 30 (0.7625) —
+  the final fitted layer. On the PWM twin, no intermediate layer is inside the report funnel
+  as seen by a FINAL-TARGET lens.
+- Two live readings (do not force closure — touches the unconverged "where recognition lives"
+  thread): (i) the twin's report content genuinely consolidates only at the top (consistent
+  with H_report's shape and the smeared bands on the distilled lineage) — then the "write at
+  workspace onset" doctrine fails on this plant for the mirror-image reason H5b's v2 failed
+  (too far upstream instead of too far downstream); (ii) the final-target lens is simply
+  blind to mid-band structure (the articulation ARTIFACT-SUSPECT caveat, and W-space-beyond-
+  J-space §10.3) — then the fix is lenses fit with INTERMEDIATE target layers (vendor fit()
+  supports target_layer), giving each band its own decoder before any write experiment.
+- L3 design fork (operator input wanted): (a) write-site sweep as the experiment itself;
+  (b) switch plant to Qwen3-4B (known modulation 0.10 > 0, same consolidation shape though);
+  (c) intermediate-target lenses first (reading (ii)) — cheapest, ~1 GPU-h, and it
+  discriminates between the two readings before any interventional spend.
