@@ -94,6 +94,16 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.5 (L1b close, VALID_WITH_CAVEATS): size-matched retry on Qwen3.6-27B (Nanda's reference).
+  HEADLINE: directed modulation crosses its absolute threshold on the reference size (0.55 vs
+  0.10 at 4B; both ~8-10x their shuffled nulls) measured in a FIXED depth-middle-third band —
+  the workspace-loading concept the L3 steering doctrine depends on is now supported at screen
+  tier. Three-band CKA structure replicates across sizes. H_report late-third-mean stays weak
+  on both sizes (0.18/0.12, both p≈1e-4 above null) — metric-shape hypothesis UNDERDETERMINED;
+  a registered alternative metric is REQUIRED before further report-correspondence claims.
+  Infra: qwen3_5 hybrid arch needs fla+causal-conv1d kernels (52→17 min/prompt); guard gained
+  per-job min-free floors (80GiB for 27B idle-window jobs). L2 caveats carried: uninstructed-
+  prompt modulation control; same-band-mode for cross-size comparisons. Cost 6.1/7.0 GPU-h.
 - v0.4 (L1 review-complete, GB10 session): E1 run on Qwen3-4B — instrument mechanically sound;
   three signatures qualitatively present and significant vs null (H_report p≈1e-4 rising to
   ρ=0.62@L34; bands [0,6)/[6,30)/[30,36); modulation ~10× chance) but below 27B-calibrated

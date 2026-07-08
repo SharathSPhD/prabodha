@@ -152,3 +152,13 @@
   SHAPE (or a genuinely-final-layers-only consolidation), NOT model size.
 - Decision-rule readout: none of the three registered branches fired cleanly (rule anticipated
   uniform scaling); the split IS the result. Comparison: research/l1_vs_l1b_comparison.md.
+
+## 2026-07-08 — L1b closed VALID_WITH_CAVEATS (adversarial review #3)
+- Review verdicts: modulation-scaling VALID (with null-comparability attack — rebutted: S/N
+  ratios comparable 9.6x/8.1x, absolute threshold uniquely crossed at 27B, band confound runs
+  AGAINST the claim); bands UNDERDETERMINED; H_report metric-shape UNDERDETERMINED; honesty
+  VALID. Full record in contracts/L1b_size_matched_retry.md.
+- Caveats carried to L2 pre-registration (also in research/state.json): uninstructed-prompt
+  modulation control; same-band-mode comparisons; registered alternative H_report metric.
+- Milestone merge to main per operator /goal directive; formal sign-off line remains open in
+  the contract card for the operator.

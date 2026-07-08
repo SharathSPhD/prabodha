@@ -1,5 +1,5 @@
 {
- "current_loop": "L1b",
+ "current_loop": "L2",
  "loops": {
   "L0": {
    "status": "closed",
@@ -16,9 +16,20 @@
    ]
   },
   "L1b": {
-   "status": "open",
+   "status": "closed-valid-with-caveats",
    "contract": "contracts/L1b_size_matched_retry.md",
-   "worktree": "loop/l1b-27b-retry"
+   "worktree": "loop/l1b-27b-retry",
+   "gate": "gates/gate_L1b.json",
+   "comparison": "research/l1_vs_l1b_comparison.md"
+  },
+  "L2": {
+   "status": "next",
+   "target_model": "nvidia/Nemotron-Mini-4B-Instruct",
+   "carried_caveats": [
+    "uninstructed-prompt modulation control",
+    "same-band-mode for cross-size comparisons",
+    "registered alternative H_report metric before report claims"
+   ]
   }
  },
  "gpu_budget_hours": {

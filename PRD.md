@@ -43,6 +43,13 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.4 (L1b close): H1 replication gate resolved as calibration — instrument validated on
+  Nanda's reference size (modulation PASS 0.55, bands replicate); thresholds now known to be
+  size-sensitive for modulation and metric-shape-sensitive for report-ordering. Risk table
+  update: "lens quality on non-Qwen models unknown" now carries the L1b protocol (fixed bands,
+  null baselines, kernel requirements for hybrid archs) as mitigation; NEW risk: hybrid-arch
+  models need arch-specific kernels or budgets explode (52 vs 17 min/prompt). L2 (PWM stack:
+  nvidia/Nemotron-Mini-4B-Instruct, cached) proceeds with disclosed caveats.
 - v0.3 (L1 review-complete): H1 partially met — lens fits+reads Qwen3-4B on GB10 inside guard
   budget (1.45/2.0 GPU-h, contention=psalm disclosed); replication gate FAIL at pre-registered
   thresholds with all signatures present and significant vs null ("underpowered, not broken" —
