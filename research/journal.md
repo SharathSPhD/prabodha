@@ -162,3 +162,5 @@
   modulation control; same-band-mode comparisons; registered alternative H_report metric.
 - Milestone merge to main per operator /goal directive; formal sign-off line remains open in
   the contract card for the operator.
+
+- 2026-07-08 E1 gate written (gates/gate_L2.json): code=pass domain=fail contention=none

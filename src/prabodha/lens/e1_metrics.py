@@ -206,9 +206,13 @@ def concept_prompt_pairs(exp_cfg: dict) -> list[tuple[str, str]]:
     return pairs
 
 
-def _token_ids(tok: Any, text: str) -> list[int]:
-    """Token ids via the same __call__ surface jlens's encode uses (BatchEncoding)."""
-    ids = tok(text)["input_ids"]
+def _token_ids(tok: Any, text: str, *, specials: bool = True) -> list[int]:
+    """Token ids via the same __call__ surface jlens's encode uses (BatchEncoding).
+    specials=False strips BOS/EOS — REQUIRED for concept-candidate ids on BOS-prepending
+    tokenizers (L2 run-1: every candidate's 'first id' was BOS, zeroing all hit rates);
+    span positions keep specials=True because jlens encodes prompts with them too."""
+    kwargs = {} if specials else {"add_special_tokens": False}
+    ids = tok(text, **kwargs)["input_ids"]
     if hasattr(ids, "tolist"):
         ids = ids.tolist()
     if ids and isinstance(ids[0], list):
@@ -327,7 +331,7 @@ def _concept_candidate_ids(tok: Any, concept: str, translations: dict[str, str] 
         variants["zh"] = str(translations[concept])
     ids: dict[str, int] = {}
     for name, text in variants.items():
-        cids = _token_ids(tok, text)
+        cids = _token_ids(tok, text, specials=False)
         if len(cids) > 1:
             deviations.append(f"H_modulation: variant {name} of '{concept}' is "
                               f"{len(cids)} tokens; using first id only (scoping doc #10.3)")

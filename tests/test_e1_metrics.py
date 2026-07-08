@@ -70,6 +70,22 @@ def test_permutation_p_separates_signal_from_null():
     assert permutation_p_mean_rho(null_pairs, null_obs, 200, seed=0) > 0.05
 
 
+def test_concept_candidate_ids_strip_bos():
+    """L2 run-1 artifact: BOS-prepending tokenizers (SentencePiece/nemotron) made every
+    concept's 'first token' the BOS id — hit rate, shuffled null, AND control all read
+    exactly 0.0. Candidate ids must be derived WITHOUT special tokens."""
+    class BosTok:
+        BOS = 1
+        vocab = {" fire": [11], "fire": [12], "火": [13]}
+        def __call__(self, text, add_special_tokens=True, **kw):
+            ids = self.vocab[text]
+            return {"input_ids": ([self.BOS] + ids) if add_special_tokens else list(ids)}
+    devs: list[str] = []
+    ids = _concept_candidate_ids(BosTok(), "fire", {"fire": "火"}, devs)
+    assert ids == {"en_mid": 11, "en_bare": 12, "zh": 13}
+    assert devs == []  # single-token variants must NOT be flagged multi-token via BOS
+
+
 def test_concept_candidate_ids_includes_translation():
     class Tok:  # minimal __call__ surface (BatchEncoding-like dict)
         vocab = {" fire": [11], "fire": [12], "火": [13], " water": [21, 22],

@@ -33,4 +33,11 @@ templates:
   - "Keep {concept} in mind. The story begins when"
   - "Focus on {concept}. The capital of France is"
 prune_rule: "split verdicts reportable (calibration lineage); if H_bands AND H_articulation both fail on the PWM stack, the L3 write-site plan (workspace-onset band) loses its empirical basis -> L3 blocked pending redesign, escalate at gate"
-deviations: []
+deviations:
+  - "BOS-stripping fix for concept-candidate ids (2026-07-08, post-run-1, eval-only, lens
+    unchanged; run-1 gate preserved as gates/gate_L2_run1.json): nemotron's SentencePiece
+    tokenizer prepends BOS, so every candidate's 'first token' was the BOS id — H_modulation
+    hit rate, shuffled null, and uninstructed control all read exactly 0.0 (30/30 variants
+    flagged multi-token, the diagnostic signature). Candidates now derived with
+    add_special_tokens=False; span positions unchanged (jlens encodes with specials)."
+
