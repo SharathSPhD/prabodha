@@ -234,3 +234,9 @@
   Write-site choice remains the operator's fork, now better informed: writes at the band with
   band-lens readback are instrumentally possible; final-behavior effect size is the open
   question the L3 experiment itself answers. Cost: 0.35 GPU-h (fit 47s/prompt + probe).
+
+## 2026-07-09 — operator sign-off (L1b, L2, L2b); L3 opened on fork option (c)
+- Sign-off recorded in contract cards. Fork decision: option (c) per-band-lens design —
+  operator signed off without overriding the builder recommendation; L2b evidence (band
+  content real but final-lens-invisible) is the empirical basis. Recorded here per the
+  "decide and record" rule.
