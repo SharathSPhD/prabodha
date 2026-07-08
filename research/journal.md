@@ -240,3 +240,24 @@
   operator signed off without overriding the builder recommendation; L2b evidence (band
   content real but final-lens-invisible) is the empirical basis. Recorded here per the
   "decide and record" rule.
+
+## 2026-07-09 — L3/E3 gate: band writes WORK; svātantrya is the binding constraint
+- gates/gate_L3.json (contention=none, ~0.2 GPU-h): domain FAIL on both registered
+  hypotheses — and the malas histogram is the finding:
+  - svātantrya 20/40: FULL lens-visible uptake (loaded+amplified+persistent through the
+    band lens) but entropy budget blown — mean output-entropy delta -2.081 nats vs the
+    ±0.5 cap. The write steers too hard: continuous per-decode-step injection collapses
+    freedom. karma 14/40 (loaded, faded by band exit). āṇava only 2/40.
+  - Behavior: lift v3 = 0.40 vs v2 = 0.17 (bias 6.0), baseline 0.00 (bare stubs — clean).
+    The band write DOMINATES the mouth write behaviorally (8/10 concepts, up to 0.75).
+  - Quality: camatk drop v3 0.063 vs v2 0.021 — consistent with the entropy collapse
+    (deterministic outputs -> repetition -> diversity/imagery loss).
+- READING: the doctrine's per-unit-gentleness prediction is INVERTED at this operating
+  point — v3 is stronger AND costlier. The failure mode is not loading (āṇava≈0) but
+  temporal dosage. The evidence points at event-gated timing (write at selected moments,
+  not every step) — precisely the L4 sphurattā mechanism. Alternative knobs: alpha down;
+  prefill-only injection.
+- REGISTERED FOLLOW-UP DECLINED WITH REASONS: e3.yaml permitted one alpha-0.2 retry on
+  H_uptake failure — but uptake failed on the ENTROPY criterion, not loading; raising alpha
+  would worsen exactly the binding constraint. Mechanical compliance against evidence would
+  be pariṇāma without pratyabhijñā; recorded here instead of run.

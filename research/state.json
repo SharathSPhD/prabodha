@@ -79,7 +79,7 @@
   "L2_cap": 2.0,
   "L2b_spent": 0.35,
   "L2b_cap": 1.0,
-  "L3_spent": 0,
+  "L3_spent": 0.2,
   "L3_cap": 1.5
  },
  "kill_switch": false
