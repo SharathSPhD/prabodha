@@ -1,5 +1,5 @@
 {
- "current_loop": "L3",
+ "current_loop": "L4",
  "loops": {
   "L0": {
    "status": "closed",
@@ -54,18 +54,36 @@
    ]
   },
   "L3": {
-   "status": "next",
+   "status": "closed-honest-fail-with-finding",
    "entry_gate": "Selectivity@5 at layer 6 (gate_L3_readiness.json): GO>=0.75, NO-GO<0.60, else readback-gated",
    "carried_caveats": [
     "articulation needs shuffled-final-logits null before claims leave screen tier",
     "PWM twin has ZERO instructed loadability \u2014 no instruction-priming in v3 design",
     "weak band contrast on distilled lineage \u2014 consider larger cascade model if readiness fails",
     "L2b: band content EXISTS but weak (0.2 via mid-target lens, control 0.0, null 0.023; final-target lens saw 0.0) -> L3 readback MUST use band-targeted lenses; write-site question remains open (selectivity-vs-final crosses 0.75 only at layer 30)"
+   ],
+   "contract": "contracts/L3_vimarsa_bridge.md",
+   "worktree": "loop/l3-vimarsa-bridge",
+   "gates": [
+    "gates/gate_L3.json",
+    "gates/gate_L3_alpha02.json",
+    "gates/gate_L3_alpha005_exploratory.json"
    ]
   },
   "L2b": {
    "status": "closed-registered-outcome-ii-with-band-content-observation",
    "gate": "gates/gate_L2b.json"
+  },
+  "L4": {
+   "status": "next",
+   "mechanism": "event-gated timing (sphuratta port)",
+   "requirements": [
+    "dose-response both arms matched on entropy",
+    "per-write entropy-vs-uptake scatter",
+    "per-concept malas breakdown",
+    "trained-bridge comparator when WM stack available",
+    "check follow-up knobs against caps at registration"
+   ]
   }
  },
  "gpu_budget_hours": {
@@ -76,7 +94,9 @@
   "L2_spent": 0.5,
   "L2_cap": 2.0,
   "L2b_spent": 0.35,
-  "L2b_cap": 1.0
+  "L2b_cap": 1.0,
+  "L3_spent": 0.5,
+  "L3_cap": 1.5
  },
  "kill_switch": false
 }
