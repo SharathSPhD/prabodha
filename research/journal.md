@@ -124,3 +124,11 @@
   production serving.
 - L1b dispatched in the idle window (PSALM completed 10:32 BST, ~6h earlier than projected —
   watcher had a pgrep self-match bug, caught by manual check). Guard: contention=none, 115GiB.
+
+## 2026-07-08 — L1b run 2 (fast-path kernels): pace and budget
+- Torch-fallback run 1 aborted after prompt 1 measured 52 min (13.8h projected). fla 0.5.1 +
+  causal-conv1d 1.6.2 baked into image ("Blackwell detected" — kernels engage on GB10).
+- Run 2 prompt 1: 1103s (18.4 min) — 2.8x faster. Projection 0.9h (aborted attempt) + 4.9h fit
+  + ~0.5h eval ≈ 6.3h. L1b cap raised 6.0 -> 7.0 GPU-h, inside the operator-cleared "~6-7"
+  range (contract sign-off), to preserve the pre-registered 16-prompt fit (n-comparability
+  with L1) instead of cutting prompts again. Disclosed here and in e1b.yaml.

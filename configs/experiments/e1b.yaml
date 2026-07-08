@@ -16,7 +16,7 @@ hypotheses:
                 qualitative: three_band_structure}
   H_modulation: {metric: instructed_concept_hit_rate_at5, threshold_min: 0.5, n_prompts: 40}
 stats: {permutation_resamples: 10000, effect_size: hedges_g, correction: none_at_screen}
-budget_gpu_hours: 6.0
+budget_gpu_hours: 7.0  # raised 6.0->7.0 within the operator-cleared range (contract L1 disposition (b): "~6-7 GPU-h"); preserves the pre-registered 16-prompt fit for exact comparability vs L1
 top_k: 50
 cka_min_band_size: 6
 cka_skip_first: 1
