@@ -50,6 +50,8 @@ def main(argv=None) -> None:
         ap.add_argument(f, required=True)
     ap.add_argument("--journal", required=False)
     ap.add_argument("--contention", default="unknown")
+    ap.add_argument("--alpha", type=float, default=None,
+                    help="override exp alpha (registered follow-up / labeled exploratory runs)")
     a = ap.parse_args(argv)
     import jlens
     import torch
@@ -62,7 +64,7 @@ def main(argv=None) -> None:
                  if wl < layer <= wl + int(exp["readback_span"])]
     J = adapter._lens.jacobians[wl].float().cpu().numpy()
     U = hf.get_output_embeddings().weight.detach().float().cpu().numpy()
-    alpha = float(exp["alpha"])
+    alpha = float(a.alpha) if a.alpha is not None else float(exp["alpha"])
     cap = float(exp["norm_cap_rel"])
     eps = float(exp["entropy_epsilon"])
     max_new = int(exp["max_new_tokens"])
