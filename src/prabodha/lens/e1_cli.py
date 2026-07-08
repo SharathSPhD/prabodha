@@ -18,12 +18,13 @@ from prabodha.lens.adapter import LensAdapter, build_model
 from prabodha.lens.e1_metrics import run_e1
 
 
-def compose_gate(results: dict | None, contention: str, error: str | None = None) -> GateReport:
+def compose_gate(results: dict | None, contention: str, error: str | None = None,
+                 loop: str = "L1") -> GateReport:
     """Assemble the dual-verdict GateReport. Contention (GPU shared-mode state at run time)
     is recorded in evidence; deviations auto-populate from the evaluators (R5 honesty)."""
     if error is not None:
         return GateReport(
-            loop="L1", status="open",
+            loop=loop, status="open",
             code_gate=GateSide(verdict="fail", evidence=f"E1 run crashed: {error}",
                                deviations=[]),
             domain_gate=GateSide(verdict="pending", evidence="no results (run crashed)"))
@@ -33,7 +34,7 @@ def compose_gate(results: dict | None, contention: str, error: str | None = None
     evidence = json.dumps({"summary": summary, "contention": contention,
                            "detail": {k: v["evidence"] for k, v in hyps.items()}})
     return GateReport(
-        loop="L1", status="open",
+        loop=loop, status="open",
         code_gate=GateSide(
             verdict="pass",
             evidence=f"E1 evaluation completed without error; contention={contention}"),
@@ -47,6 +48,7 @@ def main(argv=None) -> None:
     for f in ("--model", "--lens-file", "--exp", "--out"):
         ap.add_argument(f, required=True)
     ap.add_argument("--journal", required=False)
+    ap.add_argument("--loop", default="L1", help="gate loop label (e.g. L1b)")
     ap.add_argument("--contention", default="unknown",
                     help="GPU contention state at dispatch (scripts/dispatch/l1/run.sh)")
     a = ap.parse_args(argv)
@@ -59,9 +61,9 @@ def main(argv=None) -> None:
         # adversarial-review finding: an empty gate deviations list on an amended config
         # misreports the run (R5 honesty).
         results["deviations"] = list(exp.get("deviations", [])) + list(results["deviations"])
-        report = compose_gate(results, a.contention)
+        report = compose_gate(results, a.contention, loop=a.loop)
     except Exception:
-        report = compose_gate(None, a.contention, error=traceback.format_exc(limit=3))
+        report = compose_gate(None, a.contention, error=traceback.format_exc(limit=3), loop=a.loop)
     with open(a.out, "w") as f:
         f.write(report.model_dump_json(indent=2))
     if a.journal:

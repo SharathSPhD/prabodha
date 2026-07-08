@@ -132,3 +132,23 @@
   + ~0.5h eval ≈ 6.3h. L1b cap raised 6.0 -> 7.0 GPU-h, inside the operator-cleared "~6-7"
   range (contract sign-off), to preserve the pre-registered 16-prompt fit (n-comparability
   with L1) instead of cutting prompts again. Disclosed here and in e1b.yaml.
+
+- 2026-07-08 E1 gate written (gates/gate_L1b.json): code=pass domain=fail contention=none
+
+## 2026-07-08 — L1b gate: SPLIT verdict, and it is the finding
+- gates/gate_L1b.json (27B, idle window, contention=none; NOTE: internal loop field reads "L1"
+  — compose_gate hardcoded the label; plumbed --loop for future runs, JSON left untouched as a
+  generated artifact). GPU: 6.1h of 7.0h cap (0.9h aborted torch-fallback attempt + 5.2h run).
+- H_modulation 0.55 PASS (22/40 vs shuffled null 0.068; FIXED depth-middle-third band, layers
+  21..41 of 63 — no CKA circularity). On 4B: 0.10. DIRECTED MODULATION SCALES WITH SIZE and
+  passes on Nanda's reference — first full hypothesis pass; validates the workspace-band
+  loading concept the steering doctrine (L3+) depends on. All hits en_mid/en_bare; zh variants
+  never fired on either size (cross-lingual verbalization NOT confirmed at readout level).
+- H_bands 0.269 PASS, bands [0,8)/[8,54)/[54,64) — three-band architecture replicates across
+  sizes with similar proportions (4B: [0,6)/[6,30)/[30,36)).
+- H_report 0.124 FAIL (p≈1e-4 above null; curve rises only in final ~3 layers to 0.353 at
+  L62). Same weak regime as 4B (0.180, last-layer 0.617). The late-third-mean metric fails on
+  BOTH sizes while significant-above-null on both: the anomaly is now isolated to the METRIC
+  SHAPE (or a genuinely-final-layers-only consolidation), NOT model size.
+- Decision-rule readout: none of the three registered branches fired cleanly (rule anticipated
+  uniform scaling); the split IS the result. Comparison: research/l1_vs_l1b_comparison.md.

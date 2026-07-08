@@ -13,5 +13,5 @@ $NICE python -m prabodha.lens.fit_cli --model configs/models/qwen27b.yaml \
   --lens configs/lens/fit_default.yaml --out outputs/l1b/lens_qwen27b.pt --resume
 $NICE python -m prabodha.lens.e1_cli --model configs/models/qwen27b.yaml \
   --lens-file outputs/l1b/lens_qwen27b.pt --exp configs/experiments/e1b.yaml \
-  --out gates/gate_L1b.json --journal research/journal.md --contention "${GUARD_CONTENTION:-unknown}"
+  --loop L1b --out gates/gate_L1b.json --journal research/journal.md --contention "${GUARD_CONTENTION:-unknown}"
 echo "L1b complete — gates/gate_L1b.json written. Compare vs gates/gate_L1.json per e1b.yaml decision rule."
