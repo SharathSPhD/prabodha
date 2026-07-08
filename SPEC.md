@@ -94,6 +94,16 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.7 (L3 close, honest-fail-with-finding): first interventional loop. Band writes on the
+  PWM twin LOAD (āṇava≈0 @α=0.1), reach behavior (lift 0.40 vs untrained-v2 0.175, baseline
+  0.00, bare-stub design), and blow the svātantrya budget under continuous per-step timing
+  (entropy -2.08 nats vs ±0.5 cap). Dose data (α=0.2 inert — cap binds, disclosed; α=0.05
+  exploratory) shows a TRIPLE DISSOCIATION: amplitude gates lens-visible loading; behavior
+  and entropy collapse follow TIMING. §6's "at sphurattā events only" clause is now
+  evidence-backed, not doctrinal ornament — L4 = event-gated timing with dose-response,
+  per-write entropy/uptake scatter, per-concept malas (review #5 requirements). Steering
+  module (writer/verifier/injector/scoring) shipped with unit+smoke tests; camatkāra text
+  scorer ported from PWM H5b for cross-project comparability.
 - v0.6 (L2 close, split-as-registered): PWM-twin (Nemotron-Mini-4B) lens results — E7
   articulation gradient PASS 0.639 p≈2e-4 (first pass of the program's discriminating
   observable; ARTIFACT-SUSPECT caveat: register a shuffled-final-logits null before the claim

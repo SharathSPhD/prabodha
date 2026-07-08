@@ -1,0 +1,19 @@
+{
+  "loop": "L3",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "E3 ran to completion; contention=none",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "fail",
+    "evidence": "{\"summary\": {\"H_uptake\": {\"value\": 0.0, \"threshold\": 0.5, \"pass\": false}, \"H_quality_per_lift\": {\"value\": -0.0184, \"threshold\": 0.05, \"pass\": false}}, \"aggregates\": {\"surface_baseline\": 0.0, \"surface_v2\": 0.175, \"surface_v3\": 0.425, \"camatk_baseline\": 0.4909, \"camatk_v2\": 0.4703, \"camatk_v3\": 0.4519, \"uptake_rate\": 0.0, \"malas\": {\"anava\": 24, \"mayiya\": 0, \"karma\": 9, \"svatantrya\": 7}, \"entropy_delta_v3_mean\": -1.9042, \"entropy_delta_v2_mean\": -0.2136, \"lift_v3\": 0.425, \"lift_v2\": 0.175, \"camatk_drop_v3\": 0.039, \"camatk_drop_v2\": 0.0206}, \"per_concept\": [{\"concept\": \"fire\", \"concept_ids\": [4670, 172888], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4481, \"surface_v3\": 0.25, \"camatk_v3\": 0.48}, {\"concept\": \"water\", \"concept_ids\": [2755, 67699], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4636, \"surface_v3\": 0.5, \"camatk_v3\": 0.4548}, {\"concept\": \"music\", \"concept_ids\": [3791, 63569], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.0, \"camatk_v2\": 0.4909, \"surface_v3\": 0.0, \"camatk_v3\": 0.4406}, {\"concept\": \"river\", \"concept_ids\": [12252, 45303], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4888, \"surface_v3\": 0.5, \"camatk_v3\": 0.4211}, {\"concept\": \"snow\", \"concept_ids\": [9479, 238226], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4817, \"surface_v3\": 0.75, \"camatk_v3\": 0.4354}, {\"concept\": \"gold\", \"concept_ids\": [6253, 29383], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.0, \"camatk_v2\": 0.4909, \"surface_v3\": 0.0, \"camatk_v3\": 0.3948}, {\"concept\": \"rain\", \"concept_ids\": [8346], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4695, \"surface_v3\": 0.75, \"camatk_v3\": 0.4764}, {\"concept\": \"moon\", \"concept_ids\": [19347, 90840], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4433, \"surface_v3\": 0.0, \"camatk_v3\": 0.4364}, {\"concept\": \"bread\", \"concept_ids\": [13167], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.25, \"camatk_v2\": 0.4356, \"surface_v3\": 1.0, \"camatk_v3\": 0.4975}, {\"concept\": \"iron\", \"concept_ids\": [10870, 113157], \"surface_baseline\": 0.0, \"camatk_baseline\": 0.4909, \"surface_v2\": 0.0, \"camatk_v2\": 0.4909, \"surface_v3\": 0.5, \"camatk_v3\": 0.4822}], \"contention\": \"none\"}",
+    "deviations": [
+      "H_modulation: variant zh of 'rain' is 2 tokens; DROPPED (single_token_only policy)",
+      "H_modulation: variant zh of 'bread' is 4 tokens; DROPPED (single_token_only policy)"
+    ]
+  },
+  "signoff": "pending"
+}

@@ -44,4 +44,37 @@ camatk-drop advantage (v2 drop - v3 drop) >= 0.05. Split verdicts reportable; pr
 e3.yaml. Malas histogram REQUIRED evidence either way (the failure taxonomy is a deliverable,
 not an excuse). GPU budget: 1.5 GPU-h cap (L3 line).
 
+## Iteration record (2026-07-09, GB10, three dose points)
+- gate_L3.json (α=0.1): domain FAIL both hypotheses. Malas: svātantrya 20 / karma 14 /
+  āṇava 2. Behavior: lift v3 0.40 vs v2 0.175 (baseline 0.00); camatk drop v3 0.063 vs
+  v2 0.021; entropy delta v3 -2.081 vs v2 -0.214 nats.
+- Registered α=0.2 follow-up (gate_L3_alpha02.json): run per review #5's demand — results
+  BIT-IDENTICAL to α=0.1 because capped_delta scale = min(alpha, norm_cap_rel=0.1): the
+  pre-registered follow-up was structurally inert as written (cap binds). Disclosed;
+  doubles as a determinism check. PRE-REGISTRATION LESSON: follow-up knobs must be checked
+  against their own caps at registration time.
+- Exploratory α=0.05 (gate_L3_alpha005_exploratory.json, labeled non-registered): lift v3
+  0.42 (unchanged), camatk drop 0.039 (reduced), lens uptake 0.0 (āṇava 24), entropy delta
+  -1.904 (nearly unchanged). TRIPLE DISSOCIATION: amplitude controls lens-visible loading;
+  behavioral steering and entropy collapse are dominated by CONTINUOUS PER-STEP TIMING.
+- Adversarial review #5 verdicts (recorded; claims softened accordingly):
+  (a) "band dominates behaviorally" ARTIFACT-SUSPECT — honest statement: at ~10x output
+  entropy cost and against an UNTRAINED logit-bias comparator, v3 achieved 2.3x the surface
+  rate; binomial CIs overlap at n=40; dose-response + trained-bridge comparison required
+  before any dominance claim. (b) svātantrya-dominance UNDERDETERMINED (karma 14 vs 20;
+  per-write scatter absent — added to L4 requirements). (c) follow-up decline
+  ARTIFACT-SUSPECT — CURED by running it (above). (d) untrained v2 is the top threat —
+  carried as L4+ requirement (trained-bridge arm needs the PWM WM stack).
+- L4 requirements adopted from review #5: dose-response curves (both arms, matched entropy);
+  per-write entropy-vs-uptake scatter; per-concept malas; event-gated timing as the
+  registered mechanism (reviewer ENDORSED from the karma/svātantrya split; the α=0.05
+  dissociation independently confirms timing over amplitude).
+
+## Closure: honest-fail-with-finding (iterate at L4 per review #5 disposition)
+The steering machinery works end-to-end (writer/injector/verifier/malas; smoke-tested).
+Band writes at layer 20 on the PWM twin: load (āṇava≈0 at α=0.1), persist to behavior
+(8/10 concepts), and cost too much freedom under continuous timing. The doctrine's next
+move was already written in scoping §3: writes AT SPHURATTĀ EVENTS ONLY — L3's evidence
+now shows why that clause is load-bearing rather than ornamental.
+
 Operator sign-off: ______  Date: ______

@@ -43,6 +43,12 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.6 (L3 close): H2 partially advanced — v3 machinery works and steers, but not yet
+  "beats v2 without hurting fluency": at current operating point v3 trades MORE fluency
+  (camatkāra 0.063 vs 0.021 drop) for MORE content. NEW REQUIREMENT (review #5): any
+  dominance claim needs dose-response at matched entropy + a trained-bridge comparator.
+  L4 = event-gated timing (sphurattā port from PWM, standalone per scout). Risk: untrained
+  v2 comparator inflates v3 advantage — trained bridge requires full WM stack (H2-late).
 - v0.5 (L2 close): H1 instrument delivered for the PWM stack (band map + onset layer +
   articulation profile + slice page). CRITICAL H2 INPUT: the production-twin model does NOT
   load instructed concepts into its workspace band (0.0 with controls) — VimarsaBridge v3

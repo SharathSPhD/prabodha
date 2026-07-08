@@ -261,3 +261,13 @@
   H_uptake failure — but uptake failed on the ENTROPY criterion, not loading; raising alpha
   would worsen exactly the binding constraint. Mechanical compliance against evidence would
   be pariṇāma without pratyabhijñā; recorded here instead of run.
+
+## 2026-07-09 — L3 closed (honest-fail-with-finding); review #5; L4 = event-gated timing
+- Registered α=0.2 follow-up RUN per review #5 (decline was selective-stopping-adjacent):
+  bit-identical to α=0.1 — the cap binds; follow-up was structurally inert as registered.
+  Lesson banked: check follow-up knobs against their own caps at registration time.
+- Exploratory α=0.05 (labeled): triple dissociation — amplitude→lens loading; timing→
+  behavior+entropy. Sphurattā-gated writes (scoping §3, deferred at L3 by design) are now
+  the evidence-selected L4 mechanism, endorsed independently by review #5.
+- Claims softened per review: "at ~10x entropy cost vs an untrained comparator, 2.3x surface
+  rate; CIs overlap at n=40" — no dominance claim until dose-response + trained bridge.
