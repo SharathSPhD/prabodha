@@ -321,11 +321,15 @@ def evaluate_h_bands(hf: Any, tok: Any, prompts: list[str], *,
 
 
 def _concept_candidate_ids(tok: Any, concept: str, translations: dict[str, str] | None,
-                           deviations: list[str]) -> dict[str, int]:
+                           deviations: list[str], *,
+                           policy: str = "first_id") -> dict[str, int]:
     """First-token ids for the concept's surface variants: English mid-sentence (' fire'),
     English bare ('fire'), and — L1 iteration amendment (CJK meta-token observation:
     Qwen verbalizes concepts in dense Chinese tokens, e.g. fire -> 火) — the configured
-    translation. Multi-token variants fall back to their first id, logged once."""
+    translation. Multi-token variants: policy 'first_id' falls back to the first id (L1/L1b
+    behavior); 'single_token_only' DROPS them (L2 review: on large SentencePiece vocabs the
+    first piece of a multi-token variant is byte-fallback noise that hits top-5 regardless
+    of instruction). Either way, logged once."""
     variants = {"en_mid": " " + concept, "en_bare": concept}
     if translations and concept in translations:
         variants["zh"] = str(translations[concept])
@@ -333,6 +337,10 @@ def _concept_candidate_ids(tok: Any, concept: str, translations: dict[str, str] 
     for name, text in variants.items():
         cids = _token_ids(tok, text, specials=False)
         if len(cids) > 1:
+            if policy == "single_token_only":
+                deviations.append(f"H_modulation: variant {name} of '{concept}' is "
+                                  f"{len(cids)} tokens; DROPPED (single_token_only policy)")
+                continue
             deviations.append(f"H_modulation: variant {name} of '{concept}' is "
                               f"{len(cids)} tokens; using first id only (scoping doc #10.3)")
         if cids:
@@ -344,7 +352,8 @@ def evaluate_h_modulation(hf: Any, tok: Any, lens: Any,
                           pairs: list[tuple[str, str]], band_layers: list[int],
                           *, translations: dict[str, str] | None = None,
                           null_shuffles: int = 0, seed: int = 42,
-                          control_stubs: list[str] | None = None) -> dict:
+                          control_stubs: list[str] | None = None,
+                          variant_policy: str = "first_id") -> dict:
     """H_modulation: directed modulation. Hit iff ANY candidate id of the instructed
     concept (English mid/bare + configured translation) is in the lens top-5 at ANY band
     layer, read at the last instruction-span position. Evidence carries the per-prompt
@@ -353,7 +362,8 @@ def evaluate_h_modulation(hf: Any, tok: Any, lens: Any,
     import torch
     deviations: list[str] = []
     all_concepts = sorted({c for _, c in pairs})
-    candidate_ids = {c: _concept_candidate_ids(tok, c, translations, deviations)
+    candidate_ids = {c: _concept_candidate_ids(tok, c, translations, deviations,
+                                               policy=variant_policy)
                      for c in all_concepts}
     per_prompt: list[dict[str, Any]] = []
     topsets: list[set[int]] = []  # union of band-layer top-5 ids per prompt (for the null)
@@ -463,7 +473,8 @@ def run_e1(hf: Any, tok: Any, lens_adapter: Any, exp_cfg: dict) -> dict:
         hf, tok, lens_adapter, mod_pairs, band_layers,
         translations=exp_cfg.get("concepts_zh"),
         null_shuffles=int(exp_cfg.get("modulation_null_shuffles", 0)), seed=seed,
-        control_stubs=control_stubs)
+        control_stubs=control_stubs,
+        variant_policy=exp_cfg.get("concept_variant_policy", "first_id"))
     evaluated = [("H_report", r_report), ("H_bands", r_bands), ("H_modulation", r_mod)]
     if "H_articulation" in hyp:
         evaluated.append(("H_articulation", evaluate_h_articulation(

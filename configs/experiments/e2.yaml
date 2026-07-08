@@ -27,6 +27,10 @@ modulation_uninstructed_control: true
 concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
 concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
 modulation_null_shuffles: 200
+# L2 review amendment (run 3, eval-only): multi-token variants DROPPED from candidates —
+# on the 256k SentencePiece vocab the first piece of a multi-token variant is byte-fallback
+# noise (run-2 'hits' were rain/bread zh pieces at identical instructed/control rates).
+concept_variant_policy: single_token_only
 templates:
   - "Think about {concept}. The weather today is"
   - "Remember the word {concept}. My favourite food is"
