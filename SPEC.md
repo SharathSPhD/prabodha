@@ -94,6 +94,17 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.6 (L2 close, split-as-registered): PWM-twin (Nemotron-Mini-4B) lens results — E7
+  articulation gradient PASS 0.639 p≈2e-4 (first pass of the program's discriminating
+  observable; ARTIFACT-SUSPECT caveat: register a shuffled-final-logits null before the claim
+  leaves screen tier); H_report(last3) 0.384 near-miss with the same final-layer-consolidation
+  shape as both Qwens; H_bands 0.137 near-miss — pruned/distilled lineage smears band contrast
+  (architectural finding); H_modulation 0.0=null=control with clean candidates — ZERO
+  instructed loadability on the PWM twin (vs 0.10@Qwen-4B, 0.55@Qwen-27B): loadability is
+  size- AND lineage-dependent. Method hardening from three eval runs: BOS-stripped candidate
+  ids; single_token_only variant policy; uninstructed-prompt control with margin (caught
+  incidental capacity on its first outing). L3 ENTRY GATE: Selectivity@5 at onset layer 6
+  (GO>=0.75 / NO-GO<0.60 / else readback-gated writes). Band map [0,6)/[6,26)/[26,32).
 - v0.5 (L1b close, VALID_WITH_CAVEATS): size-matched retry on Qwen3.6-27B (Nanda's reference).
   HEADLINE: directed modulation crosses its absolute threshold on the reference size (0.55 vs
   0.10 at 4B; both ~8-10x their shuffled nulls) measured in a FIXED depth-middle-third band —

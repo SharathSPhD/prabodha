@@ -189,3 +189,14 @@
     0.068. Directed loadability now looks size- AND lineage-dependent.
 - prune_rule check: articulation PASSED, so L3 is NOT blocked; workspace-onset layer for the
   L3 write site = 6 (band map recorded in state.json), with the weak-contrast caveat.
+
+- 2026-07-08 E1 gate written (gates/gate_L2.json): code=pass domain=fail contention=none
+
+## 2026-07-08 — L2 closed (split-as-registered); review #4; L3 entry gate adopted
+- Run 3 (single_token_only candidates): modulation 0.0 = null = control — the run-2 0.2 was
+  zh byte-fallback noise, as review #4 suspected. Conclusion CLEAN: zero instructed
+  loadability on the PWM twin, with candidates that fire on both Qwens.
+- Review #4: articulation ARTIFACT-SUSPECT (lens-construction tautology + non-monotonic
+  start) -> registered follow-up null (shuffled final logits); bands near-miss VALID;
+  honesty VALID. L3 entry gate: Selectivity@5 at layer 6 (details in contract card).
+- Milestone merge to main per standing directive. Full record: contracts/L2_pwm_stack.md.
