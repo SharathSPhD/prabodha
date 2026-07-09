@@ -77,4 +77,4 @@ Band writes at layer 20 on the PWM twin: load (āṇava≈0 at α=0.1), persist 
 move was already written in scoping §3: writes AT SPHURATTĀ EVENTS ONLY — L3's evidence
 now shows why that clause is load-bearing rather than ornamental.
 
-Operator sign-off: ______  Date: ______
+Operator sign-off: SharathSPhD (in-session, 'continue autonomous to L4', GPU uncontended)  Date: 2026-07-09

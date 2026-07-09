@@ -19,17 +19,22 @@ class ResidualInjector:
     positions='last' targets only the final position of the current forward (both the
     prefill's last token and each incremental decode step); 'all' targets every position."""
 
-    def __init__(self, layer_module: Any, cmd: WriteCommand):
+    def __init__(self, layer_module: Any, cmd: WriteCommand, policy: Any = None):
+        """policy: optional TimingPolicy — consulted per forward (prefill detected by
+        sequence length > 1); None preserves L3 semantics (write every forward)."""
         import numpy as np
         import torch
         self._module = layer_module
         self._cmd = cmd
+        self._policy = policy
         self._dir = torch.from_numpy(np.asarray(cmd.direction, dtype=np.float32))
         self._handle = None
         self.n_applications = 0
 
     def _hook(self, module, args, output):
         hidden = output[0] if isinstance(output, tuple) else output
+        if self._policy is not None and not self._policy.should_write(hidden.shape[1] > 1):
+            return output
         d = self._dir.to(hidden.device, hidden.dtype)
         if self._cmd.positions == "all":
             idx = slice(None)
@@ -55,6 +60,18 @@ class ResidualInjector:
         if self._handle is not None:
             self._handle.remove()
         return False
+
+
+def entropy_observer(policy: Any):
+    """LogitsProcessor-shaped observer: feeds each decode step's next-token entropy to the
+    timing policy (gates the NEXT forward — the causally clean order). Identity on scores."""
+    def _proc(input_ids, scores):
+        import torch
+        p = torch.softmax(scores[0].float(), dim=-1)
+        ent = float(-(p * torch.log(p.clamp_min(1e-30))).sum().item())
+        policy.observe(ent)
+        return scores
+    return _proc
 
 
 def logit_bias_processor(concept_ids: list[int], bias: float):

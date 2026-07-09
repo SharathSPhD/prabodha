@@ -94,6 +94,14 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.8 (L4/L4b close, FIRST INTERVENTIONAL PASS): sphurattā-gated writes vindicated under
+  sampling — entropy-gated band writes (tau=P60 of baseline step entropies, min_gap 2)
+  deliver lift 0.40 at ΔH -0.13 vs prefill-only 0.20 (gate_L4b, registered verbatim from
+  review #6). Greedy decoding masks all decode-time writes (gate_L4 null: identical hit
+  sets across sparse arms — mechanism found by review). §6 doctrine updated in evidence:
+  WRITE AT UNCOMMITTED MOMENTS UNDER SAMPLING; the steering loop's operating regime is
+  stochastic decoding. Confirm tier (>=3 seeds, Holm) is the registered next step before
+  any claim leaves screen tier; alignment-under-sampling and tau sensitivity queued.
 - v0.7 (L3 close, honest-fail-with-finding): first interventional loop. Band writes on the
   PWM twin LOAD (āṇava≈0 @α=0.1), reach behavior (lift 0.40 vs untrained-v2 0.175, baseline
   0.00, bare-stub design), and blow the svātantrya budget under continuous per-step timing
