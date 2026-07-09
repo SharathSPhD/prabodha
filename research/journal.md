@@ -271,3 +271,19 @@
   the evidence-selected L4 mechanism, endorsed independently by review #5.
 - Claims softened per review: "at ~10x entropy cost vs an untrained comparator, 2.3x surface
   rate; CIs overlap at n=40" — no dominance claim until dose-response + trained bridge.
+
+## 2026-07-09 — L4/E4 gate: honest negative on entropy-gated timing; prefill write does the work
+- gates/gate_L4.json (domain FAIL both): gated lift 0.17 (<0.2, one hit short) within budget
+  (+0.39 nats); alignment advantage 0.00 (gated == rate-matched every_k == prefill_only).
+- THE DOSE-RESPONSE: 1 prefill write -> 0.17 lift (+0.09 nats); ~8 timed decode writes ->
+  0.17; 26 continuous -> 0.40 (+0.82). Decode-time writes at alpha=0.1 have near-zero
+  marginal value AT ANY TIMING; only saturation writing adds lift, at ~9x entropy exposure.
+- Honest negative: the high-entropy ("uncommitted moment") operationalization of sphurattā
+  did NOT beat rate-matched or single-write controls on this plant. Candidate re-readings
+  for a future registration: (a) sphurattā = commitment FLASH (entropy DROP) — the opposite
+  gate; (b) alignment genuinely doesn't matter for band writes; (c) the useful knobs are
+  prefill-write strength / multi-layer writes, not decode timing.
+- Budget-currency note: continuous shows +0.82 mean-step-entropy vs baseline while L3's
+  at-position measure showed -2.08 — the write sharpens the immediate distribution toward
+  concepts while raising average per-step uncertainty across the generation. Both recorded;
+  neither over-interpreted at screen tier.

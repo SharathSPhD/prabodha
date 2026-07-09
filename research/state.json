@@ -99,7 +99,7 @@
   "L2b_cap": 1.0,
   "L3_spent": 0.5,
   "L3_cap": 1.5,
-  "L4_spent": 0,
+  "L4_spent": 0.4,
   "L4_cap": 1.5
  },
  "kill_switch": false
