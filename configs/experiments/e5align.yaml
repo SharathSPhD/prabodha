@@ -1,0 +1,31 @@
+# E5-align pre-registration — cycle-2 selector proposal (efe_ledger propose event precedes
+# this file's first run): does event ALIGNMENT beat rate-matched sparsity UNDER SAMPLING?
+# (L4's H_alignment was greedy-masked and ~10% powered; sampling unmasks per gate_L4b/L5.)
+# Registered: H_alignment = gated lift - every_k lift >= 0.1 (every_k rate-matched in-run);
+# H_gated_budget as before. Honest note at registration: at n=40 single seed the power for
+# a 0.1 difference remains low (review #6); a null here is REPORTABLE but weak evidence —
+# tier-0/1 observation either way feeds the selector.
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated, every_k]
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+  H_alignment:    {metric: gated_minus_everyk_lift, min_lift_advantage: 0.1,
+                   threshold_min: 0.1}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "null at screen tier -> alignment question moves to confirm tier with multi-seed power, not re-run at n=40"
+deviations: []
+budget_gpu_hours: 0.2
