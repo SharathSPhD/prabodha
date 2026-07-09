@@ -1,0 +1,86 @@
+"""Unit tests for the L5 EFE port (CPU, stdlib+yaml only)."""
+from pathlib import Path
+
+import pytest
+
+from prabodha.efe.agent import Candidate, EFESelector, Observation
+from prabodha.efe.gate_to_obs import observation_from_gate
+from prabodha.efe.ledger import EFELedger
+from prabodha.efe.runner import build_from_configs, propose_next
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_belief_update_moves_toward_observed_tier():
+    s = EFESelector()
+    c = Candidate(id="x", description="")
+    prior = s.belief(c)
+    post = s.update("x", Observation(primary_tier=3), prior=prior)
+    assert post[3] > prior[3] and post[0] < prior[0]
+    post2 = s.update("x", Observation(primary_tier=3))
+    assert post2[3] > post[3]  # repeated high tiers concentrate belief
+
+
+def test_observation_tier_bounds():
+    with pytest.raises(ValueError):
+        Observation(primary_tier=4)
+
+
+def test_select_respects_budget_and_explore_confirm():
+    s = EFESelector()
+    fresh = Candidate(id="unknown", description="")          # high entropy -> explore
+    known = Candidate(id="strong", description="", prior_value_hint=3)
+    s.update("strong", Observation(primary_tier=3), prior=s.belief(known))
+    props = {p.candidate.id: p for p in s.rank([fresh, known])}
+    # high-belief candidate pulls pragmatic value; fresh one pulls epistemic smoke
+    assert props["unknown"].action.name == "smoke"
+    tight = s.select([fresh, known], budget_gpu_hours=0.1)
+    assert tight.action.gpu_hours <= 0.1
+
+
+def test_gate_discretisation_on_real_gates():
+    # L4b passed both hypotheses (0.40/0.2, 0.20/0.15 -> min ratio 1.33) -> tier 2
+    assert observation_from_gate(ROOT / "gates/gate_L4b.json").primary_tier == 2
+    # L2 failed with near-misses (0.384/0.4 = 0.96 >= 0.8) -> tier 1
+    assert observation_from_gate(ROOT / "gates/gate_L2.json").primary_tier == 1
+    # L1 run-1 failed hard (all failing ratios < 0.8... H_bands passed though) -> 0 or 1
+    t = observation_from_gate(ROOT / "gates/gate_L1_run1.json").primary_tier
+    assert t in (0, 1)
+
+
+def test_ledger_roundtrip_and_replay(tmp_path):
+    led = EFELedger(tmp_path / "led.jsonl")
+    s = EFESelector()
+    c = Candidate(id="x", description="")
+    post = s.update("x", Observation(primary_tier=2), prior=s.belief(c))
+    led.log_observation("x", Observation(primary_tier=2), post)
+    led.log_spend("x", 0.4)
+    recs = led.records()
+    assert [r["event"] for r in recs] == ["observe", "spend"]
+    assert recs[1]["gpu_hours"] == 0.4
+
+
+def test_menu_build_and_proposal(tmp_path):
+    selector, candidates, budget = build_from_configs(ROOT / "configs/efe_menu.yaml",
+                                                      root=ROOT)
+    ids = {c.id for c in candidates}
+    assert {"confirm_e4b", "alignment_sampling", "tau_sensitivity",
+            "articulation_null", "dose_response"} <= ids
+    assert budget == pytest.approx(2.0)
+    # confirm_e4b replayed gate_L4b (tier 2): belief should lean moderate/high
+    b = selector.belief(next(c for c in candidates if c.id == "confirm_e4b"))
+    assert b[2] + b[3] > 0.5
+    led = EFELedger(tmp_path / "led.jsonl")
+    prop = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    assert prop.candidate.id in ids
+    assert any(r["event"] == "propose" for r in led.records())
+
+
+def test_actions_are_not_capped_by_each_other():
+    """L3 registration-hygiene lesson, applied to the port: every default action must be
+    admissible under the menu budget (2.0 GPU-h) except 'full' — which the selector must
+    silently skip, not crash on."""
+    s = EFESelector()
+    c = Candidate(id="x", description="")
+    p = s.select([c], budget_gpu_hours=2.0)
+    assert p.action.gpu_hours <= 2.0
