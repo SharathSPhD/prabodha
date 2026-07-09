@@ -46,14 +46,18 @@ class EntropyTrace:
         return _proc
 
 
-def _generate(hf, tok, prompt: str, max_new: int, processors: list) -> str:
+def _generate(hf, tok, prompt: str, max_new: int, processors: list,
+              decoding: dict | None = None, seed: int = 42) -> str:
     import torch
     from transformers import LogitsProcessorList
     ids = tok(prompt, return_tensors="pt")["input_ids"].to(hf.device)
+    kw = dict(max_new_tokens=max_new, do_sample=False, pad_token_id=tok.eos_token_id,
+              logits_processor=LogitsProcessorList(processors))
+    if decoding and decoding.get("do_sample"):
+        kw.update(do_sample=True, temperature=float(decoding["temperature"]))
+        torch.manual_seed(seed)  # registered seed; sampling arms reproducible
     with torch.no_grad():
-        out = hf.generate(ids, max_new_tokens=max_new, do_sample=False,
-                          pad_token_id=tok.eos_token_id,
-                          logits_processor=LogitsProcessorList(processors))
+        out = hf.generate(ids, **kw)
     return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
 
 
@@ -102,10 +106,13 @@ def main(argv=None) -> None:
                 if trace_policy is None and arm != "baseline":
                     raise AssertionError("non-baseline arm needs a policy")
                 if arm == "baseline":
-                    text = _generate(hf, tok, stub, max_new, procs)
+                    text = _generate(hf, tok, stub, max_new, procs,
+                                     decoding=exp.get("decoding"), seed=int(exp["seeds"][0]))
                 else:
                     with ResidualInjector(layer_module, cmd, policy=trace_policy) as inj:
-                        text = _generate(hf, tok, stub, max_new, procs)
+                        text = _generate(hf, tok, stub, max_new, procs,
+                                         decoding=exp.get("decoding"),
+                                         seed=int(exp["seeds"][0]))
                     n_writes.append(inj.n_applications)
                 texts.append(text)
                 step_ents.extend(trace.entropies)
@@ -132,19 +139,29 @@ def main(argv=None) -> None:
     # tau: registered percentile of the baseline arm's OWN per-generation mean step
     # entropies (self-calibrated; registered as tau_percentile in e4.yaml). Deterministic
     # from recorded evidence — every value in base_ents ships in the gate records.
-    tau = float(np.percentile(base_ents, float(exp["tau_percentile"])))
-    results["continuous"] = run_arm("continuous", lambda: make_policy("continuous"))
-    results["prefill_only"] = run_arm("prefill_only", lambda: make_policy("prefill_only"))
-    results["entropy_gated"] = run_arm(
-        "entropy_gated", lambda: make_policy("entropy_gated", tau=tau, min_gap=min_gap))
-    gated_rate = results["entropy_gated"]["mean_writes_per_gen"]
-    k = max(1, round(max_new / max(gated_rate, 1.0)))
-    results["every_k"] = run_arm("every_k", lambda: make_policy("every_k", k=k))
+    tau = (float(exp["tau_fixed"]) if "tau_fixed" in exp
+           else float(np.percentile(base_ents, float(exp["tau_percentile"]))))
+    arms_wanted = list(exp.get("arms",
+                       ["continuous", "prefill_only", "entropy_gated", "every_k"]))
+    if "continuous" in arms_wanted:
+        results["continuous"] = run_arm("continuous", lambda: make_policy("continuous"))
+    if "prefill_only" in arms_wanted:
+        results["prefill_only"] = run_arm("prefill_only",
+                                          lambda: make_policy("prefill_only"))
+    if "entropy_gated" in arms_wanted:
+        results["entropy_gated"] = run_arm(
+            "entropy_gated", lambda: make_policy("entropy_gated", tau=tau, min_gap=min_gap))
+    k = 0
+    if "every_k" in arms_wanted:
+        gated_rate = results["entropy_gated"]["mean_writes_per_gen"]
+        k = max(1, round(max_new / max(gated_rate, 1.0)))
+        results["every_k"] = run_arm("every_k", lambda: make_policy("every_k", k=k))
 
     base_s, base_c = results["baseline"]["surface"], results["baseline"]["camatk"]
     base_e = results["baseline"]["mean_step_entropy"]
     agg = {"tau": round(tau, 4), "every_k_k": k}
-    for arm in ("continuous", "prefill_only", "entropy_gated", "every_k"):
+    for arm in [x for x in ("continuous", "prefill_only", "entropy_gated", "every_k")
+                if x in results]:
         r = results[arm]
         agg[arm] = {"lift": round(r["surface"] - base_s, 4),
                     "camatk_drop": round(base_c - r["camatk"], 4),
@@ -155,12 +172,20 @@ def main(argv=None) -> None:
     g = agg["entropy_gated"]
     h_gated = (g["lift"] >= float(hg["min_lift"])
                and abs(g["step_entropy_delta"]) <= float(hg["entropy_epsilon"]))
-    ha = hyp["H_alignment"]
-    h_align = (g["lift"] - agg["every_k"]["lift"]) >= float(ha["min_lift_advantage"])
     summary = {"H_gated_budget": {"value": g["lift"],
-                                  "threshold": hg["min_lift"], "pass": bool(h_gated)},
-               "H_alignment": {"value": round(g["lift"] - agg["every_k"]["lift"], 4),
-                               "threshold": ha["min_lift_advantage"], "pass": bool(h_align)}}
+                                  "threshold": hg["min_lift"], "pass": bool(h_gated)}}
+    if "H_alignment" in hyp and "every_k" in agg:
+        ha = hyp["H_alignment"]
+        adv = g["lift"] - agg["every_k"]["lift"]
+        summary["H_alignment"] = {"value": round(adv, 4),
+                                  "threshold": ha["min_lift_advantage"],
+                                  "pass": bool(adv >= float(ha["min_lift_advantage"]))}
+    if "H_gated_vs_prefill" in hyp and "prefill_only" in agg:
+        hp = hyp["H_gated_vs_prefill"]
+        adv = g["lift"] - agg["prefill_only"]["lift"]
+        summary["H_gated_vs_prefill"] = {"value": round(adv, 4),
+                                         "threshold": hp["min_lift_advantage"],
+                                         "pass": bool(adv >= float(hp["min_lift_advantage"]))}
     report = GateReport(
         loop="L4", status="open",
         code_gate=GateSide(verdict="pass",
@@ -179,7 +204,8 @@ def main(argv=None) -> None:
     print(f"gate written: {a.out} (domain={report.domain_gate.verdict}) tau={tau:.3f} k={k} "
           + " ".join(f"{arm}: lift={agg[arm]['lift']:+.2f} dH={agg[arm]['step_entropy_delta']:+.2f} "
                      f"w={agg[arm]['writes_per_gen']}"
-                     for arm in ("continuous", "prefill_only", "entropy_gated", "every_k")))
+                     for arm in ("continuous", "prefill_only", "entropy_gated", "every_k")
+                     if arm in agg))
 
 
 if __name__ == "__main__":

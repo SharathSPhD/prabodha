@@ -1,0 +1,33 @@
+# E4b pre-registration — REGISTERED VERBATIM FROM ADVERSARIAL REVIEW #6 before any data:
+# greedy decoding mechanically locked the path after the prefill write (all three sparse
+# arms produced IDENTICAL hit sets in gate_L4.json), so E4's null on timing may be a
+# decoding artifact. E4b: same arms under SAMPLING (T=0.8, registered seed).
+# Reviewer's hypothesis: entropy_gated lift - prefill_only lift >= 0.15 under sampling.
+# Honest-negative condition (registered): if both arms remain ~0.17-0.20, the inertness is
+# not decoding-specific -> decode-time band writes at alpha 0.1 / layer 20 are pruned as a
+# steering mechanism on this plant (prefill writes remain live).
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_fixed: 1.845          # carried unchanged from L4 (reviewer's design)
+tau_percentile: 60        # unused when tau_fixed present; kept for provenance
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated]
+hypotheses:
+  H_gated_budget:     {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                       threshold_min: 0.2}
+  H_gated_vs_prefill: {metric: gated_minus_prefill_lift, min_lift_advantage: 0.15,
+                       threshold_min: 0.15}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "honest-negative condition in header: both arms ~0.17-0.20 under sampling -> decode-time writes pruned at this operating point"
+deviations: []
+budget_gpu_hours: 0.5
