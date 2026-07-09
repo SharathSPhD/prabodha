@@ -1,5 +1,5 @@
 {
- "current_loop": "L7-next-session",
+ "current_loop": "L8-next",
  "loops": {
   "L0": {
    "status": "closed",
@@ -110,6 +110,13 @@
     "gates/gate_L6_align.json",
     "gates/gate_L6_confirm.json"
    ]
+  },
+  "L7": {
+   "status": "closed-audit-plus-cycle4",
+   "gates": [
+    "gates/gate_L7_articulation_null.json"
+   ],
+   "audit": "review #8 PASSING; Tier-0 fixed; paper+H4 docs shipped"
   }
  },
  "gpu_budget_hours": {
@@ -126,7 +133,9 @@
   "L4_spent": 0.7,
   "L4_cap": 1.5,
   "L5_spent": 0.9,
-  "L5_cap": 2.0
+  "L5_cap": 2.0,
+  "L7_spent": 0.1,
+  "L7_cap": 0.5
  },
  "kill_switch": false
 }
