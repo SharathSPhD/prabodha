@@ -1,0 +1,16 @@
+{
+  "loop": "L5-tau",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "2 seeds x 3 percentiles completed; contention=none",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"H_tau_robust\": {\"value\": 0.35, \"threshold\": 0.2, \"pass\": true}}, \"per_run\": {\"P40_s42\": {\"tau\": 2.5985, \"lift\": 0.4, \"entropy_delta\": -0.102, \"writes\": 8.5, \"pass\": true}, \"P40_s123\": {\"tau\": 2.1312, \"lift\": 0.35, \"entropy_delta\": 0.0942, \"writes\": 9.15, \"pass\": true}, \"P60_s42\": {\"tau\": 2.9943, \"lift\": 0.4, \"entropy_delta\": -0.0799, \"writes\": 7.15, \"pass\": true}, \"P60_s123\": {\"tau\": 2.6978, \"lift\": 0.35, \"entropy_delta\": 0.0872, \"writes\": 8.22, \"pass\": true}, \"P80_s42\": {\"tau\": 3.0448, \"lift\": 0.4, \"entropy_delta\": -0.0797, \"writes\": 7.1, \"pass\": true}, \"P80_s123\": {\"tau\": 3.0226, \"lift\": 0.35, \"entropy_delta\": 0.0856, \"writes\": 7.17, \"pass\": true}}, \"note\": \"seed-123 replication added per review #7 P1: the exact-0.40 flatness at seed 42 was seed-bound; the EFFECT (0.35-0.40 lift within budget) replicates across seeds and percentiles (6/6 pass)\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

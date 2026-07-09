@@ -272,6 +272,7 @@
 - Claims softened per review: "at ~10x entropy cost vs an untrained comparator, 2.3x surface
   rate; CIs overlap at n=40" — no dominance claim until dose-response + trained bridge.
 
+<<<<<<< HEAD
 ## 2026-07-09 — L4/E4 gate: honest negative on entropy-gated timing; prefill write does the work
 - gates/gate_L4.json (domain FAIL both): gated lift 0.17 (<0.2, one hit short) within budget
   (+0.39 nats); alignment advantage 0.00 (gated == rate-matched every_k == prefill_only).
@@ -299,3 +300,22 @@
 - Queued (registered, not run): confirm tier (>=3 seeds, Holm), alignment-under-sampling,
   tau sensitivity, L3-currency restatement. L5 = EFE selector port — the experiment menu is
   now real and the selector has genuine information-gain choices to make.
+=======
+## 2026-07-09 — standing directive: full autonomy
+- Operator: "no waiting for operator signoff henceforth...you are fully authorized....be
+  fully autonomous and make the decisions yourself." Recorded in agent memory + here.
+  Contract sign-off lines will read "standing authorization" at closure. Dual-gate
+  standards (code AND domain, adversarial review, honest negatives, disclosed amendments)
+  UNCHANGED — the directive covers disposition, not standards. With this, L5's EFE loop
+  closes fully: selector proposes, agent disposes, gates record.
+>>>>>>> 8d3d11c (docs: standing full-autonomy directive recorded; L4 sign-off via standing authorization)
+
+## 2026-07-09 — L5 closed: the auto-research loop is alive
+- Cycle 1 in the ledger end-to-end. Review #7 caught a ranking-flipping cost miscalibration
+  (fixed: registered composite costs) and seed-correlation in the flat tau results (fixed:
+  seed-123 replication, 6/6 PASS, min lift 0.35). H_tau_robust PASS.
+- The program's central steering claim now reads: sphurattā-gated band writes lift concept
+  surfacing by 0.35-0.40 within the svātantrya budget, across 2 seeds and 3 gate settings,
+  on the PWM twin under sampling. Confirm tier completes with seed 777 (queued, cycle 2).
+- Poetic note for the paper: the selector's first-ever choice was to test the robustness of
+  the very mechanism the doctrine predicted — iccha-jnana-kriya examining its own sphurattā.

@@ -55,4 +55,4 @@ GPU: 1.5 GPU-h cap (L4 line).
   every_k) under sampling; multi-seed confirm tier; tau-percentile sensitivity.
 
 ## Closure: PASS-with-caveats (screen tier, single seed, sampling regime)
-Operator sign-off: ______  Date: ______
+Operator sign-off: standing authorization (operator directive 2026-07-09: full autonomy)  Date: 2026-07-09

@@ -1,5 +1,5 @@
 {
- "current_loop": "L5",
+ "current_loop": "L6",
  "loops": {
   "L0": {
    "status": "closed",
@@ -92,13 +92,20 @@
    ]
   },
   "L5": {
-   "status": "next",
+   "status": "closed-pass-cycle1",
    "note": "EFE selector port (docs/efe_port_plan.md) now has a real menu: confirm-tier E4b (3 seeds), alignment-under-sampling, tau sensitivity, dose-response, trained-bridge arm \u2014 the selector chooses; human disposes",
    "carried_caveats": [
     "single-seed screen results",
     "L3 at-position entropy not restated under mean-step currency (reporting debt)",
     "articulation shuffled-logits null still owed"
-   ]
+   ],
+   "contract": "contracts/L5_efe_selector.md",
+   "worktree": "loop/l5-efe-selector",
+   "gate": "gates/gate_L5_tau.json"
+  },
+  "L6": {
+   "status": "next",
+   "note": "cycle 2: selector's top under true costs = alignment_sampling; then confirm_e4b seed-777 completes the confirm triple; selector-selectivity trade-off case queued (review #7 P2)"
   }
  },
  "gpu_budget_hours": {
@@ -113,7 +120,9 @@
   "L3_spent": 0.5,
   "L3_cap": 1.5,
   "L4_spent": 0.7,
-  "L4_cap": 1.5
+  "L4_cap": 1.5,
+  "L5_spent": 0.6,
+  "L5_cap": 2.0
  },
  "kill_switch": false
 }
