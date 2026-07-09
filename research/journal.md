@@ -350,3 +350,14 @@
 - docs/h4_plugin_architecture.md: extraction plan for lens+steer+verify; the program's own
   findings (band-lens readback, sampling requirement, budget-on-by-default) are the
   product's design constraints. Phase 1 is CPU-only and one session away.
+
+## 2026-07-09 — cycle 4 (articulation_null): E7 survives — the gradient is the model's
+- gates/gate_L7_articulation_null.json: logit-lens baseline (no fitted transport) shows the
+  SAME depth gradient (rho 0.607, p<=.05) as the jacobian lens (0.639) on the PWM twin.
+  Registered rule -> MODEL-INTRINSIC: review #4's tautology attack is defused; progressive
+  articulation is a residual-stream property, not lens construction. Null redesign
+  (shuffled logits vacuous under permutation-invariant negentropy -> logit-lens baseline)
+  disclosed in the script docstring before running.
+- Program state after audit loop: all cheap paper-blocking caveats cleared. Remaining menu:
+  dose_response (0.9 GPU-h); queued beyond menu: trained-bridge arm, selector trade-off
+  case, L3 currency restatement. Paper skeleton ready for prose expansion.
