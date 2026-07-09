@@ -67,11 +67,15 @@ def main(argv=None) -> None:
     for f in ("--model", "--mid-lens", "--exp", "--out"):
         ap.add_argument(f, required=True)
     ap.add_argument("--contention", default="unknown")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="override exp seeds[0] (multi-seed replications)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
+    if a.seed is not None:
+        exp["seeds"] = [int(a.seed)]
     hf, tok = build_model(load(a.model))
     adapter = LensAdapter("jacobian").load(a.mid_lens)
     lm = jlens.from_hf(hf, tok)

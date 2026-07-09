@@ -61,12 +61,15 @@ def test_ledger_roundtrip_and_replay(tmp_path):
 
 
 def test_menu_build_and_proposal(tmp_path):
-    selector, candidates, budget = build_from_configs(ROOT / "configs/efe_menu.yaml",
-                                                      root=ROOT)
+    selector, candidates, budget, actions = build_from_configs(
+        ROOT / "configs/efe_menu.yaml", root=ROOT)
     ids = {c.id for c in candidates}
     assert {"confirm_e4b", "alignment_sampling", "tau_sensitivity",
             "articulation_null", "dose_response"} <= ids
     assert budget == pytest.approx(2.0)
+    # review #7 P0: every menu candidate carries its own registered composite cost
+    assert set(actions) == ids
+    assert actions["tau_sensitivity"].gpu_hours == pytest.approx(0.3)
     # confirm_e4b replayed gate_L4b (tier 2): belief should lean moderate/high
     b = selector.belief(next(c for c in candidates if c.id == "confirm_e4b"))
     assert b[2] + b[3] > 0.5

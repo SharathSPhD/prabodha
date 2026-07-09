@@ -92,13 +92,15 @@
    ]
   },
   "L5": {
-   "status": "next",
+   "status": "open",
    "note": "EFE selector port (docs/efe_port_plan.md) now has a real menu: confirm-tier E4b (3 seeds), alignment-under-sampling, tau sensitivity, dose-response, trained-bridge arm \u2014 the selector chooses; human disposes",
    "carried_caveats": [
     "single-seed screen results",
     "L3 at-position entropy not restated under mean-step currency (reporting debt)",
     "articulation shuffled-logits null still owed"
-   ]
+   ],
+   "contract": "contracts/L5_efe_selector.md",
+   "worktree": "loop/l5-efe-selector"
   }
  },
  "gpu_budget_hours": {
@@ -113,7 +115,9 @@
   "L3_spent": 0.5,
   "L3_cap": 1.5,
   "L4_spent": 0.7,
-  "L4_cap": 1.5
+  "L4_cap": 1.5,
+  "L5_spent": 0,
+  "L5_cap": 2.0
  },
  "kill_switch": false
 }

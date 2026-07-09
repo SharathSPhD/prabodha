@@ -14,22 +14,28 @@ import json
 from pathlib import Path
 
 from prabodha.config import load
-from prabodha.efe.agent import Candidate, EFESelector, Proposal
+from prabodha.efe.agent import Action, Candidate, EFESelector, Proposal
 from prabodha.efe.gate_to_obs import observation_from_gate
 from prabodha.efe.ledger import EFELedger
 
 
 def build_from_configs(menu_path: str | Path, *, ledger: EFELedger | None = None,
-                       root: str | Path = ".") -> tuple[EFESelector, list[Candidate], float]:
+                       root: str | Path = ".") -> tuple[EFESelector, list[Candidate], float, dict[str, Action]]:
     menu = load(menu_path, required=("candidates", "budget_gpu_hours"))
     root = Path(root)
     selector = EFESelector()
     candidates: list[Candidate] = []
+    actions_by_id: dict[str, Action] = {}
     for c in menu["candidates"]:
         cand = Candidate(id=c["id"], description=c["description"],
                          knobs=dict(c.get("knobs", {})),
                          prior_value_hint=c.get("prior_value_hint"))
         candidates.append(cand)
+        if "cost_gpu_hours" in c:
+            # review #7 P0: composite as-registered cost replaces the generic ladder
+            actions_by_id[cand.id] = Action("as-registered",
+                                            gpu_hours=float(c["cost_gpu_hours"]),
+                                            resolution=float(c.get("resolution", 0.6)))
         # replay closed gates into this candidate's belief (prior -> posterior)
         for gate in c.get("replay", []):
             gp = root / gate
@@ -50,15 +56,25 @@ def build_from_configs(menu_path: str | Path, *, ledger: EFELedger | None = None
     spent = sum(r["gpu_hours"] for r in (ledger.records() if ledger else [])
                 if r.get("event") == "spend")
     budget = float(menu["budget_gpu_hours"]) - spent
-    return selector, candidates, budget
+    return selector, candidates, budget, actions_by_id
 
 
 def propose_next(menu_path: str | Path, *, ledger: EFELedger,
                  root: str | Path = ".") -> Proposal:
-    selector, candidates, budget = build_from_configs(menu_path, ledger=ledger, root=root)
-    proposal = selector.select(candidates, budget_gpu_hours=budget)
-    ledger.log_proposal(proposal, budget_remaining=budget)
-    return proposal
+    selector, candidates, budget, actions = build_from_configs(menu_path, ledger=ledger,
+                                                               root=root)
+    best: Proposal | None = None
+    for cand in candidates:
+        act = actions.get(cand.id)
+        if act is None or act.gpu_hours > budget:
+            continue
+        prop = selector.score(cand, act)
+        if best is None or prop.efe < best.efe:
+            best = prop
+    if best is None:
+        raise ValueError("no candidate fits the remaining budget")
+    ledger.log_proposal(best, budget_remaining=budget)
+    return best
 
 
 def main(argv=None) -> None:
@@ -69,9 +85,11 @@ def main(argv=None) -> None:
                     help="log the top proposal to the ledger (else just print the ranking)")
     a = ap.parse_args(argv)
     ledger = EFELedger(a.ledger)
-    selector, candidates, budget = build_from_configs(a.menu, ledger=None)
+    selector, candidates, budget, actions = build_from_configs(a.menu, ledger=None)
     print(f"budget remaining: {budget:.2f} GPU-h; ranked menu (best first):")
-    for p in selector.rank(candidates):
+    ranked = sorted((selector.score(c, actions[c.id]) for c in candidates
+                     if c.id in actions), key=lambda p: p.efe)
+    for p in ranked:
         b = ", ".join(f"{x:.2f}" for x in p.belief)
         print(f"  {p.candidate.id:20s} action={p.action.name:7s} EFE={p.efe:+.3f} "
               f"epi={p.epistemic:.3f} prag={p.pragmatic:+.3f} belief=[{b}]")

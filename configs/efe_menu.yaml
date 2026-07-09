@@ -6,31 +6,44 @@
 # Costs: actions are global (smoke 0.1 / partial 1.0 / full 5.0 GPU-h — prabhasa defaults
 # kept; on the uncontended GB10 our runs land in the smoke..partial range).
 candidates:
+  # COST MODEL (review #7 P0): each candidate now registers its own composite cost
+  # (sweeps/seeds included) and resolution; the generic smoke/partial/full ladder is
+  # replaced by the candidate's as-registered action. Costs from measured run times.
   - id: confirm_e4b
+    cost_gpu_hours: 0.3
+    resolution: 0.85
     description: "Confirm tier for the L4b PASS: e4b arms at seeds {42,123,777}, Holm over
       the two-hypothesis family; the program's first would-be confirmed steering claim."
     knobs: {exp: configs/experiments/e4b.yaml, seeds: [42, 123, 777]}
     prior_value_hint: 2   # screen-tier PASS (gate_L4b) but single seed
     replay: [gates/gate_L4b.json]
   - id: alignment_sampling
+    cost_gpu_hours: 0.15
+    resolution: 0.6
     description: "Does event ALIGNMENT beat rate-matched every-k under sampling? (L4's
       H_alignment, unmasked from greedy inertness.)"
     knobs: {exp: configs/experiments/e4.yaml, decoding: sampling, arms: [entropy_gated, every_k]}
     prior_value_hint: null
     replay: [gates/gate_L4.json]
   - id: tau_sensitivity
+    cost_gpu_hours: 0.3
+    resolution: 0.7
     description: "Gated-arm lift vs tau percentile {40,60,80} under sampling — is the
       sphurattā gate robust to its one free parameter?"
     knobs: {exp: configs/experiments/e4b.yaml, tau_percentiles: [40, 60, 80]}
     prior_value_hint: null
     replay: [gates/gate_L4b.json]
   - id: articulation_null
+    cost_gpu_hours: 0.3
+    resolution: 0.7
     description: "The L2 debt: shuffled-final-logits null for the E7 articulation gradient
       (review #4's tautology attack)."
     knobs: {exp: configs/experiments/e2.yaml, null: shuffled_final_logits}
     prior_value_hint: 1   # E7 passed but is ARTIFACT-SUSPECT; null may deflate it
     replay: [gates/gate_L2.json]
   - id: dose_response
+    cost_gpu_hours: 0.9
+    resolution: 0.8
     description: "Surface-lift and camatkāra vs (alpha x timing) grid at matched entropy —
       review #5's requirement for any cross-arm dominance claim."
     knobs: {exp: configs/experiments/e4.yaml, alphas: [0.02, 0.05, 0.1], arms: all}
