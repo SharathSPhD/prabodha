@@ -319,3 +319,17 @@
   on the PWM twin under sampling. Confirm tier completes with seed 777 (queued, cycle 2).
 - Poetic note for the paper: the selector's first-ever choice was to test the robustness of
   the very mechanism the doctrine predicted — iccha-jnana-kriya examining its own sphurattā.
+
+## 2026-07-09 — cycles 2–3: alignment confirmed at screen, core claim confirmed at 3 seeds
+- Cycle 2 (gate_L6_align, PASS): alignment beats rate-matching under sampling (+0.40 vs
+  +0.23 at matched-ish rates; per-write 0.056 vs 0.046). WHEN > HOW OFTEN.
+- Cycle 3 (gate_L6_confirm, SPLIT): H_gated_budget CONFIRMS 3/3 seeds (0.40/0.35/0.23,
+  all within budget); the >=0.15 advantage-over-prefill margin does NOT confirm
+  (0.20/0.12/0.03) — stated henceforth as ~0.1 and underpowered. Seed-42 had flattered it.
+- Two loop bugs found ONLY by running the loop (ledger-replay drop; winner re-proposal) —
+  both fixed with regression tests. The consumption rule is the interesting one: tier-3
+  results raise pragmatic value, so raw EFE re-runs its winners; consumption forces novelty.
+- Program claim, stated at confirmed strength: sphurattā-gated band writes deliver
+  0.23–0.40 concept-surface lift within the svātantrya budget on the PWM twin under
+  sampling (3 seeds, 3 tau settings), with event alignment beating rate-matched controls
+  at screen tier. The margin over a single prefill write is small and unconfirmed.

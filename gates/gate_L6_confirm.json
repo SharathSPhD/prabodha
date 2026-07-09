@@ -1,0 +1,16 @@
+{
+  "loop": "L6-confirm",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "3-seed confirm completed; contention=none",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "fail",
+    "evidence": "{\"summary\": {\"H_gated_budget_confirm\": {\"value\": 0.225, \"threshold\": 0.2, \"pass\": true}, \"H_gated_vs_prefill_confirm\": {\"value\": 0.025, \"threshold\": 0.15, \"pass\": false}}, \"per_seed\": {\"s42\": {\"gated_lift\": 0.4, \"prefill_lift\": 0.2, \"advantage\": 0.2, \"entropy_delta\": -0.1268}, \"s123\": {\"gated_lift\": 0.35, \"prefill_lift\": 0.225, \"advantage\": 0.125, \"entropy_delta\": 0.077}, \"s777\": {\"gated_lift\": 0.225, \"prefill_lift\": 0.2, \"advantage\": 0.025, \"entropy_delta\": 0.3184}}, \"note\": \"SPLIT: core budget-feasibility claim CONFIRMS 3/3 seeds; the >=0.15 advantage-over-prefill margin confirms only at seed 42 (0.20/0.12/0.03) - treat the advantage as ~0.1 and underpowered at n=40/seed. seed-42 run reused from gate_L4b (identical registered config, deterministic; disclosed). tau_fixed=1.845 as registered in e4b (greedy-derived - consistent with the claim being confirmed, noted).\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}
