@@ -342,3 +342,11 @@
   contract status CLOSED; efe agent.py port-note typo. Artifact ownership chowned to user.
 - Next per audit gap list: paper drafting (all data confirmed at tier, authorized) and H4
   plugin architecture.
+
+## 2026-07-09 — Tier-2 gap execution: paper skeleton + H4 architecture
+- docs/paper/framework_paper_draft.md: full framework+empirical skeleton, every number
+  wired to a committed gate JSON, honest margins and unconverged threads as sections,
+  dual-register glossary (R8 decision left open, mechanically resolvable).
+- docs/h4_plugin_architecture.md: extraction plan for lens+steer+verify; the program's own
+  findings (band-lens readback, sampling requirement, budget-on-by-default) are the
+  product's design constraints. Phase 1 is CPU-only and one session away.
