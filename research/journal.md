@@ -272,7 +272,6 @@
 - Claims softened per review: "at ~10x entropy cost vs an untrained comparator, 2.3x surface
   rate; CIs overlap at n=40" — no dominance claim until dose-response + trained bridge.
 
-<<<<<<< HEAD
 ## 2026-07-09 — L4/E4 gate: honest negative on entropy-gated timing; prefill write does the work
 - gates/gate_L4.json (domain FAIL both): gated lift 0.17 (<0.2, one hit short) within budget
   (+0.39 nats); alignment advantage 0.00 (gated == rate-matched every_k == prefill_only).
@@ -300,7 +299,7 @@
 - Queued (registered, not run): confirm tier (>=3 seeds, Holm), alignment-under-sampling,
   tau sensitivity, L3-currency restatement. L5 = EFE selector port — the experiment menu is
   now real and the selector has genuine information-gain choices to make.
-=======
+
 ## 2026-07-09 — standing directive: full autonomy
 - Operator: "no waiting for operator signoff henceforth...you are fully authorized....be
   fully autonomous and make the decisions yourself." Recorded in agent memory + here.
@@ -308,7 +307,6 @@
   standards (code AND domain, adversarial review, honest negatives, disclosed amendments)
   UNCHANGED — the directive covers disposition, not standards. With this, L5's EFE loop
   closes fully: selector proposes, agent disposes, gates record.
->>>>>>> 8d3d11c (docs: standing full-autonomy directive recorded; L4 sign-off via standing authorization)
 
 ## 2026-07-09 — L5 closed: the auto-research loop is alive
 - Cycle 1 in the ledger end-to-end. Review #7 caught a ranking-flipping cost miscalibration
@@ -333,3 +331,14 @@
   0.23–0.40 concept-surface lift within the svātantrya budget on the PWM twin under
   sampling (3 seeds, 3 tau settings), with event alignment beating rate-matched controls
   at screen tier. The margin over a single prefill write is small and unconfirmed.
+
+## 2026-07-09 — program audit (review #8, isolated): PASSING — code sound, metadata fixed
+- All SPEC §9 numeric claims recomputed from gate JSONs: verified. EFE ledger replays
+  coherently (44 events). Tests 52 pass, ruff clean. H1–H3 delivered; H4 + paper queued
+  with no blockers; unconverged threads confirmed unforced.
+- Tier-0 fixes this commit: 9 gate loop labels (label-only; e4_cli --loop was not passed in
+  L5/L6 dispatches — evidence payloads untouched, disclosed here); journal rebase conflict
+  markers removed (both sections preserved); state.json L6 budget line (0.3/0.5); L6
+  contract status CLOSED; efe agent.py port-note typo. Artifact ownership chowned to user.
+- Next per audit gap list: paper drafting (all data confirmed at tier, authorized) and H4
+  plugin architecture.

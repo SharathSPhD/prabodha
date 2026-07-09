@@ -94,6 +94,17 @@ All configs YAML; schema-validated; seeds explicit.
 - v0.2 (L0 close): TRIZ resolutions C1–C3 folded into §5/§6; sibling-project ports enumerated
   (prabhasa EFE+guard+autopilot; ACD POMDP+metrics; neo-fm five-point gate; sco2rl RULES pattern);
   SMB mount cannot host live git → canonical repo on GitHub, mount carries mirror + bundle.
+- v0.10 (L6 close + program audit): selector cycles 2–3 — alignment beats rate-matched
+  control under sampling (+0.40 vs +0.23, gate_L6_align); CONFIRM TIER: H_gated_budget 3/3
+  seeds (0.40/0.35/0.23, gate_L6_confirm) — the core steering claim is confirmed; the
+  advantage-over-prefill margin honestly downgraded (~0.1, unconfirmed at 0.15). Two loop
+  bugs found live and regression-tested (run-observation replay; consumption rule).
+  PROGRAM AUDIT (isolated, review #8): all SPEC numeric claims verified against gate JSONs;
+  ledgers reconcile; H1–H3 delivered, H4+paper queued with no blockers; Tier-0 metadata
+  defects fixed in this entry's commit (gate loop labels — label-only corrections, evidence
+  untouched; journal conflict markers; L6 budget line; contract status). §6 note: the v2
+  TRAINED-bridge comparator requires PWM's WM stack — all v3-vs-v2 statements are
+  vs-untrained-bias until then (H2-late dependency, PRD risk table).
 - v0.9 (L5 close, AUTO-RESEARCH CYCLE CLOSED): EFE selector ported (math preserved from
   prabhasa; observations = gate verdict+margin tiers; beliefs replayed from the program's
   own gates; JSONL ledger = stateless re-entry). Cycle 1: selector proposed tau_sensitivity;

@@ -3,7 +3,7 @@ Concept: iccha-jnana-kriya as auto-research — wanting (pragmatic preference), 
 (epistemic information gain), doing (the proposed action) balanced per GPU-hour.
 Source: PORTED from prabhasa application/efe/agent.py (docs/efe_port_plan.md; likelihood
 matrix, entropy, normalise, and all EFESelector methods preserved EXACTLY — only the
-observation tier field names are generalized: primary_tier->primary_tier, secondary_tier->
+observation tier field names are generalized: bpb_tier->primary_tier, frt_tier->
 secondary_tier, since prabodha's observations are gate outcomes, not token-efficiency).
 Primitive: Candidate/Action/Observation/Proposal + EFESelector (belief/update/score/
 select/rank). Stdlib only.
