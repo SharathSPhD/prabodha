@@ -87,3 +87,28 @@ def test_actions_are_not_capped_by_each_other():
     c = Candidate(id="x", description="")
     p = s.select([c], budget_gpu_hours=2.0)
     assert p.action.gpu_hours <= 2.0
+
+
+def test_run_observations_replay_into_beliefs(tmp_path):
+    """Cycle-2 live bug: an observation sourced from a NEW gate (not in the menu's replay
+    list) must update beliefs on rebuild — else the selector re-proposes completed work."""
+    from prabodha.efe.agent import Observation
+    led = EFELedger(tmp_path / "led.jsonl")
+    _, _, _, _ = build_from_configs(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    p1 = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    led.log_observation(p1.candidate.id, Observation(primary_tier=3),
+                        [0.05, 0.1, 0.35, 0.5], source="gates/some_new_gate.json")
+    led.log_spend(p1.candidate.id, 0.1)
+    p2 = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    assert not (p2.candidate.id == p1.candidate.id and abs(p2.efe - p1.efe) < 1e-9), \
+        "completed run's observation was lost on rebuild"
+
+
+def test_consumed_candidates_not_reproposed(tmp_path):
+    from prabodha.efe.agent import Observation
+    led = EFELedger(tmp_path / "led.jsonl")
+    p1 = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    led.log_observation(p1.candidate.id, Observation(primary_tier=3),
+                        [0.05, 0.1, 0.35, 0.5], source="gates/run_gate.json")
+    p2 = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
+    assert p2.candidate.id != p1.candidate.id

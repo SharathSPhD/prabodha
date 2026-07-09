@@ -45,11 +45,14 @@ def build_from_configs(menu_path: str | Path, *, ledger: EFELedger | None = None
             post = selector.update(cand.id, obs, prior=selector.belief(cand))
             if ledger is not None:
                 ledger.log_observation(cand.id, obs, post, source=str(gate))
-    # ledger replay (observations recorded in previous sessions beyond the gate seeds)
+    # ledger replay: observations from RUNS (sources not among the menu's declared replay
+    # gates — those were already seeded above; without this, a completed run's observation
+    # is silently lost and the selector re-proposes it. Found live in cycle 2.)
+    menu_sources = {g for c in menu["candidates"] for g in c.get("replay", [])}
     if ledger is not None:
+        from prabodha.efe.agent import Observation
         for rec in ledger.records():
-            if rec.get("event") == "observe" and not rec.get("source"):
-                from prabodha.efe.agent import Observation
+            if rec.get("event") == "observe" and rec.get("source", "") not in menu_sources:
                 selector.update(rec["candidate"],
                                 Observation(primary_tier=rec["primary_tier"],
                                             secondary_tier=rec.get("secondary_tier")))
@@ -63,10 +66,19 @@ def propose_next(menu_path: str | Path, *, ledger: EFELedger,
                  root: str | Path = ".") -> Proposal:
     selector, candidates, budget, actions = build_from_configs(menu_path, ledger=ledger,
                                                                root=root)
+    # consumption rule: a candidate whose registered question already has a RUN-sourced
+    # observation is consumed — re-running it verbatim has no marginal value; follow-ups
+    # are new menu entries. (Cycle-3 live finding: a tier-3 result raises pragmatic value
+    # and the raw EFE wants to re-run its winner.)
+    menu = load(menu_path, required=("candidates",))
+    menu_sources = {g for c in menu["candidates"] for g in c.get("replay", [])}
+    consumed = {rec["candidate"] for rec in ledger.records()
+                if rec.get("event") == "observe"
+                and rec.get("source", "") not in menu_sources and rec.get("source")}
     best: Proposal | None = None
     for cand in candidates:
         act = actions.get(cand.id)
-        if act is None or act.gpu_hours > budget:
+        if act is None or act.gpu_hours > budget or cand.id in consumed:
             continue
         prop = selector.score(cand, act)
         if best is None or prop.efe < best.efe:
