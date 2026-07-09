@@ -43,6 +43,10 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.7 (L4/L4b close): H2's core mechanism DEMONSTRATED at screen tier — event-gated
+  workspace writes steer at continuous strength within the freedom budget (single seed,
+  sampling regime, untrained-v2 caveat outstanding). Path to H2 closure: confirm tier
+  (3 seeds), alignment control under sampling, then the v2-trained-bridge comparison.
 - v0.6 (L3 close): H2 partially advanced — v3 machinery works and steers, but not yet
   "beats v2 without hurting fluency": at current operating point v3 trades MORE fluency
   (camatkāra 0.063 vs 0.021 drop) for MORE content. NEW REQUIREMENT (review #5): any

@@ -1,5 +1,5 @@
 {
- "current_loop": "L4",
+ "current_loop": "L5",
  "loops": {
   "L0": {
    "status": "closed",
@@ -75,7 +75,7 @@
    "gate": "gates/gate_L2b.json"
   },
   "L4": {
-   "status": "open",
+   "status": "closed-pass-with-caveats",
    "mechanism": "event-gated timing (sphuratta port)",
    "requirements": [
     "dose-response both arms matched on entropy",
@@ -85,7 +85,20 @@
     "check follow-up knobs against caps at registration"
    ],
    "contract": "contracts/L4_sphuratta_timing.md",
-   "worktree": "loop/l4-sphuratta-timing"
+   "worktree": "loop/l4-sphuratta-timing",
+   "gates": [
+    "gates/gate_L4.json",
+    "gates/gate_L4b.json"
+   ]
+  },
+  "L5": {
+   "status": "next",
+   "note": "EFE selector port (docs/efe_port_plan.md) now has a real menu: confirm-tier E4b (3 seeds), alignment-under-sampling, tau sensitivity, dose-response, trained-bridge arm \u2014 the selector chooses; human disposes",
+   "carried_caveats": [
+    "single-seed screen results",
+    "L3 at-position entropy not restated under mean-step currency (reporting debt)",
+    "articulation shuffled-logits null still owed"
+   ]
   }
  },
  "gpu_budget_hours": {
@@ -99,7 +112,7 @@
   "L2b_cap": 1.0,
   "L3_spent": 0.5,
   "L3_cap": 1.5,
-  "L4_spent": 0.4,
+  "L4_spent": 0.7,
   "L4_cap": 1.5
  },
  "kill_switch": false

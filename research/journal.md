@@ -287,3 +287,15 @@
   at-position measure showed -2.08 — the write sharpens the immediate distribution toward
   concepts while raising average per-step uncertainty across the generation. Both recorded;
   neither over-interpreted at screen tier.
+
+## 2026-07-09 — L4b (review-registered sampling run): FIRST INTERVENTIONAL DOMAIN PASS
+- gates/gate_L4b.json: entropy_gated lift +0.40 @ ΔH -0.13 (~10 writes) vs prefill_only
+  +0.20; both registered hypotheses PASS. Review #6's greedy-inertness diagnosis (identical
+  hit sets across sparse arms in gate_L4) was exactly right; its registered follow-up
+  vindicated the sphurattā clause under stochastic decoding.
+- Arc: L3 continuous = strong/budget-blowing -> L4 greedy = mechanically masked null ->
+  L4b sampling = gated writes at continuous strength INSIDE the budget. The steering
+  doctrine's operating regime is sampling; recorded in SPEC v0.8.
+- Queued (registered, not run): confirm tier (>=3 seeds, Holm), alignment-under-sampling,
+  tau sensitivity, L3-currency restatement. L5 = EFE selector port — the experiment menu is
+  now real and the selector has genuine information-gain choices to make.

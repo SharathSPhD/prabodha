@@ -40,4 +40,19 @@ DOMAIN GATE (screen, from e4.yaml): H_gated_budget (lift >= 0.2 within ±0.5 nat
 H_alignment (gated - every_k lift >= 0.1). Split verdicts reportable. Prune rule in e4.yaml.
 GPU: 1.5 GPU-h cap (L4 line).
 
+## Iteration record (2026-07-09)
+- gate_L4.json (greedy): domain FAIL both — but review #6 found the mechanism: ALL THREE
+  sparse arms produced IDENTICAL hit sets; greedy decoding locks the path at the prefill
+  write, decode-time writes mechanically inert. Alignment test ~10% power. Metric-currency
+  criticism accepted (L3 at-position numbers not restated under the new currency — carried
+  as reporting debt). tau=P60 landed on a stub-difficulty boundary (noted).
+- gate_L4b.json (sampling T=0.8, registered VERBATIM from review #6 before data):
+  domain PASS — entropy_gated lift +0.40 at ΔH -0.13 (~10 writes) vs prefill_only +0.20;
+  H_gated_budget PASS (0.40 >= 0.2 within ±0.5 nats); H_gated_vs_prefill PASS (+0.20 >=
+  0.15). THE PROGRAM'S FIRST INTERVENTIONAL DOMAIN PASS: event-gated band writes achieve
+  continuous-level steering (L3: 0.40 at budget-blowing cost) INSIDE the svātantrya budget.
+- Registered next questions (NOT run — unregistered): alignment (gated vs rate-matched
+  every_k) under sampling; multi-seed confirm tier; tau-percentile sensitivity.
+
+## Closure: PASS-with-caveats (screen tier, single seed, sampling regime)
 Operator sign-off: ______  Date: ______
