@@ -43,6 +43,10 @@ Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (doc
 ## 7. Evolution Log
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
+- v0.8 (L5 close): H3 auto-research DELIVERED at first-cycle scope — selector proposes,
+  agent disposes (standing authorization), gates feed back; cost model registered per
+  candidate after review #7 caught a ranking-flipping miscalibration. The steering claim
+  (event-gated writes within budget) now holds across 2 seeds x 3 tau settings.
 - v0.7 (L4/L4b close): H2's core mechanism DEMONSTRATED at screen tier — event-gated
   workspace writes steer at continuous strength within the freedom budget (single seed,
   sampling regime, untrained-v2 caveat outstanding). Path to H2 closure: confirm tier

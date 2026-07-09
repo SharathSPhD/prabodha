@@ -309,3 +309,13 @@
   UNCHANGED — the directive covers disposition, not standards. With this, L5's EFE loop
   closes fully: selector proposes, agent disposes, gates record.
 >>>>>>> 8d3d11c (docs: standing full-autonomy directive recorded; L4 sign-off via standing authorization)
+
+## 2026-07-09 — L5 closed: the auto-research loop is alive
+- Cycle 1 in the ledger end-to-end. Review #7 caught a ranking-flipping cost miscalibration
+  (fixed: registered composite costs) and seed-correlation in the flat tau results (fixed:
+  seed-123 replication, 6/6 PASS, min lift 0.35). H_tau_robust PASS.
+- The program's central steering claim now reads: sphurattā-gated band writes lift concept
+  surfacing by 0.35-0.40 within the svātantrya budget, across 2 seeds and 3 gate settings,
+  on the PWM twin under sampling. Confirm tier completes with seed 777 (queued, cycle 2).
+- Poetic note for the paper: the selector's first-ever choice was to test the robustness of
+  the very mechanism the doctrine predicted — iccha-jnana-kriya examining its own sphurattā.

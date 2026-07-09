@@ -41,4 +41,20 @@ its observation updates the ledger. The selected experiment's own hypotheses pas
 their own registered terms (either verdict is a valid cycle).
 GPU: within the menu's 2.0 GPU-h dispatch budget.
 
+## Iteration record (2026-07-09)
+- Cycle 1 complete in research/efe_ledger.jsonl: 6 gate-replay observations -> propose
+  (tau_sensitivity, EFE -3.75) -> run (2 seeds x 3 percentiles) -> observe (tier 3) -> spend.
+- Adversarial review #7: cycle math VALID (arithmetic verified independently); cost model
+  ARTIFACT-SUSPECT — 0.1 assumed vs 0.3 actual, and the ranking demonstrably flips with
+  true costs (fixed: per-candidate registered composite costs + resolution in the menu;
+  ranking now led by alignment_sampling); flat-0.40-across-tau ARTIFACT-SUSPECT (fixed:
+  seed-123 replication — 6/6 PASS, lifts 0.35-0.40, the exact flatness was seed-bound, the
+  effect is not); selector selectivity UNDERDETERMINED (tau_sensitivity Pareto-dominated;
+  a real trade-off case is queued for the next cycle); observation composition FAIR with a
+  correlated-subgates caveat (recorded; the Bayes update treats the composite as one obs,
+  which UNDERSTATES rather than inflates confidence — conservative direction).
+- H_tau_robust: PASS (min lift 0.35 >= 0.2 across 6 runs, all within ±0.5 nats).
+  The sphurattā gate is robust to its one free parameter across two seeds.
+
+## Closure: PASS — first auto-research cycle closed
 Operator sign-off: standing authorization (2026-07-09)
