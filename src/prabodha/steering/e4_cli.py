@@ -67,6 +67,8 @@ def main(argv=None) -> None:
     for f in ("--model", "--mid-lens", "--exp", "--out"):
         ap.add_argument(f, required=True)
     ap.add_argument("--contention", default="unknown")
+    ap.add_argument("--tau-percentile", type=float, default=None,
+                    help="override exp tau_percentile (L5 tau-sensitivity sweep)")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
@@ -139,8 +141,11 @@ def main(argv=None) -> None:
     # tau: registered percentile of the baseline arm's OWN per-generation mean step
     # entropies (self-calibrated; registered as tau_percentile in e4.yaml). Deterministic
     # from recorded evidence — every value in base_ents ships in the gate records.
-    tau = (float(exp["tau_fixed"]) if "tau_fixed" in exp
-           else float(np.percentile(base_ents, float(exp["tau_percentile"]))))
+    tau_pct = (float(a.tau_percentile) if a.tau_percentile is not None
+               else exp.get("tau_percentile"))
+    tau = (float(np.percentile(base_ents, float(tau_pct)))
+           if a.tau_percentile is not None or "tau_fixed" not in exp
+           else float(exp["tau_fixed"]))
     arms_wanted = list(exp.get("arms",
                        ["continuous", "prefill_only", "entropy_gated", "every_k"]))
     if "continuous" in arms_wanted:
