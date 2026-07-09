@@ -1,0 +1,41 @@
+# E4 pre-registration (R4). Tier: screen. SPHURATTĀ-GATED WRITE TIMING on the PWM twin.
+# Lineage: L3 triple dissociation (timing, not amplitude, carries steering and freedom
+# cost); review #5 requirements (per-prompt scatter, dose accounting, rate-matched control).
+# Registered BEFORE any timing run exists. Registration-hygiene check (L3 lesson): no knob
+# below is capped by another (alpha == norm_cap_rel; tau/k are self-calibrated in-run and
+# their derivations ship in the gate records).
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2                # PWM sphurattā temporal hygiene (min decode steps between writes)
+tau_percentile: 60        # tau = P60 of the BASELINE arm's own per-generation mean step
+                          # entropies (self-calibrated; no magic constant)
+# every_k control: k = round(max_new_tokens / gated arm's realized writes-per-generation),
+# i.e. rate-matched to the sphurattā arm — separates event ALIGNMENT from mere sparsity.
+hypotheses:
+  # The L3 failure, fixed?: gated writes must deliver real lift INSIDE the svātantrya
+  # budget (mean step-entropy delta within ±0.5 nats of baseline).
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+  # Does WHEN matter beyond HOW OFTEN?: gated lift must exceed the rate-matched
+  # every-k control's lift by >= 0.1.
+  H_alignment:    {metric: gated_minus_everyk_lift, min_lift_advantage: 0.1,
+                   threshold_min: 0.1}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+# Arms: baseline / continuous (L3 replication) / prefill_only / entropy_gated / every_k.
+# Evidence requirements (review #5): per-(concept,stub) records with n_writes, write events
+# (step, gate entropy), mean step entropy, surface hit — the scatter ships in the gate.
+prune_rule: "if entropy_gated fails BOTH hypotheses AND prefill_only also shows lift < 0.1, timed band-writes on this plant are pruned; the trained-bridge comparison (H2-late) proceeds independently"
+deviations:
+  - "sphurattā detector: PWM's VFE/Hopfield criteria have no analogue on a bare plant;
+    E4 operationalizes the event as next-token-entropy >= tau (the plant's uncommitted
+    moments), with PWM's min_gap hygiene retained. Registered here, before data."
+budget_gpu_hours: 1.5

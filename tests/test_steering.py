@@ -88,3 +88,35 @@ def test_camatk_text_port_matches_pwm_shape():
     assert score_camatk_text(flat) < 0.6
     assert concept_surface_rate(["the fire is bright", "no match here"], "fire") == 0.5
     assert concept_surface_rate(["Fire!"], "fire") == 1.0
+
+
+def test_timing_policies_budget_and_alignment():
+    from prabodha.steering.timing import EntropyGated, EveryK, make_policy
+    ek = EveryK(k=4)
+    fires = [ek.should_write(False) for _ in range(12)]
+    assert sum(fires) == 3 and ek.should_write(True) and ek.n_allowed == 4
+    eg = EntropyGated(tau=2.0, min_gap=2)
+    assert eg.should_write(True)  # prefill always writes
+    entropies = [0.5, 2.5, 2.6, 0.1, 3.0, 2.9, 0.2]
+    fired = []
+    for e in entropies:
+        eg.observe(e)
+        fired.append(eg.should_write(False))
+    # writes only when observed entropy >= tau AND min_gap honored:
+    # steps: 0.5 no; 2.5 yes; 2.6 no (gap); 0.1 no; 3.0 yes; 2.9 no (gap); 0.2 no
+    assert fired == [False, True, False, False, True, False, False]
+    assert [round(e, 1) for _, e in eg.write_events] == [2.5, 3.0]
+    assert make_policy("prefill_only").should_write(True)
+    import pytest as _pt
+    with _pt.raises(ValueError):
+        make_policy("nope")
+
+
+def test_gated_injector_respects_policy_cpu():
+    """Injector + policy contract without torch: a policy that refuses decode steps
+    must leave the hook a no-op on 1-token forwards (checked via should_write calls)."""
+    from prabodha.steering.timing import PrefillOnly
+    p = PrefillOnly()
+    assert p.should_write(True) is True
+    assert p.should_write(False) is False
+    assert p.n_allowed == 1
