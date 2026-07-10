@@ -148,10 +148,14 @@ begin
 end;
 $$;
 
--- Defense-in-depth: unauthenticated callers must never reach the admin RPCs
--- (the function also raises for non-admins; this revoke satisfies the DB linter).
-revoke execute on function admin_set_runtime_config(text, text) from anon;
-revoke execute on function check_is_admin() from anon;
+-- Defense-in-depth: functions default to GRANT EXECUTE TO PUBLIC (which anon inherits).
+-- Revoke from PUBLIC and grant only to authenticated. The admin RPC additionally
+-- self-gates (raises 'admin access required' for non-admin authenticated callers), so
+-- the residual "authenticated can execute" linter note (0029) is intentional and safe.
+revoke execute on function admin_set_runtime_config(text, text) from public;
+revoke execute on function check_is_admin() from public;
+grant execute on function admin_set_runtime_config(text, text) to authenticated;
+grant execute on function check_is_admin() to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Exported data (results, traces, etc.)
