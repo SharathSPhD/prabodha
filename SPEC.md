@@ -1,5 +1,5 @@
 # SPEC.md — prabodha technical specification
-**v0.2 (L0 closure) — LIVING DOCUMENT: revised at every loop closure; see Evolution Log (§9).**
+**v0.20 (L19 closure) — LIVING DOCUMENT: revised at every loop closure; see Evolution Log (§9).**
 
 ## 1. Object
 Build and validate **recognition-gated workspace steering**: a control loop in which a small stateful
@@ -88,6 +88,40 @@ replayed to rebuild beliefs; EXPLORE→CONFIRM emerges. Active inference is used
 All configs YAML; schema-validated; seeds explicit.
 
 ## 9. Evolution Log (append-only)
+- v0.20 (L7-L19 catch-up, PR #10-#22, 2026-07-10): this entry closes a 13-loop gap in this
+  log (v0.10 was L6; L7-L19 closed without SPEC updates while paper/HTML carried the
+  living-document role — corrected here per "SPEC/PRD evolve at every loop closure").
+  STATUS: L0-L19 CLOSED, 22 PRs, 26 EFE cycles across 9 registered menus, 16 isolated
+  adversarial reviews (3 of which — #9 stream-correlation, #15 arm-specific offset
+  misread as global, #16 determinism-guaranteed reproduction misread as independent
+  replication — caught genuine reasoning errors, not just wording). Full narrative:
+  docs/HANDOFF_L19_TO_NEXT.md (comprehensive from-scratch briefing for the next agent).
+  CONFIRMED (>=3 seeds, screen->confirm): core steering claim (gated writes within
+  budget, 6 seeds, gate_L11_rep); alignment beats rate-matching (sign-consistent 6/6,
+  p~0.016); method transfers to Qwen3-4B via calibration recipe amplitude~1/lens-
+  transport-strength (4 seeds, gate_L14_multiseed); amplitude dose-response monotone on
+  Qwen3 (3 seeds, gate_L15_amp_joint) with Nemotron confirming an active range one order
+  of magnitude lower, saturating (gate_L16_fine); L8's gated-arm levels superseded
+  ~-0.10, confirmed at 3 seeds, arm-specific not global (gate_L19_l8ms) — L8's ordering
+  conclusion untouched. HONEST NEGATIVES ON RECORD: >=0.15 schedule-margin never
+  confirmed (reported by sign only); flash-timing directionally weaker not refuted;
+  readback (agama re-cognition) acceptance test is a WEAK signal (BA 0.59-0.64
+  depending on corpus, over-promises), never a sole gate; corpus-amplitude axis
+  DIRECTION confirmed (both corpora ~double lift at 2x amplitude) but the strict margin
+  criterion on the hardest cell FAILS (fail-on-margin, gate_L19_cax); trained_bridge_arm
+  BLOCKED since menu 3 (needs PWM WM stack integration — largest standing scope gap).
+  H4 (§8's interfaces) DELIVERED beyond spec: `prabodha` console entrypoint
+  (src/prabodha/cli.py, pyproject [project.scripts]) + Claude Code plugin
+  (integrations/claude-code-plugin/, 3 skills) + gate-backed quickstart
+  (examples/quickstart_qwen3.md) — phases 1-2 of docs/h4_plugin_architecture.md
+  shipped; phase 3 (2nd public-model example, community README) partial.
+  Paper (docs/paper/paper.tex/.pdf) and dual-audience HTML artifact
+  (docs/artifact/prabodha_story.html, published as a Claude Artifact) both
+  regenerate from gates/ every loop via scripts/tools/make_figures.py and
+  make_artifact.py — treat these as DERIVED, never hand-edit their outputs.
+  NEXT: register menu 10 targeting the corpus-amplitude fail-on-margin cell (needs a
+  genuinely new seed, not a re-dispatch — see the review #16 determinism lesson) and/or
+  the trained-bridge integration, OR shift to a final program-wide consolidation pass.
 - v0.1 (L0 start): initial draft from scoping doc + interview decisions (E1 first; GB10 only;
   hybrid ralph with dual closure; GitHub MCP pending auth).
 - v0.3 (L0.1): GPU guard v2 SHARED mode (operator sublation); dockerized GB10 execution (NGC aarch64 base, compose courtesy caps); publish handoff documented (sandbox has no Spark route/credentials).
