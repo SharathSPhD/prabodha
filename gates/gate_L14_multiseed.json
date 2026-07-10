@@ -8,7 +8,7 @@
  },
  "domain_gate": {
   "verdict": "pass",
-  "hypothesis": "qwen3 calibrated recipe (site 24, alpha=cap=0.3) holds at independent-stream seeds: gated lift >= 0.2 within budget, gated > prefill, every seed",
+  "hypothesis": "qwen3 calibrated recipe (site 24, alpha=cap=0.3) holds across THREE NEW independent-stream seeds {123,777,2024} plus the REPLAYED L13 seed 42: gated lift >= 0.2 within budget, gated > prefill, every seed",
   "evidence": "{\"summary\": {\"H_recipe_multiseed\": {\"value\": 4.0, \"threshold\": 3.0, \"pass\": true}, \"H_gated_over_prefill\": {\"value\": 4.0, \"threshold\": 4.0, \"pass\": true}}, \"per_seed\": {\"42\": {\"gated_lift\": 0.4, \"gated_dH\": 0.1486, \"prefill_lift\": 0.175, \"source\": \"gates/gate_L13_recipe.json\"}, \"123\": {\"gated_lift\": 0.475, \"gated_dH\": 0.0085, \"prefill_lift\": 0.15, \"source\": \"gates/gate_L14_ms123.json\"}, \"777\": {\"gated_lift\": 0.425, \"gated_dH\": 0.0039, \"prefill_lift\": 0.075, \"source\": \"gates/gate_L14_ms777.json\"}, \"2024\": {\"gated_lift\": 0.325, \"gated_dH\": 0.1289, \"prefill_lift\": 0.1, \"source\": \"gates/gate_L14_ms2024.json\"}}, \"registered_in\": \"configs/efe_menu4.yaml:qwen3_recipe_multiseed\", \"seeds\": [42, 123, 777, 2024], \"tier\": \"confirm\"}"
  },
  "signoff": "standing authorization (2026-07-09)"

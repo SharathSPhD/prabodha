@@ -78,8 +78,18 @@ gate = {
             "amendment": "registered replay gates (L9/L11) carry no per-generation "
                          "readback; fresh instrumented clean-stream run substituted "
                          "(e4_cli --record-readback)",
+            "disclosures": [
+                "source run's own domain verdict is FAIL on its e5align margin "
+                "hypotheses (alignment margin +0.07 < 0.15 — the standing honest "
+                "negative); its core-claim hypothesis passed (+0.30 within budget) "
+                "and record-level data validity is unaffected (review #11)",
+                "36 (top_m, gain) settings swept, max reported, no multiple-"
+                "comparisons correction; BA 0.68 at n=40 (12 hit) is marginal over "
+                "the 0.6 threshold, which was set at analysis time, NOT "
+                "pre-registered — EXPLORATORY/screen-only; confirm needs a held-out "
+                "corpus at the chosen setting (review #11)"],
             "registered_in": "configs/efe_menu4.yaml:readback_recalibration",
-            "seeds": [42], "tier": "screen"}),
+            "seeds": [42], "tier": "screen-exploratory"}),
     },
     "signoff": "standing authorization (2026-07-09)",
 }

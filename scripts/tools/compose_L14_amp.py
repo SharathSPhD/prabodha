@@ -45,8 +45,11 @@ gate = {
     "code_gate": {"verdict": "pass", "evidence": "57 passed, 4 skipped; ruff clean"},
     "domain_gate": {
         "verdict": verdict,
-        "hypothesis": "qwen3 gated lift is dose-monotone up to saturation; alpha=0.3 "
-                      "working point within |dH|<=0.5 trajectory budget (sampling)",
+        "hypothesis": "SCREEN TIER, SINGLE SEED (42): qwen3 gated lift is dose-monotone "
+                      "across the tested alpha grid; alpha=0.3 working point within "
+                      "|dH|<=0.5 trajectory budget (sampling). Trend, not yet law: "
+                      "law status needs multi-seed + second-plant joint confirm "
+                      "(review #11 correction 1)",
         "evidence": json.dumps({"summary": summary, "grid": grid,
                                 "registered_in": "configs/efe_menu4.yaml:amplitude_scaling_law",
                                 "seeds": [42], "tier": "screen"}),

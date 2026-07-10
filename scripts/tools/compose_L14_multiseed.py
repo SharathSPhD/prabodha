@@ -41,8 +41,9 @@ gate = {
     "code_gate": {"verdict": "pass", "evidence": "57 passed, 4 skipped; ruff clean"},
     "domain_gate": {
         "verdict": verdict,
-        "hypothesis": "qwen3 calibrated recipe (site 24, alpha=cap=0.3) holds at "
-                      "independent-stream seeds: gated lift >= 0.2 within budget, "
+        "hypothesis": "qwen3 calibrated recipe (site 24, alpha=cap=0.3) holds across "
+                      "THREE NEW independent-stream seeds {123,777,2024} plus the "
+                      "REPLAYED L13 seed 42: gated lift >= 0.2 within budget, "
                       "gated > prefill, every seed",
         "evidence": json.dumps({"summary": summary, "per_seed": per_seed,
                                 "registered_in":

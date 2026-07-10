@@ -524,3 +524,20 @@
 - L14 totals: 3 cycles, 3 gates + 1 confirm set + 1 instrumented raw gate, ~0.82 GPU-h.
   Consolidations regenerated: paper (sixteen cycles; multiseed-confirm + dose-law +
   readback-recalibration text; fig4 with 4-seed scatter), HTML republished (same URL).
+
+## 2026-07-10 — adversarial review #11 (isolated agent, gates+menu brief only): MERGE-WITH-CORRECTIONS
+All four corrections APPLIED before merge:
+1. Amplitude "LAW" -> "screen-tier single-seed monotone TREND" (gate hypothesis, paper
+   §5, HTML): law status needs multi-seed + joint two-plant confirm. Carried as debt.
+2. Multiseed hypothesis wording: "THREE NEW independent-stream seeds + REPLAYED L13
+   seed 42" (provenance explicit; reviewer judged the claim itself SOUND).
+3. Readback gate re-labeled tier "screen-exploratory" with two added disclosures:
+   (a) source run's own e5align margin verdict is FAIL (standing honest negative,
+   alignment +0.07 < 0.15; core-claim hypothesis passed, record validity unaffected);
+   (b) 36-setting sweep, max reported, no multiple-comparisons correction, 0.6 threshold
+   set at analysis time not pre-registered — confirm needs a held-out corpus at the
+   chosen setting. Carried as debt.
+4. Eight ingredient gates relabeled loop L4 -> L14 (the --loop flag was omitted from
+   dispatches AGAIN — third occurrence; ops rule: --loop goes in the dispatch template,
+   not the operator's memory).
+Review count: 11. L14 status -> closed in state.json.

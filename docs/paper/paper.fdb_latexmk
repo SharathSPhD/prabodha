@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1783680954.80889 "paper.tex" "paper.pdf" "paper" 1783680954.98972 0
+["pdflatex"] 1783681175.37369 "paper.tex" "paper.pdf" "paper" 1783681175.54628 0
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1136768653 1536 12e8c510d3e158fdd0e9a42e75118bd9 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -94,9 +94,9 @@
   "figures/fig5_compute_ledger.pdf" 1783680954.31614 18119 f8b6f8cc5d2226099d132db6ef56302d ""
   "figures/fig6_architecture.pdf" 1783680954.38614 16631 3fa4a8cdac0587631985f0e9eab8899c ""
   "figures/fig7_scaling_law.pdf" 1783680954.47514 18894 da73562b2ce5e5c992e35dc34caff75c ""
-  "paper.aux" 1783680954.96514 5085 364b237ca6e9619d4b0d98c779b1d90b "pdflatex"
-  "paper.out" 1783680954.96514 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
-  "paper.tex" 1783680953.70495 11187 290631834e055a13b14d558d3fd2a610 ""
+  "paper.aux" 1783681175.52314 5085 364b237ca6e9619d4b0d98c779b1d90b "pdflatex"
+  "paper.out" 1783681175.52314 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
+  "paper.tex" 1783681175.33393 11335 0c183293123c3f42ce6608fe9cb6d438 ""
   (generated)
   "paper.aux"
   "paper.log"

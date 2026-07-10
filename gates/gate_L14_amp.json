@@ -8,7 +8,7 @@
  },
  "domain_gate": {
   "verdict": "pass",
-  "hypothesis": "qwen3 gated lift is dose-monotone up to saturation; alpha=0.3 working point within |dH|<=0.5 trajectory budget (sampling)",
+  "hypothesis": "SCREEN TIER, SINGLE SEED (42): qwen3 gated lift is dose-monotone across the tested alpha grid; alpha=0.3 working point within |dH|<=0.5 trajectory budget (sampling). Trend, not yet law: law status needs multi-seed + second-plant joint confirm (review #11 correction 1)",
   "evidence": "{\"summary\": {\"H_dose_monotone\": {\"value\": 3, \"threshold\": 3, \"pass\": true}, \"H_working_point_lift\": {\"value\": 0.4, \"threshold\": 0.2, \"pass\": true}, \"H_budget_all_points\": {\"value\": 4.0, \"threshold\": 4.0, \"pass\": true}}, \"grid\": {\"0.1\": {\"gated_lift\": 0.05, \"gated_dH\": 0.0784, \"gated_writes\": 11.15, \"prefill_lift\": 0.0, \"contention\": \"none\"}, \"0.2\": {\"gated_lift\": 0.2, \"gated_dH\": 0.0712, \"gated_writes\": 11.07, \"prefill_lift\": 0.0, \"contention\": \"none\"}, \"0.3\": {\"gated_lift\": 0.4, \"gated_dH\": 0.1486, \"gated_writes\": 11.9, \"prefill_lift\": 0.175, \"contention\": \"none\"}, \"0.45\": {\"gated_lift\": 0.775, \"gated_dH\": 0.0654, \"gated_writes\": 11.45, \"prefill_lift\": 0.35, \"contention\": \"none\"}}, \"registered_in\": \"configs/efe_menu4.yaml:amplitude_scaling_law\", \"seeds\": [42], \"tier\": \"screen\"}"
  },
  "signoff": "standing authorization (2026-07-09)"
