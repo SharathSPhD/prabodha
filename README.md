@@ -1,58 +1,126 @@
 # prabodha — प्रबोध
 
 **Recognition-gated workspace steering for language models.**
-PWM (Pratyabhijñā World Model) × the J-space (Anthropic's verbalizable global workspace) × GNW, read as engineering.
 
-Prabodha ("awakening / coming-to-recognition") builds the missing *control theory* for the
-Jacobian-lens actuator: a small recognition-driven world model steers a frozen LLM through its
-global workspace — writes timed by sphurattā events, verified by āgama re-cognition (readback),
-bounded by svātantrya (autonomy preservation), diagnosed by the three malas.
+Prabodha ("awakening") implements the missing control theory for the Jacobian-lens
+actuator: steer a frozen LLM through its global workspace using a small recognition-driven
+world model. Writes are timed by sphurattā events (uncommitted moments), verified by
+āgama re-cognition, bounded by svātantrya (autonomy), and diagnosed by the three malas.
 
-- Conceptual source of truth: [`docs/jspace_pratyabhijna_scoping.md`](docs/jspace_pratyabhijna_scoping.md)
-- Living spec: [`SPEC.md`](SPEC.md) · product doc: [`PRD.md`](PRD.md) — both **evolve at every loop closure; nothing is cut in stone**
-- Ralph-loop contracts with dual (code + domain) closures: [`contracts/`](contracts/)
-- Hard invariants: [`RULES.md`](RULES.md) · agent assignments: [`AGENTS.md`](AGENTS.md)
+Built as a bridge between PWM (Pratyabhijñā World Model, Sharath S), the J-space
+(Anthropic's verbalizable global workspace), and GNW (Global Neuronal Workspace),
+read as engineering.
 
-## Layout
-```
-src/prabodha/     lens/ (instrument) steering/ (v3 bridge) stats/ (pruning rigor) efe/ (auto-research) contracts/ (closure schema)
-vendor/jacobian-lens/   Anthropic reference implementation (Apache-2.0, vendored)
-configs/          models · lens · experiments · gpu   (config-driven: no constants in code)
-contracts/        one markdown card per ralph loop, with machine-readable gate criteria
-gates/            gate_<loop>.json emitted at closure (code + domain verdicts)
-scripts/          lib/gpu_guard.sh · dispatch/ (GB10 job packs) · ralph/ (loop runner)
-research/         state.json + journal.md — durable loop memory (ralph state lives in the repo)
-docs/             scoping doc · triz_log · prior_art_internal · decisions/ (ADRs)
-```
+## What it does
 
-## Status (2026-07-10)
-Loops **L0–L16 closed** (19 PRs, 20 selector cycles over 6 registered menus, 13 isolated
-adversarial reviews, ~21 GPU-hours on one DGX Spark). Full narrative: `docs/paper/paper.pdf`
-(technical) and `docs/artifact/prabodha_story.html` (dual-audience).
-
-### Results at a glance (every number cites a gate JSON in `gates/`)
-| Claim | Strength | Gate |
+| Claim | Evidence | Strength |
 |---|---|---|
-| Workspace band + verbalizable content replicate across 3 model families, 2 sizes | screen, multi-model | L1, L1b, L2 |
-| Band content is legible ONLY to a band-targeted lens | screen | L2b |
-| Event-gated writes steer within the entropy budget (core claim) | **confirm, 6 seeds** | L9, L11 |
-| Alignment beats rate-matched control | sign-consistent 6/6, p≈0.016 | L11 |
-| Method transfers to a 2nd model via calibration recipe | **confirm, 4 seeds** | L13, L14-ms |
-| Amplitude ∝ 1/lens-strength; monotone dose in each plant's active range | confirm (qwen3, 3 seeds) / screen (nemotron) | L14-amp, L15-amp, L16-fine |
-| Amplitude may scale with stub difficulty per corpus as well as lens strength per model: both corpora's lift roughly doubles from α=0.1→0.2 (direction confirmed); the strict margin criterion on one hard cell fails (fail-on-margin, not a qualified pass) | screen, fail-on-margin | L16-corpus, L17-cvar, L18-npretry, L19-cax |
-| Readback verdict is a weak signal (BA ≈ 0.59 at n=120) — never an acceptance gate alone | honest negative | L14/L15-readback, L16-corpus |
-| Greedy decoding masks decode-time writes; sampling regime required | mechanism | L4 |
+| Workspace band + verbalizable content replicate across 3 model families, 2 sizes | gates L1, L1b, L2 | screen, multi-model |
+| Event-gated writes steer within entropy budget (core claim) | gates L9, L11 | confirm, 6 seeds |
+| Alignment beats rate-matched control | gates L11 | p≈0.016, 6/6 sign-consistent |
+| Transfers to a 2nd model via calibration | gates L13, L14-ms | confirm, 4 seeds |
+| Amplitude ∝ 1/lens-strength; monotone dose in active range | gates L14-amp, L15-amp, L16 | confirm (Qwen3) / screen (Nemotron) |
+
+The readback verdict is weak (BA ≈ 0.59 at n=120 — honest negative, gates L14–L16);
+corpus-amplitude coupling is confirmed directionally but fails the strict margin criterion
+(gate L19 fail-on-margin). No new claims are made; all numbers are committed to gates.
+
+## 60-second quickstart
+
+```bash
+pip install prabodha
+```
+
+Fit a lens and steer on a public model (Qwen3-4B, ~6 GB):
+
+```python
+from prabodha.lens import fit, vis
+from prabodha.steer import write
+
+# 1. Fit a band-targeted lens (one-time; resumable)
+fit(
+    model_config_path="configs/models/qwen3.yaml",
+    lens_config_path="configs/lens_mid.yaml",
+    out_path="outputs/lens_qwen3_mid30.pt"
+)
+
+# 2. Steer with recognition-gated writes
+write(
+    model_config_path="configs/models/qwen3.yaml",
+    lens_file_path="outputs/lens_qwen3_mid30.pt",
+    exp_config_path="configs/experiments/e13full.yaml",
+    out_path="gates/my_run.json",
+    alpha=0.3,
+    seed=42,
+    emit_trace="outputs/traces/my_trace.json"  # optional: emit per-token trace
+)
+
+# 3. Visualize lens readout (interactive HTML)
+vis(
+    model_config_path="configs/models/qwen3.yaml",
+    lens_file_path="outputs/lens_qwen3_mid30.pt",
+    prompt="the fire remembers rivers",
+    out_path="outputs/fire_vis.html"
+)
+```
+
+See `examples/quickstart_qwen3.md` and `examples/quickstart_nemotron.md` for full
+command-line workflows with expected numbers (gate-cited).
 
 ## Install & use
+
+### Library
+
 ```bash
-pip install -e .            # library + `prabodha` CLI
-pip install -e .[hybrid]    # + linear-attention model support
-prabodha --help             # lens-fit · lens-eval · lens-vis · steer · research · figures
+pip install prabodha            # core library + CLI
+pip install prabodha[hybrid]    # + flash-linear-attention support
 ```
-Claude Code users: the plugin in `integrations/claude-code-plugin/` ships skills
-(`lens-map`, `steer-verify`, `research-propose`) whose defaults are the measured findings.
 
-## Provenance & credit
-`vendor/jacobian-lens` is [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) (Apache-2.0), companion code for *Verbalizable Representations Form a Global Workspace in Language Models* (transformer-circuits, 2026). PWM concepts and machinery: Sharath S, *Pratyabhijñā World Model* (arXiv, 2026). See `NOTICE`.
+### Public API
 
-Author: Sharath S <qbz506@york.ac.uk> · GitHub: SharathSPhD · License: Apache-2.0
+```python
+# Lens operations
+from prabodha.lens import fit, eval, vis
+
+# Steering operations
+from prabodha.steer import write, gate, verify
+```
+
+### CLI
+
+```bash
+prabodha --help                           # all subcommands
+prabodha lens-fit --model M.yaml --lens L.yaml --out lens.pt
+prabodha lens-eval --model M.yaml --lens-file lens.pt --exp E.yaml --out gate.json
+prabodha lens-vis --model M.yaml --lens-file lens.pt --prompt "..." --out page.html
+prabodha steer --model M.yaml --mid-lens lens.pt --exp E.yaml --out gate.json [--emit-trace trace.json]
+prabodha figures                          # regenerate paper figures from gates/
+```
+
+## Plugin & MCP integration
+
+Claude Code users: the plugin at `integrations/claude-code-plugin/` ships skills
+(`lens-map`, `steer-verify`) with defaults from the measured findings.
+
+MCP server at `integrations/mcp-server/` exposes `lens_map`, `steer_generate`,
+`readback_verify`, `list_gates` for any MCP client.
+
+## Provenance & license
+
+Vendored: [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens)
+(Apache-2.0) — companion code for *Verbalizable Representations Form a Global Workspace*
+(Anthropic, 2026).
+
+Prabodha: Sharath S, *Pratyabhijñā World Model* (arXiv, 2026).
+
+License: Apache-2.0.
+
+---
+
+Author: Sharath S <qbz506@york.ac.uk> · GitHub: SharathSPhD · Release: v1.0.0
+
+**Docs:** [jspace_pratyabhijna_scoping.md](docs/jspace_pratyabhijna_scoping.md) ·
+**Paper:** [docs/paper/paper.pdf](docs/paper/paper.pdf) ·
+**Live app:** [prabodha.vercel.app](https://prabodha.vercel.app) ·
+**Pages:** [sharathsphd.github.io/prabodha](https://sharathsphd.github.io/prabodha) ·
+**HuggingFace:** [qbz506/prabodha-lenses](https://huggingface.co/qbz506/prabodha-lenses)
