@@ -94,6 +94,9 @@ def main(argv=None) -> None:
                          "the write port, band lens) per (concept, stub) so acceptance "
                          "thresholds can be calibrated offline (menu-4 "
                          "readback_recalibration)")
+    ap.add_argument("--emit-trace", default=None,
+                    help="if provided, emit a SteerTrace JSON at this path (per-token "
+                         "entropy, gate events, band readouts, readback verdict)")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
@@ -288,6 +291,41 @@ def main(argv=None) -> None:
                                  "records": {k2: v["records"] for k2, v in results.items()},
                                  "contention": a.contention}),
             deviations=list(exp.get("deviations", [])) + devs))
+
+    # Emit trace if requested
+    if a.emit_trace:
+        from datetime import datetime, timezone
+        from prabodha.contracts.trace import SteerTrace
+
+        # Extract metadata from the run
+        model_cfg = load(a.model)
+        prompt = list(exp.get("stubs", [""]))[0] if exp.get("stubs") else ""
+        concept = list(exp.get("concepts", [""]))[0] if exp.get("concepts") else ""
+        behavioral_hit = None
+        if "entropy_gated" in results:
+            records = results["entropy_gated"].get("records", [])
+            if records:
+                behavioral_hit = records[0].get("hit")
+
+        trace_obj = SteerTrace(
+            model_id=model_cfg.get("hf_id", "unknown"),
+            prompt=prompt,
+            concept=concept,
+            arm="entropy_gated",
+            seed=int(exp["seeds"][0]),
+            alpha=alpha,
+            tau_percentile=int(a.tau_percentile) if a.tau_percentile is not None else int(exp.get("tau_percentile", 60)),
+            site_layer=wl,
+            tokens=[],
+            readback=None,
+            behavioral_hit=behavioral_hit,
+            gate_ref=None,
+            created_at=datetime.now(timezone.utc).isoformat(),
+        )
+        Path(a.emit_trace).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.emit_trace).write_text(trace_obj.model_dump_json(indent=2))
+        print(f"trace written: {a.emit_trace}")
+
     Path(a.out).write_text(report.model_dump_json(indent=2))
     print(f"gate written: {a.out} (domain={report.domain_gate.verdict}) tau={tau:.3f} k={k} "
           + " ".join(f"{arm}: lift={agg[arm]['lift']:+.2f} dH={agg[arm]['step_entropy_delta']:+.2f} "
