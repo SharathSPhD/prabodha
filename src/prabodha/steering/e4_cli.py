@@ -47,7 +47,9 @@ class EntropyTrace:
 
 
 def _generate(hf, tok, prompt: str, max_new: int, processors: list,
-              decoding: dict | None = None, seed: int = 42) -> str:
+              decoding: dict | None = None, seed: int = 42,
+              stream_tag: str = "") -> str:
+    import hashlib
     import torch
     from transformers import LogitsProcessorList
     ids = tok(prompt, return_tensors="pt")["input_ids"].to(hf.device)
@@ -55,7 +57,12 @@ def _generate(hf, tok, prompt: str, max_new: int, processors: list,
               logits_processor=LogitsProcessorList(processors))
     if decoding and decoding.get("do_sample"):
         kw.update(do_sample=True, temperature=float(decoding["temperature"]))
-        torch.manual_seed(seed)  # registered seed; sampling arms reproducible
+        # Reproducible AND independent across generations: hard_seed_probe (L9 cycle 6)
+        # found that resetting the SAME seed per generation makes all trajectories in a
+        # run share sampling-stream structure (the seed selects a correlated trajectory
+        # FAMILY, n_effective << n) — per-generation seeds derive from (seed, stream_tag).
+        h = int(hashlib.sha256(f"{seed}|{stream_tag}".encode()).hexdigest()[:8], 16)
+        torch.manual_seed(h)
     with torch.no_grad():
         out = hf.generate(ids, **kw)
     return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
@@ -115,14 +122,16 @@ def main(argv=None) -> None:
                 procs = [trace.processor()]
                 if trace_policy is None and arm != "baseline":
                     raise AssertionError("non-baseline arm needs a policy")
+                tag = f"{arm}|{concept}|{stub}"
                 if arm == "baseline":
                     text = _generate(hf, tok, stub, max_new, procs,
-                                     decoding=exp.get("decoding"), seed=int(exp["seeds"][0]))
+                                     decoding=exp.get("decoding"),
+                                     seed=int(exp["seeds"][0]), stream_tag=tag)
                 else:
                     with ResidualInjector(layer_module, cmd, policy=trace_policy) as inj:
                         text = _generate(hf, tok, stub, max_new, procs,
                                          decoding=exp.get("decoding"),
-                                         seed=int(exp["seeds"][0]))
+                                         seed=int(exp["seeds"][0]), stream_tag=tag)
                     n_writes.append(inj.n_applications)
                 texts.append(text)
                 step_ents.extend(trace.entropies)
