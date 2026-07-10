@@ -1,0 +1,24 @@
+# E12-probe part 1b — amplitude calibration at site 24 on Qwen3-4B (within the probe's
+# registered calibration freedom; cap raised in lockstep with alpha per the L3 inert-knob
+# lesson). If amplitude also fails, the recipe verdict is: the bottleneck is the BAND-LENS
+# FIT QUALITY on this plant (weak Jacobians), not site or amplitude.
+seeds: [42]
+write_layer: 24
+alpha: 0.3
+norm_cap_rel: 0.3
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [entropy_gated]
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, river, snow, bread]
+concepts_zh: {fire: 火, water: 水, river: 河, snow: 雪, bread: 饼}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+prune_rule: "calibration probe"
+deviations: []
+budget_gpu_hours: 0.2
