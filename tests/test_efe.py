@@ -125,3 +125,41 @@ def test_menu_budget_scoped_to_its_own_candidates(tmp_path):
     _, _, budget2, _ = build_from_configs(ROOT / "configs/efe_menu.yaml", ledger=led,
                                           root=ROOT)
     assert budget2 == pytest.approx(1.7)
+
+
+def test_blocked_candidates_skipped_with_ledger_entry(tmp_path):
+    led = EFELedger(tmp_path / "led.jsonl")
+    p = propose_next(ROOT / "configs/efe_menu3.yaml", ledger=led, root=ROOT)
+    assert p.candidate.id != "trained_bridge_arm"
+    skips = [r for r in led.records() if r["event"] == "skip"]
+    assert any(r["candidate"] == "trained_bridge_arm" and "blocked" in r["reason"]
+               for r in skips)
+    # skip is logged once, not every proposal
+    propose_next(ROOT / "configs/efe_menu3.yaml", ledger=led, root=ROOT)
+    assert sum(r["candidate"] == "trained_bridge_arm"
+               for r in led.records() if r["event"] == "skip") == 1
+
+
+def test_cycle_integrity_lint(tmp_path):
+    from prabodha.config import load
+    from prabodha.efe.lint import lint_cycles, log_divergence
+    led = EFELedger(tmp_path / "led.jsonl")
+    menu = load(ROOT / "configs/efe_menu3.yaml")
+    menu_sources = {g for c in menu["candidates"] for g in c.get("replay", [])}
+    p1 = propose_next(ROOT / "configs/efe_menu3.yaml", ledger=led, root=ROOT)
+    from prabodha.efe.agent import Observation
+    # legal: observe the proposed candidate
+    led.log_observation(p1.candidate.id, Observation(primary_tier=2), [0.2] * 4,
+                        source="gates/run1.json")
+    assert lint_cycles(led.records(), menu_sources=menu_sources) == []
+    # illegal: observe a different candidate with no divergence event
+    led.log_observation("flash_multiseed", Observation(primary_tier=2), [0.2] * 4,
+                        source="gates/run2.json")
+    v = lint_cycles(led.records(), menu_sources=menu_sources)
+    assert len(v) == 1 and "flash_multiseed" in v[0]
+    # legal with an explicit ledgered divergence
+    log_divergence(led, "gated_confirm_replication", "staleness: replay gates invalidated")
+    led.log_observation("gated_confirm_replication", Observation(primary_tier=2),
+                        [0.2] * 4, source="gates/run3.json")
+    v2 = lint_cycles(led.records(), menu_sources=menu_sources)
+    assert len(v2) == 1  # only the earlier violation remains
