@@ -8,13 +8,18 @@ dependencies = [
     "uvicorn[standard]==0.24.0",
     "pydantic==2.5.0",
     "python-dotenv==1.0.0",
-    "prabodha @ git+https://github.com/SharathSPhD/prabodha.git",
+    # prabodha with steering + lens extras for model loading
+    "prabodha[lens] @ git+https://github.com/SharathSPhD/prabodha.git",
+    # Runtime dependencies for steering (model loading, tensor operations)
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest==7.4.3",
     "pytest-asyncio==0.21.1",
+    "ruff==0.1.8",
 ]
 
 [build-system]
