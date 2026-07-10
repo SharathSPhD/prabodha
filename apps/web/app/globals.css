@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design token utilities */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-lg border border-indigo-300 bg-transparent px-4 py-2 text-sm font-medium text-indigo-300 transition-colors hover:border-indigo-400 hover:text-indigo-200 disabled:opacity-50;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-lg bg-transparent px-3 py-1.5 text-sm font-medium text-slate-400 transition-colors hover:text-slate-200 disabled:opacity-50;
+  }
+
+  .card {
+    @apply rounded-lg border border-night-600 bg-night-800/50 backdrop-blur-sm;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-night-600 bg-night-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-slate-300;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-night-600 px-3 py-1 text-xs font-medium text-slate-400 transition-colors;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-indigo-400 to-teal-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Base styles */
+html {
+  background-color: #050a14;
+  color: #e2e8f0;
+}
+
+body {
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  transition-colors: all 0.2s ease;
+}
+
+a:hover {
+  color: #7c4dff;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1f3a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #34395a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a5178;
+}

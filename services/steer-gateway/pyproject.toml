@@ -1,0 +1,22 @@
+[project]
+name = "prabodha-steer-gateway"
+version = "0.1.0"
+description = "SSE gateway for prabodha steering runtime"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "python-dotenv==1.0.0",
+    "prabodha @ git+https://github.com/SharathSPhD/prabodha.git",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
