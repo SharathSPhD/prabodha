@@ -20,8 +20,14 @@ narrative-past: 0.43/0.28/0.23 at $\alpha=0.2$, 3/3 seeds).
 However, the commitment-flash reading (our implementation of sphura\d{t}\d{t}\=a) remains directionally weaker than
 entropy gating, not refuted.
 
-The trained-bridge comparator, comparing PWM's learned CittaStore write against prabodha's analytic band-exit write,
-awaits the PWM world-model stack and is registered as future work (L20, WS1 dedicated loop).
+The trained-bridge comparator, comparing PWM's CittaStore write against prabodha's analytic band-exit write,
+was executed in L20: the PWM stack is now integrated on the target hardware and the CittaStore write path runs
+end-to-end on the frozen model. Under a \emph{cold} (untrained) store initialization---populated with no steering
+patterns---the recall path steers within the entropy budget on all three seeds and is comparable to the analytic
+baseline (exact match on 2/3 seeds; on the third the store differs by a single concept-hit, in its own favour,
+which fails the strict $\le0.05$ equivalence criterion). Because the store was never trained, whether training it
+against steering-success targets improves over cold initialization remains the open follow-up; the infrastructure
+to test it is now live (gate \texttt{gate\_L20\_confirm.json}).
 
 Three modalities remain deliberately unconverged:
 \begin{enumerate}
