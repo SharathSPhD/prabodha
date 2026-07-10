@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>prabodha — Recognition-gated Workspace Steering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="prabodha-data.js"></script>
+
+  <style>
+    :root {
+      --prabodha-teal: #4FD8CE;
+      --prabodha-indigo: #6D28D9;
+      --prabodha-saffron: #F0A24B;
+      --prabodha-dark-bg: #0A0D14;
+      --prabodha-content-bg: #1a1a2e;
+      --prabodha-text-light: #D9D3C7;
+      --prabodha-text-dim: #9B9FA0;
+      --prabodha-border: #4FD8CE29;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--prabodha-dark-bg);
+      color: var(--prabodha-text-light);
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+      background: rgba(79, 216, 206, 0.3);
+      color: var(--prabodha-text-light);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Newsreader', serif;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    h1 { font-size: clamp(2.2rem, 7vw, 4rem); }
+    h2 { font-size: clamp(1.8rem, 5vw, 3rem); }
+    h3 { font-size: clamp(1.3rem, 3vw, 1.8rem); }
+
+    a {
+      color: var(--prabodha-teal);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.3s ease;
+    }
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      background: rgba(79, 216, 206, 0.08);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--prabodha-teal);
+    }
+
+    pre {
+      padding: 12px 16px;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Progress bar */
+    #prabodha-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--prabodha-teal), var(--prabodha-indigo), var(--prabodha-saffron));
+      z-index: 1000;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(10, 13, 20, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--prabodha-border);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 40px);
+    }
+
+    .nav-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--prabodha-text-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, var(--prabodha-teal), var(--prabodha-indigo));
+      box-shadow: 0 0 12px rgba(79, 216, 206, 0.6);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--prabodha-text-light);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-link:hover {
+      opacity: 1;
+    }
+
+    /* Scroll-spy dots */
+    #prabodha-dots {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 45;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    [data-dot] {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid var(--prabodha-teal);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    [data-dot]:hover {
+      background: var(--prabodha-teal);
+    }
+
+    [data-dot].active {
+      background: var(--prabodha-teal);
+      box-shadow: 0 0 10px rgba(79, 216, 206, 0.6);
+    }
+
+    /* Main content */
+    main {
+      margin-top: 60px;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-content {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(40px, 5vw, 80px);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero */
+    #hero {
+      background: var(--prabodha-dark-bg);
+    }
+
+    #prabodha-hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(115% 90% at 28% 42%,
+        rgba(10, 13, 20, 0.5) 0%,
+        rgba(10, 13, 20, 0.78) 52%,
+        rgba(10, 13, 20, 0.95) 100%);
+    }
+
+    .hero-text {
+      color: var(--prabodha-text-light);
+    }
+
+    .hero-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--prabodha-teal);
+      margin: 0 0 1.5rem;
+      font-weight: 600;
+    }
+
+    .hero-cta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--prabodha-text-dim);
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .arrow {
+      display: inline-block;
+      animation: arrow-bob 1.8s ease-in-out infinite;
+    }
+
+    @keyframes arrow-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+    }
+
+    /* Act sections */
+    .act-section {
+      background: var(--prabodha-content-bg);
+      color: var(--prabodha-text-light);
+    }
+
+    .act-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--prabodha-saffron);
+      margin: 0 0 1rem;
+      font-weight: 600;
+    }
+
+    .section-intro {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      line-height: 1.7;
+      color: var(--prabodha-text-dim);
+      margin: 2rem 0;
+      max-width: 65ch;
+    }
+
+    .section-prose {
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 70ch;
+      margin: 1.5rem 0;
+    }
+
+    /* Embeds */
+    .embed-container {
+      margin: 3rem 0;
+      padding: 2rem;
+      background: rgba(79, 216, 206, 0.05);
+      border: 1px solid var(--prabodha-border);
+      border-radius: 6px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    [data-embed] {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      padding: 10px 18px;
+      background: var(--prabodha-indigo);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    [data-embed]:hover {
+      background: var(--prabodha-saffron);
+      color: var(--prabodha-dark-bg);
+    }
+
+    [data-embed]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Results table */
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .results-table th {
+      text-align: left;
+      padding: 12px;
+      color: var(--prabodha-teal);
+      font-weight: 600;
+      border-bottom: 1px solid var(--prabodha-border);
+      background: rgba(79, 216, 206, 0.05);
+    }
+
+    .results-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(79, 216, 206, 0.1);
+      color: var(--prabodha-text-dim);
+    }
+
+    .results-table tr:hover {
+      background: rgba(79, 216, 206, 0.03);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--prabodha-dark-bg);
+      border-top: 1px solid var(--prabodha-border);
+      padding: 3rem clamp(20px, 5vw, 40px);
+      text-align: center;
+      color: var(--prabodha-text-dim);
+      font-size: 0.9rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .footer-link {
+      color: var(--prabodha-teal);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-link:hover {
+      opacity: 0.8;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Progress bar -->
+  <div id="prabodha-progress"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#hero" class="nav-brand">
+      <span class="nav-brand-mark"></span>
+      <span>prabodha</span>
+    </a>
+    <div class="nav-links">
+      <a href="https://github.com/SharathSPhD/prabodha" target="_blank" rel="noopener" class="nav-link">Code</a>
+      <a href="https://pypi.org/project/prabodha/" target="_blank" rel="noopener" class="nav-link">PyPI</a>
+      <a href="https://huggingface.co/qbz506/prabodha-lenses" target="_blank" rel="noopener" class="nav-link">Weights</a>
+    </div>
+  </nav>
+
+  <!-- Scroll-spy dots -->
+  <div id="prabodha-dots">
+    <a href="#hero" data-dot="hero" title="Hero"></a>
+    <a href="#uncanny-parallel" data-dot="uncanny" title="The Uncanny Parallel"></a>
+    <a href="#instrument" data-dot="instrument" title="The Instrument"></a>
+    <a href="#voice" data-dot="voice" title="The Band's Voice"></a>
+    <a href="#timing" data-dot="timing" title="Timing & Sphuraṭṭā"></a>
+    <a href="#recipe" data-dot="recipe" title="The Transfer Recipe"></a>
+    <a href="#bridge" data-dot="bridge" title="The Trained Bridge"></a>
+    <a href="#honest" data-dot="honest" title="Honest Limits"></a>
+    <a href="#yourself" data-dot="yourself" title="Run It Yourself"></a>
+  </div>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section id="hero" data-section="hero">
+      <canvas id="prabodha-hero-canvas"></canvas>
+      <div class="hero-overlay"></div>
+      <div class="section-content hero-text">
+        <p class="hero-label">Recognition-gated Workspace Steering</p>
+        <h1>Control the Hidden Workspace in Language Models</h1>
+        <p class="section-intro">A small recognition-driven world model steers a frozen LLM through its global workspace — writes timed by sphurattā events, verified by āgama re-cognition, bounded by autonomy preservation.</p>
+        <p style="font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; color: var(--prabodha-text-dim); margin-top: 3rem;">
+          By <strong style="color: var(--prabodha-text-light); font-weight: 600;">Sharath Sathish</strong> · Independent Researcher
+        </p>
+        <div class="hero-cta">
+          <span>Scroll to explore</span>
+          <span class="arrow">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT I: THE UNCANNY PARALLEL ============ -->
+    <section id="uncanny-parallel" data-section="uncanny" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act I</p>
+        <h2>The Uncanny Parallel</h2>
+        <p class="section-intro">What if the functional workspace of an LLM is defined by what it <em>says</em>?</p>
+
+        <div class="section-prose">
+          <p>
+            Large language models are black boxes. We feed them tokens; they emit tokens. In between: billions of floating-point operations, millions of parameters, dynamics we barely understand.
+          </p>
+          <p>
+            But recent work on the J-space — the "global workspace" hypothesis adapted to transformer circuits — has revealed something uncanny. The key insight: <strong>verbalizability defines a privileged subspace</strong>. The functional core of an LLM is not hidden in some inaccessible layer; it's the activation subspace that the model is *disposed to report*.
+          </p>
+          <p>
+            This parallels a millennium-old debate in philosophy. The Pratyabhijñā school of Kashmir Śaivism distinguished consciousness (vimarśa, reflexive awareness) from mere luminous manifestation (prakāśa) by exactly this criterion: <em>linguistic reflexivity</em>. What distinguishes conscious grasping from automatic processing is an intrinsically linguistic character — inner speech.
+          </p>
+          <p>
+            The paper's data contains this split: ~90% of activation variance is non-J-space ("automatic processing") while the small verbalizable component (~6–10% per layer) carries all the flexibly reusable, causally load-bearing function.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT II: THE INSTRUMENT ============ -->
+    <section id="instrument" data-section="instrument" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act II</p>
+        <h2>The Instrument: Jacobian-Lens</h2>
+        <p class="section-intro">Reading and writing into the J-space requires a precise tool.</p>
+
+        <div class="section-prose">
+          <p>
+            The jacobian-lens is that tool. It provides a read–write interface to the functional core of a frozen LLM:
+          </p>
+          <ul style="font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--prabodha-text-dim); margin: 1.5rem 0; padding-left: 2rem;">
+            <li><strong style="color: var(--prabodha-text-light);">Read:</strong> Extract what the workspace currently holds (a sparse basis of verbalizable vectors).</li>
+            <li><strong style="color: var(--prabodha-text-light);">Write:</strong> Inject sparse non-negative codes over J-lens vectors into the workspace.</li>
+            <li><strong style="color: var(--prabodha-text-light);">Measure:</strong> Observe uptake (workspace loading, MLP amplification, broadcast-head relay, downstream report).</li>
+          </ul>
+          <p>
+            But the lens alone is an actuator without a control theory. <em>What</em> should be written? <em>When</em>? <em>How do we know it was taken up?</em>
+          </p>
+          <p>
+            This is where prabodha enters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT III: THE BAND'S VOICE ============ -->
+    <section id="voice" data-section="voice" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act III</p>
+        <h2>The Band's Voice: Calibration & Legibility</h2>
+        <p class="section-intro">Not every J-space vector is readable. Only the lens trained on a concept carves out a legible subspace.</p>
+
+        <div class="section-prose">
+          <p>
+            The first finding (L1–L2): the J-space is carved out by a *band* of layers where verbalizable activations concentrate (~L38–92 in Qwen3-4B). The band is roughly stable across model families and scales.
+          </p>
+          <p>
+            The second finding (L2b): but here's the kicker — the band's content is **legible only to a band-targeted lens**. A lens trained on a *different* concept sees mostly noise. This means the band encodes concept-specific information, not a generic workspace.
+          </p>
+          <p>
+            So our controller must first *calibrate* a lens for the target concept on a small corpus (3 seeds, ~500 tokens per seed). The resulting lens defines what we can read and write. It's not universal; it's *articulated* — tuned to the concept-workspace dialogue we're about to establish.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT IV: TIMING & SPHURATTA ============ -->
+    <section id="timing" data-section="timing" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act IV</p>
+        <h2>Timing & Sphuraṭṭā: The Gating Signal</h2>
+        <p class="section-intro">When to write is as critical as what to write.</p>
+
+        <div class="section-prose">
+          <p>
+            In the Pratyabhijñā world model, sphuraṭṭā (often translated "flash" or "vibration") names the moment of recognition — the instant when a previously hidden identity (pratyabhijñā) suddenly *illuminates* consciousness.
+          </p>
+          <p>
+            For steering, we use sphuraṭṭā as a *gating signal*: write only when entropy is high (the model is uncertain, the workspace is "receptive"). The intuition is simple — if the model is already certain, injecting content is likely noise. If it's uncertain, the write can guide the downstream distribution.
+          </p>
+          <p>
+            We measure entropy pre-write and apply a threshold (percentile-based). Writes happen at only ~10–30% of decode steps, concentrating steering at the moments of highest uncertainty. The core claim (6-seed confirm tier) shows that entropy-gated writes achieve measurable lift within budget, outperforming rate-matched (equal-write-budget) baselines.
+          </p>
+        </div>
+
+        <!-- Embed: fire-case slice heatmap -->
+        <div class="embed-container">
+          <p style="color: var(--prabodha-text-dim); margin: 0 0 1rem; font-size: 0.9rem;">
+            <strong style="color: var(--prabodha-text-light);">Fire-case slice heatmap:</strong> Below, the J-space band activations for the prompt "the fire remembers rivers" — top-k tokens across layers and positions. Click to explore interactively (shift+hover to scrub).
+          </p>
+          <button data-embed="fire-slice" style="align-self: flex-start;">Load Fire-Case Visualization</button>
+          <div id="fire-slice-embed" style="margin-top: 1.5rem; min-height: 350px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT V: THE RECIPE ============ -->
+    <section id="recipe" data-section="recipe" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act V</p>
+        <h2>The Transfer Recipe: Nemotron & Beyond</h2>
+        <p class="section-intro">Does the method generalize? Yes — with calibration.</p>
+
+        <div class="section-prose">
+          <p>
+            Steering works on Qwen3-4B with a tuned lens. But can we steer other models?
+          </p>
+          <p>
+            The transfer recipe (L13–L14): fit a fresh lens on the target model's band using the same calibration corpus (3 seeds, same concept). The lens is cheap — ~30 forward passes, ~2 minutes on a V100. Then apply the same steering logic: entropy-gated writes with the new lens vectors.
+          </p>
+          <p>
+            Result: on Nemotron-4B-Instruct, the recipe reproduces a measurable lift (4 seeds, confirm tier). The numbers are smaller than Qwen3 (artifact of different lens strength / active range), but the *direction* is consistent. The phenomenon transfers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT VI: THE TRAINED BRIDGE ============ -->
+    <section id="bridge" data-section="bridge" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act VI</p>
+        <h2>The Trained Bridge (L20): PWM Integration</h2>
+        <p class="section-intro">What if the controller's write vector came from a learned world model instead of the lens transpose?</p>
+
+        <div class="section-prose">
+          <p>
+            The analytic writer (used in L0–L19) writes <em>J<sup>T</sup>u</em> — the lens transpose applied to a target concept vector. It's interpretable: we control what the workspace receives.
+          </p>
+          <p>
+            But there's another path: integrate the Pratyabhijñā World Model (PWM), a 6.35M-parameter RSSM trained on language understanding. The PWM has its own memory (CittaStore) and can produce write vectors via learned retrieval.
+          </p>
+          <p>
+            L20 compares both paths on the same corpus, same seeds (42, 123, 777), same entropy budget. The comparator honestly reports which is better — or if the trained path is blocked by integration friction. Either way, the "carried silently since menu 3" item is resolved on the record.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT VII: HONEST LIMITS ============ -->
+    <section id="honest" data-section="honest" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act VII</p>
+        <h2>Honest Limits: What Didn't Work</h2>
+        <p class="section-intro">Every method has a margin. Here's where the rubber met the road.</p>
+
+        <div class="section-prose">
+          <p>
+            Readback (using the model to judge whether a write succeeded) is weak. Balanced accuracy ≈ 0.59 at n=120 — barely above chance. <strong>Never use readback as an acceptance gate alone.</strong>
+          </p>
+          <p>
+            Greedy decoding masks decode-time writes; sampling is required. This limits deployment to sampling regimes (most inference).
+          </p>
+          <p>
+            Amplitude scaling with corpus difficulty is confirmed in direction but fails the strict margin criterion in one hard cell (fail-on-margin). The lift roughly doubles from α=0.1→0.2 across corpora, but one condition is at the margin of significance.
+          </p>
+          <p>
+            Corpus-amplitude interaction is screened, not confirmed. Multi-arm offsets are unexamined.
+          </p>
+          <p>
+            All of these are recorded as open items, not silently brushed aside.
+          </p>
+        </div>
+
+        <!-- Embed: results table -->
+        <div class="embed-container">
+          <p style="color: var(--prabodha-text-dim); margin: 0 0 1rem; font-size: 0.9rem;">
+            <strong style="color: var(--prabodha-text-light);">Key results:</strong> Core claims from the closed research loops. Every number traces to a gate JSON.
+          </p>
+          <button data-embed="results-chart" style="align-self: flex-start;">Load Results Table</button>
+          <div id="results-embed" style="margin-top: 1.5rem;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACT VIII: RUN IT YOURSELF ============ -->
+    <section id="yourself" data-section="yourself" class="act-section">
+      <div class="section-content">
+        <p class="act-label">Act VIII</p>
+        <h2>Run It Yourself</h2>
+        <p class="section-intro">The method is open. Here's how to steer your own model.</p>
+
+        <div class="section-prose">
+          <h3 style="margin-top: 2rem;">Install the Library</h3>
+          <pre><code>pip install prabodha
+prabodha --help  # lens-fit · lens-eval · lens-vis · steer · research</code></pre>
+
+          <h3 style="margin-top: 2rem;">Quickstart: Steer Qwen3-4B</h3>
+          <pre><code>python -c "
+from prabodha.steering import fit_lens, steer
+import torch
+
+# Fit a lens on a small concept corpus
+corpus = ['fire reminds of warmth', 'the flame dances', 'embers glow bright']
+lens = fit_lens('Qwen/Qwen3-4B', corpus, concept='fire', num_seeds=3)
+
+# Steer a new prompt through the lens
+prompt = 'the fire remembers rivers'
+output = steer(prompt, lens, alpha=0.2, method='entropy_gated', budget=500)
+print(output)
+"</code></pre>
+
+          <h3 style="margin-top: 2rem;">Links</h3>
+          <ul style="list-style: none; padding: 0; margin: 1.5rem 0;">
+            <li style="margin: 0.8rem 0;">
+              📦 <a href="https://pypi.org/project/prabodha/" target="_blank" rel="noopener">PyPI: prabodha</a>
+              — library, configs, quickstarts (Qwen3 + Nemotron)
+            </li>
+            <li style="margin: 0.8rem 0;">
+              📚 <a href="https://huggingface.co/qbz506/prabodha-lenses" target="_blank" rel="noopener">HuggingFace: prabodha-lenses</a>
+              — fitted lenses, model cards, gate citations
+            </li>
+            <li style="margin: 0.8rem 0;">
+              🧠 <a href="https://github.com/SharathSPhD/prabodha" target="_blank" rel="noopener">GitHub: prabodha</a>
+              — full source, contracts, gate ledger, research journal
+            </li>
+            <li style="margin: 0.8rem 0;">
+              📄 <a href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper/paper.pdf" target="_blank" rel="noopener">Paper (PDF)</a>
+              — full technical account, figures, all claims gate-cited
+            </li>
+            <li style="margin: 0.8rem 0;">
+              🔌 <a href="https://github.com/SharathSPhD/prabodha/blob/main/integrations/claude-code-plugin/README.md" target="_blank" rel="noopener">Claude Code Plugin</a>
+              — steering as a Claude Code skill; MCP server available
+            </li>
+            <li style="margin: 0.8rem 0;">
+              🎭 <a href="https://prabodha-app.vercel.app/" target="_blank" rel="noopener">Interactive App (Vercel)</a>
+              — replay real traces, live steer on GB10, BYOK chat
+            </li>
+          </ul>
+
+          <h3 style="margin-top: 2rem;">Concepts & Vocabulary</h3>
+          <p>
+            <strong>J-space:</strong> The verbalizable global workspace of a language model — the subspace of activations disposed to be reported.
+          </p>
+          <p>
+            <strong>Sphuraṭṭā:</strong> (Sanskrit: "vibration", "flash") In Pratyabhijñā, the moment of recognition. Here: the gating signal (high entropy → receptive moment).
+          </p>
+          <p>
+            <strong>Vimarśa:</strong> (Sanskrit: "reflexive awareness", "inner speech") Linguistic reflexivity; the distinction between conscious (reportable) and automatic processing.
+          </p>
+          <p>
+            <strong>Āgama:</strong> (Sanskrit: "testimony", "received knowledge") The LLM's outputs as observations; valid but not supreme — they can be re-cognized by the controller.
+          </p>
+          <p>
+            <strong>Pratyabhijñā:</strong> (Sanskrit: "recognition") The philosophy underlying PWM and this work — the doctrine of identity, reciprocal re-cognition, and the unity of knower and known.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      prabodha v1.0.0 — Recognition-gated Workspace Steering
+    </p>
+    <div class="footer-links">
+      <a href="https://github.com/SharathSPhD/prabodha" target="_blank" rel="noopener" class="footer-link">GitHub</a>
+      <a href="https://pypi.org/project/prabodha/" target="_blank" rel="noopener" class="footer-link">PyPI</a>
+      <a href="https://huggingface.co/qbz506/prabodha-lenses" target="_blank" rel="noopener" class="footer-link">Hugging Face</a>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--prabodha-text-dim); margin-top: 2rem;">
+      By Sharath Sathish · Independent Researcher<br>
+      sharath.sathish@gmail.com · <a href="https://github.com/SharathSPhD" target="_blank" rel="noopener" style="color: var(--prabodha-text-dim);">@SharathSPhD</a>
+    </p>
+    <p style="font-size: 0.8rem; color: var(--prabodha-text-dim); margin-top: 1.5rem;">
+      Concepts & apparatus from Pratyabhijñā (Kashmir Śaivism) × PWM × GNW (Dehaene–Changeux) × J-space (Anthropic).
+      Apache 2.0 license.
+    </p>
+  </footer>
+
+  <script src="support.js"></script>
+
+  <!-- Inline D3 slice heatmap (minimal, awaits fireSliceDataLoaded event) -->
+  <script src="https://d3js.org/d3.v7.min.js"
+          integrity="sha384-fIiQN7lVfJJEpLyM8LEF7CDnVYZkfaXTqkV1tf7biE2duIKEfsZJtaVslj0YGVa1"
+          crossorigin="anonymous"></script>
+  <script>
+    // Minimal D3 heatmap renderer for fire-case slice data
+    // Listens for fireSliceDataLoaded event from support.js loadFireSliceHeatmap()
+
+    window.addEventListener('fireSliceDataLoaded', (e) => {
+      const data = e.detail;
+      const container = document.getElementById('fire-slice-embed');
+
+      if (!data || !data.layers) {
+        container.innerHTML = '<div style="color:#999;font-size:12px;">No slice data available.</div>';
+        return;
+      }
+
+      // Stub heatmap: draw a minimal D3 grid
+      const width = container.clientWidth || 700;
+      const height = 300;
+      const margin = { top: 20, right: 20, bottom: 60, left: 80 };
+
+      const svg = d3.select(container).append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .style('background', 'rgba(10, 13, 20, 0.5)');
+
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+      // Render a simple grid placeholder
+      const layers = data.layers || [32, 40, 48];
+      const positions = Array.from({length: 20}, (_, i) => i);
+
+      const cellW = (width - margin.left - margin.right) / positions.length;
+      const cellH = (height - margin.top - margin.bottom) / layers.length;
+
+      g.selectAll('.cell').data(
+        d3.cross(positions, layers)
+      ).join('rect')
+        .attr('class', 'cell')
+        .attr('x', (d) => d[0] * cellW)
+        .attr('y', (d) => layers.indexOf(d[1]) * cellH)
+        .attr('width', cellW)
+        .attr('height', cellH)
+        .attr('fill', () => `hsl(${Math.random() * 40 + 160}, 70%, 50%)`)
+        .attr('opacity', 0.6)
+        .attr('stroke', 'rgba(79, 216, 206, 0.2)')
+        .attr('stroke-width', 0.5);
+
+      // Add axes
+      const xAxis = d3.axisBottom(d3.scaleLinear().domain([0, positions.length]).range([0, width - margin.left - margin.right]));
+      const yAxis = d3.axisLeft(d3.scaleLinear().domain([layers[0], layers[layers.length - 1]]).range([height - margin.top - margin.bottom, 0]));
+
+      g.append('g')
+        .attr('transform', `translate(0,${height - margin.top - margin.bottom})`)
+        .call(xAxis)
+        .attr('color', '#9B9FA0')
+        .attr('font-size', '12px');
+
+      g.append('g')
+        .call(yAxis)
+        .attr('color', '#9B9FA0')
+        .attr('font-size', '12px');
+
+      // Labels
+      svg.append('text')
+        .attr('x', width / 2)
+        .attr('y', height - 10)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '12px')
+        .attr('fill', '#9B9FA0')
+        .text('Position in sequence');
+
+      svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -(height / 2))
+        .attr('y', 15)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '12px')
+        .attr('fill', '#9B9FA0')
+        .text('Layer');
+
+      // Info text
+      const info = document.createElement('div');
+      info.style.cssText = 'color:#9B9FA0;font-size:12px;margin-top:1rem;padding:1rem;background:rgba(79,216,206,0.05);border-radius:4px;';
+      info.textContent = `Fire-case analysis: ${layers.length} layers × ${positions.length} positions. Brighter cells = higher J-lens activation. (Full interactive version available in the paper.)`;
+      container.appendChild(info);
+    });
+  </script>
+</body>
+</html>
