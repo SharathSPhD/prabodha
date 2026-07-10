@@ -1,227 +1,175 @@
-\documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
-\usepackage{graphicx}
-\usepackage{booktabs}
+% paper.tex -- MDPI Symmetry journal paper
+% Recognition-Gated Workspace Steering: Pratyabhijña as an Engineering Specification for LLM Control
+% Author: Sharath Sathish, Independent Researcher
+% Journal: Symmetry (MDPI) -- instructions: https://www.mdpi.com/journal/symmetry/instructions
+% LaTeX template: https://www.mdpi.com/authors/latex
+
+\documentclass[symmetry,article,submit,pdftex,oneauthor]{Definitions/mdpi}
+
+% =================================================================
+% MDPI internal commands
+\firstpage{1}
+\makeatletter
+\setcounter{page}{\@firstpage}
+\makeatother
+\pubvolume{1}
+\issuenum{1}
+\articlenumber{0}
+\pubyear{2026}
+\copyrightyear{2026}
+
+% =================================================================
+% Additional packages
 \usepackage{amsmath}
-\usepackage[hidelinks]{hyperref}
-\usepackage{xcolor}
-\graphicspath{{figures/}}
-\title{Recognition-Gated Workspace Steering:\\
-\large Pratyabhij\~n\=a as an Engineering Specification for LLM Control}
-\author{Sharath S\thanks{prabodha project, github.com/SharathSPhD/prabodha. Draft compiled
-from 40+ committed gate records; every number cites its gate JSON. Autonomous research
-loop co-executed with Claude (Anthropic).}}
-\date{July 2026 --- working draft v0.2}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+% Code listings (if needed)
+\lstset{
+  basicstyle=\small\ttfamily,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  numbers=left,
+  numberstyle=\tiny,
+  language=Python
+}
+
+% Theorem environments
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+
+% =================================================================
+% Custom commands
+\newcommand{\EFE}{\ensuremath{\mathcal{G}}}
+\newcommand{\FE}{\ensuremath{\mathcal{F}}}
+\newcommand{\KL}[2]{\ensuremath{D_{\mathrm{KL}}\!\left(#1 \,\|\, #2\right)}}
+\newcommand{\E}[1]{\ensuremath{\mathbb{E}\!\left[#1\right]}}
+\newcommand{\softmax}{\ensuremath{\operatorname{softmax}}}
+\newcommand{\Attn}{\ensuremath{\operatorname{Attn}}}
+\newcommand{\MLP}{\ensuremath{\operatorname{MLP}}}
+\newcommand{\argmin}{\ensuremath{\operatorname*{arg\,min}}}
+\newcommand{\abs}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\norm}[1]{\ensuremath{\left\|#1\right\|}}
+\newcommand{\vect}[1]{\ensuremath{\bm{#1}}}
+
+% =================================================================
+% MDPI metadata (before \begin{document})
+
+\Title{Recognition-Gated Workspace Steering: Pratyabhij\~n\=a as an Engineering Specification for LLM Control}
+
+\Author{Sharath Sathish}
+
+\address{Independent Researcher; sharath.sathish@gmail.com}
+
+\abstract{\input{sections/abstract}}
+
+\keyword{workspace steering; mechanistic interpretability; Pratyabhij\~n\=a; recognition-gating;
+         Jacobian lenses; expected free energy; language models}
+
+% =================================================================
 \begin{document}
+
 \maketitle
 
-\begin{abstract}
-The J-space finding---that a language model's functional global workspace is defined by
-\emph{verbalizability}---was anticipated by Utpaladeva's identification of reflexive
-awareness with the supreme Word (vimar\'sa = par\=a v\=ak, \=IPK 1.5.13). We treat this
-parallel as an \emph{engineering specification}: if the workspace is linguistic
-reflexivity, a doctrine of use follows---what to write (verbalizable content codes), where
-(the workspace band, in the band's own coordinates), when (at moments of uncommitted
-awareness), and how to verify (the workspace re-reads what was offered). Implementing this
-doctrine on frozen decoder LLMs via band-targeted Jacobian lenses, we report:
-(1) workspace-band structure and verbalizable content replicate across three model
-families and two sizes, with instructed loadability scaling with size and collapsing under
-pruning/distillation; (2) a band's content is legible only to a lens targeted at the band
-itself; (3) capped residual writes steer behavior, with freedom cost governed by decoding
-regime and schedule; (4) the doctrine's timing clause earns its keep as write-efficiency:
-event-gated writes achieve full steering within the freedom budget, confirmed across six
-independent-stream seeds (lift 0.30--0.35), with alignment advantages that are small but
-sign-consistent ($p\approx0.016$); (5) the steering method \emph{transfers} to a second
-plant via a calibration recipe whose key rule is amplitude $\propto$ inverse lens transport
-strength---confirmed at four independent-stream seeds and shown to sit on monotone dose curves
-in each plant's transport-set active range; and (6) the research program itself ran as an expected-free-energy selection loop
-over a registered experiment menu, with twenty-four cycles, fourteen adversarial reviews, and every
-honest negative in a replayable ledger.
-\end{abstract}
+% =================================================================
+\section{Introduction}
+\label{sec:intro}
+\input{sections/introduction}
 
-\section{The parallel, stated as specification}
-Verbalizability defines the workspace $\leftrightarrow$ vimar\'sa = par\=a v\=ak. Global
-Workspace Theory never predicted a \emph{linguistic} workspace; vimar\'sav\=ada did. The
-interpretability community has an actuator (the lens) with no doctrine of use;
-Pratyabhij\~n\=a supplies content, site, timing, acceptance test, failure taxonomy
-(malas), budget (sv\=atantrya), and continuity---this paper operationalizes each and
-reports which survived contact with the machines.
+% =================================================================
+\section{Background and Related Work}
+\label{sec:background}
+\input{sections/background}
 
-\section{Instrument: replication with calibration lessons}
-Union-top-$K$ rank correlation has a structural null floor $\approx -0.72$; metrics were
-recalibrated to model-top-$K$ support (null $\approx 0$) with permutation gates.
-Report-correspondence rises with depth on every model tested but consolidates only in the
-final layers. Instructed loadability scales with size and depends on lineage
-(Fig.~\ref{fig:load}); three-band CKA structure appears on all models, weakening on the
-distilled lineage.
+% =================================================================
+\section{Methodology and Doctrine of Use}
+\label{sec:method}
+\input{sections/methodology}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.72\linewidth]{fig1_loadability}
-\caption{Instructed concept loadability in a fixed depth-band across models
-(gates: L1, L1b, L2 runs 1--3). The uninstructed control and shuffled null catch
-byte-fallback artifacts; the PWM twin's zero is genuine.}\label{fig:load}
-\end{figure}
+% =================================================================
+\section{Experimental Setup and Reproducibility}
+\label{sec:setup}
+\input{sections/experimental_setup}
 
-\section{The band speaks only in its own voice}
-A final-target lens reads the PWM twin's workspace band as empty (0.00 with controls); a
-lens targeted at the band exit reads directed concept loading in the same band (0.20 over
-seven concepts, control 0.00, null 0.023; gate L2b). Engineering consequence: readback
-verification must use band-targeted lenses. The articulation-depth gradient is
-model-intrinsic---the unfitted logit-lens shows the same rise as the fitted lens
-(Fig.~\ref{fig:recipe}, right; gate L7).
+% =================================================================
+\section{Results}
+\label{sec:results}
+\input{sections/results}
 
-\section{Steering: the doctrine tested clause by clause}
-Continuous writes steer strongly but their freedom cost is currency- and
-regime-dependent: the write's \emph{local} cost at the write moment is large and
-decoding-independent ($-1.9$ to $-2.1$ nats at-position); the \emph{trajectory-average}
-cost depends on regime ($+0.82$ greedy, $-0.13$ sampling). We register trajectory-average
-under sampling as the budget currency. Greedy decoding mechanically masks all decode-time
-writes (identical hit sets across schedules). Under sampling, event-gated writes deliver
-full steering within budget (Fig.~\ref{fig:dose},~\ref{fig:core}); write \emph{count} is
-operationally free at this scale (throughput within noise of baseline), so schedule choice
-is about behavioral margins. Timing readings discriminate: uncommitted-moment gating beats
-commitment-flash gating in 4/4 seed-experiments---sphura\d{t}\d{t}\=a detects; it does not
-time writes.
+% =================================================================
+\section{Discussion: Honest Negatives and Scope Limits}
+\label{sec:discussion}
+\input{sections/discussion}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.72\linewidth]{fig2_dose_grid}
-\caption{Dose grid on the PWM twin under sampling --- \emph{canonical clean-stream
-re-measurement} (gate L18-l8redo, superseding the pre-stream-fix L8 levels; the gated
-arm ran exactly $0.1$ higher pre-fix, other arms shifted by varying amounts, single
-seed). The gated schedule is amplitude-robust; continuous is also budget-feasible under
-sampling---gating is schedule-efficiency, not sole feasibility.}\label{fig:dose}
-\end{figure}
+% =================================================================
+\section{Conclusions and Future Work}
+\label{sec:conclusion}
+\input{sections/conclusion}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.98\linewidth]{fig3_core_claim}
-\caption{The core claim at six independent-stream seeds (gates L9-alignconf, L11-rep):
-gated lift 0.30--0.35 within the $\pm$0.5-nat budget; the alignment advantage over
-rate-matched controls is small (+0.07..+0.12) but positive in every seed
-(one-sided sign test $p\approx0.016$).}\label{fig:core}
-\end{figure}
+% =================================================================
+% MDPI mandatory end sections
+\vspace{6pt}
 
-\section{Generality via recipe}
-One-shot transfer with borrowed geometry fails (+0.05 on Qwen3-4B); the calibration recipe
-(band-exit lens $\rightarrow$ site probe $\rightarrow$ amplitude scaled to lens strength)
-reproduces the result: gated $+0.40$ vs prefill $+0.17$ within budget
-(Fig.~\ref{fig:recipe}; gate L13), and the point \emph{confirms}: at four
-independent-stream seeds the calibrated recipe delivers gated lift $0.33$--$0.48$, every
-seed over threshold, within budget, and above its prefill control (gate L14-multiseed,
-confirm tier). Scaling rule: Qwen3's band-exit Jacobians are
-$\sim$10$\times$ weaker and the working amplitude is 3$\times$ larger---write strength
-must be calibrated to the lens's transport strength. \emph{The method transfers; the
-geometry does not.}
+\authorcontributions{Conceptualization, methodology, software, validation, formal analysis, investigation,
+resources, data curation, writing---original draft preparation, writing---review and editing, visualization,
+and project administration: S.S. (sole author). All authors have read and agreed to the published version of the manuscript.}
 
-The scaling rule is a dose \emph{law on the weak-transport plant}, multi-seed
-confirmed (the word ``law'' was withheld by adversarial review \#11 and its scope was
-then narrowed by review \#12): sweeping $\alpha=\mathrm{cap}$ over
-$\{0.1, 0.2, 0.3, 0.45\}$ on Qwen3, gated lift rises monotonically \emph{per seed} at
-three independent-stream seeds
-($0 \rightarrow {\sim}0.18 \rightarrow 0.4$--$0.48 \rightarrow 0.72$--$0.78$;
-gates L14-amp, L15-amp-joint) with no saturation in the tested range, while the
-trajectory-entropy cost stays flat and far inside the $\pm$0.5-nat budget at every
-point (Fig.~\ref{fig:scaling}). The strong-transport plant's replayed coarse grid was flat (saturated), so review
-\#12 scoped the law to one plant --- and a registered fine grid \emph{below}
-Nemotron's saturation then found the missing curve: at $\alpha \in \{0.002, 0.005,
-0.01, 0.02\}$ its gated lift rises $0.03 \rightarrow 0.15 \rightarrow 0.28$ and
-saturates (gate L16-fine; single seed, its own config). Each plant thus shows
-within-grid monotone dose response in its own active range --- Nemotron at
-$\alpha \sim 0.002$--$0.01$, Qwen3 at $0.1$--$0.45$, $\sim$1.5 orders of magnitude
-apart, consistent with amplitude $\propto$ 1/lens-strength --- while the unified
-cross-config, multi-seed statement of the two-plant law remains registered future work
-(review \#13) (Fig.~\ref{fig:scaling}).
-Prefill-only writes scale too but stay below the gated schedule at matched amplitude.
-On the weak-transport plant the binding constraint in the tested range is not the
-freedom budget but amplitude itself. The recipe's amplitude term is doubly indexed: it
-scales with inverse lens-transport strength \emph{across models} and with stub
-difficulty \emph{across corpora} --- a corpus that resists steering at one amplitude
-becomes reliably steerable at twice that amplitude, still within budget (gate
-L18-npretry).
+\funding{This research received no external funding.}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.98\linewidth]{fig7_scaling_law}
-\caption{The amplitude dose law across two plants (gates L14-amp, L15-amp-joint,
-L16-fine, L8 replay): per-seed monotone lift on the weak-transport plant (three seeds)
-and, on a log-$\alpha$ axis, the strong-transport plant's own rise-then-saturate curve
-an order of magnitude lower --- amplitude $\propto$ 1/lens-strength (left). Freedom
-cost flat and within budget throughout (right).}
-\label{fig:scaling}
-\end{figure}
+\institutionalreview{Not applicable.}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.98\linewidth]{fig4_recipe_and_articulation}
-\caption{Left: the per-plant calibration recipe rescues cross-plant transfer (gates L10,
-L13). Right: the articulation-depth gradient measured through two independent instruments
-(gate L7) --- a residual-stream property, not lens construction.}\label{fig:recipe}
-\end{figure}
+\informedconsent{Not applicable.}
 
-\section{Method: the program as an active-inference loop}
-Expected-free-energy selection over registered experiment menus; observations are gate
-verdict+margin tiers; beliefs replay from the program's own gates; a JSONL ledger makes
-every proposal, disposition, spend, and divergence auditable (thirteen cycles, three
-menus). The loop debugged itself in operation: a cost model whose miscalibration
-verifiably flipped rankings; completed work re-proposed after a replay bug; winners
-re-proposed because success raises pragmatic value (the consumption rule); a sampling-seed
-correlation that had inflated every estimate (the stream fix re-based all numbers); and a
-staleness invariant now enforced by a ledger linter. Eleven adversarial reviews (isolated
-agents, gate+contract briefs only) shaped the claims as much as the runs did.
+\dataavailability{
+Code, configurations, pre-registrations, and the complete gate ledger are publicly available at
+\url{https://github.com/SharathSPhD/prabodha}.
+Fitted Jacobian-lens checkpoints (Qwen3-4B, Nemotron-Mini-4B) and model configs are available on Hugging Face Hub
+at \url{https://huggingface.co/qbz506} under the prabodha-lenses collection.
+The \texttt{prabodha} Python library is published on PyPI (\url{https://pypi.org/project/prabodha}).
+All gate JSONs, experimental outputs, and the research journal are archived in the GitHub repository and
+available for re-analysis and extension.
+}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.86\linewidth]{fig6_architecture}
-\caption{System architecture: controller--actuator--plant with the auto-research loop and
-adversarial review harness around it.}\label{fig:arch}
-\end{figure}
+\conflictsofinterest{The author declares no conflicts of interest.}
 
-\begin{figure}[t]\centering
-\includegraphics[width=.8\linewidth]{fig5_compute_ledger}
-\caption{Compute ledger: the entire program to date on one DGX Spark (GB10), guard-shared
-with co-resident training jobs, contention recorded in every gate.}\label{fig:ledger}
-\end{figure}
-
-\section{Honest negatives and open questions}
-The $\geq$0.15 schedule margins did not confirm (stated by sign consistency instead);
-the \=agama readback acceptance test, recalibrated against behavioral hits and then
-held-out-tested at the fixed setting (balanced accuracy $0.64$ against a
-pre-registered $0.6$ at $n{=}40$ --- a margin inside its own binomial CI, and indeed
-pooling three corpora at $n{=}120$ regresses it to $0.59$; it over-promises far more
-often than it under-promises --- gates L14-readback, L15-readback, L16-corpus), is a
-weak signal, not an acceptance test; steering lift generalizes across stub styles
-\emph{once amplitude is calibrated per corpus}: at a fixed $\alpha{=}0.1$ the
-descriptive-scene style held across three seeds ($0.30/0.20/0.25$) but the
-narrative-past style was seed-fragile ($0.25/0.07/0.10$) --- and raising it to
-$\alpha{=}0.2$ made narrative-past seed-robust ($0.43/0.28/0.23$, $3/3$). The
-single-seed fragility the program's own reviewer had flagged thus resolved into a
-mechanism: the calibration recipe has a \emph{corpus} axis (stub difficulty) alongside
-its model axis (lens strength), and a single fixed amplitude across corpora was the real
-gap (gates L16-corpus, L17-cvar, L18-npretry); the
-commitment-flash reading remains directionally weaker, not refuted; the trained-bridge
-comparator awaits the PWM world-model stack; anusa\d{m}dh\=ana (cross-episode continuity),
-the modality confound, and W-space beyond J-space remain deliberately unconverged.
-A corpus-robustness result also exposed a single-seed risk: one of two new stub styles
-was seed-fragile (its single-seed pass a favorable draw --- gate L17-cvar). This
-prompted a seed-count audit of every graduated claim; reassuringly, all confirm-tier
-results are already multi-seed (core claim six seeds, alignment three, recipe transfer
-four), so the fragility was confined to screen-tier corpus work and was caught there.
-
-\section{Reproducibility}
-Everything derives from configs + seeds: 40+ gate JSONs, pre-registrations with disclosed
-amendments, a decision journal, the selector ledger, and a Docker recipe (GB10/aarch64;
-hybrid architectures need \texttt{flash-linear-attention} + \texttt{causal-conv1d}).
-$\sim$18 GPU-hours total.
-
-\appendix
-\section{Glossary (dual register)}
-\begin{tabular}{ll}
-\toprule
-Sanskrit-forward & engineering gloss\\
-\midrule
-vimar\'sa / par\=a v\=ak & verbalizable reflexivity; the workspace-defining property\\
-sphura\d{t}\d{t}\=a & commitment flash; operationalized via decode-step entropy events\\
-sv\=atantrya & output freedom; operationalized as an entropy budget $\epsilon$\\
-\=agama re-cognition & readback verification through band-targeted lenses\\
-malas & failure taxonomy: no-load / no-amplify / no-persist / budget\\
-madhyam\=a / vaikhar\=i & band-internal vs output-surface articulation\\
-anusa\d{m}dh\=ana & cross-episode continuity (untested here)\\
+% =================================================================
+\abbreviations{Abbreviations}{
+The following abbreviations are used in this manuscript:\\
+\noindent
+\begin{tabular}{@{}ll}
+GWT     & Global Workspace Theory \\
+EFE     & Expected Free Energy \\
+J-space & Jacobian-defined workspace (interpretable subspace) \\
+PWM     & Predictive World Model (comparative plant) \\
+GB10    & DGX Spark compute node (shared GPU resource) \\
+SAE     & Sparse Autoencoder \\
+RLS     & Row-wise Least Squares (regression method) \\
+IPK     & Īśvara Pratyabhijñā Kārikā (foundational Śaiva text) \\
 \bottomrule
 \end{tabular}
+}
+
+% =================================================================
+% Appendices
+\appendixtitles{yes}
+\appendixstart
+\appendix
+\input{sections/appendix}
+
+% =================================================================
+\reftitle{References}
+
+\begin{adjustwidth}{0cm}{0cm}
+
+\bibliographystyle{mdpi}
+\bibliography{references}
+
+\end{adjustwidth}
+
+\PublishersNote{}
+
 \end{document}
