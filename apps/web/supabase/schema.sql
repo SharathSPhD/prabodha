@@ -124,23 +124,38 @@ as $$
 $$;
 
 -- Admin RPC to update config (security definer, runs as postgres)
--- CRITICAL: re-checks admin status before allowing update (privilege escalation protection)
+-- CRITICAL: re-checks admin status before allowing update (privilege escalation protection).
+-- plpgsql (not sql) because it uses RAISE; sql-language functions cannot RAISE.
 create or replace function admin_set_runtime_config(cfg_key text, cfg_value text)
 returns void
-language sql
+language plpgsql
 security definer
 set search_path = 'public', 'pg_temp'
 as $$
+begin
   -- Re-check admin status (privilege escalation protection)
-  select 1 from public.user_tiers
-  where user_id = auth.uid() and tier = 'admin'
-  or raise exception 'admin access required';
+  if not exists (
+    select 1 from public.user_tiers
+    where user_id = auth.uid() and tier = 'admin'
+  ) then
+    raise exception 'admin access required';
+  end if;
 
   update public.runtime_config
   set value = cfg_value,
       updated_at = now()
   where key = cfg_key;
+end;
 $$;
+
+-- Defense-in-depth: functions default to GRANT EXECUTE TO PUBLIC (which anon inherits).
+-- Revoke from PUBLIC and grant only to authenticated. The admin RPC additionally
+-- self-gates (raises 'admin access required' for non-admin authenticated callers), so
+-- the residual "authenticated can execute" linter note (0029) is intentional and safe.
+revoke execute on function admin_set_runtime_config(text, text) from public;
+revoke execute on function check_is_admin() from public;
+grant execute on function admin_set_runtime_config(text, text) to authenticated;
+grant execute on function check_is_admin() to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Exported data (results, traces, etc.)

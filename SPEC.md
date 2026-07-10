@@ -1,5 +1,5 @@
 # SPEC.md — prabodha technical specification
-**v0.20 (L19 closure) — LIVING DOCUMENT: revised at every loop closure; see Evolution Log (§9).**
+**v0.21 (v1.0.0 release) — LIVING DOCUMENT: revised at every loop closure; see Evolution Log (§9).**
 
 ## 1. Object
 Build and validate **recognition-gated workspace steering**: a control loop in which a small stateful
@@ -88,6 +88,23 @@ replayed to rebuild beliefs; EXPLORE→CONFIRM emerges. Active inference is used
 All configs YAML; schema-validated; seeds explicit.
 
 ## 9. Evolution Log (append-only)
+- v0.21 (WS7 closure, program productization, 2026-07-10): L20 resolved the trained-bridge
+  scope gap (PWM CittaStore write path integrated, cold-store steering 3/3 seeds, functional
+  confirm, honest scope: not claiming "trained beats analytic" — store was untrained; trained-
+  bridge training remains OPEN). Reviews #17 (L20 adversarial) and #18 (program-wide audit)
+  both PASS; #17 caught a framing overclaim (fixed in paper). Program PRODUCTIZED: six
+  deliverables shipped — (1) PyPI library (`prabodha` on PyPI, installable via `pip`),
+  (2) HuggingFace lens fittings (`qbz506/prabodha-lenses` on HF), (3) Claude Code plugin
+  with MCP steering server (`integrations/claude-code-plugin/` + `integrations/mcp-server/`),
+  (4) Next.js/Supabase/Vercel web app with live "J-space theatre" (replay of GB10 traces),
+  (5) MDPI-template research paper (sole author Sharath Sathish, Independent Researcher,
+  `docs/paper/paper.tex/.pdf`), (6) ACD-caliber GitHub Pages site (`sharathsphd.github.io/prabodha`).
+  v1.0.0 RELEASED. Ground truth for L20 findings: gates/gate_L20_confirm.json. §6 doctrine
+  remains unchanged (v3 injection rules as registered). HONEST OPEN ITEMS: trained-store
+  training (how much does training the CittaStore improve over cold?), cross-episode
+  continuity (does the store's state persist meaningfully across generation episodes?),
+  live GB10 gateway (operator-run, not auto-deployed), W-space/modality (convergence
+  underdetermined, out-of-scope for v1.0.0). Full closure summary in docs/RELEASE_NOTES_v1.0.0.md.
 - v0.20 (L7-L19 catch-up, PR #10-#22, 2026-07-10): this entry closes a 13-loop gap in this
   log (v0.10 was L6; L7-L19 closed without SPEC updates while paper/HTML carried the
   living-document role — corrected here per "SPEC/PRD evolve at every loop closure").
