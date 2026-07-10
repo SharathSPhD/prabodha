@@ -80,18 +80,38 @@ gate = {
                            "pass_seeds": func_pass, "n": n, "verdict": functional_verdict},
             "equivalence": {"criterion": f"|trained_lift - analytic_lift| <= {MAX_GAP}",
                             "pass_seeds": equiv_pass, "n": n, "verdict": equiv_verdict,
-                            "note": "surface metric resolution is 1/9 = 0.111; the one "
-                                    "seed (777) exceeding the gap does so by exactly one "
-                                    "concept-hit, in the trained bridge's FAVOUR "
-                                    "(0.4445 vs 0.3334) — within quantization noise, not "
-                                    "a degradation."},
+                            "note": "seed 777 FAILS the equivalence criterion: gap 0.1111 "
+                                    "is 2.2x the 0.05 threshold. Two facts both hold and "
+                                    "are both reported: (a) the miss is the SMALLEST the "
+                                    "metric can resolve — exactly one concept-hit (1/9), "
+                                    "and (b) it is in the cold store's FAVOUR (0.4445 vs "
+                                    "0.3334), so it is not a degradation. It is NOT "
+                                    "'within noise' — it is a real one-hit difference the "
+                                    "9-sample corpus cannot adjudicate as signal vs draw."},
+            "determinism_probe": {
+                "flagged_by": "review #17",
+                "concern": "seed-123 mean step-entropy deltas are near-mirror "
+                           "(entropy_gated +0.0724, trained_bridge -0.0727); review asked "
+                           "whether this signals a determinism/pipeline artifact.",
+                "resolution": "REFUTED. Verified directly: at seed 123 all 9 per-generation "
+                              "records differ between the two arms (write counts, per-gen "
+                              "entropies, and hits all differ cell-by-cell). The arms are "
+                              "not determinism-identical. The near-mirror is a coincidence "
+                              "of the 9-cell MEAN landing ~symmetric about the shared "
+                              "baseline (matched write magnitude alpha=0.2/norm_cap sets "
+                              "|dH| scale; direction sets sign) — not a shared RNG stream. "
+                              "It does not bear on the seed-777 surface gap, which is a "
+                              "hit-count difference independent of the entropy means.",
+                "status": "resolved",
+            },
             "resolves": "INTEGRATION (the real win): the PWM CittaStore write path, "
                         "BLOCKED since menu 3 (PWM not on GB10), now runs end-to-end on "
                         "the frozen Qwen3-4B, device-aligned, wired into the dual gate. "
                         "COMPARATOR: a COLD/UNTRAINED CittaStore recall steers within "
-                        "budget on all 3 seeds and is indistinguishable from analytic "
-                        "within the corpus's 1/9 metric resolution (2/3 exact, 1/3 differs "
-                        "by a single hit in the cold store's favour).",
+                        "budget on all 3 seeds; it is comparable to analytic but NOT "
+                        "equivalent under the registered criterion — 2/3 seeds match "
+                        "exactly, and seed 777 is distinguished by one concept-hit (1/9, "
+                        "the metric's minimum resolvable unit) in the cold store's favour.",
             "still_open": "the store is UNTRAINED (no patterns stored before recall); "
                           "whether a TRAINED/pattern-populated store BEATS analytic is "
                           "NOT tested here and remains an explicit open item.",
