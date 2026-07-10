@@ -469,3 +469,17 @@
   lesson needs to live in a pre-dispatch checklist, added to the recipe doc.)
 - Menu 3: runnable items consumed (trained_bridge remains blocked+ledgered). Thirteen
   selector cycles across three menus.
+
+## 2026-07-09 — L14 cycle 14 dispatch + consolidation artifacts
+- Guard REFUSED first amplitude-grid dispatch: "budget exceeded for L11 (spent=1.1 cap=1.2)" —
+  correct behavior; the dispatch reused a stale loop tag. Fix: L14 budget line added to
+  research/state.json (cap 1.0h = menu-4 registered budget), re-dispatched as L14.
+  Lesson (now habit): every new menu opens a new budget line BEFORE first dispatch.
+- Cycle-14 grid live: qwen3 e13full recipe at alpha=cap in {0.1, 0.2, 0.3, 0.45}, both knobs
+  overridden (--alpha AND --norm-cap-rel; the inert-knob checklist applied).
+- Consolidations (operator-directed, side-of-run): paper.tex compiled to docs/paper/paper.pdf
+  (6 figures regenerated from gate JSONs via scripts/tools/make_figures.py); dual-audience HTML
+  explainer generated (scripts/tools/make_artifact.py) and published as a Claude artifact;
+  H4 phase-1 shipped: `prabodha` console entrypoint (pyproject [project.scripts]) routing
+  lens-fit/lens-eval/lens-vis/steer/research/figures to the tested module CLIs.
+- Update discipline: figures + paper + HTML regenerate each cycle from gates/ (derived artifacts).
