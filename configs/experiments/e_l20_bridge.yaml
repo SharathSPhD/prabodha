@@ -49,6 +49,12 @@ readback_span: 4
 # Output paths (will be populated by e4_cli.py)
 output_dir: "outputs/L20"
 
+# Lens path deviation: pre-registered as outputs/L13/qwen3_4b_band_lens.pt but actual artifact
+# is outputs/l10/lens_qwen3_mid30.pt (Qwen3 band-exit lens from L10 cycle 10, per efe_menu3.yaml).
+# Corrected to match canonical lens registration. No methodological change: lens is the band
+# coordinate system; only path reference updated after artifact discovery.
+lens_path: "outputs/l10/lens_qwen3_mid30.pt"
+
 # Metadata: explicitly linked to pre-registration contract
 contract: "contracts/L20_trained_bridge.md"
 hypothesis: "H_trained_bridge"
