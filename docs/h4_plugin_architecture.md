@@ -29,14 +29,18 @@ delivered at their tiers, so architecture can start). External API surface is CL
    flash-linear-attention + causal-conv1d --no-build-isolation).
 
 ## Packaging plan
-- Phase 1 (library): `pip install prabodha` — the existing package IS the library; add a
-  `prabodha` console entrypoint wrapping the four CLIs. Cost: CPU-only, ~1 session.
-- Phase 2 (Claude Code plugin): skills for `lens map`, `steer write --verify`, and
-  `research propose` over a project-local menu; MCP is unnecessary (all local CLI).
+- Phase 1 (library): SHIPPED (L14, PR #17) — `prabodha` console entrypoint in pyproject
+  [project.scripts] (src/prabodha/cli.py): lens-fit/lens-eval/lens-vis/steer/research/
+  figures.
+- Phase 2 (Claude Code plugin): SHIPPED (L15) — integrations/claude-code-plugin/ with
+  skills lens-map, steer-verify, research-propose; every default in the skills is a
+  measured finding with its gate behind it. MCP unnecessary (all local CLI).
 - Phase 3 (community): examples on 2 public models, NOTICE/license audit (Apache-2.0 +
   vendored jlens Apache-2.0 — compatible), README with the glossary's engineering column only.
 
 ## Open before release
-- Readback calibration (uptake thresholds are screen-tier settings, not universals).
+- ~~Readback calibration~~ RESOLVED (L14 cycle 16 + L15 cycle 17): calibrated setting
+  (top_m=5, gain=0) confirmed held-out at BA 0.637 — ship as default with the "modest
+  predictor, over-promises" caveat in docs.
 - The articulation_null and dose_response menu items (claims that would ship in docs).
 - API freeze after the trained-bridge comparison lands (may change steer defaults).

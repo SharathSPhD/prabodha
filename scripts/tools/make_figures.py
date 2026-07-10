@@ -163,26 +163,30 @@ def fig6():
     save(fig, "fig6_architecture")
 
 
-# fig7 — amplitude scaling law on the second plant (gate L14)
+# fig7 — amplitude dose law, joint confirm (gates L14-amp, L15-amp-joint, L8 replay)
 def fig7():
-    e = ev("gates/gate_L14_amp.json")
-    grid = e["grid"]
-    alphas = sorted(grid, key=float)
+    j = ev("gates/gate_L15_amp_joint.json")
+    qwen3 = j["qwen3"]
+    alphas = sorted(next(iter(qwen3.values())), key=float)
     x = [float(a) for a in alphas]
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.6, 3.1))
-    a1.plot(x, [grid[a]["gated_lift"] for a in alphas], "o-", color="#2b6cb0",
-            label="sphurattā-gated")
-    a1.plot(x, [grid[a]["prefill_lift"] for a in alphas], "s--", color="#a0aec0",
-            label="prefill-only")
+    for (seed, grid), c in zip(sorted(qwen3.items()),
+                               ("#2b6cb0", "#c05621", "#2f855a")):
+        a1.plot(x, [grid[a]["lift"] for a in alphas], "o-", color=c,
+                label=f"seed {seed.replace('_replay', ' (L14)')}")
+    nem = j["nemotron_L8"]
+    a1.plot([float(a) for a in nem["alphas"]], nem["gated_lifts"], "D--",
+            color="#a0aec0", label="nemotron (L8, saturating)")
     a1.axhline(0.2, ls=":", c="k", lw=0.8)
     a1.set_xlabel("write amplitude α (= cap)")
-    a1.set_ylabel("concept-surface lift")
-    a1.set_title("Qwen3-4B dose curve: monotone, unsaturated")
-    a1.legend(fontsize=8)
-    a2.bar(alphas, [abs(grid[a]["gated_dH"]) for a in alphas], color="#2f855a")
+    a1.set_ylabel("gated concept-surface lift")
+    a1.set_title("Dose law, two plants: qwen3 3 seeds + nemotron")
+    a1.legend(fontsize=7)
+    dh = [max(abs(qwen3[s][a]["dH"]) for s in qwen3) for a in alphas]
+    a2.bar(alphas, dh, color="#2f855a")
     a2.axhline(0.5, ls="--", c="#c53030", lw=1.0, label="svātantrya budget")
     a2.set_xlabel("write amplitude α")
-    a2.set_ylabel("|Δ trajectory entropy| (nats)")
+    a2.set_ylabel("worst |Δ traj. entropy| across seeds")
     a2.set_title("Freedom cost: flat, far under budget")
     a2.legend(fontsize=8)
     save(fig, "fig7_scaling_law")

@@ -1,0 +1,9 @@
+{
+  "name": "prabodha",
+  "description": "Workspace-band lens + recognition-gated steering for HF decoder LLMs: fit band-targeted Jacobian lenses, map verbalizable workspace bands, apply budgeted event-gated concept writes with readback verification, and run EFE-selected experiment menus.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Sharath S",
+    "url": "https://github.com/SharathSPhD/prabodha"
+  }
+}
