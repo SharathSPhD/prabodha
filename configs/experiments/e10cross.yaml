@@ -1,0 +1,29 @@
+# E10-cross pre-registration — cycle-10 (last menu-2 item): does the core steering claim
+# TRANSFER to Qwen3-4B (the L1 plant)? Same protocol as the clean-stream confirm; only the
+# plant and its band geometry change (write layer 24 = middle-band interior of [6,30);
+# readback via the target-30 lens at layers 25..29).
+# Registered: H_cross_plant = gated lift >= 0.2 AND |mean-step dH| <= 0.5 on Qwen3-4B
+# (one seed, screen tier; PASS = generality support, FAIL = plant-specificity finding —
+# both reportable).
+seeds: [42]
+write_layer: 24
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated]
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "either verdict reportable (generality vs plant-specificity)"
+deviations: []
+budget_gpu_hours: 0.5
