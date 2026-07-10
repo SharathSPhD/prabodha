@@ -541,3 +541,17 @@ All four corrections APPLIED before merge:
    dispatches AGAIN — third occurrence; ops rule: --loop goes in the dispatch template,
    not the operator's memory).
 Review count: 11. L14 status -> closed in state.json.
+
+## 2026-07-10 — L15 cycle 17 CLOSED: readback held-out confirm PASSES
+- Fixed setting (top_m=5, gain=0), corpus disjoint from calibration, threshold
+  pre-registered (e15heldout.yaml BEFORE run): BA 0.637 >= 0.6 (tpr 0.833, tnr 0.441;
+  n=40, 6 hits). Review #11's multiple-comparisons objection RESOLVED: the calibrated
+  acceptance test generalizes — a modest but real predictor. Verdict shape: readback
+  over-promises (19 fp) and rarely under-promises (1 fn) — āṇava-mala direction.
+- Disclosure in gate: source run's own H_gated_budget FAILED on held-out stubs (gated
+  +0.15 < 0.2 at alpha=0.1) => LIFT IS CORPUS-DEPENDENT. Not a core-claim contradiction
+  (unregistered corpus) but bounds lift-magnitude generalization across stub styles.
+  Candidate for a future menu: corpus-robustness of the core claim.
+- gates/gate_L15_readback.json (confirm tier); observe tier 2; spend 0.15h (L15:
+  0.15/1.0). Cycle 18 proposed+ledgered: amplitude_law_joint_confirm (EFE -1.36, 0.7h)
+  — 2 new qwen3 seeds x 4 alphas dispatched (--loop L15 in template).
