@@ -18,10 +18,11 @@ workspace-band structure and its verbalizable content replicate across three mod
 and two sizes, with instructed loadability scaling with size and collapsing under
 pruning/distillation; (2) a band's content is legible only to a lens targeted at the band
 itself — final-target lenses are blind to it; (3) direct writes into the band steer
-behavior, but continuous writing destroys output freedom (svātantrya); (4) the doctrine's
-timing clause is load-bearing: writes gated to the plant's uncommitted moments achieve
-full-strength steering *within* the freedom budget — confirmed across 3 seeds and 3 gate
-settings — and event alignment beats rate-matched controls; (5) the research program itself
+behavior, with freedom cost (svātantrya) governed by decoding regime and write schedule;
+(4) the doctrine's timing clause earns its keep as WRITE-EFFICIENCY: sphurattā-gated writes
+achieve ~85% of continuous-schedule steering at ~27% of the writes, within the freedom
+budget, confirmed across 3 seeds, 3 gate settings, and 3 amplitudes, with event alignment
+beating rate-matched controls throughout; (5) the research program itself
 ran as an active-inference loop (expected-free-energy selection over an experiment menu),
 with its proposals, dispositions, and honest negatives in a replayable ledger.
 
