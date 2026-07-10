@@ -163,3 +163,18 @@ def test_cycle_integrity_lint(tmp_path):
                         [0.2] * 4, source="gates/run3.json")
     v2 = lint_cycles(led.records(), menu_sources=menu_sources)
     assert len(v2) == 1  # only the earlier violation remains
+
+
+def test_cli_dispatch_help_and_unknown(capsys, monkeypatch):
+    from prabodha import cli
+    monkeypatch.setattr("sys.argv", ["prabodha", "--help"])
+    try:
+        cli.main()
+    except SystemExit as e:
+        assert e.code == 0
+    assert "lens-fit" in capsys.readouterr().out
+    monkeypatch.setattr("sys.argv", ["prabodha", "nope"])
+    try:
+        cli.main()
+    except SystemExit as e:
+        assert e.code == 2
