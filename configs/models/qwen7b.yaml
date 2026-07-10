@@ -1,0 +1,49 @@
+# Qwen2.5-7B-Instruct model config (L21+ larger-model validation)
+# Status: REGISTERED for future large-model gate (NOT run in L21)
+#
+# Use: for e_l21_larger experiment (defer to L22+)
+
+model_name: Qwen/Qwen2.5-7B-Instruct
+huggingface_model_id: Qwen/Qwen2.5-7B-Instruct
+model_type: causal_lm
+dtype: bfloat16                    # GPU memory: ~14 GB VRAM
+
+# Model-specific settings
+max_position_embeddings: 32768     # Context window
+vocab_size: 151936
+
+# Generation defaults (for steering experiments)
+max_new_tokens: 40                 # Consistent with 4B runs
+eos_token_id: 151645
+bos_token_id: 151643
+pad_token_id: 151643
+
+# Steering layer mapping (inferred from model depth)
+# Qwen2.5-7B has ~32 layers; concept steering typically uses layer 24
+write_layer_default: 24
+
+# Resource notes
+device: cuda                       # Requires GPU (GB10 only)
+vram_required_gb: 14
+vram_with_kv_cache_gb: 16         # Full generation context
+bandwidth_bottleneck: true         # GB10 PCIe gen 3, use idle windows
+
+# Tokenizer config
+tokenizer_model_id: Qwen/Qwen2.5-7B-Instruct
+pad_to_left: false
+chat_template: chatml              # Chat format
+
+# Notes for dispatcher
+cost_estimate_per_hour: 1.5        # Relative to GB10 4B config (1.0)
+recommended_batch_size: 1          # GB10 concurrency limit
+scheduling: "idle_window_only"     # Wait for GB10 > 50% free VRAM
+
+# Deferred experiment config
+deferred_experiments:
+  - name: e_l21_larger
+    description: "Head-to-head comparison on 7B model (screening tier)"
+    corpus_size: 10
+    seeds: 1
+    arms: [baseline, continuous, entropy_gated, logit_bias]
+    estimated_hours: 1.0
+    trigger: "e_l21_baselines PASS + no other large GPU jobs"
