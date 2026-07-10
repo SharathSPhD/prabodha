@@ -1,0 +1,11 @@
+{
+  "tokens": ["The", " fire", " burns", " bright"],
+  "entropies": [2.1, 1.2, 1.8, 2.4],
+  "writes": [
+    {"position": 1, "amplitude": 0.3}
+  ],
+  "readback": {
+    "verdict": "accept",
+    "confidence": 0.92
+  }
+}

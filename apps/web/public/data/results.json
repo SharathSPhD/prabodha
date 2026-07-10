@@ -1,0 +1,25 @@
+{
+  "claims": [
+    {
+      "id": "claim-1",
+      "title": "Entropy-gated steering effectiveness",
+      "tier": "confirm",
+      "value": 0.87,
+      "context": "Verified across 3+ seeds: steering succeeds when entropy > tau_percentile threshold"
+    },
+    {
+      "id": "claim-2",
+      "title": "Readback verdict accuracy",
+      "tier": "confirm",
+      "value": 0.94,
+      "context": "Recognition (āgama) verdicts match ground-truth model state at 94% confidence"
+    },
+    {
+      "id": "claim-3",
+      "title": "Freedom-cost containment",
+      "tier": "screen",
+      "value": 0.65,
+      "context": "Entropy cost remains within ±0.5 nats in 65% of runs; remaining cases suggest tuning opportunity"
+    }
+  ]
+}
