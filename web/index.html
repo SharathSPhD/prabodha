@@ -575,7 +575,7 @@
     <section id="bridge" data-section="bridge" class="act-section">
       <div class="section-content">
         <p class="act-label">Act VI</p>
-        <h2>The Trained Bridge (L20): PWM Integration</h2>
+        <h2>The Bridge (L20): PWM Integration and Cold-Store Comparability</h2>
         <p class="section-intro">What if the controller's write vector came from a learned world model instead of the lens transpose?</p>
 
         <div class="section-prose">
@@ -583,10 +583,21 @@
             The analytic writer (used in L0–L19) writes <em>J<sup>T</sup>u</em> — the lens transpose applied to a target concept vector. It's interpretable: we control what the workspace receives.
           </p>
           <p>
-            But there's another path: integrate the Pratyabhijñā World Model (PWM), a 6.35M-parameter RSSM trained on language understanding. The PWM has its own memory (CittaStore) and can produce write vectors via learned retrieval.
+            The alternative path: integrate the Pratyabhijñā World Model (PWM), a 6.35M-parameter RSSM trained on language understanding. The PWM has its own memory (CittaStore, a Hopfield associative store) and can produce write vectors via learned retrieval.
           </p>
           <p>
-            L20 compares both paths on the same corpus, same seeds (42, 123, 777), same entropy budget. The comparator honestly reports which is better — or if the trained path is blocked by integration friction. Either way, the "carried silently since menu 3" item is resolved on the record.
+            <strong>L20 Result (now closed):</strong> The PWM CittaStore pathway was blocked at dispatch for three loops due to missing stack infrastructure on GB10. When integrated, the frozen (untrained) Hopfield-store recall—initialized with no steering patterns—produces write vectors that steer on all three seeds (42, 123, 777) within the ±0.5-nat entropy budget. Against the analytic J<sup>T</sup>u baseline:
+          </p>
+          <ul style="margin: 0.5rem 0 1rem 2rem; line-height: 1.6;">
+            <li><strong>Seed 42:</strong> cold store +0.4445 vs analytic +0.4445 (gap = 0.0000, exact match)</li>
+            <li><strong>Seed 123:</strong> cold store +0.5556 vs analytic +0.5556 (gap = 0.0000, exact match)</li>
+            <li><strong>Seed 777:</strong> cold store +0.4445 vs analytic +0.3334 (gap = +0.1111 — <em>fails</em> the ≤0.05 equivalence criterion by 2.2×; the gap is one concept-hit (1/9, the metric's smallest resolvable unit), in the cold store's favour, so not a degradation — but with 9 samples it cannot be called signal vs draw)</li>
+          </ul>
+          <p>
+            <strong>Honest Framing:</strong> The CittaStore is initialized <em>empty</em> — no patterns have been stored or trained. This is not a "trained bridge" but a cold-store proof-of-concept: the PWM write pathway is live and dimensionally compatible with the band-exit Jacobian. A vanilla-initialized Hopfield recall already ≈ the lens-transpose baseline. The real science—does training the store against steering-success targets improve over this cold initialization?—remains open; the infrastructure to test it is now available.
+          </p>
+          <p>
+            <strong>Menu 3 Closure:</strong> This was the standing "carried silently" item since menu-driven selection began (L5). Its resolution—cold-recall <em>comparable</em> to analytic (2/3 exact, 1/3 differing by one hit), not shown better and not strictly equivalent—means the doctrine's steering arm (sphurattā-gated band writes via J<sup>T</sup>u) remains the canonical finding. The trained-store hypothesis is unconfirmed but now executable.
           </p>
         </div>
       </div>

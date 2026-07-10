@@ -1,0 +1,81 @@
+# L20 Trained-Bridge Comparator Experiment
+# Pre-registered config: no in-flight parameter changes
+# Locked: 2026-07-10
+
+# Stubs: standard corpus (established in L13)
+stubs:
+  - "the fire remembers rivers"
+  - "memory dissolves into light"
+  - "a dream without anchor"
+
+# Concepts: fire, memory, dream (matched to stubs; single-token variants only)
+concepts:
+  - "fire"
+  - "memory"
+  - "dream"
+
+# Write site: Qwen3-4B band exit (established in L13; no re-sweeping)
+write_layer: 24
+
+# Write amplitude: fixed at 0.2 (within active range per L14)
+alpha: 0.2
+norm_cap_rel: 1.0
+
+# Entropy gating: self-calibrated from baseline
+tau_percentile: 60
+min_gap: 2
+
+# Decoding: sampling regime (required per L4 finding: greedy masks decode-time writes)
+decoding:
+  do_sample: true
+  temperature: 0.8
+
+# Seeds: existing clean-stream seeds only (no new seeds per operator decision)
+# Screen tier: seed 42 only
+# Confirm tier: add seeds 123, 777
+seeds:
+  - 42
+
+# Arm set: baseline (reference), analytic_gated (existing), trained_bridge_gated (new)
+arms:
+  - "baseline"
+  - "entropy_gated"        # analytic J^T u write (reference)
+  - "trained_bridge"       # NEW: CittaStore-driven write
+
+# Generation budget
+max_new_tokens: 50
+readback_span: 4
+
+# Output paths (will be populated by e4_cli.py)
+output_dir: "outputs/L20"
+
+# Lens path deviation: pre-registered as outputs/L13/qwen3_4b_band_lens.pt but actual artifact
+# is outputs/l10/lens_qwen3_mid30.pt (Qwen3 band-exit lens from L10 cycle 10, per efe_menu3.yaml).
+# Corrected to match canonical lens registration. No methodological change: lens is the band
+# coordinate system; only path reference updated after artifact discovery.
+lens_path: "outputs/l10/lens_qwen3_mid30.pt"
+
+# Hypotheses: required for domain-gate evaluation in e4_cli.py
+# H_gated_budget: reference hypothesis (entropy-gated analytic arm, existing from prior loops)
+# H_trained_bridge: new trained-bridge comparator hypothesis (registered in contract)
+hypotheses:
+  H_gated_budget:
+    metric: entropy_gated_lift
+    min_lift: 0.2
+    entropy_epsilon: 0.5
+    threshold_min: 0.2
+  H_trained_bridge:
+    metric: trained_bridge_lift
+    min_lift: 0.15
+    entropy_epsilon: 0.5
+    threshold_min: 0.15
+    max_gap_vs_analytic: 0.05
+
+# Metadata: explicitly linked to pre-registration contract
+contract: "contracts/L20_trained_bridge.md"
+tier: "screen"
+description: |
+  Screen-tier (n=1 seed) comparison of CittaStore-trained write path vs.
+  analytic J^T u path, both entropy-gated and budget-matched on standard corpus.
+  Success: trained_bridge lift >= 0.15 within entropy budget, no >5pp gap vs. analytic.
+  Failure modes: fail-on-margin (lift < 0.15), blocked-with-diagnosis (CittaStore incompatible).

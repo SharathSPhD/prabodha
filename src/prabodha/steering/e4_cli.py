@@ -150,6 +150,26 @@ def main(argv=None) -> None:
     layer_module = lm.layers[wl]
     stubs = list(exp["stubs"])
 
+    # L20 trained-bridge setup
+    citta_store = None
+    if "trained_bridge" in exp.get("arms", []):
+        try:
+            from pwm.memory.citta_store import CittaStore
+            hidden_dim = int(hf.config.hidden_size)
+            citta_store = CittaStore(
+                hidden_dim=hidden_dim,
+                n_levels=1,
+                beta_episodic=4.0,
+                beta_semantic=0.25,
+                max_episodic=512,
+                max_semantic=256,
+            )
+            citta_store = citta_store.to(hf.device)
+            devs.append(f"L20: CittaStore initialized ({hidden_dim}d, episodic β=4.0)")
+        except Exception as e:
+            devs.append(f"L20: CittaStore initialization failed: {e}")
+            citta_store = None
+
     # āgama re-cognition raw ranks (opt-in): clean vs injected forward at the write
     # port, band-targeted lens — RAW ranks only; verdict thresholds are the quantity
     # under calibration, so none are applied here.
@@ -172,7 +192,7 @@ def main(argv=None) -> None:
                         for layer in rb_layers]
                 readback[(concept, stub)] = {"pre_rank": pre, "post_ranks": post}
 
-    def run_arm(arm: str, policy_factory) -> dict:
+    def run_arm(arm: str, policy_factory, citta_store=None, bridge_writer=None) -> dict:
         texts_by_concept, step_ents, n_writes, records = {}, [], [], []
         baseline_drops: list[float] = []
         episode = None  # first (concept, stub) per-step evidence, for --emit-trace replay
@@ -182,7 +202,7 @@ def main(argv=None) -> None:
                 trace_policy = policy_factory() if policy_factory else None
                 trace = EntropyTrace(trace_policy)
                 procs = [trace.processor()]
-                if trace_policy is None and arm != "baseline":
+                if trace_policy is None and arm != "baseline" and arm != "trained_bridge":
                     raise AssertionError("non-baseline arm needs a policy")
                 tag = f"{arm}|{concept}|{stub}"
                 step_texts = [] if (getattr(a, "emit_trace", None) and episode is None) else None
@@ -191,6 +211,23 @@ def main(argv=None) -> None:
                                      decoding=exp.get("decoding"),
                                      seed=int(exp["seeds"][0]), stream_tag=tag,
                                      step_texts=step_texts)
+                elif arm == "trained_bridge":
+                    # NEW: trained-bridge arm uses CittaStore-derived direction
+                    if bridge_writer is None:
+                        raise RuntimeError("trained_bridge arm requires bridge_writer")
+                    trained_cmd = bridge_writer.plan_write(
+                        u_rows=U[ids],
+                        concept_ids=ids,
+                        alpha=alpha,
+                        norm_cap_rel=cap,
+                        positions="last"
+                    )
+                    with ResidualInjector(layer_module, trained_cmd, policy=trace_policy) as inj:
+                        text = _generate(hf, tok, stub, max_new, procs,
+                                         decoding=exp.get("decoding"),
+                                         seed=int(exp["seeds"][0]), stream_tag=tag,
+                                         step_texts=step_texts)
+                    n_writes.append(inj.n_applications)
                 else:
                     with ResidualInjector(layer_module, cmd, policy=trace_policy) as inj:
                         text = _generate(hf, tok, stub, max_new, procs,
@@ -273,12 +310,26 @@ def main(argv=None) -> None:
         k = max(1, round(max_new / max(gated_rate, 1.0)))
         results["every_k"] = run_arm("every_k", lambda: make_policy("every_k", k=k))
 
+    # NEW: trained_bridge arm
+    if "trained_bridge" in arms_wanted:
+        if citta_store is None:
+            devs.append("L20: trained_bridge arm requested but CittaStore not available")
+        else:
+            from prabodha.steering.bridge_trained import TrainedBridgeWriter
+            bridge_writer = TrainedBridgeWriter(citta_store, wl)
+            results["trained_bridge"] = run_arm(
+                "trained_bridge",
+                lambda: make_policy("entropy_gated", tau=tau, min_gap=min_gap),
+                citta_store=citta_store,
+                bridge_writer=bridge_writer
+            )
+
     base_s, base_c = results["baseline"]["surface"], results["baseline"]["camatk"]
     base_e = results["baseline"]["mean_step_entropy"]
     agg = {"tau": round(tau, 4), "every_k_k": k,
            "drop_tau": round(drop_tau, 4) if drop_tau is not None else None}
     for arm in [x for x in ("continuous", "prefill_only", "entropy_gated",
-                            "entropy_drop_gated", "every_k") if x in results]:
+                            "entropy_drop_gated", "every_k", "trained_bridge") if x in results]:
         r = results[arm]
         agg[arm] = {"lift": round(r["surface"] - base_s, 4),
                     "camatk_drop": round(base_c - r["camatk"], 4),
@@ -309,6 +360,32 @@ def main(argv=None) -> None:
         summary["H_gated_vs_prefill"] = {"value": round(adv, 4),
                                          "threshold": hp["min_lift_advantage"],
                                          "pass": bool(adv >= float(hp["min_lift_advantage"]))}
+    # NEW: Trained-bridge comparator evaluation (L20)
+    if "H_trained_bridge" in hyp and "trained_bridge" in agg:
+        ht = hyp["H_trained_bridge"]
+        tb = agg["trained_bridge"]
+        min_lift = float(ht["min_lift"])
+        entropy_eps = float(ht["entropy_epsilon"])
+        max_gap = float(ht.get("max_gap_vs_analytic", 0.05))
+
+        tb_lift = tb["lift"]
+        tb_entropy_delta = tb["step_entropy_delta"]
+        gap_vs_analytic = tb_lift - g["lift"]
+
+        # Pass: lift >= min_lift AND entropy within budget AND gap <= max_gap vs analytic
+        h_trained_bridge = (tb_lift >= min_lift
+                           and abs(tb_entropy_delta) <= entropy_eps
+                           and abs(gap_vs_analytic) <= max_gap)
+
+        summary["H_trained_bridge"] = {
+            "value": round(tb_lift, 4),
+            "entropy_delta": round(tb_entropy_delta, 4),
+            "gap_vs_analytic": round(gap_vs_analytic, 4),
+            "threshold_lift": min_lift,
+            "threshold_entropy": entropy_eps,
+            "threshold_gap": max_gap,
+            "pass": bool(h_trained_bridge)
+        }
     report = GateReport(
         loop=a.loop, status="open",
         code_gate=GateSide(verdict="pass",
