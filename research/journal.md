@@ -702,3 +702,20 @@ The correction process surfaced a genuine error I had made:
   dimensions (here: arms) before inferring mechanism. The gated arm's -0.10 was real;
   the "additive bias across the system" was not. Review count: 15.
 - Menu 8 consumed (0.6/1.0). L18 -> closed. Menu 9 pre-registered for L19.
+
+## 2026-07-10 — L19 cycle 25 CLOSED: corpus-amplitude axis PARTIAL (direction yes, margin no)
+- Same-session 2x2x2 grid (2 corpora x alpha{0.1,0.2} x seeds{42,777}), removing the
+  L18 cross-session confound: BOTH corpora's mean gated lift roughly DOUBLES from
+  alpha=0.1 to 0.2 (narrative-past 0.175->0.325; descriptive-scene 0.275->0.55) —
+  direction confirmed with a large effect size. But the strict registered margin
+  (narrative-past seed-777 >= 0.05 over 0.2) FAILS: reads 0.225, margin +0.025.
+- NOTABLE: seed-777 at alpha=0.2 reproduces the EARLIER cross-session L18 reading
+  (0.225) EXACTLY. That rules out session/run noise and points to a stable, harder
+  floor for specific stubs within narrative-past — a genuine sub-corpus difficulty
+  structure, not variance. Registered honestly as PARTIAL rather than reframed to pass
+  (fail-on-criterion / confirmed-on-direction). tier-0 observation (strict criterion
+  not met) despite the informative finding — the EFE tiering correctly tracks the
+  registered bar, not my narrative enthusiasm for the finding.
+  gate_L19_cax.json. Propagated to paper/README/HTML.
+- Cycle 26 dispatched: l8_offset_multiseed (gated arm at alpha{0.02,0.1} x
+  seeds{123,777}) — confirms or withdraws the L18 gated-level supersession.
