@@ -1,5 +1,5 @@
 # PRD.md — prabodha product requirements
-**v0.2 — LIVING DOCUMENT (evolves with SPEC.md at every loop closure).**
+**v0.20 (L19 closure) — LIVING DOCUMENT (evolves with SPEC.md at every loop closure).**
 
 ## 1. Users & jobs-to-be-done
 - **Sharath (researcher-operator):** advance the PWM×J-space research program; publish; reuse in neo-fm.
@@ -41,6 +41,28 @@ Sanskrit-forward alienates reviewers → dual-register glossary; external surfac
 Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (documented in CLAUDE.md).
 
 ## 7. Evolution Log
+- v0.20 (L7-L19 catch-up, PR #10-#22, 2026-07-10): closes a 13-loop gap (v0.8 was L5;
+  paper/HTML carried the living-document role through L7-L19 while this file lagged —
+  corrected here). H1 (instrument) DELIVERED: 3 model families, 2 sizes; band content
+  legible only via band-targeted lens (gate_L2b) — this is now a hard design constraint
+  in H2/H4, not just a finding. H2 (steering) DELIVERED past P0: core claim confirm-tier
+  6 seeds; v3 beats v2/prefill; svātantrya budget reported every run; event-gated timing
+  from sphurattā beats commitment-flash 4/4 sign-consistent. H3 (auto-research) DELIVERED
+  well past first-cycle scope: 26 cycles, 9 menus, self-found+self-fixed 3 loop bugs
+  (replay-drop, consumption-rule, cost-model) plus a staleness invariant now enforced by
+  src/prabodha/efe/lint.py. H4 (tool) DELIVERED: P2 plugin packaging done
+  (integrations/claude-code-plugin/, 3 skills) + P2 docs/examples
+  (examples/quickstart_qwen3.md, README results table) — P3 community checklist PARTIAL
+  (license/NOTICE audit clean; only 1 of a planned 2 public-model examples shipped).
+  NEW risk (add to §6): trained_bridge_arm has been BLOCKED since menu 3 on PWM WM stack
+  integration — this is now the single largest standing scope gap in the program and
+  deserves its own contract/loop rather than continuing to live as an EFE menu line-item
+  that never runs. NEW finding for §2 (product principles): "honest negatives are shipped
+  results" has been tested three times by adversarial review catching the CLOSING AGENT's
+  own overclaims (not just experimental noise) — see docs/HANDOFF_L19_TO_NEXT.md §5 for
+  the three specific catches (stream-correlation, arm-specific offset, determinism-
+  guaranteed reproduction) — this is now documented as a recurring trap-shape to watch
+  for, not a one-off. Full state: docs/HANDOFF_L19_TO_NEXT.md.
 - v0.1: drafted at L0 with interview decisions (GB10-only; E1 first; dual-closure ralph).
 - v0.2: TRIZ log integrated; agent assignment table moved to AGENTS.md; H4 plugin gated behind H1/H2.
 - v0.8 (L5 close): H3 auto-research DELIVERED at first-cycle scope — selector proposes,
