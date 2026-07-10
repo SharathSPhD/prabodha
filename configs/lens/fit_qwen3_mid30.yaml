@@ -1,0 +1,9 @@
+# Cross-plant (cycle 10): band-exit lens for Qwen3-4B — target_layer 30 = its middle-band
+# boundary from gate_L1 bands [0,6)/[6,30)/[30,36). Same corpus/seed as all fits.
+n_prompts: 16
+seq_len: 128
+corpus: pretraining_like
+corpus_file: outputs/corpora/wikitext2_64x128.txt
+target_layer: 30
+checkpoint_every: 8
+seed: 42

@@ -438,3 +438,11 @@
 - L9 totals: cycles 6–9 (probe/flash/align-confirm/write-cost), one method fix that
   re-based every sampling number, two loop-infra fixes, doctrine refined. GPU ~0.85/1.5.
   Menu-2 remaining: cross_plant_gating (carries to next cycle).
+
+## 2026-07-10 — cycle 10 (cross_plant): plant-specificity — the generality boundary found
+- gate_L10_cross: one-shot transfer to Qwen3-4B FAILS (gated +0.05, prefill 0.00; tau
+  self-calibrated 1.545, writes firing normally 11/gen). Diagnostic: qwen3 target-30 lens
+  Jacobians ~10x weaker than nemotron's — the write direction J^T u_c may be feeble at the
+  borrowed site. The nemotron result required L2b->L3->L4b iterative site/timing
+  calibration; transfer needs the same per-plant loop, not borrowed geometry. Paper carries
+  the generality boundary. MENU 2 CONSUMED (5/5; cycles 6-10).
