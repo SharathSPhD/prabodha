@@ -1,10 +1,12 @@
 """Tests for bridge_trained.py — CittaStore-based write direction computation."""
-import json
+
 import numpy as np
 import pytest
-import torch
-from prabodha.steering.bridge_trained import TrainedBridgeWriter
-from prabodha.steering.writer import WriteCommand
+
+torch = pytest.importorskip("torch")  # skip when optional [lens] extra absent (CI [dev])
+
+from prabodha.steering.bridge_trained import TrainedBridgeWriter  # noqa: E402
+from prabodha.steering.writer import WriteCommand  # noqa: E402
 
 
 class MockCittaStore:
