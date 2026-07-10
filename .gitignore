@@ -7,3 +7,4 @@ outputs/
 .pytest_cache/
 .ruff_cache/
 nohup.out
+vendor/pwm/
