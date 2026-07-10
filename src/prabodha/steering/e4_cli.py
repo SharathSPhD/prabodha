@@ -360,6 +360,32 @@ def main(argv=None) -> None:
         summary["H_gated_vs_prefill"] = {"value": round(adv, 4),
                                          "threshold": hp["min_lift_advantage"],
                                          "pass": bool(adv >= float(hp["min_lift_advantage"]))}
+    # NEW: Trained-bridge comparator evaluation (L20)
+    if "H_trained_bridge" in hyp and "trained_bridge" in agg:
+        ht = hyp["H_trained_bridge"]
+        tb = agg["trained_bridge"]
+        min_lift = float(ht["min_lift"])
+        entropy_eps = float(ht["entropy_epsilon"])
+        max_gap = float(ht.get("max_gap_vs_analytic", 0.05))
+
+        tb_lift = tb["lift"]
+        tb_entropy_delta = tb["step_entropy_delta"]
+        gap_vs_analytic = tb_lift - g["lift"]
+
+        # Pass: lift >= min_lift AND entropy within budget AND gap <= max_gap vs analytic
+        h_trained_bridge = (tb_lift >= min_lift
+                           and abs(tb_entropy_delta) <= entropy_eps
+                           and abs(gap_vs_analytic) <= max_gap)
+
+        summary["H_trained_bridge"] = {
+            "value": round(tb_lift, 4),
+            "entropy_delta": round(tb_entropy_delta, 4),
+            "gap_vs_analytic": round(gap_vs_analytic, 4),
+            "threshold_lift": min_lift,
+            "threshold_entropy": entropy_eps,
+            "threshold_gap": max_gap,
+            "pass": bool(h_trained_bridge)
+        }
     report = GateReport(
         loop=a.loop, status="open",
         code_gate=GateSide(verdict="pass",

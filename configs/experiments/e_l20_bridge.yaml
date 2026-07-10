@@ -55,9 +55,24 @@ output_dir: "outputs/L20"
 # coordinate system; only path reference updated after artifact discovery.
 lens_path: "outputs/l10/lens_qwen3_mid30.pt"
 
+# Hypotheses: required for domain-gate evaluation in e4_cli.py
+# H_gated_budget: reference hypothesis (entropy-gated analytic arm, existing from prior loops)
+# H_trained_bridge: new trained-bridge comparator hypothesis (registered in contract)
+hypotheses:
+  H_gated_budget:
+    metric: entropy_gated_lift
+    min_lift: 0.2
+    entropy_epsilon: 0.5
+    threshold_min: 0.2
+  H_trained_bridge:
+    metric: trained_bridge_lift
+    min_lift: 0.15
+    entropy_epsilon: 0.5
+    threshold_min: 0.15
+    max_gap_vs_analytic: 0.05
+
 # Metadata: explicitly linked to pre-registration contract
 contract: "contracts/L20_trained_bridge.md"
-hypothesis: "H_trained_bridge"
 tier: "screen"
 description: |
   Screen-tier (n=1 seed) comparison of CittaStore-trained write path vs.
