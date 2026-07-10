@@ -1,0 +1,42 @@
+# EFE menu 6 — cycle 19+ (registered 2026-07-10, L16, from L15 carried debts)
+# Concept: review #12 left two open scopes (two-plant dose response; lift's corpus
+#   dependence) and one power gap (readback n). Each gets its registered shot.
+# Source: research/journal.md 2026-07-10 (review #12); gates/gate_L15_*.json.
+budget_gpu_hours: 1.0
+candidates:
+  - id: corpus_robustness
+    cost_gpu_hours: 0.35
+    resolution: 0.8
+    description: "Bound the core claim's corpus dependence: nemotron gated steering
+      (e5align settings, alpha=0.1) on TWO new stub corpora (narrative-past and
+      descriptive-scene styles; registered in e16corpus_a/b.yaml BEFORE running) plus
+      the L15 held-out corpus reading. Success: gated lift >= 0.2 within budget on
+      >= 2 of 3 non-registered corpora => 'lift generalizes across stub styles';
+      1/3 or 0/3 => the corpus-dependence finding upgrades from disclosure to result.
+      Dispatch with --record-readback: the same runs triple the readback-verdict n
+      toward the n>=100 power debt at zero extra GPU cost."
+    knobs: {exps: [configs/experiments/e16corpus_a.yaml, configs/experiments/e16corpus_b.yaml],
+            record_readback: true}
+    prior_value_hint: 2
+    replay: [gates/gate_L15_readback.json]
+  - id: nemotron_fine_grid
+    cost_gpu_hours: 0.35
+    resolution: 0.8
+    description: "Close review #12's open scope: nemotron dose response BELOW its
+      saturation point — alpha=cap in {0.002, 0.005, 0.01, 0.02} (its L8 grid started
+      at 0.02, already saturated). Success: ordered rise to saturation (>=2/3 adjacent
+      pairs increasing by > 0.05, i.e. real dose signal, not tolerance artifacts) =>
+      two-plant dose-response replication CLOSES; flat-at-floor => saturation onset is
+      below 0.002 and the law stays single-plant, recorded honestly."
+    knobs: {exp: configs/experiments/e5align.yaml, alphas: [0.002, 0.005, 0.01, 0.02]}
+    prior_value_hint: 2
+    replay: [gates/gate_L8_dose.json, gates/gate_L15_amp_joint.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    description: "Trained-bridge comparator arm (PWM CittaStore bridge) vs analytic
+      J^T u writes. BLOCKED: PWM world-model stack not yet integrated on GB10."
+    blocked: true
+    blocked_reason: "PWM WM stack integration is its own loop (carried since menu 3)"
+    prior_value_hint: 2
+    replay: [gates/gate_L3.json]
