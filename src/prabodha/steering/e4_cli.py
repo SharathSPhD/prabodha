@@ -80,6 +80,9 @@ def main(argv=None) -> None:
                     help="override exp alpha (dose-response grids)")
     ap.add_argument("--write-layer", type=int, default=None,
                     help="override exp write_layer (per-plant site calibration)")
+    ap.add_argument("--norm-cap-rel", type=float, default=None,
+                    help="override exp norm_cap_rel (raise in lockstep with --alpha; "
+                         "pre-dispatch inert-knob checklist)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
     a = ap.parse_args(argv)
@@ -94,7 +97,8 @@ def main(argv=None) -> None:
     J = adapter._lens.jacobians[wl].float().cpu().numpy()
     U = hf.get_output_embeddings().weight.detach().float().cpu().numpy()
     alpha = float(a.alpha) if a.alpha is not None else float(exp["alpha"])
-    cap = float(exp["norm_cap_rel"])
+    cap = (float(a.norm_cap_rel) if a.norm_cap_rel is not None
+           else float(exp["norm_cap_rel"]))
     max_new = int(exp["max_new_tokens"])
     min_gap = int(exp["min_gap"])
     devs: list[str] = []
