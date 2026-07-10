@@ -87,10 +87,10 @@ time writes.
 \includegraphics[width=.72\linewidth]{fig2_dose_grid}
 \caption{Dose grid on the PWM twin under sampling (gate L8): the gated schedule is
 amplitude-robust; continuous is also budget-feasible under sampling---gating is
-schedule-efficiency, not sole feasibility. \emph{Era caveat (found by cycle 21's
-matched-content re-measurement): this grid predates the stream-correlation fix; its
-orderings stand but its levels run $\sim$0.1 above clean-stream re-measurement
-(gates L16-fine, L17-xdose).}}\label{fig:dose}
+schedule-efficiency, not sole feasibility. \emph{Era caveat (found by cycle 21): this grid predates the
+stream-correlation fix; its orderings stand, and its levels run $\sim$0.1 above
+clean-stream re-measurement at the one matched amplitude ($\alpha{=}0.02$) --- flagged
+provisional pending a full canonical re-run (gates L16-fine, L17-xdose).}}\label{fig:dose}
 \end{figure}
 
 \begin{figure}[t]\centering
@@ -192,6 +192,11 @@ L16-corpus, L17-cvar); the
 commitment-flash reading remains directionally weaker, not refuted; the trained-bridge
 comparator awaits the PWM world-model stack; anusa\d{m}dh\=ana (cross-episode continuity),
 the modality confound, and W-space beyond J-space remain deliberately unconverged.
+A corpus-robustness result also exposed a single-seed risk: one of two new stub styles
+was seed-fragile (its single-seed pass a favorable draw --- gate L17-cvar). This
+prompted a seed-count audit of every graduated claim; reassuringly, all confirm-tier
+results are already multi-seed (core claim six seeds, alignment three, recipe transfer
+four), so the fragility was confined to screen-tier corpus work and was caught there.
 
 \section{Reproducibility}
 Everything derives from configs + seeds: 40+ gate JSONs, pre-registrations with disclosed

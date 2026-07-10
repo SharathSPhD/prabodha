@@ -1,8 +1,8 @@
 """Compose gates/gate_L17_xdose.json — dose response across configs + a stale-gate find.
 Concept: review #13 asked whether nemotron's active-range dose response is config-
 robust. It is (narrowly: the configs turn out to differ only in arm set) — and the
-comparison surfaced that gate_L8_dose's LEVELS are pre-stream-fix era and inflated
-~0.1 vs clean-stream re-measurement at matched alpha and content.
+comparison surfaced a PROVISIONAL sign that gate_L8_dose's LEVELS may be pre-stream-fix
+inflated (~0.1 at the one matched alpha=0.02); flagged, not asserted (review #14).
 Source: configs/efe_menu7.yaml unified_dose_crossconfig (success: >= 1/2 adjacent
 pairs rising > 0.05 on the e8dose config too).
 Primitive: gates/gate_L17_xdose_s42_a{0.005,0.01,0.02}.json + s123_a0.01 ->
@@ -54,22 +54,29 @@ gate = {
             "seed123_replication_at_0.01": {"gated_lift": rep["lift"],
                                             "gated_dH": rep["step_entropy_delta"]},
             "disclosures": [
-                "SCOPE NARROWER THAN INTENDED: e8dose and e5align share stubs, "
-                "concepts, and decoding — they differ only in arm set (continuous "
-                "included here). This is arm-set robustness (gated-arm numbers "
-                "unchanged when the continuous arm runs alongside), not full "
-                "config robustness",
-                "STALE-GATE FINDING (unregistered, follows from matched content): "
-                "gate_L8_dose's levels (e.g. gated 0.375 at alpha=0.02) are "
-                "PRE-stream-fix era (L8 predates the L9 per-generation reseeding "
-                "fix) and run ~0.1 above clean-stream re-measurement at matched "
-                "alpha and content (0.28 here and in L16-fine). L8's ORDERING "
-                "conclusions stand; its LEVELS are not canonical. Ledgered as a "
-                "divergence note; figures/paper citing L8 levels now carry the "
+                "CANDIDATE NAME OVERREACHES (review #14): registered as "
+                "'unified_dose_crossconfig' but e8dose and e5align turn out to "
+                "share stubs, concepts, and decoding — they differ ONLY in arm set "
+                "(continuous included here). What is actually shown is ARM-SET "
+                "robustness: the gated-arm dose numbers are unchanged when the "
+                "continuous arm runs alongside. TRUE cross-config robustness "
+                "(different stubs/decoding) is NOT tested and remains open",
+                "L8 STALENESS is PROVISIONAL (review #14): the pre-stream-fix vs "
+                "clean-stream level gap is observed at ONE matched alpha (0.02: L8 "
+                "gated 0.375 vs 0.28 here and in L16-fine). L8 predates the L9 "
+                "per-generation reseeding fix, so a gap is EXPECTED, but a single "
+                "matched point cannot declare all L8 levels stale. Call: L8 "
+                "ORDERING conclusions stand; its LEVELS are flagged PROVISIONAL "
+                "pending a dedicated canonical re-measurement of L8's full grid "
+                "(0.02/0.05/0.1) on fixed code — NOT asserted non-canonical. "
+                "Ledgered as a divergence note; fig2/paper carry the provisional "
                 "era caveat",
-                "single seed for the grid; one replication seed at one point "
-                "(0.33 vs 0.28 — consistent); actual spend 0.35h vs 0.45h "
-                "registered"],
+                "matched content = the entropy_gated arm at alpha=0.02, same stubs/"
+                "concepts/decoding as L8; the differing arm set does not touch the "
+                "gated-arm number being compared",
+                "single seed for the grid; one replication seed at the middle "
+                "point (seed123 gated 0.325 vs seed42 0.275 at alpha=0.01 — "
+                "consistent); actual spend 0.35h vs 0.45h registered"],
             "registered_in": "configs/efe_menu7.yaml:unified_dose_crossconfig",
             "seeds": [42, 123], "tier": "screen"}),
     },

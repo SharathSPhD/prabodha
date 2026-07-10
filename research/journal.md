@@ -633,3 +633,21 @@ Review count: 11. L14 status -> closed in state.json.
   (gate-backed walkthrough on the public model); NOTICE/license audit clean.
 - Two self-audit finds in one loop (stale L8 levels; corpus-A seed fragility) — the
   program's honesty machinery now routinely turns its instruments on its own record.
+
+## 2026-07-10 — adversarial review #14: MERGE-WITH-CORRECTIONS (3 fixes + systemic audit)
+1. xdose candidate name 'unified_dose_crossconfig' OVERREACHES — it shows ARM-SET
+   robustness on one shared-content config, not cross-config. Disclosed in-gate; true
+   cross-config (different stubs/decoding) remains OPEN. Also clarified the seed123 rep
+   metric (0.325 vs 0.275 at alpha=0.01, both consistent).
+2. L8 staleness DEFECTIVE-as-asserted -> PROVISIONAL: the ~0.1 gap is one matched alpha
+   (0.02). L8 predates the stream fix so a gap is EXPECTED, but one point can't declare
+   all levels stale. Now: ORDERING stands, LEVELS flagged provisional pending a
+   dedicated canonical L8 re-run. Softened in gate, ledger, fig2, paper, HTML. A
+   canonical L8 re-measurement is a menu-8 candidate.
+3. SYSTEMIC (cvar's implication): review asked whether corpus-A seed-fragility endangers
+   earlier confirmed claims. RAN THE AUDIT: all confirm-tier claims are already
+   MULTI-SEED — core claim 6 seeds (L11), alignment 3 (L9), recipe transfer 4
+   (L14-ms), amplitude qwen3 3 (L15). The single-seed vulnerability was confined to
+   screen-tier corpus work and was caught THERE by L17-cvar. Reassuring; recorded in
+   paper honest-negatives + HTML.
+Review count: 14. All corrections applied before merge. L17 -> closed.
