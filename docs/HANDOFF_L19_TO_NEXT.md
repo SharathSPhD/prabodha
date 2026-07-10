@@ -1,5 +1,38 @@
 # HANDOFF — prabodha program state at L19 closure (2026-07-10)
 
+## CLOSURE UPDATE (2026-07-10) — v1.0.0 RELEASED
+
+**Status:** Program CLOSED and SHIPPED. All six deliverables deployed.
+- **PyPI package:** `prabodha` (pip-installable, published to PyPI)
+- **HuggingFace lenses:** `qbz506/prabodha-lenses` (pre-fitted Jacobian lenses with band maps)
+- **Claude Code plugin + MCP server:** `integrations/claude-code-plugin/` + `integrations/mcp-server/` (three public skills)
+- **Web app:** Next.js/Supabase/Vercel, "J-space theatre" (live GB10 steering trace replay with provenance links to gates/)
+- **Research paper:** MDPI template, sole author Sharath Sathish, Independent Researcher (auto-generated from gates/ via `scripts/tools/make_figures.py`)
+- **Technical site:** GitHub Pages at `sharathsphd.github.io/prabodha` (ACD-caliber exposition with interactive visualizations)
+
+**L20 execution:** PWM CittaStore write path INTEGRATED. Cold-store steering arm steers 3/3 seeds within budget (functional confirm, `gates/gate_L20_confirm.json`). **Honest scope:** the store is UNTRAINED—not claiming "trained beats analytic." Training the store remains OPEN ITEM.
+
+**Reviews #17 & #18 PASS:**
+- **#17 (L20 adversarial):** Caught framing overclaim (paper abstract implied post-training parity; corrected to "untrained cold store functional, training is open"). Determinism recheck: 9/9 new seed-123 trajectories differ across arms (refutes the "determinism bug" concern from earlier loops).
+- **#18 (program audit):** Full re-audit of 23 loops, 20+ gates vs. papers/SPEC/PRD. All registered claims carry evidence or are explicitly open. Honest-negative list current. Two paper typos fixed.
+
+**HONEST OPEN ITEMS** (NOT hidden; documented in `docs/RELEASE_NOTES_v1.0.0.md` and PRD §6):
+- Trained-store training: did we narrow the gap vs. analytic writer?
+- Cross-episode continuity: does the store's state persist across generation episodes?
+- Live GB10 auto-deployment: currently operator-run; auto-gateway design deferred.
+- W-space/modality convergence: does the workspace generalize beyond text? Underdetermined.
+
+**If you are a future agent picking up after closure:**
+1. Read `gates/gate_L20_confirm.json` first (L20 closure evidence).
+2. Then `docs/RELEASE_NOTES_v1.0.0.md` (public-facing summary).
+3. Then this handoff's §1-§6 for context (you're reading the update now).
+4. If advancing research (L21+), prioritize trained-store training or cross-episode continuity.
+5. If running the plugin/app in production, monitor `src/prabodha/efe/lint.py` validation (ledger staleness risk residual).
+
+**Version tracking:** SPEC.md v0.21, PRD.md v0.21, research/state.json updated. All artifacts regenerated 2026-07-10.
+
+---
+
 **Purpose of this document.** This is a from-scratch briefing for an agent picking up
 this program in a *new session with no memory of this conversation*. It is deliberately
 long and explicit: it recapitulates the founding intent, the method, everything that has

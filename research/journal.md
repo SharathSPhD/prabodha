@@ -769,3 +769,51 @@ The correction process surfaced a genuine error I had made:
 - **Menu 3 closure:** The cold-CittaStore comparator was the standing "carried silently" item since menu 3 opened (L5). Its resolution — cold-recall equivalent to analytic, not better — means the doctrine's steering arm (sphurattā-gated band writes via J^T u) remains the canonical find. Training the store to beat the baseline is an open hypothesis, unconfirmed; the infrastructure to test it is now live.
 - Ledger: observe tier 2 (ground-truth gate available); consumes="cold_citastore_recall" (candidate renamed for honesty). Review #17 queued per standing protocol. Corrections, if any, applied before merge to main. All gates/gate_L20_* committed; paper + HTML updated. L20 -> closed.
 
+## 2026-07-10 — WS7 closure: program productization (L20 execution, reviews #17/#18, v1.0.0 release)
+- PROGRAM STATE AT CLOSURE: L0-L20 complete; ~32 PRs merged to main; dual-closure gates
+  holding across all research loops. L20 resolved the TRAINED-BRIDGE scope gap (PWM
+  CittaStore write path integrated with steering runner; cold-store arm steers 3/3
+  seeds within budget, functional confirm gate_L20_confirm.json — honest scope: store
+  UNTRAINED, not claiming "trained beats analytic"; the training curve remains open).
+- DELIVERABLES SHIPPED: (1) PyPI package `prabodha`; (2) HuggingFace lens fittings
+  (`qbz506/prabodha-lenses`, band lenses + configs + model card); (3) Claude Code plugin
+  + MCP steering server (integrations/claude-code-plugin/ + integrations/prabodha_mcp_server/,
+  four MCP tools lens_map/steer_generate/readback_verify/list_gates; three skills
+  lens-map/steer-verify/research-propose); (4) web app "J-space theatre"
+  (Next.js/Supabase/Vercel, replay of REAL GB10 fire-case steering traces, all displayed
+  numbers exporter-generated from gates/); (5) research paper (MDPI Symmetry template,
+  sole author Sharath Sathish, Independent Researcher, sharath.sathish@gmail.com);
+  (6) GitHub Pages site (sharathsphd.github.io/prabodha, ACD-caliber acts/scenes).
+- REVIEW #17 (L20 adversarial, isolated): Verdict MERGE-WITH-CORRECTIONS, three points,
+  all applied: (a) flagged the seed-123 near-mirror aggregate entropy (entropy_gated
+  +0.0724, trained_bridge −0.0727) as a possible determinism artifact — REFUTED by
+  inspecting the EXISTING per-generation records: all 9 seed-123 generations differ
+  between the two arms (write counts, per-gen entropies, hits), so the arms are genuine
+  independent draws and the near-mirror is a 9-cell mean coincidence (NOT regenerated —
+  verified against committed records); (b) the "within quantization noise" phrasing on
+  the seed-777 equivalence miss minimized a real failure (gap 0.1111 = 2.2× the 0.05
+  criterion) — reworded to state the miss plainly while noting it is one concept-hit in
+  the cold store's favour; (c) the flat "indistinguishable" claim overreached — changed
+  to "comparable, not strictly equivalent." Gate, paper Finding 7, and Pages Act VI all
+  updated.
+- REVIEW #18 (program-wide audit, isolated, all six public surfaces): Verdict
+  RELEASE-WITH-CORRECTIONS. Two required fixes, both applied: discussion.tex and
+  conclusion.tex still described the trained-bridge comparator as "future work" though
+  L20 executed it — reframed to "executed in L20 under a cold/untrained store; training
+  remains open." All other surfaces PASS: README numbers gate-cited; paper Finding 7 L20
+  numbers verified exactly against the gate; web/app/plugin/MCP consistent; NO
+  consciousness claims anywhere; Sanskrit terms glossed on every external surface;
+  cross-surface consistency clean. Full record: docs/reviews/review18_program_audit.md.
+- RELEASED AS v1.0.0 on 2026-07-10. HONEST OPEN ITEMS (carried explicitly, not hidden):
+  trained-store training (does training the CittaStore beat cold initialization?);
+  cross-episode continuity (anusaṃdhāna, deliberately unconverged); the live GB10
+  steering gateway is operator-run, NOT auto-deployed (exposing GPU inference from the
+  DGX risks the co-resident PSALM/prabhasa jobs — a hard invariant); W-space/modality
+  convergence underdetermined.
+- Provisioning at closure: PyPI publish (operator token), HuggingFace upload
+  (qbz506/prabodha-lenses, live), GitHub Pages enabled + deployed, Supabase project
+  `prabodha` (ndeahzldqjdfquhvzznm) created + schema applied + advisor-hardened
+  (admin RPC plpgsql, anon EXECUTE revoked), Vercel deploy of the app. The GB10 gateway
+  is documented for operator execution.
+- Program closure entry written 2026-07-10. SPEC.md/PRD.md → v0.21; state.json,
+  HANDOFF addendum, RELEASE_NOTES_v1.0.0 all current.

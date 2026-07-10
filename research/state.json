@@ -1,5 +1,6 @@
 {
- "current_loop": "L20-closed",
+ "current_loop": "v1.0.0-closed",
+ "release": "v1.0.0 (2026-07-10)",
  "loops": {
   "L0": {
    "status": "closed",
@@ -177,7 +178,15 @@
   "L20": {
    "status": "closed",
    "gate": "gates/gate_L20_confirm.json",
-   "note": "PWM CittaStore integration loop. Cold (untrained) Hopfield-store recall pathway integrated and verified end-to-end. Functional confirm 3/3 seeds within entropy budget. Equivalence to analytic J^T u: 2/3 exact, 1/3 differs by one quantization unit in cold store's favour. Training the store to beat baseline is registered as future work; infrastructure now live."
+   "note": "PWM CittaStore integration loop. Cold (untrained) Hopfield-store recall pathway integrated and verified end-to-end. Functional confirm 3/3 seeds within entropy budget. Equivalence to analytic J^T u: 2/3 exact, 1/3 differs by one quantization unit (one concept-hit) in cold store's favour, which fails the strict 0.05 criterion. Training the store to beat baseline is registered as future work; infrastructure now live.",
+   "deliverables": [
+    "PyPI package: prabodha",
+    "HuggingFace lenses: qbz506/prabodha-lenses",
+    "Claude Code plugin + MCP server (integrations/prabodha_mcp_server)",
+    "Next.js/Supabase/Vercel web app (J-space theatre)",
+    "MDPI research paper (docs/paper/paper.pdf)",
+    "GitHub Pages site (sharathsphd.github.io/prabodha)"
+   ]
   }
  },
  "gpu_budget_hours": {
