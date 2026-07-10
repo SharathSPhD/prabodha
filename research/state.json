@@ -1,5 +1,5 @@
 {
- "current_loop": "L11",
+ "current_loop": "L13-next (menu 4 or paper prose / H4 packaging; trained_bridge blocked)",
  "loops": {
   "L0": {
    "status": "closed",
@@ -142,6 +142,13 @@
    "gates": [
     "gates/gate_L11_rep.json"
    ]
+  },
+  "L12": {
+   "status": "closed-cycles-12-13",
+   "gates": [
+    "gates/gate_L12_flash.json",
+    "gates/gate_L13_recipe.json"
+   ]
   }
  },
  "gpu_budget_hours": {
@@ -165,7 +172,7 @@
   "L8_cap": 0.9,
   "L9_spent": 1.25,
   "L9_cap": 1.5,
-  "L11_spent": 0.25,
+  "L11_spent": 1.1,
   "L11_cap": 1.2
  },
  "kill_switch": false

@@ -97,13 +97,14 @@ beyond J-space (scoping §10.3) — the band carries structure the standard lens
   write-count is untested — open), with the alignment advantage over rate-matched controls
   holding at every amplitude (+0.15..0.18). Amplitude boundary mapped honestly: robust at
   α=0.1 (3/3 seeds), MARGINAL at α=0.02 (2/3 seeds; the hard seed fails at 0.17).
-- GENERALITY BOUNDARY (gate_L10_cross.json, honest negative): one-shot transfer to
-  Qwen3-4B with borrowed band geometry FAILS (gated +0.05, prefill 0.00) — the steering
-  result is, so far, specific to the plant where the write site was iteratively calibrated
-  (L2b band-lens discovery → L3 write-site → L4b timing). Diagnostic lead: qwen3's
-  band-exit lens Jacobians are ~10× weaker (max‖J‖/√d ≈ 1.6 vs 10–20), so the concept
-  write direction itself may be feeble. Claim scope: per-plant calibration is part of the
-  method, not an afterthought.
+- GENERALITY VIA RECIPE (gate_L10_cross → gate_L13_recipe): one-shot transfer with
+  borrowed geometry FAILS (+0.05) — but the per-plant calibration recipe (band-exit lens →
+  site probe → AMPLITUDE SCALED TO LENS STRENGTH) reproduces the result on Qwen3-4B:
+  gated +0.40 vs prefill +0.17 within budget, mirroring the PWM-twin pattern. The key
+  scaling fact: qwen3's band-exit Jacobians are ~10× weaker (max‖J‖/√d ≈ 1.6 vs 10–20),
+  and the working amplitude is 3× larger (α 0.3 vs 0.1) — write strength must be
+  calibrated to the lens's transport strength. THE METHOD TRANSFERS; THE GEOMETRY DOES
+  NOT. (Single seed at screen tier on the second plant; multi-seed queued.)
 - Clause-by-clause scorecard: site (band) — supported with the band-lens proviso; content
   (non-negative concept codes) — functional; timing (sphurattā) — load-bearing, confirmed;
   budget (svātantrya) — the binding constraint, now an operating point; acceptance (āgama
