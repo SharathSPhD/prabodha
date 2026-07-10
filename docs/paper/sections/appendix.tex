@@ -1,1 +1,44 @@
-% Placeholder — to be filled in Task 6
+\section{Glossary: Dual Register (Sanskrit \& Engineering)}
+
+The following terms appear throughout the paper in both Sanskrit and engineering registers.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Sanskrit/Technical} & \textbf{English Gloss} & \textbf{Operationalization} \\
+\midrule
+vimarśa & reflexive awareness & output logits from workspace-band residual stream \\
+parā vāk & supreme Word & verbalizable tokens with high softmax probability \\
+sphuraṭṭā & commitment flash & high entropy (>1.5 nats) in predictive distribution \\
+svātantrya & freedom / autonomy & entropy budget $\epsilon$ in nats (set to $\pm 0.5$) \\
+āgama & recognition / re-cognition & readback via band-targeted Jacobian lens \\
+malas & defects / failure modes & no-load / no-amplify / no-persist / over-budget \\
+mādhyamā & internal articulation & residual-stream reportability at final layers \\
+vaikharī & external articulation & output-token logit space \\
+anusaṃdhāna & continuity (across episodes) & cross-episode workspace loading (untested) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Supplementary: Compute Ledger and Gate Structure}
+
+The JSONL ledger (\texttt{research/ledger.jsonl}) records every experiment proposal, disposition, spend,
+and amendment. Each gate JSON (\texttt{gates/gate\_L*.json}) follows the schema:
+
+\begin{lstlisting}[language=json, caption=Gate JSON Schema]
+{
+  "gate_id": "L9_alignconf",
+  "tier": "confirm",
+  "pre_registration": {...},
+  "amendments": [...],
+  "domain_gate": {
+    "verdict": "PASS",
+    "margin_nats": 0.12,
+    "evidence": "{...}"  // JSON string with per-seed results
+  },
+  "cost": {"compute_hours": 2.3, "gpu_model": "H100"},
+  "review_history": [{"review_id": 9, "verdict": "PASS"}]
+}
+\end{lstlisting}
+
+All gates, amendments, and reviews are auditable in the GitHub repository.
