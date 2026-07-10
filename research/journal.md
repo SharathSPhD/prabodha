@@ -613,3 +613,41 @@ Review count: 11. L14 status -> closed in state.json.
 - Program state after three review rounds (#11-#13): every amplitude/readback/corpus
   claim now carries its evidence-sized scope IN THE GATE. The reviewers' arc — demand
   the bar, trim the scope, prove the provenance — is itself a shipped method result.
+
+## 2026-07-10 — L17 cycles 21-22 CLOSED; menu 7 consumed; two self-audit finds
+- Cycle 21 (unified_dose_crossconfig) PASS but scope-narrowed + a STALE-GATE FIND:
+  nemotron dose response reproduces on e8dose config (0.15/0.28/0.28; seed-123 rep at
+  0.01 = 0.33). Configs turned out to share content (differ only in arm set) => this is
+  arm-set robustness. Matched content exposed that gate_L8_dose LEVELS are pre-stream-fix
+  era (~0.1 high; 0.375 vs 0.28 at alpha=0.02). L8 ORDERING stands, LEVELS not canonical.
+  Ledgered as divergence; fig2 + paper carry the era caveat. (gate_L17_xdose.json)
+- Cycle 22 (corpus_seed_variance) HONEST NEGATIVE (pre-registered <=2/4 branch fired):
+  corpus B (descriptive-scene) seed-robust 3/3 (0.30/0.20/0.25); corpus A (narrative-
+  past) SEED-FRAGILE 1/3 (0.25/0.07/0.10) — its L16 seed-42 pass was a favorable draw.
+  Exactly review #13's single-seed warning, realized. RETROACTIVELY QUALIFIES the L16
+  corpus claim: 'lift generalizes across stub styles' -> holds for 1 of 2 new styles
+  across seeds. Propagated to paper honest-negatives, README table, HTML. tier-0 obs.
+  (gate_L17_cvar.json)
+- Menu 7 consumed (0.70/1.0; trained_bridge blocked). H4 PHASE 3 shipped: README
+  results-at-a-glance (gate-cited) + install/CLI/plugin; examples/quickstart_qwen3.md
+  (gate-backed walkthrough on the public model); NOTICE/license audit clean.
+- Two self-audit finds in one loop (stale L8 levels; corpus-A seed fragility) — the
+  program's honesty machinery now routinely turns its instruments on its own record.
+
+## 2026-07-10 — adversarial review #14: MERGE-WITH-CORRECTIONS (3 fixes + systemic audit)
+1. xdose candidate name 'unified_dose_crossconfig' OVERREACHES — it shows ARM-SET
+   robustness on one shared-content config, not cross-config. Disclosed in-gate; true
+   cross-config (different stubs/decoding) remains OPEN. Also clarified the seed123 rep
+   metric (0.325 vs 0.275 at alpha=0.01, both consistent).
+2. L8 staleness DEFECTIVE-as-asserted -> PROVISIONAL: the ~0.1 gap is one matched alpha
+   (0.02). L8 predates the stream fix so a gap is EXPECTED, but one point can't declare
+   all levels stale. Now: ORDERING stands, LEVELS flagged provisional pending a
+   dedicated canonical L8 re-run. Softened in gate, ledger, fig2, paper, HTML. A
+   canonical L8 re-measurement is a menu-8 candidate.
+3. SYSTEMIC (cvar's implication): review asked whether corpus-A seed-fragility endangers
+   earlier confirmed claims. RAN THE AUDIT: all confirm-tier claims are already
+   MULTI-SEED — core claim 6 seeds (L11), alignment 3 (L9), recipe transfer 4
+   (L14-ms), amplitude qwen3 3 (L15). The single-seed vulnerability was confined to
+   screen-tier corpus work and was caught THERE by L17-cvar. Reassuring; recorded in
+   paper honest-negatives + HTML.
+Review count: 14. All corrections applied before merge. L17 -> closed.

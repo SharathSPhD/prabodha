@@ -1,0 +1,15 @@
+{
+ "loop": "L17",
+ "status": "closed",
+ "closed_at": "2026-07-10",
+ "code_gate": {
+  "verdict": "pass",
+  "evidence": "pytest green; ruff clean"
+ },
+ "domain_gate": {
+  "verdict": "pass",
+  "hypothesis": "nemotron's active-range dose response holds on the e8dose config (>= 1/2 adjacent pairs rising > 0.05 at alpha {0.005, 0.01, 0.02}), within budget, with a second-seed replication at the middle point",
+  "evidence": "{\"summary\": {\"H_dose_config_robust\": {\"value\": 1.0, \"threshold\": 1.0, \"pass\": true}, \"H_budget_all_points\": {\"value\": 1.0, \"threshold\": 1.0, \"pass\": true}}, \"grid\": {\"0.005\": {\"gated_lift\": 0.15, \"gated_dH\": -0.0098, \"continuous_lift\": 0.35}, \"0.01\": {\"gated_lift\": 0.275, \"gated_dH\": 0.0247, \"continuous_lift\": 0.475}, \"0.02\": {\"gated_lift\": 0.275, \"gated_dH\": 0.0128, \"continuous_lift\": 0.475}}, \"seed123_replication_at_0.01\": {\"gated_lift\": 0.325, \"gated_dH\": 0.1057}, \"disclosures\": [\"CANDIDATE NAME OVERREACHES (review #14): registered as 'unified_dose_crossconfig' but e8dose and e5align turn out to share stubs, concepts, and decoding \\u2014 they differ ONLY in arm set (continuous included here). What is actually shown is ARM-SET robustness: the gated-arm dose numbers are unchanged when the continuous arm runs alongside. TRUE cross-config robustness (different stubs/decoding) is NOT tested and remains open\", \"L8 STALENESS is PROVISIONAL (review #14): the pre-stream-fix vs clean-stream level gap is observed at ONE matched alpha (0.02: L8 gated 0.375 vs 0.28 here and in L16-fine). L8 predates the L9 per-generation reseeding fix, so a gap is EXPECTED, but a single matched point cannot declare all L8 levels stale. Call: L8 ORDERING conclusions stand; its LEVELS are flagged PROVISIONAL pending a dedicated canonical re-measurement of L8's full grid (0.02/0.05/0.1) on fixed code \\u2014 NOT asserted non-canonical. Ledgered as a divergence note; fig2/paper carry the provisional era caveat\", \"matched content = the entropy_gated arm at alpha=0.02, same stubs/concepts/decoding as L8; the differing arm set does not touch the gated-arm number being compared\", \"single seed for the grid; one replication seed at the middle point (seed123 gated 0.325 vs seed42 0.275 at alpha=0.01 \\u2014 consistent); actual spend 0.35h vs 0.45h registered\"], \"registered_in\": \"configs/efe_menu7.yaml:unified_dose_crossconfig\", \"seeds\": [42, 123], \"tier\": \"screen\"}"
+ },
+ "signoff": "standing authorization (2026-07-09)"
+}

@@ -60,7 +60,9 @@ def fig2():
                 marker=marker, label=labels[arm])
     ax.set_xlabel("write amplitude α (= svātantrya cap)")
     ax.set_ylabel("concept-surface lift")
-    ax.set_title("Dose grid (PWM twin, sampling; seed 42)")
+    ax.set_title("Dose grid (PWM twin, sampling; seed 42)\n"
+                 "pre-stream-fix era: ordering valid; levels possibly ~0.1 high "
+                 "(provisional, 1 matched pt — L17)", fontsize=8)
     ax.legend(fontsize=8)
     save(fig, "fig2_dose_grid")
 
