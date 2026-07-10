@@ -1,0 +1,24 @@
+{
+  "loop": "L20",
+  "status": "closed",
+  "closed_at": "2026-07-10T21:14:02.365367Z",
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "bridge_trained.py implemented and tested; e4_cli supports trained_bridge arm; docker image built with PWM."
+  },
+  "domain_gate": {
+    "verdict": "blocked",
+    "evidence": "Screen-tier dispatch blocked: L13 band-lens artifact (outputs/L13/qwen3_4b_band_lens.pt) not available in session. Band lens from prior loop (L13) required to initialize SteerTrace and LensAdapter. Cannot proceed with dispatch without this artifact.",
+    "diagnosis": {
+      "blocker_type": "missing_prerequisite_artifact",
+      "required_artifact": "outputs/L13/qwen3_4b_band_lens.pt",
+      "source_loop": "L13",
+      "impact": "Cannot initialize steering mechanism; band lens required for all arms (baseline, entropy_gated, trained_bridge)",
+      "recommendation": "Restore L13 outputs from archive or rerun L13 to generate band lens before attempting L20 dispatch"
+    },
+    "deviations": [
+      "L13 artifacts not available in session workspace - worktree bootstrap incomplete or outputs not mounted"
+    ]
+  },
+  "signoff": "blocked_by_missing_artifact"
+}

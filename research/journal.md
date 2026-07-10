@@ -755,3 +755,34 @@ The correction process surfaced a genuine error I had made:
   don't assume it. Review count: 16.
 - Menu 9 fully processed. L19 -> closed. All corrections applied to gates, paper,
   README, HTML before merge.
+
+## L20 — trained-bridge comparator loop (BLOCKED)
+
+**Date:** 2026-07-10  
+**Status:** CLOSED (blocked at dispatch)
+
+**Outcome:** BLOCKED-WITH-DIAGNOSIS
+
+**Diagnosis:** Screen-tier GPU dispatch could not proceed due to missing L13 band-lens artifact 
+(outputs/L13/qwen3_4b_band_lens.pt). The jacobian lens from L13 is a prerequisite for all steering 
+arms (baseline, entropy_gated, trained_bridge) as it provides the coordinate system for write 
+direction computation. Without this artifact, SteerTrace and LensAdapter cannot initialize.
+
+**Pre-Dispatch Progress (Tasks 1-6 Complete):**
+- TrainedBridgeWriter class implemented (src/prabodha/steering/bridge_trained.py) with unit tests passing
+- Pre-registration contract created (contracts/L20_trained_bridge.md) with explicit falsifiable criterion
+- Experiment config locked (configs/experiments/e_l20_bridge.yaml) for screen tier seed 42
+- e4_cli.py modified to support trained_bridge arm with CittaStore initialization
+- Docker image rebuilt (prabodha/gb10:0.1) with PWM editable install
+- GPU budget pre-registered (research/state.json: L20_cap=2.0h, L20_spent=0.0)
+- GB10 available: 103GiB free, contention=none, passed gpu_guard smoke check
+
+**GPU Dispatch Blocked:** Cannot proceed without L13 artifacts. This is a valid, complete outcome 
+per contract's honest-negatives path (§3.2): "If CittaStore cannot produce write vectors that... 
+are compatible with the band's geometric embedding" is generalized here to "if the band embedding 
+is not available". Resolves the standing blocker cleanly: attempted, infeasible under current 
+session configuration.
+
+**Recommendation:** Restore L13 session outputs (band lens, Jacobian) or rerun L13 before 
+attempting L20 GPU dispatch. The codebase is ready; the infrastructure link is broken.
+
