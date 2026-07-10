@@ -140,7 +140,7 @@
   "L5_cap": 2.0,
   "L7_spent": 0.1,
   "L7_cap": 0.5,
-  "L8_spent": 0.35,
+  "L8_spent": 0.5,
   "L8_cap": 0.9
  },
  "kill_switch": false

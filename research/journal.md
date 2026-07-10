@@ -375,3 +375,17 @@
 - Menu CONSUMED (5/5 candidates, 5 cycles). Selector's next proposal will raise
   no-candidate — the menu refresh (trade-off case, trained-bridge, confirm extensions) is
   the next registration act.
+
+## 2026-07-10 — review #9 + boundary check: two freedom currencies; α=0.02 is marginal
+- Review #9 attacked the "regime-specific" framing as metric-smuggling. RESOLUTION was
+  already in the gates: at-position entropy is a single-forward measurement — decoding
+  regime cannot affect it (−1.9..−2.1 nats at both alphas, gate_L3*); trajectory-average
+  depends on regime (+0.82 greedy / −0.13 sampling). Both currencies now explicit; budget
+  registered as trajectory-average-under-sampling with the local spike disclosed.
+- Multi-seed check at the amplitude boundary (reviewer's demand): α=0.02 gated = 0.38/0.38/
+  0.17 across seeds 42/123/777 → 2/3. Amplitude robustness CONFIRMED at α=0.1 (3/3),
+  MARGINAL at 0.02. Seed 777 is systematically hard (0.23 at α=0.1, 0.17 at 0.02).
+- "Write-efficiency" demoted to schedule-efficiency with operational value flagged untested
+  (no latency/interference/stability measurement — open item for H4-era benchmarking).
+- Menu 5/5 consumed across 5 selector cycles; 9 adversarial reviews total. Paper §4 and
+  abstract now carry the corrected, currency-explicit claims.
