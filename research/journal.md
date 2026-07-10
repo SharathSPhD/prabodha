@@ -499,3 +499,28 @@
 - Consolidations updated per the each-loop rule: fig7_scaling_law added; paper §5 dose-law
   paragraph, counts bumped to fourteen cycles/four menus, recompiled; HTML explainer
   section 5 extended and artifact republished (same URL).
+
+## 2026-07-10 — cycles 15+16 CLOSED; menu 4 CONSUMED; L14 loop closes
+- Cycle 15 (qwen3_recipe_multiseed) CONFIRM TIER: gated lift 0.475/0.425/0.325 at seeds
+  {123,777,2024} + 0.40 at seed 42 => 4/4 over threshold within budget, gated > prefill
+  4/4 (gates/gate_L14_multiseed.json, observe tier 2, spend 0.25h). THE RECIPE TRANSFER
+  IS CONFIRMED — generality claim now at the same evidential standard as the core claim.
+- Cycle 16 (readback_recalibration) with DISCLOSED AMENDMENT: registered replay gates
+  (L9/L11) carry only summaries — no per-generation readback — so the missing instrument
+  was built (e4_cli --record-readback: raw pre/post ranks at the write port, band lens,
+  thresholds deliberately NOT applied at record time) and a fresh instrumented
+  clean-stream run substituted (gate_L14_readback_raw.json; run independently reproduced
+  core claim +0.30 within budget; its own e5align margin hypotheses fail as known —
+  alignment margin +0.07 < 0.15, the standing honest negative).
+  Sweep result (gates/gate_L14_readback.json, pass, screen): best balanced accuracy 0.68
+  at (top_m=5, gain=0) vs threshold 0.6; L3 setting (10,100) already near-optimal at
+  0.67; the min_rank_gain clause contributes NOTHING (best at gain=0). Reading: āgama
+  readback is a real but modest predictor of behavioral uptake (TPR 0.83, TNR 0.54) —
+  acceptance-test caveat resolved from "uncalibrated" to "calibrated, modest".
+  Observe tier 2, spend 0.15h. Ops lesson: src is BAKED into the docker image (only
+  outputs/gates/hf_cache mounted) — rebuild before dispatching new CLI flags.
+- Menu 4 consumed: 0.82/1.0h spent; trained_bridge_arm remains blocked (PWM WM stack);
+  selector: "no candidate fits the remaining budget". Ledger lint clean end-to-end.
+- L14 totals: 3 cycles, 3 gates + 1 confirm set + 1 instrumented raw gate, ~0.82 GPU-h.
+  Consolidations regenerated: paper (sixteen cycles; multiseed-confirm + dose-law +
+  readback-recalibration text; fig4 with 4-seed scatter), HTML republished (same URL).

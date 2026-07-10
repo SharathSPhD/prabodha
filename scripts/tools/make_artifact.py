@@ -184,7 +184,9 @@ to lens strength (max‖J‖/√d ≈ <span class="num">1.6</span> vs
 <span class="num">10–20</span> ⇒ α <span class="num">0.3</span> vs
 <span class="num">0.1</span>): full registered protocol passes, gated
 <span class="num">+0.40</span> vs prefill <span class="num">+0.17</span> within budget
-(single seed at screen tier; multi-seed queued).</p></details>
+(seed 42). CONFIRMED at seeds {123, 777, 2024}: gated lift
+<span class="num">0.47 / 0.42 / 0.33</span>, all ≥ threshold within budget, gated &gt;
+prefill 4/4 seeds (gate L14-multiseed, confirm tier).</p></details>
 
 <p>And the calibrated point turned out to sit on a clean <strong>dose law</strong>, not a
 lucky spot: doubling the write amplitude roughly doubles the effect, all the way up the
@@ -212,6 +214,11 @@ memory leak of finished work, a subtle randomness flaw that had quietly inflated
 number — found by the cheapest experiment on the menu, which the selector itself chose.
 After the fix, the program went back and re-measured its own headline claims, and printed
 the smaller, truer numbers.</p>
+<p>Its final menu also re-examined the doctrine's own acceptance test: when the "did the
+model take the suggestion?" verdict was calibrated against what the model actually did,
+it turned out to carry real but modest signal — one of its two clauses did all the work,
+and the other was quietly dropped. The lab keeps honest books about its own instruments,
+too.</p>
 <figure><img alt="architecture" src="data:image/png;base64,{FIG6}">
 <figcaption>The whole system: a frozen language model (the plant), band-targeted lenses
 (the port), the steering doctrine (the controller), gates (the records), the selector (the

@@ -88,11 +88,16 @@ def fig3():
 # fig4 — the recipe transfer (before/after) + per-layer articulation gradient
 def fig4():
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.6, 3.1))
-    a1.bar(["borrowed\ngeometry", "calibrated\nrecipe"], [0.05, 0.40],
-           color=["#a0aec0", "#2b6cb0"])
+    ms = ev("gates/gate_L14_multiseed.json")["per_seed"]
+    seed_lifts = [v["gated_lift"] for v in ms.values()]
+    a1.bar(["borrowed\ngeometry", "calibrated\nrecipe"],
+           [0.05, float(np.mean(seed_lifts))], color=["#a0aec0", "#2b6cb0"])
+    a1.scatter([1] * len(seed_lifts), seed_lifts, zorder=3, color="#c05621",
+               label="4 independent-stream seeds")
     a1.axhline(0.2, ls="--", c="k", lw=0.8)
-    a1.set_title("Qwen3-4B transfer: method vs geometry")
+    a1.set_title("Qwen3-4B transfer: method vs geometry (confirm tier)")
     a1.set_ylabel("gated lift")
+    a1.legend(fontsize=7)
     e = ev("gates/gate_L7_articulation_null.json")
     for key, lab, c in (("jacobian_lens", "fitted lens", "#2b6cb0"),
                         ("logit_lens_null", "logit-lens (null)", "#a0aec0")):

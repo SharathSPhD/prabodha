@@ -85,6 +85,11 @@ def main(argv=None) -> None:
                          "pre-dispatch inert-knob checklist)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
+    ap.add_argument("--record-readback", action="store_true",
+                    help="record raw āgama re-cognition ranks (pre_rank, post_ranks at "
+                         "the write port, band lens) per (concept, stub) so acceptance "
+                         "thresholds can be calibrated offline (menu-4 "
+                         "readback_recalibration)")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
@@ -117,6 +122,28 @@ def main(argv=None) -> None:
     layer_module = lm.layers[wl]
     stubs = list(exp["stubs"])
 
+    # āgama re-cognition raw ranks (opt-in): clean vs injected forward at the write
+    # port, band-targeted lens — RAW ranks only; verdict thresholds are the quantity
+    # under calibration, so none are applied here.
+    readback = {}
+    if a.record_readback:
+        rb_layers = [layer for layer in adapter.source_layers
+                     if wl < layer <= wl + int(exp.get("readback_span", 4))]
+        def _rank_of(row, tid):
+            order = np.argsort(-np.asarray(row))
+            return int(np.where(order == tid)[0][0]) + 1
+        for concept, (ids, cmd) in plans.items():
+            for stub in stubs:
+                lens_clean, _ = adapter.read_with_model(hf, tok, stub, positions=[-1],
+                                                        layers=rb_layers)
+                pre = min(_rank_of(lens_clean[layer][0], ids[0]) for layer in rb_layers)
+                with ResidualInjector(layer_module, cmd):
+                    lens_w, _ = adapter.read_with_model(hf, tok, stub, positions=[-1],
+                                                        layers=rb_layers)
+                post = [min(_rank_of(lens_w[layer][0], cid) for cid in ids)
+                        for layer in rb_layers]
+                readback[(concept, stub)] = {"pre_rank": pre, "post_ranks": post}
+
     def run_arm(arm: str, policy_factory) -> dict:
         texts_by_concept, step_ents, n_writes, records = {}, [], [], []
         baseline_drops: list[float] = []
@@ -146,12 +173,15 @@ def main(argv=None) -> None:
                         trace.entropies[i - 1] - trace.entropies[i]
                         for i in range(1, len(trace.entropies))
                         if trace.entropies[i - 1] > trace.entropies[i])
-                records.append({"concept": concept, "stub": stub[:24],
-                                "mean_step_entropy": round(float(np.mean(trace.entropies)), 4)
-                                if trace.entropies else None,
-                                "n_writes": n_writes[-1] if arm != "baseline" else 0,
-                                "hit": concept_surface_rate([text], concept) > 0,
-                                "events": getattr(trace_policy, "write_events", None)})
+                rec = {"concept": concept, "stub": stub[:24],
+                       "mean_step_entropy": round(float(np.mean(trace.entropies)), 4)
+                       if trace.entropies else None,
+                       "n_writes": n_writes[-1] if arm != "baseline" else 0,
+                       "hit": concept_surface_rate([text], concept) > 0,
+                       "events": getattr(trace_policy, "write_events", None)}
+                if (concept, stub) in readback:
+                    rec["readback"] = readback[(concept, stub)]
+                records.append(rec)
             texts_by_concept[concept] = texts
         surface = float(np.mean([concept_surface_rate(t, c)
                                  for c, t in texts_by_concept.items()]))
