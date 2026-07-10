@@ -1,0 +1,41 @@
+# EFE menu 8 — cycle 23+ (registered 2026-07-10, L18, from L17 review-#14 debts)
+# Concept: resolve the two PROVISIONAL/OPEN items review #14 left — the stale-L8-levels
+#   flag (needs a full canonical re-run, not one matched point) and true cross-config
+#   dose robustness — plus a targeted retry of the seed-fragile narrative-past corpus.
+# Source: research/journal.md 2026-07-10 (review #14); gates/gate_L17_*.json.
+budget_gpu_hours: 1.0
+candidates:
+  - id: l8_canonical_remeasure
+    cost_gpu_hours: 0.4
+    resolution: 0.85
+    description: "Resolve the provisional stale-L8-levels flag: re-run L8's FULL grid
+      — alpha=cap {0.02, 0.05, 0.1} x the gated arm, on the SAME e8dose config, on
+      current (post-stream-fix) code, seed 42. Success criterion (registered): if
+      clean-stream gated levels sit >= 0.05 BELOW L8's originals at >= 2/3 alphas, the
+      ~0.1 inflation is CONFIRMED across the grid and L8 levels are formally superseded;
+      if within 0.05 at >= 2/3, the L17 single-point gap was alpha-local and L8 levels
+      stand. Either way the provisional flag is DISCHARGED to a result."
+    knobs: {exp: configs/experiments/e8dose.yaml, alphas: [0.02, 0.05, 0.1], seeds: [42]}
+    prior_value_hint: 2
+    replay: [gates/gate_L8_dose.json, gates/gate_L17_xdose.json]
+  - id: narrative_past_amplitude_retry
+    cost_gpu_hours: 0.35
+    resolution: 0.75
+    description: "Is narrative-past's seed fragility an AMPLITUDE problem? The corpus
+      ran at alpha=0.1 (e5align default); nemotron's active range extends to ~0.02 but
+      lift also rises with alpha. Re-run e16corpus_a at alpha=cap=0.2 across seeds
+      {42, 123, 777}. Success: gated >= 0.2 within budget in >= 2/3 seeds => the
+      fragility was under-amplitude, not corpus-intrinsic; <= 1/3 => narrative-past
+      stubs are genuinely hard (recorded), independent of amplitude."
+    knobs: {exp: configs/experiments/e16corpus_a.yaml, alpha: 0.2, seeds: [42, 123, 777]}
+    prior_value_hint: 1
+    replay: [gates/gate_L17_cvar.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    description: "Trained-bridge comparator arm (PWM CittaStore bridge) vs analytic
+      J^T u writes. BLOCKED: PWM world-model stack not yet integrated on GB10."
+    blocked: true
+    blocked_reason: "PWM WM stack integration is its own loop (carried since menu 3)"
+    prior_value_hint: 2
+    replay: [gates/gate_L3.json]
