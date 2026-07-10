@@ -1,0 +1,39 @@
+# EFE menu 5 — cycle 17+ (registered 2026-07-10, L15, from L14 carried debts)
+# Concept: the selector's choices are pre-registered; review #11's two downgrades become
+#   the menu — each debt gets its confirm shot or stays honestly unconfirmed.
+# Source: research/journal.md 2026-07-10 (review #11); gates/gate_L14_{amp,readback}.json.
+budget_gpu_hours: 1.0
+candidates:
+  - id: amplitude_law_joint_confirm
+    cost_gpu_hours: 0.7
+    resolution: 0.85
+    description: "Upgrade the L14 dose TREND to a law claim: qwen3 grid alpha=cap
+      {0.1, 0.2, 0.3, 0.45} at TWO NEW independent-stream seeds {123, 777} (8 runs;
+      monotone ordering must hold per-seed), judged JOINTLY with nemotron's L8 dose grid
+      (replay). Success: ordering holds in 2/2 new qwen3 seeds AND both plants show
+      ordered dose response => 'amplitude ∝ 1/lens-strength with monotone dose' graduates
+      from single-seed trend to two-plant multi-seed law (review #11 correction 1)."
+    knobs: {exp: configs/experiments/e13full.yaml, seeds: [123, 777],
+            alphas: [0.1, 0.2, 0.3, 0.45]}
+    prior_value_hint: 2
+    replay: [gates/gate_L14_amp.json, gates/gate_L8_dose.json]
+  - id: readback_heldout_confirm
+    cost_gpu_hours: 0.15
+    resolution: 0.7
+    description: "Confirm the recalibrated acceptance test on a HELD-OUT corpus: fixed
+      setting (top_m=5, min_rank_gain=0) — no sweep, threshold BA >= 0.6 pre-registered
+      HERE — on new stubs disjoint from e5align's (e4_cli --record-readback). Resolves
+      review #11's multiple-comparisons objection or records the honest negative."
+    knobs: {analysis: readback_vs_behavior_heldout, top_m: 5, min_rank_gain: 0,
+            exp: configs/experiments/e15heldout.yaml}
+    prior_value_hint: 1
+    replay: [gates/gate_L14_readback.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    description: "Trained-bridge comparator arm (PWM CittaStore bridge) vs analytic
+      J^T u writes. BLOCKED: PWM world-model stack not yet integrated on GB10."
+    blocked: true
+    blocked_reason: "PWM WM stack integration is its own loop (carried since menu 3)"
+    prior_value_hint: 2
+    replay: [gates/gate_L3.json]

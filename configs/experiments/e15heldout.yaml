@@ -1,0 +1,34 @@
+# E15-heldout pre-registration — menu-5 readback_heldout_confirm (cycle 17+, L15).
+# Registered BEFORE the run: the L14 recalibration swept 36 settings and reported the max
+# (BA 0.68 at top_m=5, gain=0) against a 0.6 threshold chosen at analysis time (review
+# #11). This config is the confirm: the setting is FIXED here, the corpus is HELD OUT
+# (stubs disjoint from e5align's), and the success criterion is pre-registered:
+#   H_readback_heldout: balanced accuracy >= 0.6 at (top_m=5, min_rank_gain=0), no sweep.
+# Same plant, lens, site, and decoding as the calibration run (only the corpus changes).
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated]
+readback_span: 4
+uptake_top_m: 5
+uptake_min_rank_gain: 0
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  # held out: no overlap with e5align stubs
+  - "Last night I dreamed about"
+  - "The market was crowded with"
+  - "In the old house we found"
+  - "Every morning she walks past"
+prune_rule: "BA < 0.6 at the fixed setting -> the acceptance test stays 'modest,
+  uncalibrated for confirm use'; recorded as honest negative, no re-sweep on this corpus"
+deviations: []
+budget_gpu_hours: 0.15

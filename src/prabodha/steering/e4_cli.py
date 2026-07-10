@@ -85,6 +85,10 @@ def main(argv=None) -> None:
                          "pre-dispatch inert-knob checklist)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
+    ap.add_argument("--loop", default="L4",
+                    help="loop label recorded in the gate (review #11: three relabel "
+                         "rounds because this lived in dispatch memory — pass it "
+                         "EVERY dispatch)")
     ap.add_argument("--record-readback", action="store_true",
                     help="record raw āgama re-cognition ranks (pre_rank, post_ranks at "
                          "the write port, band lens) per (concept, stub) so acceptance "
@@ -270,7 +274,7 @@ def main(argv=None) -> None:
                                          "threshold": hp["min_lift_advantage"],
                                          "pass": bool(adv >= float(hp["min_lift_advantage"]))}
     report = GateReport(
-        loop="L4", status="open",
+        loop=a.loop, status="open",
         code_gate=GateSide(verdict="pass",
                            evidence=f"E4 ran to completion; contention={a.contention}"),
         domain_gate=GateSide(
