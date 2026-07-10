@@ -1,35 +1,30 @@
 import os
 import asyncio
 import json
+import hmac
+import hashlib
+import logging
 from typing import Optional
 from fastapi import FastAPI, Header, HTTPException, Response
 from fastapi.responses import StreamingResponse
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
 
-# Load environment
-STEER_GATEWAY_SECRET = os.getenv("STEER_GATEWAY_SECRET", "dev-secret")
+# Secure logging - never log secrets
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
-# Inline trace models (will import from prabodha.contracts.trace in production)
-class TraceToken(BaseModel):
-    t: int
-    token: str
-    entropy: float
-    gated: bool
-    write_norm: Optional[float] = None
-    band_topk: Optional[list[str]] = None
+# Load environment - fail fast if secret not set
+STEER_GATEWAY_SECRET = os.getenv("STEER_GATEWAY_SECRET")
+if not STEER_GATEWAY_SECRET:
+    raise RuntimeError(
+        "STEER_GATEWAY_SECRET environment variable is not set. "
+        "Gateway cannot start without authentication credentials."
+    )
 
-class SteerTrace(BaseModel):
-    model_id: str
-    prompt: str
-    concept: str
-    arm: str
-    seed: int
-    alpha: float
-    tau_percentile: int
-    site_layer: int
-    tokens: list[TraceToken]
-    created_at: str
+# Import real trace models from prabodha
+from prabodha.contracts.trace import TraceToken, SteerTrace
+
 
 class SteeringRuntimeAdapter:
     """Adapter seam to prabodha's steering runtime (real impl wraps the e4 composer;
@@ -67,6 +62,7 @@ async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     global runtime
     runtime = SteeringRuntimeAdapter()
+    logger.info("Gateway initialized (model_id: %s)", runtime.model_id)
     yield
     runtime = None
 
@@ -98,12 +94,14 @@ async def steer(
     I3 framing: named SSE events — one `token` event per TraceToken JSON,
     then a single `done` event carrying the full SteerTrace JSON.
     """
-    # Verify bearer token
+    # Verify bearer token (use timing-safe comparison to prevent side-channel attacks)
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing bearer token")
 
-    token = authorization[7:]
-    if token != STEER_GATEWAY_SECRET:
+    provided_token = authorization[7:]
+
+    # Use hmac.compare_digest to prevent timing side-channel attacks
+    if not hmac.compare_digest(provided_token, STEER_GATEWAY_SECRET):
         raise HTTPException(status_code=403, detail="Invalid token")
 
     if not runtime:
@@ -126,7 +124,8 @@ async def steer(
             if trace is not None:
                 yield f"event: done\ndata: {trace.model_dump_json()}\n\n"
         except Exception as e:
-            yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
+            logger.error("Streaming error", exc_info=True)
+            yield f"event: error\ndata: {json.dumps({'error': 'Internal server error'})}\n\n"
 
     return StreamingResponse(
         generate(),
