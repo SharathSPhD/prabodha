@@ -112,3 +112,16 @@ def test_consumed_candidates_not_reproposed(tmp_path):
                         [0.05, 0.1, 0.35, 0.5], source="gates/run_gate.json")
     p2 = propose_next(ROOT / "configs/efe_menu.yaml", ledger=led, root=ROOT)
     assert p2.candidate.id != p1.candidate.id
+
+
+def test_menu_budget_scoped_to_its_own_candidates(tmp_path):
+    """Cycle-7 live bug: menu-2's budget was debited by menu-1 spends (global ledger)."""
+    led = EFELedger(tmp_path / "led.jsonl")
+    led.log_spend("some_menu1_candidate", 1.9)  # not in this menu
+    _, _, budget, _ = build_from_configs(ROOT / "configs/efe_menu.yaml", ledger=led,
+                                         root=ROOT)
+    assert budget == pytest.approx(2.0)  # untouched by foreign spends
+    led.log_spend("tau_sensitivity", 0.3)  # in this menu
+    _, _, budget2, _ = build_from_configs(ROOT / "configs/efe_menu.yaml", ledger=led,
+                                          root=ROOT)
+    assert budget2 == pytest.approx(1.7)

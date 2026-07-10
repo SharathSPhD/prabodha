@@ -1,0 +1,16 @@
+{
+  "loop": "L9-probe",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "CPU forensics + 2-seed verification run",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"hard_seed_explained\": {\"value\": 1.0, \"threshold\": 1.0, \"pass\": true}}, \"finding\": \"per-run torch.manual_seed(seed) correlated ALL generations in a run (seed = trajectory-family selector, n_eff << 40). Forensics: s777 calibration/write-mechanics normal; failure diffuse across concepts. FIX: per-generation seeds derived from (seed, arm, concept, stub). VERIFICATION at alpha=0.02: seed gap collapses 0.38/0.17 -> 0.28/0.25 (gates gate_L9_probe_*_fixed).\", \"consequence\": \"all sampling-era point estimates (L4b..L8) carry correlated-stream noise; core budget claim RE-VERIFIED under independent streams (0.28/0.25 >= 0.2 within budget); finer margins (alignment advantage, exact lifts) require re-measurement -> alignment_confirm runs next under the fixed method.\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}
