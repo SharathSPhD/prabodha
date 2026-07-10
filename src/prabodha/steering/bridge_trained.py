@@ -16,16 +16,21 @@ from __future__ import annotations
 from typing import Any
 
 import numpy as np
-import torch
 
 from prabodha.steering.writer import WriteCommand
 
+# torch is imported lazily inside the functions below so this module (and the public
+# steering API that re-exports from it) imports without the optional [lens] extra;
+# only actual write planning needs torch.
 
-def _store_device(citta_store: Any) -> torch.device:
+
+def _store_device(citta_store: Any) -> "torch.device":  # noqa: F821
     """Best-effort device of a CittaStore (its gate MLPs carry parameters).
 
     Falls back to CPU for a mock store with no parameters (unit tests).
     """
+    import torch
+
     dev = getattr(citta_store, "device", None)
     if isinstance(dev, torch.device):
         return dev
@@ -84,6 +89,8 @@ class TrainedBridgeWriter:
             ValueError: if weights contain negatives (svātantrya doctrine) or if
                        CittaStore produces a degenerate direction
         """
+        import torch
+
         u_rows = np.atleast_2d(np.asarray(u_rows, dtype=np.float64))
         if weights is None:
             weights = np.ones(len(u_rows))
