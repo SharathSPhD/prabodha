@@ -5,10 +5,28 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/lib/config";
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
+function isValidRedirectPath(path: string): boolean {
+  if (!path) return false;
+
+  // Must be a relative path starting with /
+  if (!path.startsWith("/")) return false;
+
+  // Reject protocol-relative URLs (//host)
+  if (path.startsWith("//")) return false;
+
+  // Reject absolute URLs with protocol (http://, https://, etc.)
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(path)) return false;
+
+  return true;
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") || "/dashboard";
+  const nextParam = searchParams.get("next");
+
+  // Validate redirect target: must be same-origin relative path
+  const next = isValidRedirectPath(nextParam) ? nextParam : "/dashboard";
 
   if (!code) {
     return NextResponse.redirect(new URL("/login?error=no_code", request.url));
