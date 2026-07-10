@@ -78,6 +78,8 @@ def main(argv=None) -> None:
                     help="override exp seeds[0] (multi-seed replications)")
     ap.add_argument("--alpha", type=float, default=None,
                     help="override exp alpha (dose-response grids)")
+    ap.add_argument("--write-layer", type=int, default=None,
+                    help="override exp write_layer (per-plant site calibration)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
     a = ap.parse_args(argv)
@@ -88,7 +90,7 @@ def main(argv=None) -> None:
     hf, tok = build_model(load(a.model))
     adapter = LensAdapter("jacobian").load(a.mid_lens)
     lm = jlens.from_hf(hf, tok)
-    wl = int(exp["write_layer"])
+    wl = int(a.write_layer) if a.write_layer is not None else int(exp["write_layer"])
     J = adapter._lens.jacobians[wl].float().cpu().numpy()
     U = hf.get_output_embeddings().weight.detach().float().cpu().numpy()
     alpha = float(a.alpha) if a.alpha is not None else float(exp["alpha"])
