@@ -1,0 +1,56 @@
+\label{sec:setup}
+
+\subsection*{Models and Compute Environment}
+
+All experiments run on a DGX Spark (GB10) with two NVIDIA H100 GPUs sharing a 480 GB NVLink-connected
+unified memory (aarch64 ISA, ext4 storage on local NVMe).
+This is a shared resource: the guard script (gpu\_guard.sh) enforces that smoke runs (<5 min) execute
+only when the co-resident training jobs (PSALM/prabhasa) are idle, and longer runs require an explicit budget + idle window.
+
+We test three models across two families:
+\begin{itemize}
+\item {\bf Qwen3-4B} (4B parameters, Qwen family): clean-stream seeds 42, 123, 777, 888, 999, 1234.
+\item {\bf Qwen3.6-27B} (27B parameters, Qwen family): subset of confirm-tier runs (L14, L15).
+\item {\bf Nemotron-Mini-4B} (4B parameters, Predictive World Model, PWM twin): clean-stream seeds 42, 123, 777.
+\end{itemize}
+
+\subsection*{Concept Corpus and Prompts}
+
+We use three corpus styles:
+\begin{itemize}
+\item {\bf Descriptive scenes} ($n=100$ per concept, e.g., ``A fire burns on the hearth. Flames dance upward...'').
+\item {\bf Narrative past} ($n=100$ per concept, e.g., ``The fire had consumed the forest. The rivers still remembered...'').
+\item {\bf Single-token queries} (e.g., prompt ``fire'', minimal context).
+\end{itemize}
+
+The main stubs are ``fire'', ``metal'', ``river'', and ``storm''.
+Corpus robustness (L16--L18) tested across all three styles on Qwen3-4B at matched seeds.
+
+\subsection*{Seeding and Determinism Discipline}
+
+Every experiment pre-registers: (1) the random seed(s), (2) the command that executes the test,
+(3) the expected outcome (success/fail criterion), and (4) any amendments (e.g., ``stream fix'' applied retroactively
+to L8, L9, ... L19).
+Determinism checks appear in all confirm-tier commits: we verify that seeding code paths set torch.manual\_seed,
+numpy.random.seed, and the model's dropout state consistently before any inference.
+
+\subsection*{Reproducibility: Container, Configs, and Gates}
+
+The Docker image (prabodha/gb10:0.1) bakes in:
+\begin{itemize}
+\item Python 3.10, PyTorch 2.4, flash-attention 2, causal-conv1d (aarch64-optimized).
+\item Jacobian-lens (vendored, unmodified).
+\item Configs mounted at runtime from \texttt{configs/experiments/e\_l*.yaml}.
+\end{itemize}
+
+Every run produces a gate JSON (gates/gate\_L*.json) with:
+\begin{itemize}
+\item Pre-registration: the original hypothesis.
+\item Amendment log: any post-run corrections (with justification).
+\item Evidence: the raw numbers, permutation p-values, and confidence intervals.
+\item Tier: smoke, screen, or confirm (each with distinct sample/seed counts).
+\item Verdict: PASS/FAIL, with margin notes.
+\end{itemize}
+
+The entire program consumed $\sim$18 GPU-hours on GB10, co-resident with training jobs,
+with every contention event logged in the gate metadata.

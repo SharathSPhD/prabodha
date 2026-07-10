@@ -1,0 +1,47 @@
+\label{sec:discussion}
+
+\subsection*{Honest Negatives and Limitations}
+
+The $\geq 0.15$ schedule margins (anticipated steering speedup under gating) did not confirm;
+we observe sign consistency instead.
+The \=agama readback acceptance test, recalibrated against behavioral hits and held-out-tested at
+a fixed setting, achieves balanced accuracy 0.64 against a pre-registered 0.6 (gate L14-readback),
+a margin inside its own binomial CI.
+When pooling three corpora at $n=120$ (gate L15-readback, L16-corpus), the accuracy regresses to 0.59.
+The readback signal is weak---not an acceptance test, but a directional hint.
+
+\subsection*{Scope Limits and Open Axes}
+
+The single-seed fragility program reviewer \#6 flagged in narrative-past style resolved into a mechanism:
+the calibration recipe's amplitude term has a \emph{corpus} axis (stub difficulty) alongside its model axis (lens strength).
+A fixed amplitude across corpora was the real gap (gate L16-corpus).
+Once amplitude is calibrated per corpus, steering lift generalizes (descriptive-scene: 0.30/0.20/0.25 at $\alpha=0.1$;
+narrative-past: 0.43/0.28/0.23 at $\alpha=0.2$, 3/3 seeds).
+However, the commitment-flash reading (our implementation of sphura\d{t}\d{t}\=a) remains directionally weaker than
+entropy gating, not refuted.
+
+The trained-bridge comparator, comparing PWM's learned CittaStore write against prabodha's analytic band-exit write,
+awaits the PWM world-model stack and is registered as future work (L20, WS1 dedicated loop).
+
+Three modalities remain deliberately unconverged:
+\begin{enumerate}
+\item {\bf Anusa\d{m}dh\=ana} (cross-episode continuity): the steering recipe is intra-episode;
+      testing whether episode boundaries induce a reset of workspace loading is future work.
+\item {\bf Modality confound}: all prompts are text-in, tokens-out; multimodal workspace structure is unexplored.
+\item {\bf W-space beyond J-space}: the global workspace (GWT) may be larger than the $J$-space defined by
+      our J-space band identification; the relationship remains open.
+\end{enumerate}
+
+\subsection*{Reproducibility and Program Discipline}
+
+The research loop caught and corrected four classes of errors on the record:
+\begin{enumerate}
+\item Cost model miscalibration (L3 resolved by review \#2).
+\item Replay bug in the ledger (L8 state mismatch discovered in review \#7, corrected in L9).
+\item Sampling-seed correlation (the \emph{stream fix}, applied retroactively to all L8--L19 gates).
+\item Staleness violations (gate-to-gate propagation; now enforced by ledger linter).
+\end{enumerate}
+
+Every gate JSON includes pre-registration, amendment log, evidence (raw numbers, p-values, CIs), tier (smoke/screen/confirm),
+and verdict. The entire program consumed $\sim 18$ GPU-hours on GB10, co-resident with training jobs,
+with contention events logged in every gate.

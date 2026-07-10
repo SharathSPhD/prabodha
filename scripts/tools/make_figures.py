@@ -202,6 +202,83 @@ def fig7():
     save(fig, "fig7_scaling_law")
 
 
-for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7):
+# fig8 — fire-case slice visualization: workspace band as 2D surface in concept space
+def fig8_fire_case_slice():
+    """
+    Fire-case slice visualization: the band's J_μ projection on two axes (stimulus + readout).
+
+    Concept: The workspace band as a two-dimensional surface in concept space.
+    Source: lens-vis output; fire-case trace from WS2 (fire prompt, gated write, full decode).
+    Primitive: matplotlib heatmap or D3-exported PNG from vendor/jacobian-lens/jlens/data/slice_vis.html.
+
+    If pre-rendered PNG exists in outputs/, copy it.
+    Otherwise, dispatch a GPU job to compute slice data and export via slice_vis.html + screenshot.
+    """
+    import shutil
+    import glob
+
+    # Check if pre-rendered fire-case slice PNG exists in outputs/
+    candidates = list(ROOT.glob("outputs/**/fire*slice*.png")) + \
+                 list(ROOT.glob("outputs/**/slice*fire*.png"))
+    if candidates:
+        src = candidates[0]
+        dst = OUT / "fig8_fire_case_slice.png"
+        shutil.copy(src, dst)
+        print(f"fig8: copied pre-rendered slice from {src}")
+        return
+
+    # Otherwise: placeholder note
+    print("fig8: PLACEHOLDER — fire-case slice PNG not found in outputs/.")
+    print("       To generate: dispatch short GPU job to compute lens.slice(...) on fire-case trace,")
+    print("       export via slice_vis.html interactive, screenshot PNG.")
+
+
+# fig9 — trained-bridge comparator: trained CittaStore write vs analytic band-exit write
+def fig9_trained_bridge_comparator():
+    """
+    Trained-bridge comparator: lift curves across the trained-CittaStore write method vs analytic write.
+
+    Concept: Does PWM's world-model-derived write vector compete with the analytical band-exit write?
+    Source: gates/gate_L20*.json (produced by WS1).
+    Primitive: bar chart or line plot of lift by seed, with error margins.
+
+    Gated: only runs if gates/gate_L20*.json exists and is readable.
+    """
+    import glob
+    l20_gates = glob.glob(str(ROOT / "gates/gate_L20*.json"))
+    if not l20_gates:
+        print("fig9: GATED — no L20 gate files found. Skipping trained-bridge comparator figure.")
+        return
+
+    try:
+        g = json.loads((ROOT / l20_gates[0]).read_text())
+        evidence = json.loads(g["domain_gate"]["evidence"])
+    except Exception as e:
+        print(f"fig9: ERROR reading L20 gate — {e}. Skipping.")
+        return
+
+    # Parse evidence: expect a structure like {"per_seed": {seed: {lift_trained, lift_analytic, ...}}}
+    per_seed = evidence.get("per_seed", {})
+    if not per_seed:
+        print("fig9: L20 gate has no per_seed data. Skipping.")
+        return
+
+    seeds = sorted([int(s) for s in per_seed.keys()])
+    trained = [per_seed[str(s)].get("lift_trained", 0) for s in seeds]
+    analytic = [per_seed[str(s)].get("lift_analytic", 0) for s in seeds]
+
+    fig, ax = plt.subplots(figsize=(5.2, 3.2))
+    x = np.arange(len(seeds))
+    ax.bar(x - 0.2, trained, 0.4, label="trained bridge (CittaStore)", color="#d97706")
+    ax.bar(x + 0.2, analytic, 0.4, label="analytic write (J^T u)", color="#2b6cb0")
+    ax.set_xticks(x, [f"seed {s}" for s in seeds])
+    ax.set_ylabel("concept-surface lift")
+    ax.set_title("Trained-Bridge Comparator (L20)")
+    ax.legend(fontsize=8)
+    ax.axhline(0, ls="-", c="k", lw=0.5, alpha=0.3)
+    save(fig, "fig9_trained_bridge_comparator")
+
+
+for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8_fire_case_slice, fig9_trained_bridge_comparator):
     f()
 print("all figures written to", OUT)
