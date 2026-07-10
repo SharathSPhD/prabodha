@@ -22,18 +22,33 @@ from typing import Any
 def load_gates(repo_root: Path) -> dict[str, Any]:
     """Load all gate JSONs from gates/ directory.
 
+    Raises:
+        FileNotFoundError: if gates/ directory doesn't exist
+        ValueError: if no readable gate files found (provenance requirement)
+
     Returns:
         dict mapping gate filename to parsed GateReport
     """
     gates = {}
     gates_dir = repo_root / "gates"
     if not gates_dir.exists():
-        return gates
+        raise FileNotFoundError(
+            f"gates/ directory not found at {gates_dir}. "
+            "Cannot export data without gate provenance."
+        )
+
     for gate_file in sorted(gates_dir.glob("gate_*.json")):
         try:
             gates[gate_file.name] = json.loads(gate_file.read_text())
         except json.JSONDecodeError as e:
-            print(f"warning: skipping malformed gate {gate_file}: {e}")
+            raise ValueError(f"Malformed gate JSON {gate_file}: {e}")
+
+    if not gates:
+        raise ValueError(
+            f"No readable gate files found in {gates_dir}. "
+            "Every exported claim must be traced to a committed gate JSON."
+        )
+
     return gates
 
 
@@ -56,41 +71,73 @@ def load_traces(repo_root: Path) -> dict[str, Any]:
 
 
 def build_results_json(gates: dict[str, Any]) -> dict[str, Any]:
-    """Build results.json from gate data.
+    """Build results.json from gate data with provenance enforcement.
+
+    Every extracted claim must have a valid gate file reference. No silent skips.
+
+    Raises:
+        ValueError: if a gate lacks required structure or summary fields
 
     Returns:
         {"claims": [...]} where each claim has id, text, tier, gates, numbers
     """
     claims = []
+    skipped_gates = []
+
     # Extract claims from gate domain_gate evidence
     for gate_name, gate in gates.items():
         domain_gate = gate.get("domain_gate", {})
+        if not domain_gate:
+            skipped_gates.append((gate_name, "missing domain_gate"))
+            continue
+
         evidence = domain_gate.get("evidence", "{}")
         try:
             ev_obj = json.loads(evidence) if isinstance(evidence, str) else evidence
-        except json.JSONDecodeError:
-            ev_obj = {}
+        except json.JSONDecodeError as e:
+            raise ValueError(
+                f"Gate {gate_name} has malformed evidence JSON: {e}. "
+                "Cannot extract claims without valid evidence."
+            )
 
         # Extract summary (hypothesis results)
         summary = ev_obj.get("summary", {})
-        if summary:
-            for hyp_name, hyp_result in summary.items():
-                # Determine tier from gate name (e.g., gate_L1.json -> L1 -> tier screen if L < 10)
-                tier = "confirm"
-                if "_L" in gate_name:
-                    try:
-                        loop_part = gate_name.split("_L")[1].split("_")[0].split(".")[0]
-                        loop_num = int(loop_part)
-                        tier = "screen" if loop_num < 10 else "confirm"
-                    except (ValueError, IndexError):
-                        pass
-                claims.append({
-                    "id": f"{gate_name}_{hyp_name}",
-                    "text": hyp_name,
-                    "tier": tier,
-                    "gates": [gate_name],
-                    "numbers": hyp_result,
-                })
+        if not summary:
+            skipped_gates.append((gate_name, "empty summary (no hypotheses)"))
+            continue
+
+        for hyp_name, hyp_result in summary.items():
+            # Determine tier from gate name (e.g., gate_L1.json -> L1 -> tier screen if L < 10)
+            tier = "confirm"
+            if "_L" in gate_name:
+                try:
+                    loop_part = gate_name.split("_L")[1].split("_")[0].split(".")[0]
+                    loop_num = int(loop_part)
+                    tier = "screen" if loop_num < 10 else "confirm"
+                except (ValueError, IndexError):
+                    pass
+
+            # Verify that each claim has the required gate provenance
+            if not gate_name or not hyp_name or hyp_result is None:
+                raise ValueError(
+                    f"Incomplete claim in gate {gate_name}: hyp={hyp_name}, result={hyp_result}. "
+                    "All claims must have gate file, hypothesis name, and result value."
+                )
+
+            claims.append({
+                "id": f"{gate_name}_{hyp_name}",
+                "text": hyp_name,
+                "tier": tier,
+                "gates": [gate_name],
+                "numbers": hyp_result,
+            })
+
+    # Report any skipped gates but continue (they may have valid reason)
+    if skipped_gates:
+        print(f"Info: skipped {len(skipped_gates)} gates with no extractable claims:")
+        for gate_name, reason in skipped_gates:
+            print(f"  - {gate_name}: {reason}")
+
     return {"claims": claims}
 
 
