@@ -307,16 +307,28 @@ def main(argv=None) -> None:
             if records:
                 behavioral_hit = records[0].get("hit")
 
+        # Collect per-token data from the primary arm (entropy_gated has best replay value)
+        trace_tokens = []
+        if "entropy_gated" in results:
+            arm_result = results["entropy_gated"]
+            for record in arm_result.get("records", []):
+                # For now, record basic per-token structure with available data
+                # Full implementation would decode tokens and track gated writes per step
+                pass
+
+        # Use entropy_gated as the primary arm for replay traces (best steering signal)
+        primary_arm = "entropy_gated" if "entropy_gated" in results else "baseline"
+
         trace_obj = SteerTrace(
             model_id=model_cfg.get("hf_id", "unknown"),
             prompt=prompt,
             concept=concept,
-            arm="entropy_gated",
+            arm=primary_arm,
             seed=int(exp["seeds"][0]),
             alpha=alpha,
             tau_percentile=int(a.tau_percentile) if a.tau_percentile is not None else int(exp.get("tau_percentile", 60)),
             site_layer=wl,
-            tokens=[],
+            tokens=trace_tokens,
             readback=None,
             behavioral_hit=behavioral_hit,
             gate_ref=None,
