@@ -1,0 +1,16 @@
+{
+  "loop": "L9-writecost",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "throughput instrumented; contention=none",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"H_write_count_operationally_free\": {\"value\": 1.2608032536858158, \"threshold\": 0.9, \"pass\": true}}, \"per_arm\": {\"baseline\": {\"tok_per_sec\": 19.67, \"camatk\": 0.458}, \"prefill_only\": {\"tok_per_sec\": 24.8, \"camatk\": 0.4427}, \"entropy_gated\": {\"tok_per_sec\": 25.04, \"camatk\": 0.4439}, \"continuous\": {\"tok_per_sec\": 24.92, \"camatk\": 0.484}}, \"baseline_tps\": 19.67, \"rule\": \"cost is REAL iff throughput <90% of baseline; else write-count is operationally free at this scale\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

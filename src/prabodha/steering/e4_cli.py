@@ -47,7 +47,9 @@ class EntropyTrace:
 
 
 def _generate(hf, tok, prompt: str, max_new: int, processors: list,
-              decoding: dict | None = None, seed: int = 42) -> str:
+              decoding: dict | None = None, seed: int = 42,
+              stream_tag: str = "") -> str:
+    import hashlib
     import torch
     from transformers import LogitsProcessorList
     ids = tok(prompt, return_tensors="pt")["input_ids"].to(hf.device)
@@ -55,7 +57,12 @@ def _generate(hf, tok, prompt: str, max_new: int, processors: list,
               logits_processor=LogitsProcessorList(processors))
     if decoding and decoding.get("do_sample"):
         kw.update(do_sample=True, temperature=float(decoding["temperature"]))
-        torch.manual_seed(seed)  # registered seed; sampling arms reproducible
+        # Reproducible AND independent across generations: hard_seed_probe (L9 cycle 6)
+        # found that resetting the SAME seed per generation makes all trajectories in a
+        # run share sampling-stream structure (the seed selects a correlated trajectory
+        # FAMILY, n_effective << n) — per-generation seeds derive from (seed, stream_tag).
+        h = int(hashlib.sha256(f"{seed}|{stream_tag}".encode()).hexdigest()[:8], 16)
+        torch.manual_seed(h)
     with torch.no_grad():
         out = hf.generate(ids, **kw)
     return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
@@ -106,6 +113,7 @@ def main(argv=None) -> None:
 
     def run_arm(arm: str, policy_factory) -> dict:
         texts_by_concept, step_ents, n_writes, records = {}, [], [], []
+        baseline_drops: list[float] = []
         for concept, (ids, cmd) in plans.items():
             texts = []
             for stub in stubs:
@@ -114,17 +122,24 @@ def main(argv=None) -> None:
                 procs = [trace.processor()]
                 if trace_policy is None and arm != "baseline":
                     raise AssertionError("non-baseline arm needs a policy")
+                tag = f"{arm}|{concept}|{stub}"
                 if arm == "baseline":
                     text = _generate(hf, tok, stub, max_new, procs,
-                                     decoding=exp.get("decoding"), seed=int(exp["seeds"][0]))
+                                     decoding=exp.get("decoding"),
+                                     seed=int(exp["seeds"][0]), stream_tag=tag)
                 else:
                     with ResidualInjector(layer_module, cmd, policy=trace_policy) as inj:
                         text = _generate(hf, tok, stub, max_new, procs,
                                          decoding=exp.get("decoding"),
-                                         seed=int(exp["seeds"][0]))
+                                         seed=int(exp["seeds"][0]), stream_tag=tag)
                     n_writes.append(inj.n_applications)
                 texts.append(text)
                 step_ents.extend(trace.entropies)
+                if arm == "baseline":
+                    baseline_drops.extend(
+                        trace.entropies[i - 1] - trace.entropies[i]
+                        for i in range(1, len(trace.entropies))
+                        if trace.entropies[i - 1] > trace.entropies[i])
                 records.append({"concept": concept, "stub": stub[:24],
                                 "mean_step_entropy": round(float(np.mean(trace.entropies)), 4)
                                 if trace.entropies else None,
@@ -136,10 +151,13 @@ def main(argv=None) -> None:
                                  for c, t in texts_by_concept.items()]))
         camatk = float(np.mean([score_camatk_text(x)
                                 for t in texts_by_concept.values() for x in t]))
-        return {"arm": arm, "surface": round(surface, 4), "camatk": round(camatk, 4),
-                "mean_step_entropy": round(float(np.mean(step_ents)), 4),
-                "mean_writes_per_gen": round(float(np.mean(n_writes)), 2) if n_writes else 0.0,
-                "records": records}
+        out = {"arm": arm, "surface": round(surface, 4), "camatk": round(camatk, 4),
+               "mean_step_entropy": round(float(np.mean(step_ents)), 4),
+               "mean_writes_per_gen": round(float(np.mean(n_writes)), 2) if n_writes else 0.0,
+               "records": records}
+        if arm == "baseline":
+            out["baseline_drops"] = baseline_drops
+        return out
 
     results = {}
     results["baseline"] = run_arm("baseline", None)
@@ -153,6 +171,12 @@ def main(argv=None) -> None:
     tau = (float(np.percentile(base_ents, float(tau_pct)))
            if a.tau_percentile is not None or "tau_fixed" not in exp
            else float(exp["tau_fixed"]))
+    drop_tau = None
+    if results["baseline"].get("baseline_drops"):
+        # commitment-flash threshold: registered percentile of the baseline's own
+        # positive step-to-step entropy drops (same self-calibration discipline as tau)
+        drop_tau = float(np.percentile(results["baseline"]["baseline_drops"],
+                                       float(exp.get("drop_percentile", 60))))
     arms_wanted = list(exp.get("arms",
                        ["continuous", "prefill_only", "entropy_gated", "every_k"]))
     if "continuous" in arms_wanted:
@@ -163,6 +187,10 @@ def main(argv=None) -> None:
     if "entropy_gated" in arms_wanted:
         results["entropy_gated"] = run_arm(
             "entropy_gated", lambda: make_policy("entropy_gated", tau=tau, min_gap=min_gap))
+    if "entropy_drop_gated" in arms_wanted:
+        results["entropy_drop_gated"] = run_arm(
+            "entropy_drop_gated",
+            lambda: make_policy("entropy_drop_gated", drop=drop_tau, min_gap=min_gap))
     k = 0
     if "every_k" in arms_wanted:
         gated_rate = results["entropy_gated"]["mean_writes_per_gen"]
@@ -171,9 +199,10 @@ def main(argv=None) -> None:
 
     base_s, base_c = results["baseline"]["surface"], results["baseline"]["camatk"]
     base_e = results["baseline"]["mean_step_entropy"]
-    agg = {"tau": round(tau, 4), "every_k_k": k}
-    for arm in [x for x in ("continuous", "prefill_only", "entropy_gated", "every_k")
-                if x in results]:
+    agg = {"tau": round(tau, 4), "every_k_k": k,
+           "drop_tau": round(drop_tau, 4) if drop_tau is not None else None}
+    for arm in [x for x in ("continuous", "prefill_only", "entropy_gated",
+                            "entropy_drop_gated", "every_k") if x in results]:
         r = results[arm]
         agg[arm] = {"lift": round(r["surface"] - base_s, 4),
                     "camatk_drop": round(base_c - r["camatk"], 4),
@@ -192,6 +221,12 @@ def main(argv=None) -> None:
         summary["H_alignment"] = {"value": round(adv, 4),
                                   "threshold": ha["min_lift_advantage"],
                                   "pass": bool(adv >= float(ha["min_lift_advantage"]))}
+    if "H_flash_vs_uncommitted" in hyp and "entropy_drop_gated" in agg:
+        hf_ = hyp["H_flash_vs_uncommitted"]
+        adv = agg["entropy_drop_gated"]["lift"] - g["lift"]
+        summary["H_flash_vs_uncommitted"] = {"value": round(adv, 4),
+                                             "threshold": hf_["min_lift_advantage"],
+                                             "pass": bool(adv >= float(hf_["min_lift_advantage"]))}
     if "H_gated_vs_prefill" in hyp and "prefill_only" in agg:
         hp = hyp["H_gated_vs_prefill"]
         adv = g["lift"] - agg["prefill_only"]["lift"]
@@ -209,6 +244,7 @@ def main(argv=None) -> None:
                                                ("surface", "camatk", "mean_step_entropy",
                                                 "mean_writes_per_gen")}
                                           for k2, v in results.items()},
+                                 "drop_tau": agg.get("drop_tau"),
                                  "records": {k2: v["records"] for k2, v in results.items()},
                                  "contention": a.contention}),
             deviations=list(exp.get("deviations", [])) + devs))
@@ -216,8 +252,8 @@ def main(argv=None) -> None:
     print(f"gate written: {a.out} (domain={report.domain_gate.verdict}) tau={tau:.3f} k={k} "
           + " ".join(f"{arm}: lift={agg[arm]['lift']:+.2f} dH={agg[arm]['step_entropy_delta']:+.2f} "
                      f"w={agg[arm]['writes_per_gen']}"
-                     for arm in ("continuous", "prefill_only", "entropy_gated", "every_k")
-                     if arm in agg))
+                     for arm in ("continuous", "prefill_only", "entropy_gated",
+                                 "entropy_drop_gated", "every_k") if arm in agg))
 
 
 if __name__ == "__main__":

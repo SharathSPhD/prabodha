@@ -1,0 +1,16 @@
+{
+  "loop": "L9-alignconf",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "3 seeds, independent streams, contention=none",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "fail",
+    "evidence": "{\"summary\": {\"H_gated_budget_confirm_cleanstreams\": {\"value\": 0.3, \"threshold\": 0.2, \"pass\": true}, \"H_alignment_confirm\": {\"value\": 0.075, \"threshold\": 0.1, \"pass\": false}}, \"per_seed\": {\"s42\": {\"gated\": 0.3, \"every_k\": 0.225, \"advantage\": 0.075, \"dH\": 0.1118}, \"s123\": {\"gated\": 0.35, \"every_k\": 0.225, \"advantage\": 0.125, \"dH\": 0.2457}, \"s777\": {\"gated\": 0.35, \"every_k\": 0.275, \"advantage\": 0.075, \"dH\": 0.1087}}, \"note\": \"CORE CLAIM at its cleanest: 3/3 seeds 0.30/0.35/0.35 within budget under INDEPENDENT sampling streams. Alignment margin: consistently positive (+0.07/+0.12/+0.07) but < 0.1 in 2/3 \\u2014 real direction, small size (~+0.09), unconfirmed at the registered margin (same honest fate as the prefill margin). DISPOSITION DIVERGENCE ledgered: selector proposed write_cost_operational; agent ran alignment_confirm first because the stream-correlation finding staled the very gates the selector's beliefs replay from (bootstrapping concern outside the EFE math).\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

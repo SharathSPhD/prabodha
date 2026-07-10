@@ -56,8 +56,11 @@ def build_from_configs(menu_path: str | Path, *, ledger: EFELedger | None = None
                 selector.update(rec["candidate"],
                                 Observation(primary_tier=rec["primary_tier"],
                                             secondary_tier=rec.get("secondary_tier")))
+    # budget scope: a menu's budget is debited ONLY by spends on ITS candidates
+    # (the ledger is program-global and spans menu generations — found live in cycle 7)
+    menu_ids = {c["id"] for c in menu["candidates"]}
     spent = sum(r["gpu_hours"] for r in (ledger.records() if ledger else [])
-                if r.get("event") == "spend")
+                if r.get("event") == "spend" and r.get("candidate") in menu_ids)
     budget = float(menu["budget_gpu_hours"]) - spent
     return selector, candidates, budget, actions_by_id
 

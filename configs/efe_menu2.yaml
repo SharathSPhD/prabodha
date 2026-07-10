@@ -1,0 +1,52 @@
+# Menu 2 (L9+) — refreshed candidate set after menu-1 consumption (5/5, cycles 1–5).
+# DESIGNED TRADE-OFF (review #7 P2, the selector's outstanding validation): this menu
+# contains a genuine epistemic-vs-pragmatic conflict — hard_seed_probe is nearly free with
+# maximal uncertainty (pure explore); alignment_confirm is costlier with high prior value
+# (pure confirm). Which the selector picks under the registered weights IS the P2 test;
+# the choice and its EFE decomposition get journaled.
+candidates:
+  - id: commitment_flash_gate
+    cost_gpu_hours: 0.2
+    resolution: 0.7
+    description: "Discriminate the two sphurattā readings: uncommitted-moment (entropy
+      high) vs commitment-flash (entropy drop) at matched calibration — the unconverged
+      'ignition IS recognition' thread given an interventional test (e9flash.yaml)."
+    knobs: {exp: configs/experiments/e9flash.yaml}
+    prior_value_hint: null
+    replay: [gates/gate_L4b.json]
+  - id: alignment_confirm
+    cost_gpu_hours: 0.3
+    resolution: 0.85
+    description: "Confirm tier for the alignment advantage (gated vs rate-matched every_k
+      under sampling, seeds {42,123,777}): screen-tier margins were +0.15..0.18 at every
+      alpha; does WHEN>HOW-OFTEN survive multi-seed?"
+    knobs: {exp: configs/experiments/e5align.yaml, seeds: [42, 123, 777]}
+    prior_value_hint: 2
+    replay: [gates/gate_L6_align.json, gates/gate_L8_dose.json]
+  - id: hard_seed_probe
+    cost_gpu_hours: 0.05
+    resolution: 0.5
+    description: "Why is seed 777 systematically weak (0.23@a0.1, 0.17@a0.02)? CPU-first
+      forensics over existing gate records (write events, entropy traces, per-concept
+      hits), one targeted GPU run only if the records underdetermine."
+    knobs: {analysis: per_seed_forensics, gates: [gates/gate_L6_confirm_s777.json, gates/gate_L8_dose_a0.02_s777.json]}
+    prior_value_hint: null
+    replay: [gates/gate_L6_confirm.json]
+  - id: cross_plant_gating
+    cost_gpu_hours: 0.5
+    resolution: 0.7
+    description: "Does the gated steering result transfer to Qwen3-4B (the L1 plant)?
+      Requires a band-exit lens fit for qwen3 (mid-band target) + one e4b-style run.
+      Generality of the core claim beyond the PWM twin."
+    knobs: {model: configs/models/qwen3.yaml, lens_target: mid_band, exp: e4b-style}
+    prior_value_hint: null
+    replay: [gates/gate_L1.json, gates/gate_L4b.json]
+  - id: write_cost_operational
+    cost_gpu_hours: 0.15
+    resolution: 0.6
+    description: "The review-#9 open item: does write count cost anything operational?
+      tok/s throughput + camatkāra under continuous vs gated vs baseline, instrumented."
+    knobs: {exp: configs/experiments/e8dose.yaml, instrument: throughput}
+    prior_value_hint: 1
+    replay: [gates/gate_L8_dose.json]
+budget_gpu_hours: 1.5
