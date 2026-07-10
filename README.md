@@ -39,7 +39,7 @@ adversarial reviews, ~21 GPU-hours on one DGX Spark). Full narrative: `docs/pape
 | Alignment beats rate-matched control | sign-consistent 6/6, p≈0.016 | L11 |
 | Method transfers to a 2nd model via calibration recipe | **confirm, 4 seeds** | L13, L14-ms |
 | Amplitude ∝ 1/lens-strength; monotone dose in each plant's active range | confirm (qwen3, 3 seeds) / screen (nemotron) | L14-amp, L15-amp, L16-fine |
-| Lift generalization across stub styles is PARTIAL: seed-robust for 1 of 2 new styles, seed-fragile for the other | screen, honest negative | L16-corpus, L17-cvar |
+| Lift generalizes across stub styles at a fixed amplitude for 1 of 2 new styles; the fragile style becomes seed-robust at 2× amplitude (suggests a per-corpus amplitude axis, not yet established) | screen | L16-corpus, L17-cvar, L18-npretry |
 | Readback verdict is a weak signal (BA ≈ 0.59 at n=120) — never an acceptance gate alone | honest negative | L14/L15-readback, L16-corpus |
 | Greedy decoding masks decode-time writes; sampling regime required | mechanism | L4 |
 

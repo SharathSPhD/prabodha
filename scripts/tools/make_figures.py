@@ -46,23 +46,26 @@ def fig1():
     save(fig, "fig1_loadability")
 
 
-# fig2 — timing arms under sampling (nemotron, clean-era numbers from gate_L8 grid)
+# fig2 — timing arms under sampling, CANONICAL clean-stream re-measurement (L18 redo;
+# supersedes the pre-stream-fix L8 levels which ran ~0.1 high — gate_L18_l8redo)
 def fig2():
-    e = ev("gates/gate_L8_dose.json")
-    grid = e["grid"]
+    alphas = ["0.02", "0.05", "0.1"]
     arms = ["continuous", "entropy_gated", "every_k", "prefill_only"]
     labels = {"continuous": "continuous", "entropy_gated": "sphurattā-gated",
               "every_k": "rate-matched", "prefill_only": "prefill-only"}
+    grid = {}
+    for a in alphas:
+        g = ev(f"gates/gate_L18_l8redo_a{a}.json")["aggregates"]
+        grid[a] = {arm: g[arm]["lift"] for arm in arms}
     fig, ax = plt.subplots(figsize=(5.2, 3.4))
-    alphas = sorted(grid, key=float)
     for arm, marker in zip(arms, "osD^"):
-        ax.plot([float(a) for a in alphas], [grid[a][arm]["lift"] for a in alphas],
+        ax.plot([float(a) for a in alphas], [grid[a][arm] for a in alphas],
                 marker=marker, label=labels[arm])
     ax.set_xlabel("write amplitude α (= svātantrya cap)")
     ax.set_ylabel("concept-surface lift")
     ax.set_title("Dose grid (PWM twin, sampling; seed 42)\n"
-                 "pre-stream-fix era: ordering valid; levels possibly ~0.1 high "
-                 "(provisional, 1 matched pt — L17)", fontsize=8)
+                 "canonical clean-stream re-measurement (L18; supersedes L8)",
+                 fontsize=9)
     ax.legend(fontsize=8)
     save(fig, "fig2_dose_grid")
 

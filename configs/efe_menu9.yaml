@@ -1,0 +1,40 @@
+# EFE menu 9 — cycle 25+ (registered 2026-07-10, L19, from L18 review-#15 debts)
+# Concept: two review-#15 debts need decisive multi-seed data — the L8 gated-arm offset
+#   at n=1, and the suggestive corpus-amplitude axis at one corpus/one amplitude.
+# Source: research/journal.md 2026-07-10 (review #15); gates/gate_L18_*.json.
+budget_gpu_hours: 1.0
+candidates:
+  - id: l8_offset_multiseed
+    cost_gpu_hours: 0.4
+    resolution: 0.85
+    description: "Review #15: the L18 gated-arm -0.10 offset vs L8 is at n=1 seed.
+      Re-measure the gated arm at alpha {0.02, 0.1} x seeds {123, 777} (4 runs) on the
+      e8dose config. Success: mean offset vs L8 within [-0.15, -0.05] at both alphas
+      across seeds => the ~0.1 gated inflation is CONFIRMED with variance (supersession
+      stands); offset crosses 0 or flips => the single-seed -0.10 was noise and
+      supersession is WITHDRAWN."
+    knobs: {exp: configs/experiments/e8dose.yaml, alphas: [0.02, 0.1], seeds: [123, 777]}
+    prior_value_hint: 2
+    replay: [gates/gate_L18_l8redo.json, gates/gate_L8_dose.json]
+  - id: corpus_amplitude_axis
+    cost_gpu_hours: 0.5
+    resolution: 0.8
+    description: "Review #15: the per-corpus amplitude axis is suggestive from ONE
+      corpus at ONE higher amplitude. Test descriptive-scene (corpus B) AND narrative-
+      past (corpus A) at alpha {0.1, 0.2} x seed 42, and re-run narrative-past seed 777
+      at alpha 0.2 (the thin-margin cell). Success: both corpora show higher lift at
+      alpha=0.2 than 0.1 AND narrative-past seed-777 re-run clears 0.2 with margin
+      >= 0.05 => corpus-amplitude axis established; else recorded as corpus-specific."
+    knobs: {exps: [configs/experiments/e16corpus_a.yaml, configs/experiments/e16corpus_b.yaml],
+            alphas: [0.1, 0.2], seeds: [42, 777]}
+    prior_value_hint: 1
+    replay: [gates/gate_L18_npretry.json, gates/gate_L16_corpus.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    description: "Trained-bridge comparator arm (PWM CittaStore bridge) vs analytic
+      J^T u writes. BLOCKED: PWM world-model stack not yet integrated on GB10."
+    blocked: true
+    blocked_reason: "PWM WM stack integration is its own loop (carried since menu 3)"
+    prior_value_hint: 2
+    replay: [gates/gate_L3.json]
