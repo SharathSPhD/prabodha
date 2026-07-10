@@ -1,1 +1,45 @@
-% Placeholder — to be filled in Task 2
+\label{sec:background}
+
+\subsection*{The Workspace Band as an Instrument}
+
+Transformer networks contain a residual stream---a sequence of vectors updated at each token by attention
+and feedforward layers.
+This stream is not homogeneous: certain layers show high correlation with top-k output tokens (high reportability),
+while others do not.
+The layers with high reportability form a \emph{workspace band}---the final layers that participate in
+token-by-token output prediction.
+
+A Jacobian lens is a linear map $J: d_{\text{model}} \to V$ that reads the residual stream at a chosen
+depth and projects it into logit space.
+When the lens is fitted to the workspace band, it achieves high correlation with the model's own predictions;
+when fitted to earlier layers, the correlation drops.
+This depth-dependent reportability is intrinsic to the model, not an artifact of lens construction.
+
+\subsection*{Instructed Loadability and Calibration Across Models}
+
+Early experiments (L1, L1b, L2) established that \emph{instructed loading}---writing a verbalizable concept
+code into the residual stream---succeeds only when the code is written to the workspace band and only when
+the write is large enough.
+Crucially, the success depends on model size and lineage:
+\begin{itemize}
+\item Qwen3-4B (4B parameters): 10\% hit-rate@5 on instructed concept loading (gate L1).
+\item Qwen3.6-27B (27B parameters): 55\% hit-rate@5 (gate L1b).
+\item Nemotron-Mini-4B (4B, PWM twin): 0\% (the twin's workspace band is not directly writable; gate L2).
+\end{itemize}
+These results, shown in Figure~\ref{fig:load}, reveal that loadability is not size-only;
+the training objective and model family matter.
+
+Union-top-K rank correlation, the initial metric, had a structural null floor around $-0.72$,
+which obscured true differences.
+Recalibration to model-top-K support (null $\approx 0$) with permutation gates revealed the true pattern.
+
+\subsection*{The Band Articulation Gradient}
+
+A final-target Jacobian lens (fitted to output logits) reads the PWM twin's workspace band as empty
+(0.00 across seven instructed concepts; gate L2b).
+A lens targeted at the band's exit reads directed concept loading (0.20, null 0.023; gate L2b).
+This articulation-depth gradient appears on all models tested and appears intrinsic to the model's
+residual stream structure, not an artifact of lens construction (gate L7).
+
+The engineering consequence is clear: readback verification must use band-targeted lenses.
+A lens fitted to output logits will miss workspace content entirely.
