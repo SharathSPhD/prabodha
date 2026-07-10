@@ -1,0 +1,12 @@
+{
+  "title": "Fire-case J-space activations (L11, seed=42, entropy-gated)",
+  "prompt": "the fire remembers rivers",
+  "concept": "fire",
+  "model_id": "Qwen/Qwen3-4B",
+  "layers": [32, 40, 48, 56, 64, 72, 80, 88],
+  "positions": 20,
+  "T": 20,
+  "top_n": 5,
+  "vocab_size": 152064,
+  "note": "This is a stub. WS2's export_app_data.py will populate with real slice data from outputs/traces/fire_case_L11_seed42.json"
+}
