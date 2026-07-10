@@ -702,3 +702,56 @@ The correction process surfaced a genuine error I had made:
   dimensions (here: arms) before inferring mechanism. The gated arm's -0.10 was real;
   the "additive bias across the system" was not. Review count: 15.
 - Menu 8 consumed (0.6/1.0). L18 -> closed. Menu 9 pre-registered for L19.
+
+## 2026-07-10 — L19 cycle 25 CLOSED: corpus-amplitude axis PARTIAL (direction yes, margin no)
+- Same-session 2x2x2 grid (2 corpora x alpha{0.1,0.2} x seeds{42,777}), removing the
+  L18 cross-session confound: BOTH corpora's mean gated lift roughly DOUBLES from
+  alpha=0.1 to 0.2 (narrative-past 0.175->0.325; descriptive-scene 0.275->0.55) —
+  direction confirmed with a large effect size. But the strict registered margin
+  (narrative-past seed-777 >= 0.05 over 0.2) FAILS: reads 0.225, margin +0.025.
+- NOTABLE: seed-777 at alpha=0.2 reproduces the EARLIER cross-session L18 reading
+  (0.225) EXACTLY. That rules out session/run noise and points to a stable, harder
+  floor for specific stubs within narrative-past — a genuine sub-corpus difficulty
+  structure, not variance. Registered honestly as PARTIAL rather than reframed to pass
+  (fail-on-criterion / confirmed-on-direction). tier-0 observation (strict criterion
+  not met) despite the informative finding — the EFE tiering correctly tracks the
+  registered bar, not my narrative enthusiasm for the finding.
+  gate_L19_cax.json. Propagated to paper/README/HTML.
+- Cycle 26 dispatched: l8_offset_multiseed (gated arm at alpha{0.02,0.1} x
+  seeds{123,777}) — confirms or withdraws the L18 gated-level supersession.
+
+## 2026-07-10 — L19 cycle 26 CLOSED: L8 gated-arm offset CONFIRMED at n=3 seeds
+- Multiseed check (seeds 123, 777, joined by L18's seed 42) at alpha{0.02, 0.1}: mean
+  offset vs L8 originals = -0.108 (alpha=0.02), -0.067 (alpha=0.1); ALL 6 per-seed
+  offsets negative (range -0.05 to -0.125), no sign flips, both means within the
+  registered [-0.15,-0.05] band. tier-2 (confirm). Divergence RESOLVED: review #15's
+  n=1 concern is discharged — the gated-arm supersession of L8 STANDS on 3 seeds, not
+  1. (The arm-specificity finding — offset does NOT generalize to other arms — is
+  independently confirmed and unaffected.) gate_L19_l8ms.json.
+- Menu 9 consumed (0.85/1.0h; trained_bridge still blocked). L19 review + closure next.
+
+## 2026-07-10 — adversarial review #16: MERGE-WITH-CORRECTIONS (a determinism catch)
+1. gate_L19_cax's "PARTIAL" label WITHDRAWN, relabeled FAIL-ON-MARGIN: direction
+   confirmed (both corpora ~double at higher alpha) but the strict registered margin
+   criterion genuinely failed — "PARTIAL" risked reading as a qualified pass.
+2. MAJOR CATCH: the gate's "seed-777 reproduces exactly across sessions, ruling out
+   noise, pointing to a stable floor" inference was WRONG for a deeper reason than
+   suspected. Checked e4_cli's seeding: per-generation seed = hash(seed|arm|concept|
+   stub) — independent of alpha AND the --loop tag. Re-dispatching the identical
+   (seed=777, corpus=A, alpha=0.2) cell across L18 and L19 was THEREFORE GUARANTEED to
+   reproduce bit-for-bit — it is one deterministic computation observed twice, not two
+   independent draws. The "rules out noise" inference was building a scientific
+   conclusion on a purely mechanical artifact of the reproducibility design. WITHDRAWN
+   in full; only n=1 truly independent observation stands at that cell.
+3. l8ms: variance disclosure added (offsets span -0.05 to -0.125, a 2.5x range around
+   the -0.1 nominal) — the registered band is lenient enough to absorb it, but the
+   exact magnitude is not tightly constant; flagged if ever load-bearing. Arm-
+   specificity to OTHER arms remains explicitly unexamined, not claimed.
+- LESSON (important, general): when a "reproduces exactly" observation feels like
+  independent confirmation, check whether the pipeline's OWN determinism (fixed seeds,
+  fixed hashing) could produce that exact match mechanically before treating it as
+  evidence about the underlying phenomenon. Same trap shape as the L9 stream-
+  correlation bug and the L18 arm-specificity check — verify the claimed independence,
+  don't assume it. Review count: 16.
+- Menu 9 fully processed. L19 -> closed. All corrections applied to gates, paper,
+  README, HTML before merge.
