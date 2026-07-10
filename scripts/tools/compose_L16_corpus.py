@@ -57,12 +57,28 @@ gate = {
         "evidence": json.dumps({
             "summary": summary, "per_corpus": per_corpus, "passing": ok,
             "readback_pooled_exploratory": {
-                "note": "NO registered criterion — exploratory n-growth toward the "
-                        "n>=100 readback power debt; fixed setting (top_m=5, gain=0)",
+                "note": "NEGATIVE EXPLORATORY FINDING (review #13): pooled BA 0.590 "
+                        "is BELOW the standing 0.6 bar and triggers the prune rule "
+                        "carried in the corpus configs — the acceptance test stays "
+                        "'modest, uncalibrated for confirm use'. No registered "
+                        "criterion for the pooled analysis itself; fixed setting "
+                        "(top_m=5, gain=0); n-growth is progress in POWER, not in "
+                        "signal quality",
                 "n": len(pooled), "n_hit": sum(1 for *_, h in pooled if h),
                 "balanced_acc": round((tpr + tnr) / 2, 4),
                 "tpr": round(tpr, 4), "tnr": round(tnr, 4),
                 "confusion": {"tp": tp, "fp": fp, "tn": tn, "fn": fn}},
+            "disclosures": [
+                "pre-registration provenance: e16corpus_a/b.yaml committed in "
+                "7bc3cdc (2026-07-10 13:02:55 +0100), gate files written 13:13 — "
+                "configs verifiably preceded runs (review #13)",
+                "criterion framing: the menu registered the 3-corpus set INCLUDING "
+                "the L15 held-out replay, whose failure was already known — 2/3 "
+                "therefore required BOTH new corpora to pass (stricter, not weaker); "
+                "reported separately: new corpora 2/2 pass, L15 replay 0/1",
+                "single seed (42) per corpus: per-corpus seed variance unknown — "
+                "carried as debt (review #13)",
+                "actual GPU spend 0.3h vs 0.35h registered (under budget)"],
             "registered_in": "configs/efe_menu6.yaml:corpus_robustness",
             "seeds": [42], "tier": "screen"}),
     },

@@ -205,11 +205,15 @@ prefill-only ~2× lower at matched amplitude. Registered as
 adversarial reviewer (#11) required the word "law" be held back until a multi-seed,
 two-plant joint confirm. Menu 5 delivered the multi-seed half in full: per-seed monotone
 at qwen3 seeds {42, 123, 777} (<span class="num">0 → ~0.18 → 0.42–0.48 → 0.72–0.78</span>),
-all within budget (gate L15-amp-joint). Reviewer #12 then narrowed the scope again:
-the first model's replayed grid is flat-then-slight-rise (saturated), so it contributes
-consistent <em>ordering</em>, not a dose-response replication — the law is claimed on
-one plant at three seeds, and the two-plant version stays open. Two reviews, two
-corrections, both in the record.</p></details>
+all within budget (gate L15-amp-joint). Reviewer #12 then narrowed the scope:
+the first model's replayed grid was flat (saturated), ordering but not dose response.
+So the next menu registered a fine grid <em>below</em> that model's saturation — and
+found the missing curve: <span class="num">0.03 → 0.15 → 0.28 → 0.28</span> at
+amplitudes ten times smaller (gate L16-fine; one seed, its own config). Both models now
+show the same rise-then-saturate shape, each in the range its lens strength predicts —
+consistent with the law across ~1.5 orders of magnitude of amplitude, with the unified
+cross-config version registered as future work per reviewer #13. Three reviews, three
+rounds of trimming — every claim exactly the size of its evidence.</p></details>
 
 <h2>6 · The lab that runs itself — and audits itself</h2>
 <p>From the fifth loop on, the next experiment wasn't chosen by a person. A selector —

@@ -1,5 +1,5 @@
 {
- "current_loop": "L16",
+ "current_loop": "L16-closed",
  "loops": {
   "L0": {
    "status": "closed",
@@ -159,7 +159,7 @@
    "menu": "configs/efe_menu5.yaml"
   },
   "L16": {
-   "status": "open",
+   "status": "closed",
    "menu": "configs/efe_menu6.yaml"
   }
  },
@@ -190,7 +190,7 @@
   "L14_cap": 1.0,
   "L15_spent": 0.85,
   "L15_cap": 1.0,
-  "L16_spent": 0.3,
+  "L16_spent": 0.6,
   "L16_cap": 1.0
  },
  "kill_switch": false

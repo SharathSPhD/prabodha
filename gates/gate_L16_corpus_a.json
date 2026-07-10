@@ -1,7 +1,7 @@
 {
   "loop": "L16",
-  "status": "open",
-  "closed_at": null,
+  "status": "closed",
+  "closed_at": "2026-07-10",
   "code_gate": {
     "verdict": "pass",
     "evidence": "E4 ran to completion; contention=none",
