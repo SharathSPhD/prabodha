@@ -1,9 +1,17 @@
-"""Compose gates/gate_L20_confirm.json — trained-bridge comparator, multiseed.
+"""Compose gates/gate_L20_confirm.json — CittaStore write-path comparator, multiseed.
 
-Concept: the L20 menu item (blocked since menu 3) — does a TRAINED write path
-(PWM CittaStore Hopfield recall) match the ANALYTIC J^T u write path when both are
-entropy-gated and budget-matched on the standard corpus? Two questions, evaluated
-separately and honestly:
+IMPORTANT HONESTY NOTE: the CittaStore in this run is COLD/UNTRAINED — it is
+constructed fresh (episodic β=4.0) and queried with NO stored patterns (e4_cli.py
+never calls .store() before recall). So the arm named "trained_bridge" is really a
+COLD CittaStore recall path. L20's real result is (a) INTEGRATION: the PWM CittaStore
+write path — blocked since menu 3 because PWM was not integrated on GB10 — now runs
+end-to-end on the frozen Qwen3-4B; and (b) a COLD-RECALL comparator against analytic.
+Whether a TRAINED (pattern-populated) store beats analytic is NOT tested here and
+remains an explicit open item.
+
+Concept: the L20 menu item (blocked since menu 3) — does the PWM CittaStore Hopfield
+recall write path match the ANALYTIC J^T u write path when both are entropy-gated and
+budget-matched on the standard corpus? Two questions, evaluated separately and honestly:
   (1) FUNCTIONAL — does the trained bridge steer at all, within the entropy budget?
       criterion: trained_bridge lift >= 0.15 AND |step_entropy_delta| <= 0.5, per seed.
   (2) EQUIVALENCE — is it indistinguishable from analytic? criterion: |lift_trained -
@@ -77,12 +85,20 @@ gate = {
                                     "concept-hit, in the trained bridge's FAVOUR "
                                     "(0.4445 vs 0.3334) — within quantization noise, not "
                                     "a degradation."},
-            "resolves": "the trained-bridge comparator, BLOCKED since menu 3, is now run: "
-                        "the trained path steers within budget on all 3 seeds and is "
-                        "indistinguishable from the analytic path within the corpus's "
-                        "metric resolution (2/3 exact, 1/3 differs by a single hit in "
-                        "trained's favour).",
-            "tier": "confirm (functional, 3 seeds) / fail-on-margin (strict equivalence)",
+            "resolves": "INTEGRATION (the real win): the PWM CittaStore write path, "
+                        "BLOCKED since menu 3 (PWM not on GB10), now runs end-to-end on "
+                        "the frozen Qwen3-4B, device-aligned, wired into the dual gate. "
+                        "COMPARATOR: a COLD/UNTRAINED CittaStore recall steers within "
+                        "budget on all 3 seeds and is indistinguishable from analytic "
+                        "within the corpus's 1/9 metric resolution (2/3 exact, 1/3 differs "
+                        "by a single hit in the cold store's favour).",
+            "still_open": "the store is UNTRAINED (no patterns stored before recall); "
+                          "whether a TRAINED/pattern-populated store BEATS analytic is "
+                          "NOT tested here and remains an explicit open item.",
+            "arm_naming_caveat": "the arm is named 'trained_bridge' in code/config but is "
+                                 "a COLD CittaStore recall in this run — nothing was trained.",
+            "tier": "confirm (cold-recall functional, 3 seeds) / fail-on-margin (strict "
+                    "equivalence) / integration-resolved",
             "determinism_checked": True,
         }),
         "deviations": [
