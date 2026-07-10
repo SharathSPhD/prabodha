@@ -136,7 +136,7 @@ Run readback verification on a completed steering trace.
 
 **Caveat:** readback is a weak signal; multi-seed readback at the confirm tier (gates/) is required for claims.
 
-**Default gate:** `gates/gate_L9_readback.json` (readback method + thresholds).
+**Default gate:** `gates/gate_L14_readback.json` (readback method + thresholds).
 
 ### list_gates
 
@@ -178,7 +178,7 @@ Every tool/skill cites a default gate, recording the governing claim or measurem
 
 - `gates/gate_L13_recipe.json` — lens evaluation (band readback correspondence structure)
 - `gates/gate_L9_alignconf.json` — steering arms/seeds/alpha semantics
-- `gates/gate_L9_readback.json` — readback method and thresholds
+- `gates/gate_L14_readback.json` — readback method and thresholds
 
 The gates/ directory is the single source of truth for all publicly-facing numbers.
 

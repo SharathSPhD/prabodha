@@ -146,6 +146,6 @@ evaluation gate for the model.
 ## Gate citation
 
 **Default gate:** `gates/gate_L9_alignconf.json` (arm/seed/alpha semantics for Qwen3-4B, entropy_gated arm).
-**Readback gate:** `gates/gate_L9_readback.json` (readback method + thresholds).
+**Readback gate:** `gates/gate_L14_readback.json` (readback method + thresholds).
 
 The trace's `gate_ref` field points to the governing gate for that run.
