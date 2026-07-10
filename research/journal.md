@@ -613,3 +613,23 @@ Review count: 11. L14 status -> closed in state.json.
 - Program state after three review rounds (#11-#13): every amplitude/readback/corpus
   claim now carries its evidence-sized scope IN THE GATE. The reviewers' arc — demand
   the bar, trim the scope, prove the provenance — is itself a shipped method result.
+
+## 2026-07-10 — L17 cycles 21-22 CLOSED; menu 7 consumed; two self-audit finds
+- Cycle 21 (unified_dose_crossconfig) PASS but scope-narrowed + a STALE-GATE FIND:
+  nemotron dose response reproduces on e8dose config (0.15/0.28/0.28; seed-123 rep at
+  0.01 = 0.33). Configs turned out to share content (differ only in arm set) => this is
+  arm-set robustness. Matched content exposed that gate_L8_dose LEVELS are pre-stream-fix
+  era (~0.1 high; 0.375 vs 0.28 at alpha=0.02). L8 ORDERING stands, LEVELS not canonical.
+  Ledgered as divergence; fig2 + paper carry the era caveat. (gate_L17_xdose.json)
+- Cycle 22 (corpus_seed_variance) HONEST NEGATIVE (pre-registered <=2/4 branch fired):
+  corpus B (descriptive-scene) seed-robust 3/3 (0.30/0.20/0.25); corpus A (narrative-
+  past) SEED-FRAGILE 1/3 (0.25/0.07/0.10) — its L16 seed-42 pass was a favorable draw.
+  Exactly review #13's single-seed warning, realized. RETROACTIVELY QUALIFIES the L16
+  corpus claim: 'lift generalizes across stub styles' -> holds for 1 of 2 new styles
+  across seeds. Propagated to paper honest-negatives, README table, HTML. tier-0 obs.
+  (gate_L17_cvar.json)
+- Menu 7 consumed (0.70/1.0; trained_bridge blocked). H4 PHASE 3 shipped: README
+  results-at-a-glance (gate-cited) + install/CLI/plugin; examples/quickstart_qwen3.md
+  (gate-backed walkthrough on the public model); NOTICE/license audit clean.
+- Two self-audit finds in one loop (stale L8 levels; corpus-A seed fragility) — the
+  program's honesty machinery now routinely turns its instruments on its own record.

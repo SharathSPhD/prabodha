@@ -226,6 +226,12 @@ memory leak of finished work, a subtle randomness flaw that had quietly inflated
 number — found by the cheapest experiment on the menu, which the selector itself chose.
 After the fix, the program went back and re-measured its own headline claims, and printed
 the smaller, truer numbers.</p>
+<p>Later menus kept the same discipline pointed at the program's own recent claims. When
+a result had rested on a single random seed, a follow-up ran it at more seeds: one
+"it generalizes across writing styles" claim split in two — robust for one style,
+a lucky draw for the other — and the honest, smaller version replaced the confident one.
+Another cross-check caught a single old figure whose numbers predated a bug-fix and had
+never been re-based. The lab audits its own past, not just its present.</p>
 <p>Its final menu also re-examined the doctrine's own acceptance test: when the "did the
 model take the suggestion?" verdict was calibrated against what the model actually did,
 it turned out to carry real but modest signal — one of its two clauses did all the work,
