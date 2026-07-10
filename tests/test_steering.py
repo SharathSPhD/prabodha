@@ -120,3 +120,17 @@ def test_gated_injector_respects_policy_cpu():
     assert p.should_write(True) is True
     assert p.should_write(False) is False
     assert p.n_allowed == 1
+
+
+def test_entropy_drop_gated_fires_on_commitment_flash():
+    from prabodha.steering.timing import EntropyDropGated
+    eg = EntropyDropGated(drop=1.0, min_gap=2)
+    assert eg.should_write(True)  # prefill
+    seq = [3.0, 2.9, 1.5, 1.4, 3.0, 1.2, 1.1]
+    fired = []
+    for e in seq:
+        eg.observe(e)
+        fired.append(eg.should_write(False))
+    # drops: none, 0.1, 1.4(yes), 0.1, rise, 1.8(yes), 0.1
+    assert fired == [False, False, True, False, False, True, False]
+    assert [round(d, 1) for _, d in eg.write_events] == [1.4, 1.8]

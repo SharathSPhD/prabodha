@@ -118,10 +118,53 @@ class EntropyGated(TimingPolicy):
         return self._n
 
 
+class EntropyDropGated(TimingPolicy):
+    """Commitment-flash arm (the ALTERNATIVE sphurattā reading, scoping §2 debate (b):
+    "ignition IS recognition" — the flash where graded evidence snaps to committed
+    identity): write during step t iff entropy DROPPED by >= delta between the last two
+    observed steps (the plant just committed), with min_gap hygiene. The discriminating
+    contrast with EntropyGated (uncommitted-moment reading) is registered in e9flash.yaml."""
+
+    def __init__(self, drop: float, min_gap: int = 2):
+        self.drop = float(drop)
+        self.min_gap = int(min_gap)
+        self._prev: float | None = None
+        self._last: float | None = None
+        self._steps_since_write = 10 ** 9
+        self._n = 0
+        self.write_events: list[tuple[int, float]] = []
+        self._decode_step = 0
+
+    def observe(self, step_entropy: float) -> None:
+        self._prev = self._last
+        self._last = float(step_entropy)
+
+    def should_write(self, is_prefill: bool) -> bool:
+        if is_prefill:
+            self._n += 1
+            return True
+        self._decode_step += 1
+        self._steps_since_write += 1
+        prev, last = self._prev, self._last
+        gate = (prev is not None and last is not None
+                and (prev - last) >= self.drop
+                and self._steps_since_write >= self.min_gap)
+        if gate:
+            self._n += 1
+            self._steps_since_write = 0
+            self.write_events.append((self._decode_step, float(prev - last)))
+        return gate
+
+    @property
+    def n_allowed(self) -> int:
+        return self._n
+
+
 def make_policy(name: str, **kw) -> TimingPolicy:
     """Config-driven factory (Strategy registry)."""
     table = {"continuous": Continuous, "prefill_only": PrefillOnly,
-             "every_k": EveryK, "entropy_gated": EntropyGated}
+             "every_k": EveryK, "entropy_gated": EntropyGated,
+             "entropy_drop_gated": EntropyDropGated}
     if name not in table:
         raise ValueError(f"unknown timing policy: {name!r}")
     return table[name](**kw)

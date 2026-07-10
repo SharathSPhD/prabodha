@@ -1,0 +1,37 @@
+# E9-flash pre-registration — the DISCRIMINATING test between two sphurattā readings
+# (scoping §2 debate (b), a deliberately-unconverged thread now given a real experiment):
+#   reading U (uncommitted-moment): write when entropy is HIGH (entropy_gated; L4b-confirmed)
+#   reading F (commitment-flash):   write when entropy just DROPPED (entropy_drop_gated)
+# Both self-calibrated from the baseline arm (tau P60 of mean step entropies; drop P60 of
+# positive step-to-step drops), same seed, same amplitude, same everything else.
+# Registered hypotheses:
+#   H_gated_budget    — reading U replication (lift >= 0.2 within ±0.5 nats), continuity check.
+#   H_flash_vs_uncommitted — reading F beats U by >= 0.1 lift. PASS -> the flash reading
+#     wins and "ignition IS recognition" gains interventional support; FAIL with F ~ U ->
+#     the two readings are behaviorally equivalent at this operating point; FAIL with F << U
+#     -> the uncommitted reading stands. All three outcomes are informative and reportable.
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+drop_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated, entropy_drop_gated]
+hypotheses:
+  H_gated_budget:         {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                           threshold_min: 0.2}
+  H_flash_vs_uncommitted: {metric: flash_minus_uncommitted_lift, min_lift_advantage: 0.1,
+                           threshold_min: 0.1}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "all three outcomes reportable (discriminating experiment); single seed at screen tier — a margin < 0.1 either way is UNDERDETERMINED, not a winner"
+deviations: []
+budget_gpu_hours: 0.2
