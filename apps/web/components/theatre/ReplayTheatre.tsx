@@ -19,11 +19,18 @@ export default function ReplayTheatre() {
   useEffect(() => {
     async function loadTraces() {
       try {
-        const res = await fetch("/data/replays/fixture-qwen3.json");
-        if (!res.ok) throw new Error("Failed to load fixture traces");
+        const res = await fetch("/data/replays/index.json");
+        // 404 is expected when no data has been exported yet (empty-state)
+        if (res.status === 404) {
+          setTraces([]);
+          setLoading(false);
+          return;
+        }
+        if (!res.ok) throw new Error("Failed to load traces");
         const data = await res.json();
         setTraces(Array.isArray(data) ? data : [data]);
       } catch (err) {
+        // Network errors show as error, 404 shows as empty-state
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
@@ -35,7 +42,18 @@ export default function ReplayTheatre() {
 
   if (loading) return <p className="text-sm text-slate-500">Loading traces...</p>;
   if (error) return <p className="text-sm text-red-300">{error}</p>;
-  if (traces.length === 0) return <p className="text-sm text-slate-500">No traces available yet. Replays pending first export.</p>;
+  if (traces.length === 0) {
+    return (
+      <div className="card p-6">
+        <p className="text-sm text-slate-500">
+          No replays available yet. Run the export tool to populate trace data:
+        </p>
+        <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
+          python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
+        </code>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

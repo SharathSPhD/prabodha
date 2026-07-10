@@ -22,6 +22,12 @@ export default function ResultsPage() {
     async function loadResults() {
       try {
         const res = await fetch("/data/results.json");
+        // 404 is expected when no data has been exported yet (empty-state)
+        if (res.status === 404) {
+          setData(null);
+          setLoading(false);
+          return;
+        }
         if (!res.ok) throw new Error("Failed to load results");
         const json = await res.json();
         setData(json);
@@ -37,7 +43,18 @@ export default function ResultsPage() {
 
   if (loading) return <p className="text-sm text-slate-500">Loading...</p>;
   if (error) return <p className="text-sm text-red-300">{error}</p>;
-  if (!data) return <p className="text-sm text-slate-500">No results.</p>;
+  if (!data) {
+    return (
+      <div className="card p-6">
+        <p className="text-sm text-slate-500">
+          No results available yet. Run the export tool to populate result data:
+        </p>
+        <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
+          python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
+        </code>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
