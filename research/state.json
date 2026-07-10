@@ -1,5 +1,6 @@
 {
- "current_loop": "L19-closed",
+ "current_loop": "v1.0.0-closed",
+ "release": "v1.0.0 (2026-07-10)",
  "loops": {
   "L0": {
    "status": "closed",
@@ -173,6 +174,19 @@
   "L19": {
    "status": "closed",
    "menu": "configs/efe_menu9.yaml"
+  },
+  "L20": {
+   "status": "closed-productization",
+   "note": "PWM CittaStore integration, cold-store steering 3/3 seeds (functional confirm, untrained)",
+   "gate": "gates/gate_L20_confirm.json",
+   "deliverables": [
+    "PyPI package: prabodha",
+    "HuggingFace lenses: qbz506/prabodha-lenses",
+    "Claude Code plugin + MCP server",
+    "Next.js/Supabase web app (J-space theatre)",
+    "MDPI research paper (paper.tex/.pdf)",
+    "GitHub Pages technical site"
+   ]
   }
  },
  "gpu_budget_hours": {

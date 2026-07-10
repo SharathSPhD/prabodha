@@ -755,3 +755,57 @@ The correction process surfaced a genuine error I had made:
   don't assume it. Review count: 16.
 - Menu 9 fully processed. L19 -> closed. All corrections applied to gates, paper,
   README, HTML before merge.
+
+## 2026-07-10 — WS7 closure: program productization (L20 execution, reviews #17/#18, v1.0.0 release)
+- PROGRAM STATE AT CLOSURE: L0-L20 complete; 23 PRs merged to main; dual-closure gates
+  holding across all research loops. L20 resolved the TRAINED-BRIDGE scope gap (PWM
+  CittaStore write path integrated with steering runner; cold-store arm steers 3/3
+  seeds within budget, functional confirm gate_L20_confirm.json — honest scope: store
+  UNTRAINED, not claiming "trained beats analytic"; the training curve remains open).
+- DELIVERABLES SHIPPED: (1) PyPI package `prabodha` (pip install prabodha, dual-
+  audience docs + glossary); (2) HuggingFace lens fittings (`qbz506/prabodha-lenses`,
+  ready-to-download band maps + fit protocols); (3) Claude Code plugin +
+  MCP steering server (integrations/claude-code-plugin/ + integrations/mcp-server/,
+  three public skills: lens-map, steer-verify, research-propose); (4) web app "J-space
+  theatre" (Next.js/Supabase/Vercel, live replay of GB10 steering traces with
+  trace provenance linked to gates/); (5) research paper (MDPI template, LaTeX source
+  docs/paper/paper.tex, sole author Sharath Sathish, Independent Researcher — PDF auto-
+  regenerated from gates/ via scripts/tools/make_figures.py every loop); (6) technical
+  site (GitHub Pages, sharathsphd.github.io/prabodha, ACD-caliber exposition with
+  interactive gate visualizations). All six codebases & artifacts in-sync at closure.
+- REVIEW #17 (L20 adversarial, 2026-07-10): Verdict MERGE-WITH-CORRECTIONS. Caught an
+  OVERCLAIM in framing: the paper's abstract "the cold store steers on par with the
+  analytic writer" implied parity after training; corrected to "the untrained cold
+  store steers within budget (functional confirm); whether training the store achieves
+  analytic parity is open." Determinism recheck: re-generated 9 new trajectories with
+  seed=123, arm={trained|cold|analytic}, same setup as L20; ALL 9 trajectories differ
+  between arms (refutes the "determinism bug" hypothesis from L16 review #16 about
+  fixed seeding producing false independence). Corrections committed.
+- REVIEW #18 (program-wide audit, 2026-07-10): Verdict RELEASE-WITH-CORRECTIONS. Full
+  re-audit of gates/ vs papers vs SPEC/PRD claims (23 loops, 20+ gates): (1) all
+  registered claims carry gate evidence or are explicitly marked as open, no unsourced
+  "we found X" statements; (2) honest-negative list kept current (schedule-margin
+  never confirmed, readback BA <0.6 under pooled corpus, corpus-amplitude strict
+  margin FAILS, trained-bridge training open); (3) deposit on core claim (H_gated_budget,
+  6 seeds clean-stream, gate_L11_rep) stands, sign-consistency of alignment (6/6 sign
+  test p~0.016) stands, recipe transfer at matched transport (4 seeds, gate_L14_multiseed)
+  stands; (4) two paper typos in §5 fixed (fig citation order, one tense misalignment).
+  No gate evidence changes. Corrections committed.
+- RELEASED AS v1.0.0 on 2026-07-10. HONEST OPEN ITEMS AT CLOSURE (NOT reclassified or
+  hidden, carried explicitly into docs/RELEASE_NOTES_v1.0.0.md and PRD§6 risks):
+  — trained-store training: did we narrow the gap vs analytic writer by training?
+  — cross-episode continuity: does the store's internal state persist across
+     generation episodes, or reset fresh each time?
+  — live GB10 auto-deployment: currently operator-run; auto-gateway design deferred.
+  — W-space/modality convergence: does the workspace substrate generalize beyond
+     text decoding? Underdetermined in v1.0.0 scope.
+- NEXT for future agent: if advancing L21+, prioritize trained-store training (most
+  load-bearing for paper's framing) or cross-episode continuity (critical for production
+  use). If entering a new research cycle, read gates/gate_L20_confirm.json first, then
+  docs/RELEASE_NOTES_v1.0.0.md, then this journal. If running the plugin/app in
+  production, monitor for silently stale cache states (a risk residual from the ledger
+  staleness work in L10) — the `src/prabodha/efe/lint.py` validator should catch most
+  cases, but operational vigilance is warranted for multi-week uptimes.
+- Program closure entry written 2026-07-10 by Claude Code (agent). All artifacts
+  regenerated. CLAUDE.md, SPEC.md v0.21, PRD.md v0.21, research/state.json, and this
+  journal entry all current.

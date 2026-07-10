@@ -1,5 +1,5 @@
 # PRD.md — prabodha product requirements
-**v0.20 (L19 closure) — LIVING DOCUMENT (evolves with SPEC.md at every loop closure).**
+**v0.21 (v1.0.0 release) — LIVING DOCUMENT (evolves with SPEC.md at every loop closure).**
 
 ## 1. Users & jobs-to-be-done
 - **Sharath (researcher-operator):** advance the PWM×J-space research program; publish; reuse in neo-fm.
@@ -41,6 +41,24 @@ Sanskrit-forward alienates reviewers → dual-register glossary; external surfac
 Sandbox↔SMB git incompatibility → canonical on GitHub; bundle in mirror (documented in CLAUDE.md).
 
 ## 7. Evolution Log
+- v0.21 (WS7 closure, v1.0.0 release, 2026-07-10): L20 integrated PWM CittaStore (trained-
+  bridge scope gap from menu-3 onwards: RESOLVED at the implementation level; honest scope:
+  cold store, 3/3 seeds steering within budget, functional confirm; trained-store training
+  remains OPEN). Six deliverables SHIPPED: (1) PyPI library `prabodha` (pip-installable,
+  RELEASED on PyPI); (2) HF lens fittings `qbz506/prabodha-lenses` (huggingface.co);
+  (3) Claude Code plugin + MCP steering server (`integrations/claude-code-plugin/` +
+  `integrations/mcp-server/`); (4) Next.js/Supabase/Vercel web app "J-space theatre"
+  (live GB10 trace replay); (5) research paper (MDPI template, sole author Sharath Sathish,
+  Independent Researcher, `docs/paper/paper.tex/.pdf`); (6) GitHub Pages site
+  (`sharathsphd.github.io/prabodha`, ACD-caliber technical exposition). Reviews #17 (L20
+  adversarial) and #18 (program audit) PASS; #17 flagged an overclaim in framing (fixed).
+  Determinism check rerun: 9/9 seed-123 generations differ between arms (refutes the "bug"
+  hypothesis from loop L16 #16). HONEST OPEN ITEMS CARRIED INTO v1.0.0: trained-store
+  training, cross-episode continuity, live GB10 auto-deployment, W-space/modality
+  convergence. All documented in docs/RELEASE_NOTES_v1.0.0.md and this file's §6 risk
+  table. H1-H4 requirements met at ship quality; §2 principle "honest negatives are shipped
+  results" stands validated by three adversarial-caught self-corrections (stream-correlation,
+  arm-specific offset misread, determinism-guaranteed-reproduction misread).
 - v0.20 (L7-L19 catch-up, PR #10-#22, 2026-07-10): closes a 13-loop gap (v0.8 was L5;
   paper/HTML carried the living-document role through L7-L19 while this file lagged —
   corrected here). H1 (instrument) DELIVERED: 3 model families, 2 sizes; band content
