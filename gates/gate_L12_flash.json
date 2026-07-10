@@ -1,0 +1,16 @@
+{
+  "loop": "L12-flash",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "3 seeds, independent streams",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"H_uncommitted_over_flash_sign\": {\"value\": 1.0, \"threshold\": 1.0, \"pass\": true}}, \"per_seed\": {\"s42\": {\"uncommitted\": 0.3, \"flash\": 0.2, \"prefill\": 0.2, \"delta_u_minus_f\": 0.1}, \"s123\": {\"uncommitted\": 0.35, \"flash\": 0.3, \"prefill\": 0.225, \"delta_u_minus_f\": 0.05}, \"s777\": {\"uncommitted\": 0.35, \"flash\": 0.275, \"prefill\": 0.2, \"delta_u_minus_f\": 0.075}}, \"note\": \"uncommitted > flash in 3/3 seeds (+0.05..+0.10; 4/4 including cycle 7; sign-consistent). REVISION of cycle 7's reading: flash writes are NOT inert (beat prefill 2/3) \\u2014 both timings steer; the uncommitted moment steers consistently more. Doctrine: sphuratt\\u0101-as-flash is the weaker write-timing signal; detection remains its natural role.\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

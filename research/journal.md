@@ -454,3 +454,18 @@
   statistical form of a small consistent effect. Paper updated to cite by sign consistency.
 - Menu 3 live: trained_bridge_arm honestly skipped-as-blocked (ledgered); remaining:
   plant_calibration_recipe, flash_multiseed. Loop law now enforced in code (efe/lint.py).
+
+## 2026-07-10 — cycles 12–13: flash revised; THE RECIPE TRANSFERS
+- Cycle 12 (gate_L12_flash, 3 seeds): uncommitted > flash in 3/3 (+0.05..+0.10; 4/4 with
+  cycle 7). REVISION: flash writes are not inert (beat prefill 2/3) — both timings steer,
+  the uncommitted moment steers consistently more.
+- Cycle 13 (gate_L13_probe_* + gate_L13_recipe): site probe eliminated site as the
+  cross-plant blocker (0.00 at all four sites); AMPLITUDE was the missing calibration —
+  at alpha 0.3 (3x nemotron's), qwen3 site 24 delivers +0.40 within budget; the FULL
+  registered gate passes (gated 0.40 vs prefill 0.17). Scaling rule for the recipe: write
+  amplitude ∝ inverse lens transport strength (qwen3 Jacobians ~10x weaker -> 3x alpha).
+  GENERALITY UPGRADED: the method transfers; the geometry does not. (An inert-knob slip
+  (alpha 0.6 vs cap 0.3) was caught mid-run and doubled as a determinism check — the L3
+  lesson needs to live in a pre-dispatch checklist, added to the recipe doc.)
+- Menu 3: runnable items consumed (trained_bridge remains blocked+ledgered). Thirteen
+  selector cycles across three menus.

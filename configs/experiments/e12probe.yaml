@@ -1,0 +1,26 @@
+# E12-probe pre-registration — cycle-13 part 1: per-plant write-site calibration on
+# Qwen3-4B (the RECIPE the cross-plant negative demands). Reduced grid (5 concepts x 2
+# stubs) at candidate sites {12,18,24,28} via --write-layer; winner = highest gated lift;
+# part 2 = full e10cross protocol AT the winning site. Registered rule: the recipe
+# SUCCEEDS if the full run at the calibrated site passes H_gated_budget (>=0.2 within
+# ±0.5) where the borrowed-geometry run failed (+0.05).
+seeds: [42]
+write_layer: 24
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [entropy_gated]
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, river, snow, bread]
+concepts_zh: {fire: 火, water: 水, river: 河, snow: 雪, bread: 饼}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+prune_rule: "probe is calibration, not a gate; the winner's FULL run is the gate"
+deviations: []
+budget_gpu_hours: 0.4
