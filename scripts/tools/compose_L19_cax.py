@@ -44,7 +44,7 @@ summary = {
     "H_np_s777_margin": {"value": round(np_margin, 4), "threshold": 0.05,
                          "pass": np_ok},
 }
-verdict = "pass" if all(v["pass"] for v in summary.values()) else "fail"
+verdict = "pass" if all(v["pass"] for v in summary.values()) else "fail-on-margin"
 if verdict == "pass":
     finding = ("CORPUS-AMPLITUDE AXIS ESTABLISHED (same-session): both corpora lift "
                f"more at alpha=0.2 than 0.1 (A {means['narrative_past_A']['0.1']}->"
@@ -55,25 +55,31 @@ if verdict == "pass":
                "stub difficulty (per corpus) as well as lens strength (per model) — "
                "the recipe's corpus axis is confirmed, review #15's hypothesis upheld.")
 else:
-    prior_s777 = 0.225  # gate_L18_npretry_s777 (cross-session), for reproducibility check
+    prior_s777 = 0.225  # gate_L18_npretry_s777 (verified match, see disclosures)
     reproduced = abs(np_s777_02 - prior_s777) < 1e-9
     finding = (
-        f"PARTIAL: the DIRECTION is confirmed with large effect sizes (both_rise="
-        f"{both_rise} — narrative-past {means['narrative_past_A']['0.1']}->"
-        f"{means['narrative_past_A']['0.2']} nearly doubles; descriptive-scene "
+        f"FAIL-ON-MARGIN: the DIRECTION is confirmed with large effect sizes "
+        f"(both_rise={both_rise} — narrative-past "
+        f"{means['narrative_past_A']['0.1']}->{means['narrative_past_A']['0.2']} "
+        f"nearly doubles; descriptive-scene "
         f"{means['descriptive_scene_B']['0.1']}->{means['descriptive_scene_B']['0.2']} "
         f"exactly doubles), but the strict registered margin on narrative-past "
         f"seed-777 FAILS (margin {np_margin:+.3f} < 0.05 required). "
-        + (f"Seed-777 at alpha=0.2 reproduces the L18 cross-session reading EXACTLY "
-           f"({np_s777_02}) — this is not session noise; it is a stable, reproducible "
-           f"near-threshold case within narrative-past, suggesting some stubs in this "
-           f"corpus have a harder floor that this amplitude step does not fully clear. "
+        + ("Seed-777 at alpha=0.2 matches the L18 cross-session reading exactly "
+           f"({np_s777_02}) BUT (review #16 correction) this is NOT independent "
+           "evidence of a stable floor: e4_cli's per-generation seed is "
+           "hash(seed|arm|concept|stub) — it does not depend on alpha or the --loop "
+           "tag — so re-dispatching the identical (seed, corpus, alpha) cell is "
+           "EXPECTED to reproduce bit-for-bit. The two readings are one deterministic "
+           "computation observed twice, not two independent draws; the earlier "
+           "'rules out noise, points to a harder floor' inference is WITHDRAWN. "
+           "What remains: a single data point (n=1 truly independent seed at this "
+           "cell) sitting just under the margin, direction unrefuted."
            if reproduced else
            f"Seed-777 shifted from the L18 cross-session reading (was {prior_s777}, "
            f"now {np_s777_02}).")
         + " Verdict: corpus-amplitude axis DIRECTION confirmed; the specific "
-          "margin criterion is not met, so it is registered as PARTIALLY established "
-          "rather than confirmed outright.")
+          "margin criterion is not met (fail-on-margin, not a qualified pass).")
 
 gate = {
     "loop": "L19",
@@ -94,12 +100,19 @@ gate = {
                 "baseline confound review #15 flagged)",
                 "2 seeds per cell — establishes direction robustly; absolute "
                 "confirm-tier magnitudes would want >=3",
-                "PARTIAL RESULT: the registered pass required BOTH the directional "
-                "rise AND a strict >=0.05 margin on the single hardest cell "
-                "(narrative-past seed-777). The direction held with large effect "
-                "sizes (both corpora ~doubled); the margin criterion did not. "
-                "Reported honestly as fail-on-criterion / confirmed-on-direction "
-                "rather than reframed to pass"],
+                "FAIL-ON-MARGIN, not a qualified pass: the registered criterion "
+                "required BOTH the directional rise AND a strict >=0.05 margin on "
+                "the hardest cell (narrative-past seed-777). Direction held with "
+                "large effect sizes (both corpora ~doubled); the margin criterion "
+                "did not (review #16: labeled 'PARTIAL' pre-review, which risked "
+                "reading as a qualified pass — relabeled FAIL-ON-MARGIN)",
+                "DETERMINISM CAVEAT (review #16): seed-777 at alpha=0.2 exactly "
+                "matches the L18 cross-session reading because e4_cli's per-"
+                "generation seed = hash(seed|arm|concept|stub), independent of "
+                "alpha/loop — re-dispatching the same cell reproduces "
+                "deterministically. This is NOT independent replication and the "
+                "earlier 'rules out noise, stable floor' inference is WITHDRAWN; "
+                "n=1 truly independent observation stands at this cell"],
             "registered_in": "configs/efe_menu9.yaml:corpus_amplitude_axis",
             "seeds": [42, 777], "tier": "screen"}),
     },

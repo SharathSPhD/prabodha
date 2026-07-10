@@ -83,7 +83,14 @@ gate = {
                 "gated-arm supersession is now a 3-seed result, not a single-run one",
                 "the ARM-SPECIFICITY finding from L18 (offset does not generalize to "
                 "other arms) is unaffected by this cycle — only the gated-arm offset "
-                "was in scope"],
+                "was in scope; whether OTHER arms have their own seed-dependent "
+                "offsets is UNEXAMINED and not claimed here",
+                "VARIANCE NOTED (review #16): per-seed offsets span -0.05 to -0.125, "
+                "a 2.5x range around the -0.1 nominal; the registered band "
+                "[-0.15,-0.05] is wide enough to absorb this, and the criterion "
+                "(mean-in-band, no sign flip) is met, but the offset is not tightly "
+                "constant across seeds — flagged for closer study if the exact "
+                "magnitude (not just sign/rough size) is ever load-bearing"],
             "registered_in": "configs/efe_menu9.yaml:l8_offset_multiseed",
             "seeds": [42, 123, 777], "tier": "confirm"}),
     },

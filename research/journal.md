@@ -729,3 +729,29 @@ The correction process surfaced a genuine error I had made:
   1. (The arm-specificity finding — offset does NOT generalize to other arms — is
   independently confirmed and unaffected.) gate_L19_l8ms.json.
 - Menu 9 consumed (0.85/1.0h; trained_bridge still blocked). L19 review + closure next.
+
+## 2026-07-10 — adversarial review #16: MERGE-WITH-CORRECTIONS (a determinism catch)
+1. gate_L19_cax's "PARTIAL" label WITHDRAWN, relabeled FAIL-ON-MARGIN: direction
+   confirmed (both corpora ~double at higher alpha) but the strict registered margin
+   criterion genuinely failed — "PARTIAL" risked reading as a qualified pass.
+2. MAJOR CATCH: the gate's "seed-777 reproduces exactly across sessions, ruling out
+   noise, pointing to a stable floor" inference was WRONG for a deeper reason than
+   suspected. Checked e4_cli's seeding: per-generation seed = hash(seed|arm|concept|
+   stub) — independent of alpha AND the --loop tag. Re-dispatching the identical
+   (seed=777, corpus=A, alpha=0.2) cell across L18 and L19 was THEREFORE GUARANTEED to
+   reproduce bit-for-bit — it is one deterministic computation observed twice, not two
+   independent draws. The "rules out noise" inference was building a scientific
+   conclusion on a purely mechanical artifact of the reproducibility design. WITHDRAWN
+   in full; only n=1 truly independent observation stands at that cell.
+3. l8ms: variance disclosure added (offsets span -0.05 to -0.125, a 2.5x range around
+   the -0.1 nominal) — the registered band is lenient enough to absorb it, but the
+   exact magnitude is not tightly constant; flagged if ever load-bearing. Arm-
+   specificity to OTHER arms remains explicitly unexamined, not claimed.
+- LESSON (important, general): when a "reproduces exactly" observation feels like
+  independent confirmation, check whether the pipeline's OWN determinism (fixed seeds,
+  fixed hashing) could produce that exact match mechanically before treating it as
+  evidence about the underlying phenomenon. Same trap shape as the L9 stream-
+  correlation bug and the L18 arm-specificity check — verify the claimed independence,
+  don't assume it. Review count: 16.
+- Menu 9 fully processed. L19 -> closed. All corrections applied to gates, paper,
+  README, HTML before merge.
