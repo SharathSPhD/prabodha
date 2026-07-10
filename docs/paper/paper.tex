@@ -33,9 +33,9 @@ event-gated writes achieve full steering within the freedom budget, confirmed ac
 independent-stream seeds (lift 0.30--0.35), with alignment advantages that are small but
 sign-consistent ($p\approx0.016$); (5) the steering method \emph{transfers} to a second
 plant via a calibration recipe whose key rule is amplitude $\propto$ inverse lens transport
-strength---confirmed at four independent-stream seeds and shown to sit on a monotone dose law on
-that plant (three seeds; the first plant contributes consistent ordering only); and (6) the research program itself ran as an expected-free-energy selection loop
-over a registered experiment menu, with eighteen cycles, twelve adversarial reviews, and every
+strength---confirmed at four independent-stream seeds and shown to sit on monotone dose curves
+in each plant's transport-set active range; and (6) the research program itself ran as an expected-free-energy selection loop
+over a registered experiment menu, with twenty cycles, thirteen adversarial reviews, and every
 honest negative in a replayable ledger.
 \end{abstract}
 
@@ -118,21 +118,27 @@ three independent-stream seeds
 ($0 \rightarrow {\sim}0.18 \rightarrow 0.4$--$0.48 \rightarrow 0.72$--$0.78$;
 gates L14-amp, L15-amp-joint) with no saturation in the tested range, while the
 trajectory-entropy cost stays flat and far inside the $\pm$0.5-nat budget at every
-point (Fig.~\ref{fig:scaling}). The strong-transport plant contributes
-\emph{ordering only}: Nemotron's replayed grid is nondecreasing but flat
-($0.375 \rightarrow 0.375 \rightarrow 0.40$), saturated at an $\alpha$ boundary its
-own gate flagged marginal --- consistent with amplitude $\propto$ 1/lens-strength, but
-not a dose-response replication. Two-plant dose-response replication remains open.
+point (Fig.~\ref{fig:scaling}). The strong-transport plant's replayed coarse grid was flat (saturated), so review
+\#12 scoped the law to one plant --- and a registered fine grid \emph{below}
+Nemotron's saturation then found the missing curve: at $\alpha \in \{0.002, 0.005,
+0.01, 0.02\}$ its gated lift rises $0.03 \rightarrow 0.15 \rightarrow 0.28$ and
+saturates (gate L16-fine; single seed, its own config). Each plant thus shows
+within-grid monotone dose response in its own active range --- Nemotron at
+$\alpha \sim 0.002$--$0.01$, Qwen3 at $0.1$--$0.45$, $\sim$1.5 orders of magnitude
+apart, consistent with amplitude $\propto$ 1/lens-strength --- while the unified
+cross-config, multi-seed statement of the two-plant law remains registered future work
+(review \#13) (Fig.~\ref{fig:scaling}).
 Prefill-only writes scale too but stay below the gated schedule at matched amplitude.
 On the weak-transport plant the binding constraint in the tested range is not the
 freedom budget but amplitude itself.
 
 \begin{figure}[t]\centering
 \includegraphics[width=.98\linewidth]{fig7_scaling_law}
-\caption{The amplitude dose law (gates L14-amp, L15-amp-joint, L8 replay): per-seed
-monotone lift on the weak-transport plant (three seeds, confirm tier); the
-strong-transport plant contributes ordering only --- flat, saturated at its marginal
-boundary (left). Freedom cost flat and within budget throughout (right).}
+\caption{The amplitude dose law across two plants (gates L14-amp, L15-amp-joint,
+L16-fine, L8 replay): per-seed monotone lift on the weak-transport plant (three seeds)
+and, on a log-$\alpha$ axis, the strong-transport plant's own rise-then-saturate curve
+an order of magnitude lower --- amplitude $\propto$ 1/lens-strength (left). Freedom
+cost flat and within budget throughout (right).}
 \label{fig:scaling}
 \end{figure}
 
@@ -170,12 +176,12 @@ with co-resident training jobs, contention recorded in every gate.}\label{fig:le
 The $\geq$0.15 schedule margins did not confirm (stated by sign consistency instead);
 the \=agama readback acceptance test, recalibrated against behavioral hits and then
 held-out-tested at the fixed setting (balanced accuracy $0.64$ against a
-pre-registered $0.6$ --- but the margin sits inside its own binomial CI at $n{=}40$, so
-this remains screen-tier evidence; it over-promises far more often than it
-under-promises --- gates L14-readback, L15-readback), is a modest predictor, not an
-oracle; steering
-lift itself is corpus-dependent (gated $+0.15$ on held-out stubs vs $+0.30$--$0.40$ on
-the registered corpus at matched amplitude --- a registered question for a future menu); the
+pre-registered $0.6$ at $n{=}40$ --- a margin inside its own binomial CI, and indeed
+pooling three corpora at $n{=}120$ regresses it to $0.59$; it over-promises far more
+often than it under-promises --- gates L14-readback, L15-readback, L16-corpus), is a
+weak signal, not an acceptance test; steering lift generalizes across stub styles
+(gated $+0.25$/$+0.30$ on two pre-registered new corpora) with one hard corpus as the
+known exception ($+0.15$ --- gate L16-corpus); the
 commitment-flash reading remains directionally weaker, not refuted; the trained-bridge
 comparator awaits the PWM world-model stack; anusa\d{m}dh\=ana (cross-episode continuity),
 the modality confound, and W-space beyond J-space remain deliberately unconverged.

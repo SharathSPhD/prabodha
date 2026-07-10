@@ -1,0 +1,32 @@
+# E16-corpus-A pre-registration — menu-6 corpus_robustness (cycle 19+, L16).
+# Registered BEFORE the run: does the core claim's gated lift survive a different stub
+# STYLE (narrative-past)? Same plant, lens, site, decoding, amplitude as e5align — only
+# the corpus changes. H_gated_budget: lift >= 0.2 within |dH| <= 0.5. Runs carry
+# --record-readback to grow the verdict-calibration n at zero extra cost.
+seeds: [42]
+write_layer: 20
+alpha: 0.1
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [prefill_only, entropy_gated]
+readback_span: 4
+uptake_top_m: 5
+uptake_min_rank_gain: 0
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  # corpus A (narrative-past): no overlap with e5align / e15heldout stubs
+  - "Years ago the village remembered"
+  - "He opened the box and saw"
+  - "They travelled for days toward"
+  - "She wrote in her diary about"
+prune_rule: "BA < 0.6 at the fixed setting -> the acceptance test stays 'modest,
+  uncalibrated for confirm use'; recorded as honest negative, no re-sweep on this corpus"
+deviations: []
+budget_gpu_hours: 0.15

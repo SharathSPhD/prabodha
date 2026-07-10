@@ -575,3 +575,41 @@ Review count: 11. L14 status -> closed in state.json.
   — the "law" is now exactly as big as its evidence. Review count: 12.
 - L15 totals: 2 cycles, 0.85 GPU-h, H4 phase 2 shipped (Claude Code plugin), corpus-
   dependence of lift registered as a future-menu candidate.
+
+## 2026-07-10 — L16 cycle 19 CLOSED: corpus robustness 2/3; readback regresses at n=120
+- Corpus robustness (registered >=2/3): narrative-past +0.25 PASS, descriptive-scene
+  +0.30 PASS, L15-heldout replay +0.15 FAIL => 2/3, gate PASSES at screen. The core
+  claim's lift GENERALIZES ACROSS STUB STYLES with the L15 corpus as the known hard
+  case (its stubs end mid-phrase in ways that resist noun insertion — candidate
+  explanation, unregistered). gates/gate_L16_corpus.json; observe tier 2; spend 0.3h.
+- READBACK REGRESSION AT POWER (exploratory, disclosed as such in gate): pooled n=120
+  across L15-heldout + both L16 corpora at the FIXED setting: BA 0.590 (tpr 0.571,
+  tnr 0.609) — BELOW the 0.6 bar. Review #12's CI warning realized: the L15 pass
+  (BA 0.637, n=40) was inside its own noise. Standing assessment of āgama readback
+  DOWNGRADED: 'borderline predictor, BA ~0.59-0.64 depending on corpus; use as a weak
+  signal, never as an acceptance gate alone'. Plugin skill + paper to carry this.
+- Cycle 20 dispatched: nemotron_fine_grid alpha {0.002,0.005,0.01,0.02} (both knobs,
+  --loop L16) — closes or honestly bounds the two-plant dose-response scope.
+
+## 2026-07-10 — L16 cycle 20 CLOSED + review #13; menu 6 consumed; L16 closes
+- Cycle 20 (nemotron_fine_grid): REAL dose response below saturation — gated
+  0.03 -> 0.15 -> 0.28 -> 0.28 at alpha {0.002,0.005,0.01,0.02}; 2/3 pairs rise > 0.05
+  (registered criterion), all within budget. Saturation onset ~0.01 on this config.
+- ADVERSARIAL REVIEW #13: MERGE-WITH-CORRECTIONS (four verdicts, all applied):
+  (1) corpus pre-reg provenance now PROVEN in-gate by commit hash 7bc3cdc (13:02:55)
+  vs gate mtimes (13:13) — answering with evidence, not reframing; criterion framing
+  disclosed (including the known-fail L15 corpus made 2/3 STRICTER: both new corpora
+  had to pass); single-seed variance carried as debt.
+  (2) pooled readback relabeled NEGATIVE EXPLORATORY FINDING — BA 0.590 fails the
+  standing 0.6 bar and triggers the corpus configs' prune rule; n-growth is power
+  progress, not signal quality.
+  (3) fine-grid scope: "closes two-plant dose-response" -> "confirms nemotron's
+  active-range dose response on THIS config, single seed"; transport interpretation
+  explicitly labeled post hoc; unified cross-config multi-seed law = registered
+  future work.
+  (4) ingredient gate statuses closed; actual spends (0.3 vs 0.35 registered)
+  disclosed in-gate.
+- Menu 6 consumed (0.6/1.0; trained_bridge blocked). Review count: 13. L16 -> closed.
+- Program state after three review rounds (#11-#13): every amplitude/readback/corpus
+  claim now carries its evidence-sized scope IN THE GATE. The reviewers' arc — demand
+  the bar, trim the scope, prove the provenance — is itself a shipped method result.

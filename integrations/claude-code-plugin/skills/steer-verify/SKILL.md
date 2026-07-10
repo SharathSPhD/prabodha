@@ -34,8 +34,10 @@ Read the gate JSON's `aggregates`: per-arm `lift` (concept surfacing over baseli
   |Δ| ≤ 0.5 nats is the tested envelope).
 - **Readback** (`--record-readback`) records raw pre/post concept ranks at the write
   port through the band lens. Calibrated verdict setting: rank ≤ 5 at any readback
-  layer and at the last (top_m=5, no rank-gain clause). Treat the verdict as a modest
-  predictor (balanced accuracy ≈ 0.64 held-out): it over-promises far more often than
-  it under-promises.
+  layer and at the last (top_m=5, no rank-gain clause). Treat the verdict as a WEAK
+  signal, never as an acceptance gate alone: pooled across three corpora (n=120) its
+  balanced accuracy is ≈ 0.59 (0.64 on the single best corpus), and it over-promises
+  far more often than it under-promises. Behavioral checks on generated text are the
+  ground truth; readback is a cheap first filter.
 - Lift magnitudes are corpus-dependent; verify on your own stubs before relying on a
   number.

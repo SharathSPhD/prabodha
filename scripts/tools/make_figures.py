@@ -173,15 +173,20 @@ def fig7():
     for (seed, grid), c in zip(sorted(qwen3.items()),
                                ("#2b6cb0", "#c05621", "#2f855a")):
         a1.plot(x, [grid[a]["lift"] for a in alphas], "o-", color=c,
-                label=f"seed {seed.replace('_replay', ' (L14)')}")
+                label=f"qwen3 seed {seed.replace('_replay', ' (L14)')}")
+    fine = ev("gates/gate_L16_fine.json")["grid"]
+    fx = sorted(fine, key=float)
+    a1.plot([float(a) for a in fx], [fine[a]["gated_lift"] for a in fx], "D-",
+            color="#6b46c1", label="nemotron fine grid (L16)")
     nem = j["nemotron_L8"]
     a1.plot([float(a) for a in nem["alphas"]], nem["gated_lifts"], "D--",
-            color="#a0aec0", label="nemotron (L8, saturating)")
+            color="#a0aec0", label="nemotron (L8, saturated)")
+    a1.set_xscale("log")
     a1.axhline(0.2, ls=":", c="k", lw=0.8)
-    a1.set_xlabel("write amplitude α (= cap)")
+    a1.set_xlabel("write amplitude α (= cap), log scale")
     a1.set_ylabel("gated concept-surface lift")
-    a1.set_title("Dose law, two plants: qwen3 3 seeds + nemotron")
-    a1.legend(fontsize=7)
+    a1.set_title("Dose response, two plants, ~1.5 orders of α apart")
+    a1.legend(fontsize=6)
     dh = [max(abs(qwen3[s][a]["dH"]) for s in qwen3) for a in alphas]
     a2.bar(alphas, dh, color="#2f855a")
     a2.axhline(0.5, ls="--", c="#c53030", lw=1.0, label="svātantrya budget")
