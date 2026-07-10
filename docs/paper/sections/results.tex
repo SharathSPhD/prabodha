@@ -110,7 +110,7 @@ adversarial review harness around it.}\label{fig:arch}
 with co-resident training jobs, contention recorded in every gate.}\label{fig:ledger}
 \end{figure}
 
-\subsection*{Finding 7: PWM Integration---Cold CittaStore Recall is Integration-Ready, Equivalent to Analytic Baseline}
+\subsection*{Finding 7: PWM Integration---Cold CittaStore Recall is Integration-Ready and Comparable to (Not Equivalent to) the Analytic Baseline}
 
 Integration of the Pratyabhijñā World Model's CittaStore write pathway was blocked until session L20 due to PWM stack availability on GB10.
 The frozen (untrained) Hopfield-store initialization—populated with no steering patterns—produces write vectors that route through the band-exit Jacobian and steer within the $\pm0.5$-nat budget.
@@ -120,10 +120,10 @@ Against the analytic J$^T$u baseline:
 \begin{itemize}
 \item Seed 42: gap $= 0.0000$ (exact match)
 \item Seed 123: gap $= 0.0000$ (exact match)
-\item Seed 777: gap $= +0.1111$ (cold store favored; 1/9 quantization resolution, within noise)
+\item Seed 777: gap $= +0.1111$, which \emph{fails} the registered $|\text{gap}|\le0.05$ equivalence criterion (2.2$\times$ the threshold). Two facts both hold: the miss is the smallest the metric can resolve (one concept-hit, $1/9$) and it is in the cold store's favour ($0.4445$ vs.\ $0.3334$), so it is not a degradation. It is \emph{not} ``within noise''---a nine-sample corpus cannot adjudicate a one-hit difference as signal versus draw.
 \end{itemize}
 
-The cold store's equivalence to the lens-transpose baseline confirms that the PWM write pathway is \emph{plumbing-correct} and dimensionally compatible.
+The cold store's \emph{comparability} to the lens-transpose baseline confirms that the PWM write pathway is \emph{plumbing-correct} and dimensionally compatible; it does not establish equivalence, which the registered criterion rejects on one of three seeds. A determinism probe (raised by adversarial review) confirmed the two arms are genuine independent draws---all nine per-generation records differ between arms at seed 123---so the near-mirror aggregate entropy at that seed is a mean-coincidence, not a shared-RNG artifact.
 The interesting open question—does training the store against steering-success targets improve over this cold initialization?—remains unconfirmed; the infrastructure to test it is now live.
 Tier: confirm (functional, 3 seeds, integration verified); fail-on-margin on strict equivalence, but the margin caveat is that the cold store is untrained, so equivalence is consistent with vanilla initialization (gate L20, \cite{gate_L20_confirm}).
 
