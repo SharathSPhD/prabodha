@@ -682,3 +682,23 @@ Review count: 14. All corrections applied before merge. L17 -> closed.
 - Menu 8 consumed (0.6/1.0; trained_bridge blocked). Both L18 cycles were provisional/
   open items from prior reviews RESOLVED — L18 = the resolution loop (L8 levels
   superseded; corpus fragility diagnosed). Selector: no candidate fits remaining budget.
+
+## 2026-07-10 — adversarial review #15: MERGE-WITH-CORRECTIONS (a real catch)
+The correction process surfaced a genuine error I had made:
+1. L8 "additive stream-bias" inference WITHDRAWN. Checking arm-level deltas (not just
+   the gated arm) showed the -0.10 offset is ARM-SPECIFIC: gated -0.10 uniformly, but
+   continuous +0.10 at alpha=0.02, prefill/every_k varying. So it is NOT a global
+   additive bias — my "uniform offset => additive" was a just-so story from the gated
+   arm alone. Corrected: only the GATED-ARM levels are superseded; some cross-arm
+   orderings at low alpha shift (continuous now beats gated at 0.02 where L8 tied them);
+   L8's HEADLINE ordering (gated>prefill, gating=efficiency) still holds. Gate rewritten
+   with arm_deltas + withdrawal + supersession-impact (fig2 sources L18) disclosures.
+2. n=1 seed: the gated -0.10 (uniform across alpha) is single-seed. Multi-seed L8
+   confirm REGISTERED (menu 9 l8_offset_multiseed) before any variance claim.
+3. npretry seed-777 THIN MARGIN (0.225 vs 0.2) disclosed; corpus-amplitude axis
+   downgraded from claim to SUGGESTIVE HYPOTHESIS (one corpus, one amplitude) in gate +
+   paper + README + HTML; corpus_amplitude_axis registered (menu 9).
+- Lesson: when a re-measurement shows a "clean" uniform number, check it across ALL
+  dimensions (here: arms) before inferring mechanism. The gated arm's -0.10 was real;
+  the "additive bias across the system" was not. Review count: 15.
+- Menu 8 consumed (0.6/1.0). L18 -> closed. Menu 9 pre-registered for L19.

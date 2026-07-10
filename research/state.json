@@ -1,5 +1,5 @@
 {
- "current_loop": "L18",
+ "current_loop": "L18-closed",
  "loops": {
   "L0": {
    "status": "closed",
@@ -167,7 +167,7 @@
    "menu": "configs/efe_menu7.yaml"
   },
   "L18": {
-   "status": "open",
+   "status": "closed",
    "menu": "configs/efe_menu8.yaml"
   }
  },

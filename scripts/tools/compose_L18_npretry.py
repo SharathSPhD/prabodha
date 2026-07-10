@@ -59,10 +59,17 @@ gate = {
             "disclosures": [
                 "this REFINES rather than overturns L17-cvar: at the L16/L17 fixed "
                 "alpha=0.1 the corpus WAS seed-fragile (that honest negative stands); "
-                "the new result is that raising amplitude fixes it, adding a corpus "
-                "axis to the calibration recipe",
+                "the new result is that raising amplitude fixes it",
+                "THIN MARGIN (review #15): seed 777 clears the 0.2 bar by only 0.025 "
+                "(0.225) — a single-run margin inside typical screen noise; the 3/3 "
+                "is real but seed 777 is not comfortably above threshold",
+                "CORPUS-AXIS claim is SUGGESTIVE, not established (review #15): one "
+                "corpus at one higher amplitude cannot establish a general corpus "
+                "dimension; stated as 'amplitude calibrates to stub difficulty' "
+                "hypothesis, to be confirmed across >=2 corpora x >=2 amplitudes",
                 "single alpha (0.2) tested; the alpha=0.1 baseline is the L17-cvar "
-                "reading, not re-run here; actual spend 0.3h vs 0.35h registered"],
+                "reading, not re-run here (same config/code, only alpha differs); "
+                "actual spend 0.3h vs 0.35h registered"],
             "registered_in": "configs/efe_menu8.yaml:narrative_past_amplitude_retry",
             "seeds": [42, 123, 777], "tier": "screen"}),
     },
