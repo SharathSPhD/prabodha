@@ -96,3 +96,5 @@
 {"event": "propose", "candidate": "write_cost_operational", "action": "as-registered", "efe": -4.393848379757463, "epistemic": 3.9749069383160216, "pragmatic": 0.4189414414414414, "belief": [0.031531531531531536, 0.6306306306306305, 0.20270270270270271, 0.13513513513513511], "budget_remaining": 1.25, "ts": 1783663979.3489516}
 {"event": "observe", "candidate": "alignment_confirm", "primary_tier": 0, "secondary_tier": null, "posterior": [0.7235142118863049, 0.23255813953488375, 0.03617571059431526, 0.007751937984496125], "source": "gates/gate_L9_alignconf.json", "ts": 1783664742.819103}
 {"event": "spend", "candidate": "alignment_confirm", "gpu_hours": 0.25, "ts": 1783664742.8191333}
+{"event": "observe", "candidate": "write_cost_operational", "primary_tier": 2, "secondary_tier": null, "posterior": [0.13461538461538464, 0.28846153846153844, 0.4326923076923077, 0.14423076923076922], "source": "gates/gate_L9_writecost.json", "ts": 1783665303.9538088}
+{"event": "spend", "candidate": "write_cost_operational", "gpu_hours": 0.1, "ts": 1783665303.953886}

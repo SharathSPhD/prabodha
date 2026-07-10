@@ -419,3 +419,22 @@
   alignment_confirm first (stale-belief bootstrapping — the selector replays from gates
   the stream fix invalidated; EFE cannot see its own evidence going stale). Candidate
   improvement for menu 3: staleness discounting on replayed observations.
+
+## 2026-07-10 — cycle 9 (write_cost) + review #10 compliance; L9 closes
+- gate_L9_writecost: all write schedules within throughput noise of baseline (~25 vs 19.7
+  t/s — the inversion is a warm-up ordering artifact, disclosed; the registered <90% cost
+  rule passes a fortiori); camatkāra flat. WRITE COUNT IS OPERATIONALLY FREE at this scale:
+  review #9's suspicion confirmed, and the selector's overridden cycle-8 proposal was the
+  right call all along — vindication ledgered.
+- Review #10 compliance: (a) "dissolution" softened to "variance band tightened, consistent
+  with the correlation artifact, 2 seeds"; (b) flash verdict softened to UNDERDETERMINED-
+  at-boundary with the rate confound noted; (c) stale-0.40 sweep done — paper now marks all
+  pre-L9 sampling numbers as inflated-by-correlated-streams with clean-stream citables;
+  SPEC historical entries retained as provenance (append-only log, not restated).
+- LOOP INVARIANT ADOPTED (review #10's rule, codified for menu 3): if a new finding
+  invalidates gates a selector's beliefs replay from, the proposal is STALE — beliefs must
+  be rebuilt and the proposal re-computed before disposition; ad-hoc overrides are
+  otherwise prohibited.
+- L9 totals: cycles 6–9 (probe/flash/align-confirm/write-cost), one method fix that
+  re-based every sampling number, two loop-infra fixes, doctrine refined. GPU ~0.85/1.5.
+  Menu-2 remaining: cross_plant_gating (carries to next cycle).

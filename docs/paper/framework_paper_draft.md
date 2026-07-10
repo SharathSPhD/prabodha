@@ -73,9 +73,11 @@ beyond J-space (scoping §10.3) — the band carries structure the standard lens
 - Greedy decoding masks all decode-time writes (three sparse schedules → IDENTICAL hit
   sets; the prefill write locks the argmax path). [gate_L4.json + review-#6 analysis]
 - Under sampling, sphurattā-gated writes (event = next-token entropy ≥ τ, i.e. the plant's
-  uncommitted moments; min-gap hygiene from PWM) deliver lift 0.40 at ΔH −0.13 — full
-  steering INSIDE the budget. [gate_L4b.json] CONFIRMED: 3 seeds × 3 τ-percentiles, lifts
-  0.23–0.40, all within budget (H_gated_budget 3/3). [gate_L5_tau.json, gate_L6_confirm.json]
+  uncommitted moments; min-gap hygiene from PWM) deliver full steering INSIDE the budget.
+  [gate_L4b.json] STALE-NUMBER NOTE: all pre-L9 sampling estimates (the 0.40s) were
+  measured under correlated per-run streams and are INFLATED; the clean-stream confirm is
+  the citable figure: 3/3 seeds at 0.30/0.35/0.35 within budget [gate_L9_alignconf.json].
+  Historical gates retained for provenance [gate_L4b, gate_L5_tau, gate_L6_confirm].
 - Event ALIGNMENT beats rate-matched periodic writes (+0.40 vs +0.23 at ~matched rates;
   per-write 0.056 vs 0.046), and the advantage holds at every amplitude in the dose grid
   (+0.15..0.18 at α ∈ {0.02, 0.05, 0.1}). [gate_L6_align.json, gate_L8_dose.json]
