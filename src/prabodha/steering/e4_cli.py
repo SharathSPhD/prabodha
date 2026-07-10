@@ -48,7 +48,7 @@ class EntropyTrace:
 
 def _generate(hf, tok, prompt: str, max_new: int, processors: list,
               decoding: dict | None = None, seed: int = 42,
-              stream_tag: str = "") -> str:
+              stream_tag: str = "", step_texts: list | None = None) -> str:
     import hashlib
     import torch
     from transformers import LogitsProcessorList
@@ -65,7 +65,28 @@ def _generate(hf, tok, prompt: str, max_new: int, processors: list,
         torch.manual_seed(h)
     with torch.no_grad():
         out = hf.generate(ids, **kw)
-    return tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True)
+    gen_ids = out[0, ids.shape[1]:]
+    if step_texts is not None:
+        step_texts.extend(tok.decode([int(t)]) for t in gen_ids.tolist())
+    return tok.decode(gen_ids, skip_special_tokens=True)
+
+
+def _build_trace_tokens(step_texts: list, entropies: list,
+                        write_events: list | None) -> list:
+    """Build per-step TraceToken records from one generation's collected evidence.
+
+    step_texts[i] / entropies[i] align by decode step (one logits-processor call per
+    generated token). write_events is a TimingPolicy's [(decode_step, gate_entropy)]
+    list; a step is gated iff its index appears there. write_norm stays None in v1:
+    the injector does not record the applied delta's L2 norm per application — the
+    episode-level dose is carried by SteerTrace.alpha.
+    """
+    from prabodha.contracts.trace import TraceToken
+    gated_steps = {int(s) for s, _ in (write_events or [])}
+    n = min(len(step_texts), len(entropies))
+    return [TraceToken(t=i, token=str(step_texts[i]), entropy=float(entropies[i]),
+                       gated=i in gated_steps)
+            for i in range(n)]
 
 
 def main(argv=None) -> None:
@@ -94,6 +115,9 @@ def main(argv=None) -> None:
                          "the write port, band lens) per (concept, stub) so acceptance "
                          "thresholds can be calibrated offline (menu-4 "
                          "readback_recalibration)")
+    ap.add_argument("--emit-trace", default=None,
+                    help="if provided, emit a SteerTrace JSON at this path (per-token "
+                         "entropy, gate events, band readouts, readback verdict)")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
@@ -151,6 +175,7 @@ def main(argv=None) -> None:
     def run_arm(arm: str, policy_factory) -> dict:
         texts_by_concept, step_ents, n_writes, records = {}, [], [], []
         baseline_drops: list[float] = []
+        episode = None  # first (concept, stub) per-step evidence, for --emit-trace replay
         for concept, (ids, cmd) in plans.items():
             texts = []
             for stub in stubs:
@@ -160,16 +185,25 @@ def main(argv=None) -> None:
                 if trace_policy is None and arm != "baseline":
                     raise AssertionError("non-baseline arm needs a policy")
                 tag = f"{arm}|{concept}|{stub}"
+                step_texts = [] if (getattr(a, "emit_trace", None) and episode is None) else None
                 if arm == "baseline":
                     text = _generate(hf, tok, stub, max_new, procs,
                                      decoding=exp.get("decoding"),
-                                     seed=int(exp["seeds"][0]), stream_tag=tag)
+                                     seed=int(exp["seeds"][0]), stream_tag=tag,
+                                     step_texts=step_texts)
                 else:
                     with ResidualInjector(layer_module, cmd, policy=trace_policy) as inj:
                         text = _generate(hf, tok, stub, max_new, procs,
                                          decoding=exp.get("decoding"),
-                                         seed=int(exp["seeds"][0]), stream_tag=tag)
+                                         seed=int(exp["seeds"][0]), stream_tag=tag,
+                                         step_texts=step_texts)
                     n_writes.append(inj.n_applications)
+                if step_texts is not None:
+                    episode = {"concept": concept, "stub": stub,
+                               "step_texts": step_texts,
+                               "entropies": list(trace.entropies),
+                               "write_events":
+                                   list(getattr(trace_policy, "write_events", []) or [])}
                 texts.append(text)
                 step_ents.extend(trace.entropies)
                 if arm == "baseline":
@@ -195,6 +229,8 @@ def main(argv=None) -> None:
                "mean_step_entropy": round(float(np.mean(step_ents)), 4),
                "mean_writes_per_gen": round(float(np.mean(n_writes)), 2) if n_writes else 0.0,
                "records": records}
+        if episode is not None:
+            out["_episode"] = episode
         if arm == "baseline":
             out["baseline_drops"] = baseline_drops
         return out
@@ -288,6 +324,53 @@ def main(argv=None) -> None:
                                  "records": {k2: v["records"] for k2, v in results.items()},
                                  "contention": a.contention}),
             deviations=list(exp.get("deviations", [])) + devs))
+
+    # Emit trace if requested
+    if a.emit_trace:
+        from datetime import datetime, timezone
+        from prabodha.contracts.trace import SteerTrace
+
+        # Extract metadata from the run
+        model_cfg = load(a.model)
+        prompt = list(exp.get("stubs", [""]))[0] if exp.get("stubs") else ""
+        concept = list(exp.get("concepts", [""]))[0] if exp.get("concepts") else ""
+        behavioral_hit = None
+        if "entropy_gated" in results:
+            records = results["entropy_gated"].get("records", [])
+            if records:
+                behavioral_hit = records[0].get("hit")
+
+        # Per-token replay data from the primary arm's first collected episode
+        # (entropy_gated has the best replay value: gate events fire during decode).
+        primary_arm = "entropy_gated" if "entropy_gated" in results else "baseline"
+        episode = results[primary_arm].get("_episode")
+        trace_tokens = []
+        if episode:
+            trace_tokens = _build_trace_tokens(episode["step_texts"],
+                                               episode["entropies"],
+                                               episode["write_events"])
+            prompt = episode["stub"]
+            concept = episode["concept"]
+
+        trace_obj = SteerTrace(
+            model_id=model_cfg.get("hf_id", "unknown"),
+            prompt=prompt,
+            concept=concept,
+            arm=primary_arm,
+            seed=int(exp["seeds"][0]),
+            alpha=alpha,
+            tau_percentile=int(a.tau_percentile) if a.tau_percentile is not None else int(exp.get("tau_percentile", 60)),
+            site_layer=wl,
+            tokens=trace_tokens,
+            readback=None,
+            behavioral_hit=behavioral_hit,
+            gate_ref=None,
+            created_at=datetime.now(timezone.utc).isoformat(),
+        )
+        Path(a.emit_trace).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.emit_trace).write_text(trace_obj.model_dump_json(indent=2))
+        print(f"trace written: {a.emit_trace}")
+
     Path(a.out).write_text(report.model_dump_json(indent=2))
     print(f"gate written: {a.out} (domain={report.domain_gate.verdict}) tau={tau:.3f} k={k} "
           + " ".join(f"{arm}: lift={agg[arm]['lift']:+.2f} dH={agg[arm]['step_entropy_delta']:+.2f} "

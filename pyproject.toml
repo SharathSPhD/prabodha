@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "prabodha"
-version = "0.1.0"
+version = "1.0.0"
 description = "Recognition-gated workspace steering for language models (PWM x J-space x GNW)"
 authors = [{name = "Sharath S", email = "qbz506@york.ac.uk"}]
 license = {text = "Apache-2.0"}
