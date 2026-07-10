@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1783694105.20267 "paper.tex" "paper.pdf" "paper" 1783694105.3878 0
+["pdflatex"] 1783698543.06772 "paper.tex" "paper.pdf" "paper" 1783698543.24093 0
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1136768653 1536 12e8c510d3e158fdd0e9a42e75118bd9 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -87,16 +87,16 @@
   "/home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk" 1783674201.24958 9268 581e535997505c8492d392d4f039e4a7 ""
   "/home/sharaths/.TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1772302127 2236237 a8649cd5d0b3b28f6d5908ce7826f1a2 ""
   "/home/sharaths/.TinyTeX/texmf.cnf" 1772302105.1762 637 edd806fb06a89761a6034e1968af9017 ""
-  "figures/fig1_loadability.pdf" 1783694104.43723 16780 e2d79eb664fe166dba372c89767f661c ""
-  "figures/fig2_dose_grid.pdf" 1783694104.51223 18705 9c5f14d4a2355cc90932eec0df66612b ""
-  "figures/fig3_core_claim.pdf" 1783694104.60023 15585 4a92808251dc672407a1602a51c5062a ""
-  "figures/fig4_recipe_and_articulation.pdf" 1783694104.69323 16897 370bbae5f6f9468ae0dc4c78fdf8bfdf ""
-  "figures/fig5_compute_ledger.pdf" 1783694104.78523 18434 67411160b2864da348c96798605c7da6 ""
-  "figures/fig6_architecture.pdf" 1783694104.86123 16631 26d69f96762f527d7acddb16ccf60748 ""
-  "figures/fig7_scaling_law.pdf" 1783694105.03123 21205 ce4a1f4cca8f4013b5c3aa44d123824a ""
-  "paper.aux" 1783694105.36423 5922 4db0c09e4a15c1de9399b56c8b4964dd "pdflatex"
-  "paper.out" 1783694105.36423 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
-  "paper.tex" 1783694104.12704 14102 8e71e269887b98c03b7722334dd4ba13 ""
+  "figures/fig1_loadability.pdf" 1783698542.29767 16780 ebda9cc20ee4d654818125adc103a400 ""
+  "figures/fig2_dose_grid.pdf" 1783698542.37367 18705 316d77931bddad4be2269186a8aa3e88 ""
+  "figures/fig3_core_claim.pdf" 1783698542.46167 15585 3b58f02abe1054b38fa3fad2d45b0e73 ""
+  "figures/fig4_recipe_and_articulation.pdf" 1783698542.55667 16897 ce545462ea991c5eca996dd151e583d2 ""
+  "figures/fig5_compute_ledger.pdf" 1783698542.64967 18457 a6ce2421b54e68e068d368ed1ebab52f ""
+  "figures/fig6_architecture.pdf" 1783698542.72567 16631 706c1fd21ffc1a49f1e19fc62b431d17 ""
+  "figures/fig7_scaling_law.pdf" 1783698542.89767 21205 427251c20742b7985444910558f62a95 ""
+  "paper.aux" 1783698543.21767 5922 4db0c09e4a15c1de9399b56c8b4964dd "pdflatex"
+  "paper.out" 1783698543.21867 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
+  "paper.tex" 1783698542.00659 14102 8e71e269887b98c03b7722334dd4ba13 ""
   (generated)
   "paper.aux"
   "paper.log"

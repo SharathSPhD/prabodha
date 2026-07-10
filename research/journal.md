@@ -719,3 +719,13 @@ The correction process surfaced a genuine error I had made:
   gate_L19_cax.json. Propagated to paper/README/HTML.
 - Cycle 26 dispatched: l8_offset_multiseed (gated arm at alpha{0.02,0.1} x
   seeds{123,777}) — confirms or withdraws the L18 gated-level supersession.
+
+## 2026-07-10 — L19 cycle 26 CLOSED: L8 gated-arm offset CONFIRMED at n=3 seeds
+- Multiseed check (seeds 123, 777, joined by L18's seed 42) at alpha{0.02, 0.1}: mean
+  offset vs L8 originals = -0.108 (alpha=0.02), -0.067 (alpha=0.1); ALL 6 per-seed
+  offsets negative (range -0.05 to -0.125), no sign flips, both means within the
+  registered [-0.15,-0.05] band. tier-2 (confirm). Divergence RESOLVED: review #15's
+  n=1 concern is discharged — the gated-arm supersession of L8 STANDS on 3 seeds, not
+  1. (The arm-specificity finding — offset does NOT generalize to other arms — is
+  independently confirmed and unaffected.) gate_L19_l8ms.json.
+- Menu 9 consumed (0.85/1.0h; trained_bridge still blocked). L19 review + closure next.
