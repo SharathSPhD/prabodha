@@ -25,16 +25,20 @@ prabodha = "prabodha.cli:main"
 
 [project.optional-dependencies]
 lens = ["torch>=2.1", "transformers>=4.40"]
-dev = ["pytest>=8", "ruff>=0.4"]
+dev = ["pytest>=8", "ruff>=0.4", "pytest-asyncio>=0.23"]
 hybrid = ["flash-linear-attention"]  # + causal-conv1d --no-build-isolation (see Dockerfile)
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
-markers = ["smoke: end-to-end tiny-model tests (needs torch/transformers/jlens)"]
+markers = [
+  "smoke: end-to-end tiny-model tests (needs torch/transformers/jlens)",
+  "asyncio: async test coroutine (pytest-asyncio)",
+]
 addopts = "-q"
 testpaths = ["tests"]
+asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 100
