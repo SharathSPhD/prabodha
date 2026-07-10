@@ -6,9 +6,7 @@ Primitive: server startup + tool enumeration, no GPU.
 """
 import pytest
 import subprocess
-import json
 import time
-import asyncio
 
 
 @pytest.mark.smoke

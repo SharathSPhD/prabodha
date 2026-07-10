@@ -4,8 +4,6 @@ Concept: verify tools return real gates.
 Source: WS3 plan, domain-gate smoke section.
 Primitive: list_gates returns real gate entries, no GPU.
 """
-import json
-from pathlib import Path
 import pytest
 
 

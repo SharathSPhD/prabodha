@@ -6,10 +6,19 @@ build-backend = "setuptools.build_meta"
 name = "prabodha"
 version = "1.0.0"
 description = "Recognition-gated workspace steering for language models (PWM x J-space x GNW)"
+readme = "README.md"
 authors = [{name = "Sharath S", email = "qbz506@york.ac.uk"}]
 license = {text = "Apache-2.0"}
 requires-python = ">=3.10"
+keywords = ["interpretability", "steering", "jacobian-lens", "global-workspace", "llm"]
 dependencies = ["numpy>=1.24", "pyyaml>=6", "pydantic>=2.5"]
+
+[project.urls]
+Homepage = "https://github.com/SharathSPhD/prabodha"
+Repository = "https://github.com/SharathSPhD/prabodha"
+Paper = "https://github.com/SharathSPhD/prabodha/blob/main/docs/paper/paper.pdf"
+Lenses = "https://huggingface.co/qbz506/prabodha-lenses"
+"Pages site" = "https://sharathsphd.github.io/prabodha"
 
 [project.scripts]
 prabodha = "prabodha.cli:main"
