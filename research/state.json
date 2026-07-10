@@ -1,5 +1,5 @@
 {
- "current_loop": "L9-menu-refresh",
+ "current_loop": "L9",
  "loops": {
   "L0": {
    "status": "closed",
@@ -121,6 +121,14 @@
   "L8": {
    "status": "closed-cycle5",
    "gate": "gates/gate_L8_dose.json"
+  },
+  "L9": {
+   "status": "open-cycles-6-7-closed",
+   "gates": [
+    "gates/gate_L9_probe.json",
+    "gates/gate_L9_flash.json"
+   ],
+   "method_fix": "independent per-generation sampling streams"
   }
  },
  "gpu_budget_hours": {
@@ -141,7 +149,9 @@
   "L7_spent": 0.1,
   "L7_cap": 0.5,
   "L8_spent": 0.5,
-  "L8_cap": 0.9
+  "L8_cap": 0.9,
+  "L9_spent": 0.35,
+  "L9_cap": 1.5
  },
  "kill_switch": false
 }

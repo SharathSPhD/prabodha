@@ -389,3 +389,24 @@
   (no latency/interference/stability measurement — open item for H4-era benchmarking).
 - Menu 5/5 consumed across 5 selector cycles; 9 adversarial reviews total. Paper §4 and
   abstract now carry the corrected, currency-explicit claims.
+
+## 2026-07-10 — L9 cycles 6–7: the probe that audited the method; the flash that refined the doctrine
+- Cycle 6 (hard_seed_probe, the selector's P2-trade-off choice: EXPLORE won — epi 7.31 at
+  0.05 GPU-h beat prag +1.12 confirm): seed 777 was never "hard" — per-run reseeding made
+  all 40 generations share sampling-stream structure (seed = trajectory-FAMILY selector,
+  n_eff << 40). FIX: per-generation seeds from (seed, arm, concept, stub). Verified: the
+  seed gap collapses 0.38/0.17 -> 0.28/0.25 at alpha=0.02 (gate_L9_probe*). CONSEQUENCE
+  disclosed: all sampling-era point estimates carried correlated-stream noise; core budget
+  claim re-verified under independent streams; finer margins queued for re-measurement
+  (alignment_confirm, next on menu 2).
+- Cycle 7 (commitment_flash_gate, gate_L9_flash): uncommitted-moment gating +0.30 vs
+  commitment-flash gating +0.20 = prefill-only +0.20. The flash reading adds NOTHING beyond
+  the prefill write; the uncommitted reading adds +0.10 (single seed, at the registered
+  underdetermination edge — directional, not decisive). DOCTRINAL REFINEMENT: sphurattā is
+  a detection signal, not a write-timing signal — writing AT the flash is post-commitment
+  (H5b's vaikharī lesson at step scale); effective writes target pre-commitment openness.
+- Two more loop-infrastructure bugs found live, fixed, regression-tested: menu-scoped
+  budget accounting; (earlier) run-observation replay + consumption. The auto-research
+  loop is being debugged BY its own operation — anusaṃdhāna in practice.
+- Remaining on menu 2: alignment_confirm (re-measurement under independent streams),
+  cross_plant_gating, write_cost_operational.
