@@ -361,3 +361,31 @@
 - Program state after audit loop: all cheap paper-blocking caveats cleared. Remaining menu:
   dose_response (0.9 GPU-h); queued beyond menu: trained-bridge arm, selector trade-off
   case, L3 currency restatement. Paper skeleton ready for prose expansion.
+
+## 2026-07-10 — cycle 5 (dose_response): amplitude-robust, and a claim correction
+- gates/gate_L8_dose.json (composed from 3 per-alpha gates, contention=psalm shared mode):
+  H_dose_robust PASS (gated lift 0.375-0.40 within budget at α 0.02/0.05/0.1) and
+  H_alignment holds at every alpha (+0.15..0.18 over rate-matched every_k).
+- CLAIM CORRECTION (the dose grid's real payoff): under sampling, CONTINUOUS writes also
+  sit within the entropy budget (ΔH −0.11..−0.16) at lift 0.47 — L3's −2.08 budget-blow was
+  regime-specific. Restated everywhere (paper §4): gating = write-efficiency (~85% lift at
+  ~27% writes) + alignment advantage, NOT sole feasibility. Science self-corrected by its
+  own registered requirement (review #5 demanded this grid precisely to police dominance
+  claims — it did).
+- Menu CONSUMED (5/5 candidates, 5 cycles). Selector's next proposal will raise
+  no-candidate — the menu refresh (trade-off case, trained-bridge, confirm extensions) is
+  the next registration act.
+
+## 2026-07-10 — review #9 + boundary check: two freedom currencies; α=0.02 is marginal
+- Review #9 attacked the "regime-specific" framing as metric-smuggling. RESOLUTION was
+  already in the gates: at-position entropy is a single-forward measurement — decoding
+  regime cannot affect it (−1.9..−2.1 nats at both alphas, gate_L3*); trajectory-average
+  depends on regime (+0.82 greedy / −0.13 sampling). Both currencies now explicit; budget
+  registered as trajectory-average-under-sampling with the local spike disclosed.
+- Multi-seed check at the amplitude boundary (reviewer's demand): α=0.02 gated = 0.38/0.38/
+  0.17 across seeds 42/123/777 → 2/3. Amplitude robustness CONFIRMED at α=0.1 (3/3),
+  MARGINAL at 0.02. Seed 777 is systematically hard (0.23 at α=0.1, 0.17 at 0.02).
+- "Write-efficiency" demoted to schedule-efficiency with operational value flagged untested
+  (no latency/interference/stability measurement — open item for H4-era benchmarking).
+- Menu 5/5 consumed across 5 selector cycles; 9 adversarial reviews total. Paper §4 and
+  abstract now carry the corrected, currency-explicit claims.

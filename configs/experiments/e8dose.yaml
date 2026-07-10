@@ -1,0 +1,32 @@
+# E8-dose pre-registration — cycle-5 selector proposal (propose event precedes first run).
+# Review #5's dose-response requirement + the amplitude-robustness question L3's triple
+# dissociation left open: does the CONFIRMED gated operating point survive smaller writes?
+# Registered gate rule (composed across the three per-alpha runs):
+#   H_dose_robust = entropy_gated lift >= 0.2 AND |mean-step-entropy delta| <= 0.5 at ALL
+#   of alpha {0.02, 0.05, 0.1} (0.1 == norm_cap_rel — the cap point, not an inert knob).
+# The full (alpha x arm) grid {continuous, prefill_only, entropy_gated, every_k} ships as
+# evidence for matched-entropy comparisons (descriptive; no dominance claim registered).
+seeds: [42]
+write_layer: 20
+alpha: 0.1                 # overridden per run via --alpha
+norm_cap_rel: 0.1
+max_new_tokens: 40
+min_gap: 2
+tau_percentile: 60
+decoding: {do_sample: true, temperature: 0.8}
+arms: [continuous, prefill_only, entropy_gated, every_k]
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+  H_alignment:    {metric: gated_minus_everyk_lift, min_lift_advantage: 0.1,
+                   threshold_min: 0.1}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+prune_rule: "H_dose_robust composed across per-alpha gates into gate_L8_dose.json; a fail at low alpha is a REPORTED operating boundary, not a program prune"
+deviations: []
+budget_gpu_hours: 0.9

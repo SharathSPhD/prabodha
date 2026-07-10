@@ -18,10 +18,11 @@ workspace-band structure and its verbalizable content replicate across three mod
 and two sizes, with instructed loadability scaling with size and collapsing under
 pruning/distillation; (2) a band's content is legible only to a lens targeted at the band
 itself — final-target lenses are blind to it; (3) direct writes into the band steer
-behavior, but continuous writing destroys output freedom (svātantrya); (4) the doctrine's
-timing clause is load-bearing: writes gated to the plant's uncommitted moments achieve
-full-strength steering *within* the freedom budget — confirmed across 3 seeds and 3 gate
-settings — and event alignment beats rate-matched controls; (5) the research program itself
+behavior, with freedom cost (svātantrya) governed by decoding regime and write schedule;
+(4) the doctrine's timing clause earns its keep as WRITE-EFFICIENCY: sphurattā-gated writes
+achieve ~85% of continuous-schedule steering at ~27% of the writes, within the freedom
+budget, confirmed across 3 seeds, 3 gate settings, and 3 amplitudes, with event alignment
+beating rate-matched controls throughout; (5) the research program itself
 ran as an active-inference loop (expected-free-energy selection over an experiment menu),
 with its proposals, dispositions, and honest negatives in a replayable ledger.
 
@@ -76,9 +77,21 @@ beyond J-space (scoping §10.3) — the band carries structure the standard lens
   steering INSIDE the budget. [gate_L4b.json] CONFIRMED: 3 seeds × 3 τ-percentiles, lifts
   0.23–0.40, all within budget (H_gated_budget 3/3). [gate_L5_tau.json, gate_L6_confirm.json]
 - Event ALIGNMENT beats rate-matched periodic writes (+0.40 vs +0.23 at ~matched rates;
-  per-write 0.056 vs 0.046). [gate_L6_align.json] HONEST margins: the advantage over a
-  single prefill write is ~0.1 and did NOT confirm at the registered 0.15 margin
-  (0.20/0.12/0.03 across seeds).
+  per-write 0.056 vs 0.046), and the advantage holds at every amplitude in the dose grid
+  (+0.15..0.18 at α ∈ {0.02, 0.05, 0.1}). [gate_L6_align.json, gate_L8_dose.json]
+  HONEST margins: the advantage over a single prefill write is ~0.1 and did NOT confirm at
+  the registered 0.15 margin (0.20/0.12/0.03 across seeds).
+- TWO FREEDOM CURRENCIES (gate_L8_dose.json + review #9): the write's LOCAL cost at the
+  write moment is large and decoding-regime-independent (−1.9..−2.1 nats at-position,
+  single-forward measurement, gate_L3*); the TRAJECTORY-average cost depends on regime
+  (+0.82 under greedy, −0.11..−0.16 under sampling — probabilistic decoding absorbs the
+  spikes deterministic argmax exposes). We register trajectory-average-under-sampling as
+  the budget currency (the plant's realized output freedom), local spikes disclosed. Under
+  that currency, continuous writes are ALSO feasible (lift 0.47): sphurattā gating is
+  SCHEDULE-EFFICIENT (~85% of continuous lift at ~27% of writes; operational value of
+  write-count is untested — open), with the alignment advantage over rate-matched controls
+  holding at every amplitude (+0.15..0.18). Amplitude boundary mapped honestly: robust at
+  α=0.1 (3/3 seeds), MARGINAL at α=0.02 (2/3 seeds; the hard seed fails at 0.17).
 - Clause-by-clause scorecard: site (band) — supported with the band-lens proviso; content
   (non-negative concept codes) — functional; timing (sphurattā) — load-bearing, confirmed;
   budget (svātantrya) — the binding constraint, now an operating point; acceptance (āgama

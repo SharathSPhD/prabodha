@@ -69,6 +69,8 @@ def main(argv=None) -> None:
     ap.add_argument("--contention", default="unknown")
     ap.add_argument("--seed", type=int, default=None,
                     help="override exp seeds[0] (multi-seed replications)")
+    ap.add_argument("--alpha", type=float, default=None,
+                    help="override exp alpha (dose-response grids)")
     ap.add_argument("--tau-percentile", type=float, default=None,
                     help="override exp tau_percentile (L5 tau-sensitivity sweep)")
     a = ap.parse_args(argv)
@@ -82,7 +84,8 @@ def main(argv=None) -> None:
     wl = int(exp["write_layer"])
     J = adapter._lens.jacobians[wl].float().cpu().numpy()
     U = hf.get_output_embeddings().weight.detach().float().cpu().numpy()
-    alpha, cap = float(exp["alpha"]), float(exp["norm_cap_rel"])
+    alpha = float(a.alpha) if a.alpha is not None else float(exp["alpha"])
+    cap = float(exp["norm_cap_rel"])
     max_new = int(exp["max_new_tokens"])
     min_gap = int(exp["min_gap"])
     devs: list[str] = []
