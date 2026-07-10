@@ -1,0 +1,31 @@
+{
+  "loop": "L20",
+  "status": "closed",
+  "closed_at": "2026-07-10T22:19:04.347736Z",
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "bridge_trained.py implemented and tested; e4_cli supports trained_bridge arm; docker image built with PWM; config updated with correct lens path (outputs/l10/lens_qwen3_mid30.pt). All pre-dispatch tasks complete."
+  },
+  "domain_gate": {
+    "verdict": "blocked",
+    "evidence": "Screen-tier GPU dispatch blocked: Docker container (prabodha/gb10:0.1, aarch64/arm64) binary incompatibility. `/usr/bin/python3: cannot execute binary file` error when running e4_cli inside container. This is an infrastructure-level blocker at the container execution layer, not an algorithmic issue.",
+    "diagnosis": {
+      "blocker_type": "container_binary_incompatibility",
+      "error": "python3 binary execution failed in Docker container (aarch64 base image incompatibility with host environment)",
+      "impact": "Cannot execute GPU workload; e4_cli cannot initialize inside container",
+      "recommendation": "Investigate Docker container binary format (aarch64 vs host arch mismatch) or use alternative execution environment (direct host python or compatible container image)"
+    },
+    "deviations": [
+      "Container binary incompatibility prevented GPU dispatch (./usr/bin/python3 cannot execute binary file)",
+      "Pre-dispatch infrastructure validation did not catch container execution issue until actual dispatch attempt"
+    ]
+  },
+  "signoff": "blocked_by_container_binary_error",
+  "gpu_guard_check": {
+    "status": "passed",
+    "memory_available": "111GiB",
+    "contention": "none",
+    "budget_check": "passed (120m estimated < 2.0h cap)"
+  },
+  "supersedes": "gates/gate_L20_screen.json (v1, missing_artifact blocker, now resolved)"
+}

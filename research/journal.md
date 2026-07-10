@@ -786,3 +786,25 @@ session configuration.
 **Recommendation:** Restore L13 session outputs (band lens, Jacobian) or rerun L13 before 
 attempting L20 GPU dispatch. The codebase is ready; the infrastructure link is broken.
 
+
+### Update: Dispatch Attempt & Container Binary Blocker
+
+**GPU Dispatch Attempt:** After artifact discovery (L10 band lens), proceeded with screen-tier 
+dispatch for seed 42. Pre-dispatch checks passed:
+- gpu_guard: OK (111GiB free, contention=none, 120m < 2.0h budget cap)
+- Config updated: lens_path corrected to outputs/l10/lens_qwen3_mid30.pt
+- Docker image ready, code ready
+
+**Dispatch Blocked (v2):** Docker container (prabodha/gb10:0.1) binary incompatibility. 
+Error: `/usr/bin/python3: cannot execute binary file`. This is an aarch64 Docker image 
+architecture mismatch at the container execution layer — python3 binary cannot run inside 
+the container environment.
+
+**Status:** L20 now recorded as BLOCKED-WITH-DIAGNOSIS on two sequential blockers:
+1. (v1) Missing L13 band-lens artifact — **RESOLVED** (artifacts found and linked)
+2. (v2) Container binary incompatibility — **UNRESOLVED** (infrastructure issue)
+
+The code is ready. The infrastructure layer needs remediation: either fix the Docker 
+container binary format or use an alternative execution environment (direct host python 
+or compatible container).
+
