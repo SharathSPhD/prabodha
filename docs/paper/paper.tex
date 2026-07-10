@@ -33,9 +33,9 @@ event-gated writes achieve full steering within the freedom budget, confirmed ac
 independent-stream seeds (lift 0.30--0.35), with alignment advantages that are small but
 sign-consistent ($p\approx0.016$); (5) the steering method \emph{transfers} to a second
 plant via a calibration recipe whose key rule is amplitude $\propto$ inverse lens transport
-strength---confirmed at four independent-stream seeds and shown to sit on a monotone,
-unsaturated dose curve (screen tier); and (6) the research program itself ran as an expected-free-energy selection loop
-over a registered experiment menu, with sixteen cycles, eleven adversarial reviews, and every
+strength---confirmed at four independent-stream seeds and shown to sit on a monotone dose law on
+that plant (three seeds; the first plant contributes consistent ordering only); and (6) the research program itself ran as an expected-free-energy selection loop
+over a registered experiment menu, with eighteen cycles, twelve adversarial reviews, and every
 honest negative in a replayable ledger.
 \end{abstract}
 
@@ -110,21 +110,29 @@ $\sim$10$\times$ weaker and the working amplitude is 3$\times$ larger---write st
 must be calibrated to the lens's transport strength. \emph{The method transfers; the
 geometry does not.}
 
-The scaling rule is a dose \emph{trend}, not a lucky point: sweeping $\alpha=\mathrm{cap}$
-over $\{0.1, 0.2, 0.3, 0.45\}$ on Qwen3, gated lift rises strictly monotonically
-($0.05 \rightarrow 0.20 \rightarrow 0.40 \rightarrow 0.78$) with no saturation in the
-tested range, while the trajectory-entropy cost stays flat and far inside the
-$\pm$0.5-nat budget at every point (worst $|\Delta H| = 0.15$;
-Fig.~\ref{fig:scaling}; gate L14, screen tier, seed 42). Prefill-only writes scale too
-but stay $\sim$2$\times$ below the gated schedule at matched amplitude. On this plant, the
-binding constraint in the tested range is not the freedom budget but amplitude itself.
-Single-seed screen evidence: \emph{law} status awaits a multi-seed, joint two-plant
-confirmation (adversarial review \#11).
+The scaling rule is a dose \emph{law on the weak-transport plant}, multi-seed
+confirmed (the word ``law'' was withheld by adversarial review \#11 and its scope was
+then narrowed by review \#12): sweeping $\alpha=\mathrm{cap}$ over
+$\{0.1, 0.2, 0.3, 0.45\}$ on Qwen3, gated lift rises monotonically \emph{per seed} at
+three independent-stream seeds
+($0 \rightarrow {\sim}0.18 \rightarrow 0.4$--$0.48 \rightarrow 0.72$--$0.78$;
+gates L14-amp, L15-amp-joint) with no saturation in the tested range, while the
+trajectory-entropy cost stays flat and far inside the $\pm$0.5-nat budget at every
+point (Fig.~\ref{fig:scaling}). The strong-transport plant contributes
+\emph{ordering only}: Nemotron's replayed grid is nondecreasing but flat
+($0.375 \rightarrow 0.375 \rightarrow 0.40$), saturated at an $\alpha$ boundary its
+own gate flagged marginal --- consistent with amplitude $\propto$ 1/lens-strength, but
+not a dose-response replication. Two-plant dose-response replication remains open.
+Prefill-only writes scale too but stay below the gated schedule at matched amplitude.
+On the weak-transport plant the binding constraint in the tested range is not the
+freedom budget but amplitude itself.
 
 \begin{figure}[t]\centering
 \includegraphics[width=.98\linewidth]{fig7_scaling_law}
-\caption{Amplitude scaling law on the second plant (gate L14): dose-monotone lift with
-no saturation by $\alpha=0.45$ (left) at flat, within-budget freedom cost (right).}
+\caption{The amplitude dose law (gates L14-amp, L15-amp-joint, L8 replay): per-seed
+monotone lift on the weak-transport plant (three seeds, confirm tier); the
+strong-transport plant contributes ordering only --- flat, saturated at its marginal
+boundary (left). Freedom cost flat and within budget throughout (right).}
 \label{fig:scaling}
 \end{figure}
 
@@ -160,10 +168,14 @@ with co-resident training jobs, contention recorded in every gate.}\label{fig:le
 
 \section{Honest negatives and open questions}
 The $\geq$0.15 schedule margins did not confirm (stated by sign consistency instead);
-the \=agama readback acceptance test, recalibrated against behavioral hits on the
-clean-stream corpus, carries real but modest signal (balanced accuracy $0.68$ at
-top-$m{=}5$ vs the $0.6$ threshold; the L3 screen setting was already near-optimal and
-the rank-gain clause contributes nothing --- gate L14-readback); the
+the \=agama readback acceptance test, recalibrated against behavioral hits and then
+held-out-tested at the fixed setting (balanced accuracy $0.64$ against a
+pre-registered $0.6$ --- but the margin sits inside its own binomial CI at $n{=}40$, so
+this remains screen-tier evidence; it over-promises far more often than it
+under-promises --- gates L14-readback, L15-readback), is a modest predictor, not an
+oracle; steering
+lift itself is corpus-dependent (gated $+0.15$ on held-out stubs vs $+0.30$--$0.40$ on
+the registered corpus at matched amplitude --- a registered question for a future menu); the
 commitment-flash reading remains directionally weaker, not refuted; the trained-bridge
 comparator awaits the PWM world-model stack; anusa\d{m}dh\=ana (cross-episode continuity),
 the modality confound, and W-space beyond J-space remain deliberately unconverged.

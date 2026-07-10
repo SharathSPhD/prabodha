@@ -41,7 +41,8 @@ gate = {
         "hypothesis": "L14-calibrated readback setting (top_m=5, gain=0), FIXED, "
                       "reaches balanced accuracy >= 0.6 on a held-out corpus "
                       "(stubs disjoint from calibration; threshold pre-registered "
-                      "in e15heldout.yaml)",
+                      "in e15heldout.yaml). SCREEN tier per review #12: the margin "
+                      "over threshold is inside its own binomial CI at n=40",
         "evidence": json.dumps({
             "summary": summary, "n": len(pairs), "n_hit": n_pos,
             "tpr": round(tpr, 4), "tnr": round(tnr, 4),
@@ -49,6 +50,12 @@ gate = {
             "setting": {"top_m": TOP_M, "min_rank_gain": GAIN},
             "source_run": SRC,
             "disclosures": [
+                "review #12: BA 0.637 passes the 0.6 threshold by 0.037 with n=40 "
+                "(6 hits) — binomial SE on TPR ~0.15, on TNR ~0.085; the 95% CI on "
+                "BA crosses the threshold, so confidence in BA>=0.6 is ~60-65%, "
+                "below confirm standard => tier SCREEN. TNR 0.44 means weak "
+                "negative-class discrimination: the verdict over-promises (19 fp / "
+                "24 positive predictions)",
                 "the source run's own H_gated_budget FAILED on this corpus (gated "
                 "lift +0.15 < 0.2 at alpha=0.1): steering lift is CORPUS-DEPENDENT "
                 "— the held-out stubs surface concepts less readily than e5align's. "
@@ -56,7 +63,7 @@ gate = {
                 "is not a core-claim contradiction (different, unregistered corpus), "
                 "but bounds generalization of lift magnitudes across stub styles"],
             "registered_in": "configs/efe_menu5.yaml:readback_heldout_confirm",
-            "seeds": [42], "tier": "confirm"}),
+            "seeds": [42], "tier": "screen"}),
     },
     "signoff": "standing authorization (2026-07-09)",
 }

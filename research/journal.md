@@ -555,3 +555,23 @@ Review count: 11. L14 status -> closed in state.json.
 - gates/gate_L15_readback.json (confirm tier); observe tier 2; spend 0.15h (L15:
   0.15/1.0). Cycle 18 proposed+ledgered: amplitude_law_joint_confirm (EFE -1.36, 0.7h)
   — 2 new qwen3 seeds x 4 alphas dispatched (--loop L15 in template).
+
+## 2026-07-10 — L15 cycle 18 CLOSED + review #12; menu 5 consumed; L15 closes
+- Cycle 18 (amplitude_law_joint_confirm): qwen3 dose curves at 2 NEW seeds are nearly
+  identical to the replay — 123: [0.00,0.175,0.475,0.725]; 777: [0.00,0.175,0.425,0.725];
+  42(replay): [0.05,0.20,0.40,0.775] — strictly ordered per-seed, all |dH| within budget.
+  Nemotron L8 replay: 0.375/0.375/0.40 nondecreasing (saturated). Spend 0.7h
+  (L15: 0.85/1.0). Menu 5 consumed (trained_bridge still blocked).
+- ADVERSARIAL REVIEW #12 (isolated): MERGE-WITH-CORRECTIONS, both claims trimmed:
+  (a) readback held-out: BA 0.637's margin over 0.6 sits inside its own binomial CI at
+  n=40 (6 hits), TNR 0.44 => tier CONFIRM -> SCREEN; verdict over-promises (19fp/24
+  positive predictions). Setting survives held-out but as screen-strength evidence.
+  (b) amplitude: nemotron's flat first pair (0.375->0.375, zero gain) is ordering, NOT
+  dose response; L8 itself flagged the alpha boundary marginal => LAW scoped to the
+  weak-transport plant (qwen3, 3 seeds, confirm); two-plant dose-response replication
+  stays OPEN. tol=0.05 disclosed in gate. Tier: confirm-qwen3/screen-joint.
+  All corrections applied to gates (regenerated), paper, HTML before merge.
+- Two-review pattern note: #11 demanded the multi-seed bar, #12 trimmed the joint scope
+  — the "law" is now exactly as big as its evidence. Review count: 12.
+- L15 totals: 2 cycles, 0.85 GPU-h, H4 phase 2 shipped (Claude Code plugin), corpus-
+  dependence of lift registered as a future-menu candidate.

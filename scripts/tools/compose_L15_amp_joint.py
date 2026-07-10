@@ -66,18 +66,33 @@ gate = {
     "code_gate": {"verdict": "pass", "evidence": "pytest green; ruff clean"},
     "domain_gate": {
         "verdict": verdict,
-        "hypothesis": "amplitude law JOINT confirm: qwen3 dose ordering holds per-seed "
-                      "at 2 NEW independent-stream seeds {123,777} (+42 replayed), all "
-                      "points within budget, AND nemotron's L8 grid is ordered — "
-                      "'monotone dose within budget, amplitude ∝ 1/lens-strength' "
-                      "graduates to a two-plant multi-seed claim (review #11 corr. 1)",
+        "hypothesis": "amplitude dose law on the WEAK-TRANSPORT plant (qwen3), "
+                      "multi-seed confirm: dose ordering holds per-seed at 2 NEW "
+                      "independent-stream seeds {123,777} (+42 replayed), all points "
+                      "within budget. The strong-transport plant (nemotron, L8 "
+                      "replay) contributes ORDERING ONLY: its curve is flat-then-"
+                      "slight-rise (saturated at its marginal alpha boundary), which "
+                      "is consistent with amplitude ∝ 1/lens-strength but is NOT a "
+                      "dose-response replication (review #12). Two-plant dose-"
+                      "response replication remains OPEN.",
         "evidence": json.dumps({
             "summary": summary, "qwen3": qwen3,
             "qwen3_ordered_pairs_new_seeds": new_seed_ordered,
             "nemotron_L8": {"alphas": nem_alphas, "gated_lifts": nem_lifts,
                             "ordered_pairs": nem_ordered},
+            "disclosures": [
+                "monotone() uses tol=0.05 on adjacent pairs; nemotron's first pair "
+                "(0.375 -> 0.375) has ZERO gain and passes only as nondecreasing — "
+                "at tol=0 it still passes (equality) but there is no dose signal in "
+                "it (review #12)",
+                "L8's own summary flagged the alpha=0.02 boundary as MARGINAL "
+                "(2/3 seeds); the nemotron leg is ordering-at-a-marginal-boundary, "
+                "not replication",
+                "claim scope: LAW = per-seed monotone dose within budget on qwen3 "
+                "(confirm); the two-plant statement is limited to 'consistent "
+                "ordering + saturation pattern' (screen)"],
             "registered_in": "configs/efe_menu5.yaml:amplitude_law_joint_confirm",
-            "seeds": [42, 123, 777], "tier": "confirm"}),
+            "seeds": [42, 123, 777], "tier": "confirm-qwen3/screen-joint"}),
     },
     "signoff": "standing authorization (2026-07-09)",
 }

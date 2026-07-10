@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  10 JUL 2026 11:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  10 JUL 2026 13:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -334,43 +334,44 @@ Package pdftex.def Info: figures/fig1_loadability.pdf  used on input line 59.
  [1
 
 {/home/sharaths/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<figures/fig2_dose_grid.pdf, id=62, 348.80061pt x 249.29611pt>
+<figures/fig2_dose_grid.pdf, id=61, 348.80061pt x 249.29611pt>
 File: figures/fig2_dose_grid.pdf Graphic file (type pdf)
 <use figures/fig2_dose_grid.pdf>
 Package pdftex.def Info: figures/fig2_dose_grid.pdf  used on input line 87.
 (pdftex.def)             Requested size: 338.22418pt x 241.74844pt.
-<figures/fig3_core_claim.pdf, id=63, 545.2603pt x 215.96146pt>
+<figures/fig3_core_claim.pdf, id=62, 545.2603pt x 215.96146pt>
 File: figures/fig3_core_claim.pdf Graphic file (type pdf)
 <use figures/fig3_core_claim.pdf>
 Package pdftex.def Info: figures/fig3_core_claim.pdf  used on input line 94.
 (pdftex.def)             Requested size: 460.35791pt x 182.33565pt.
  [2 <./figures/fig1_loadability.pdf>]
-<figures/fig7_scaling_law.pdf, id=122, 497.32437pt x 232.60176pt>
+<figures/fig7_scaling_law.pdf, id=122, 505.96603pt x 232.60176pt>
 File: figures/fig7_scaling_law.pdf Graphic file (type pdf)
 <use figures/fig7_scaling_law.pdf>
-Package pdftex.def Info: figures/fig7_scaling_law.pdf  used on input line 125.
-(pdftex.def)             Requested size: 460.35791pt x 215.31651pt.
+Package pdftex.def Info: figures/fig7_scaling_law.pdf  used on input line 131.
+(pdftex.def)             Requested size: 460.35791pt x 211.64308pt.
 <figures/fig4_recipe_and_articulation.pdf, id=123, 522.66121pt x 232.60176pt>
 File: figures/fig4_recipe_and_articulation.pdf Graphic file (type pdf)
 <use figures/fig4_recipe_and_articulation.pdf>
-Package pdftex.def Info: figures/fig4_recipe_and_articulation.pdf  used on input line 132.
+Package pdftex.def Info: figures/fig4_recipe_and_articulation.pdf  used on input line 140.
 (pdftex.def)             Requested size: 460.35791pt x 204.87473pt.
 
-Overfull \hbox (15.03656pt too wide) in paragraph at lines 139--148
+Overfull \hbox (15.03656pt too wide) in paragraph at lines 147--156
 \OT1/cmr/m/n/10.95 Expected-free-energy se-lec-tion over reg-is-tered ex-per-i-ment menus; ob-ser-va-tions are gate ver-dict+margin
  []
 
-<figures/fig6_architecture.pdf, id=124, 440.12431pt x 252.22733pt>
+[3 <./figures/fig2_dose_grid.pdf>]
+<figures/fig6_architecture.pdf, id=182, 440.12431pt x 252.22733pt>
 File: figures/fig6_architecture.pdf Graphic file (type pdf)
 <use figures/fig6_architecture.pdf>
-Package pdftex.def Info: figures/fig6_architecture.pdf  used on input line 150.
+Package pdftex.def Info: figures/fig6_architecture.pdf  used on input line 158.
 (pdftex.def)             Requested size: 403.9896pt x 231.53238pt.
-<figures/fig5_compute_ledger.pdf, id=125, 563.0975pt x 213.31381pt>
+<figures/fig5_compute_ledger.pdf, id=183, 563.0975pt x 213.31381pt>
 File: figures/fig5_compute_ledger.pdf Graphic file (type pdf)
 <use figures/fig5_compute_ledger.pdf>
-Package pdftex.def Info: figures/fig5_compute_ledger.pdf  used on input line 156.
+Package pdftex.def Info: figures/fig5_compute_ledger.pdf  used on input line 164.
 (pdftex.def)             Requested size: 375.80544pt x 142.36292pt.
-[3 <./figures/fig2_dose_grid.pdf>] [4 <./figures/fig3_core_claim.pdf>] [5 <./figures/fig7_scaling_law.pdf> <./figures/fig4_recipe_and_articulation.pdf>] [6 <./figures/fig6_architecture.pdf> <./figures/fig5_compute_ledger.pdf>] (./paper.aux)
+ [4 <./figures/fig3_core_claim.pdf>] [5 <./figures/fig7_scaling_law.pdf>] [6 <./figures/fig4_recipe_and_articulation.pdf> <./figures/fig6_architecture.pdf>] [7 <./figures/fig5_compute_ledger.pdf>] (./paper.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -379,18 +380,18 @@ Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: D1CD0CA5ABCEE4E5E977AC705303BD0D;2049.
  ) 
 Here is how much of TeX's memory you used:
- 9948 strings out of 469514
- 153373 string characters out of 5470586
- 586452 words of memory out of 5000000
+ 9949 strings out of 469514
+ 153379 string characters out of 5470586
+ 585604 words of memory out of 5000000
  38475 multiletter control sequences out of 15000+600000
  636611 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,79p,418b,456s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,451b,476s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on paper.pdf (6 pages, 254879 bytes).
+Output written on paper.pdf (7 pages, 256805 bytes).
 PDF statistics:
- 498 PDF objects out of 1000 (max. 8388607)
- 151 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
+ 508 PDF objects out of 1000 (max. 8388607)
+ 156 compressed objects within 2 object streams
+ 24 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
