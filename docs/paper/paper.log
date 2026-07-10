@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  10 JUL 2026 14:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  10 JUL 2026 14:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -344,34 +344,33 @@ File: figures/fig3_core_claim.pdf Graphic file (type pdf)
 <use figures/fig3_core_claim.pdf>
 Package pdftex.def Info: figures/fig3_core_claim.pdf  used on input line 96.
 (pdftex.def)             Requested size: 460.35791pt x 182.33565pt.
- [2 <./figures/fig1_loadability.pdf>]
-<figures/fig7_scaling_law.pdf, id=123, 506.76588pt x 233.93486pt>
+ [2 <./figures/fig1_loadability.pdf>] [3 <./figures/fig2_dose_grid.pdf>]
+<figures/fig7_scaling_law.pdf, id=182, 506.76588pt x 233.93486pt>
 File: figures/fig7_scaling_law.pdf Graphic file (type pdf)
 <use figures/fig7_scaling_law.pdf>
-Package pdftex.def Info: figures/fig7_scaling_law.pdf  used on input line 138.
+Package pdftex.def Info: figures/fig7_scaling_law.pdf  used on input line 142.
 (pdftex.def)             Requested size: 460.35791pt x 212.51694pt.
- [3 <./figures/fig2_dose_grid.pdf>]
 <figures/fig4_recipe_and_articulation.pdf, id=183, 522.66121pt x 232.60176pt>
 File: figures/fig4_recipe_and_articulation.pdf Graphic file (type pdf)
 <use figures/fig4_recipe_and_articulation.pdf>
-Package pdftex.def Info: figures/fig4_recipe_and_articulation.pdf  used on input line 148.
+Package pdftex.def Info: figures/fig4_recipe_and_articulation.pdf  used on input line 152.
 (pdftex.def)             Requested size: 460.35791pt x 204.87473pt.
 
-Overfull \hbox (15.03656pt too wide) in paragraph at lines 155--164
+Overfull \hbox (15.03656pt too wide) in paragraph at lines 159--168
 \OT1/cmr/m/n/10.95 Expected-free-energy se-lec-tion over reg-is-tered ex-per-i-ment menus; ob-ser-va-tions are gate ver-dict+margin
  []
 
 <figures/fig6_architecture.pdf, id=184, 440.12431pt x 252.22733pt>
 File: figures/fig6_architecture.pdf Graphic file (type pdf)
 <use figures/fig6_architecture.pdf>
-Package pdftex.def Info: figures/fig6_architecture.pdf  used on input line 166.
+Package pdftex.def Info: figures/fig6_architecture.pdf  used on input line 170.
 (pdftex.def)             Requested size: 403.9896pt x 231.53238pt.
 <figures/fig5_compute_ledger.pdf, id=185, 563.0975pt x 213.31381pt>
 File: figures/fig5_compute_ledger.pdf Graphic file (type pdf)
 <use figures/fig5_compute_ledger.pdf>
-Package pdftex.def Info: figures/fig5_compute_ledger.pdf  used on input line 172.
+Package pdftex.def Info: figures/fig5_compute_ledger.pdf  used on input line 176.
 (pdftex.def)             Requested size: 375.80544pt x 142.36292pt.
-[4 <./figures/fig3_core_claim.pdf>] [5 <./figures/fig7_scaling_law.pdf>] [6 <./figures/fig4_recipe_and_articulation.pdf> <./figures/fig6_architecture.pdf>] [7 <./figures/fig5_compute_ledger.pdf>] (./paper.aux)
+[4 <./figures/fig3_core_claim.pdf>] [5 <./figures/fig7_scaling_law.pdf>] [6 <./figures/fig4_recipe_and_articulation.pdf>] [7 <./figures/fig6_architecture.pdf> <./figures/fig5_compute_ledger.pdf>] (./paper.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -386,9 +385,9 @@ Here is how much of TeX's memory you used:
  38475 multiletter control sequences out of 15000+600000
  636611 words of font info for 71 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,11n,79p,523b,479s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,523b,476s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0600.600pk> </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on paper.pdf (7 pages, 259667 bytes).
+Output written on paper.pdf (7 pages, 260182 bytes).
 PDF statistics:
  512 PDF objects out of 1000 (max. 8388607)
  157 compressed objects within 2 object streams

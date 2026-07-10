@@ -668,3 +668,17 @@ Review count: 14. All corrections applied before merge. L17 -> closed.
   persists across Bash calls; use absolute paths or subshells for compiles.)
 - Cycle 24 dispatched: narrative_past_amplitude_retry (e16corpus_a, alpha=cap=0.2,
   seeds 42/123/777) — is corpus-A seed fragility under-amplitude or intrinsic?
+
+## 2026-07-10 — L18 cycle 24 CLOSED: narrative-past fragility = UNDER-AMPLITUDE; menu 8 consumed
+- At alpha=cap=0.2, narrative-past passes 3/3 seeds (0.43/0.28/0.23) vs 1/3 at alpha=0.1
+  (0.25/0.07/0.10). The L17 seed fragility was the corpus needing MORE amplitude, not
+  being unsteerable. tier-3 observation. gate_L18_npretry.json.
+- CONSEQUENCE (doctrine refinement): the calibration recipe has a CORPUS axis alongside
+  its model axis. Amplitude ∝ 1/lens-strength (per model) AND ∝ stub-difficulty (per
+  corpus). L16's single fixed alpha=0.1 across corpora was the real methodological gap;
+  L17-cvar's honest negative STANDS at that amplitude and is now mechanistically
+  explained rather than overturned. Propagated to paper (generality + honest-negatives),
+  README table, plugin steer-verify skill, HTML.
+- Menu 8 consumed (0.6/1.0; trained_bridge blocked). Both L18 cycles were provisional/
+  open items from prior reviews RESOLVED — L18 = the resolution loop (L8 levels
+  superseded; corpus fragility diagnosed). Selector: no candidate fits remaining budget.

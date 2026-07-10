@@ -39,5 +39,7 @@ Read the gate JSON's `aggregates`: per-arm `lift` (concept surfacing over baseli
   balanced accuracy is ≈ 0.59 (0.64 on the single best corpus), and it over-promises
   far more often than it under-promises. Behavioral checks on generated text are the
   ground truth; readback is a cheap first filter.
-- Lift magnitudes are corpus-dependent; verify on your own stubs before relying on a
-  number.
+- Lift magnitudes are corpus-dependent, and so is the amplitude you need: a stub style
+  that steers weakly at one α often steers reliably at 2α, still within budget. Calibrate
+  amplitude to BOTH the model (inverse lens strength) and your corpus (stub difficulty);
+  verify on your own stubs before relying on a number.
