@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+  "prompt": "the fire remembers rivers",
+  "concept": "fire",
+  "arm": "entropy_gated",
+  "seed": 42,
+  "alpha": 0.2,
+  "tau_percentile": 60,
+  "site_layer": 24,
+  "tokens": [
+    {
+      "t": 0,
+      "token": " and",
+      "entropy": 4.056910514831543,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 1,
+      "token": " the",
+      "entropy": 5.876352787017822,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 2,
+      "token": " wind",
+      "entropy": 6.150820732116699,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 3,
+      "token": " remembers",
+      "entropy": 3.508219003677368,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 4,
+      "token": " the",
+      "entropy": 4.147089004516602,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 5,
+      "token": " sea",
+      "entropy": 5.253788471221924,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 6,
+      "token": ".",
+      "entropy": 2.8266801834106445,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 7,
+      "token": " \ufffd",
+      "entropy": 5.123109817504883,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 8,
+      "token": "\ufffd",
+      "entropy": 0.0037647911813110113,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 9,
+      "token": "\u53e5\u8bdd",
+      "entropy": 0.7892475724220276,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 10,
+      "token": "\u7684",
+      "entropy": 3.047445058822632,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 11,
+      "token": "\u610f\u5883",
+      "entropy": 3.459245443344116,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 12,
+      "token": "\u662f\u4ec0\u4e48",
+      "entropy": 1.679159164428711,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 13,
+      "token": "\uff1f\n\n",
+      "entropy": 1.3055897951126099,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 14,
+      "token": "\u8fd9\u53e5\u8bdd",
+      "entropy": 0.8250939249992371,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 15,
+      "token": "\u201c",
+      "entropy": 1.4486957788467407,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 16,
+      "token": "**",
+      "entropy": 0.7026901245117188,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 17,
+      "token": "The",
+      "entropy": 0.3149489760398865,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 18,
+      "token": " fire",
+      "entropy": 9.275787249407585e-08,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 19,
+      "token": " remembers",
+      "entropy": 1.682845686445944e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 20,
+      "token": " rivers",
+      "entropy": 4.1240778045903426e-06,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 21,
+      "token": " and",
+      "entropy": 1.2497092029661871e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 22,
+      "token": " the",
+      "entropy": 2.2753505746209157e-09,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 23,
+      "token": " wind",
+      "entropy": 2.99926359730307e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 24,
+      "token": " remembers",
+      "entropy": 5.8703157264972106e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 25,
+      "token": " the",
+      "entropy": 2.826505175745897e-11,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 26,
+      "token": " sea",
+      "entropy": 2.9408804039121605e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 27,
+      "token": ".",
+      "entropy": 0.47505983710289,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 28,
+      "token": "**",
+      "entropy": 1.1569234629860148e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 29,
+      "token": "\u201d",
+      "entropy": 8.053713145272923e-07,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 30,
+      "token": "\uff08",
+      "entropy": 1.137441873550415,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 31,
+      "token": "\u706b",
+      "entropy": 0.028473859652876854,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 32,
+      "token": "\u8bb0\u5f97",
+      "entropy": 0.28201112151145935,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 33,
+      "token": "\u6cb3\u6d41",
+      "entropy": 0.04985862225294113,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 34,
+      "token": "\uff0c",
+      "entropy": 1.2699798617177294e-06,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 35,
+      "token": "\u98ce",
+      "entropy": 0.0020559246186167,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 36,
+      "token": "\u8bb0\u5f97",
+      "entropy": 8.745834202272817e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 37,
+      "token": "\u5927\u6d77",
+      "entropy": 0.435215026140213,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 38,
+      "token": "\uff09",
+      "entropy": 0.011361480690538883,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 39,
+      "token": "\u5177\u6709",
+      "entropy": 1.65199613571167,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 40,
+      "token": "\u975e\u5e38",
+      "entropy": 1.9377946853637695,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 41,
+      "token": "\u8bd7\u610f",
+      "entropy": 1.8511707782745361,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 42,
+      "token": "\u548c",
+      "entropy": 0.4199346899986267,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 43,
+      "token": "\u6df1",
+      "entropy": 1.5119839906692505,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 44,
+      "token": "\u9083",
+      "entropy": 0.05145403370261192,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 45,
+      "token": "\u7684",
+      "entropy": 6.770824256818742e-05,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 46,
+      "token": "\u610f\u5883",
+      "entropy": 0.006597421132028103,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 47,
+      "token": "\uff0c",
+      "entropy": 0.014051822945475578,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 48,
+      "token": "\u5b83",
+      "entropy": 0.8693828582763672,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 49,
+      "token": "\u901a\u8fc7",
+      "entropy": 1.4517275094985962,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    }
+  ],
+  "readback": null,
+  "behavioral_hit": true,
+  "gate_ref": null,
+  "created_at": "2026-07-10T22:03:14.196457+00:00"
+}
