@@ -1,0 +1,47 @@
+# Menu 3 (L11+) — registered after menu-2 consumption (cycles 6–10).
+# Loop-law changes shipping with this menu: (1) `blocked:` candidates are registered
+# honestly but skipped-with-ledger-entry until unblocked; (2) cycle-integrity linter
+# (efe/lint.py) enforces the staleness invariant adopted from review #10 — every run
+# observation must be immediately preceded by a matching proposal; divergences require an
+# explicit ledgered divergence event with reasons.
+candidates:
+  - id: plant_calibration_recipe
+    cost_gpu_hours: 0.4
+    resolution: 0.8
+    description: "Turn the cross-plant negative into a RECIPE: calibrate Qwen3-4B properly
+      (band-lens modulation probe over candidate write sites in [6,30) using the existing
+      target-30 lens; pick the best site; rerun the gated test there). PASS = the per-plant
+      calibration loop reproduces the steering result on a second plant — the generality
+      claim becomes 'method transfers, geometry does not'."
+    knobs: {model: configs/models/qwen3.yaml, lens: outputs/l10/lens_qwen3_mid30.pt,
+            probe_sites: [12, 18, 24, 28], then: e10cross-at-best-site}
+    prior_value_hint: null
+    replay: [gates/gate_L10_cross.json]
+  - id: flash_multiseed
+    cost_gpu_hours: 0.3
+    resolution: 0.8
+    description: "Move the flash-vs-uncommitted verdict off the underdetermination boundary:
+      e9flash at seeds {42,123,777} under independent streams."
+    knobs: {exp: configs/experiments/e9flash.yaml, seeds: [42, 123, 777]}
+    prior_value_hint: 1
+    replay: [gates/gate_L9_flash.json]
+  - id: gated_confirm_replication
+    cost_gpu_hours: 0.25
+    resolution: 0.9
+    description: "Third independent replication set for the clean-stream core claim
+      (seeds {2024, 31415, 999}): pushes the program's central number toward
+      publication-grade confidence."
+    knobs: {exp: configs/experiments/e5align.yaml, seeds: [2024, 31415, 999]}
+    prior_value_hint: 2
+    replay: [gates/gate_L9_alignconf.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    blocked: "requires PWM WM stack integration (TrikaWorldModel + trained checkpoint) —
+      registered for honesty; unblock = a dedicated integration loop"
+    description: "The review-#5 standing threat: v3 vs PWM's TRAINED logit-bias bridge,
+      not the untrained simplification."
+    knobs: {depends: PWM WM stack}
+    prior_value_hint: null
+    replay: [gates/gate_L3.json]
+budget_gpu_hours: 1.2

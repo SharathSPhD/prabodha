@@ -1,5 +1,5 @@
 {
- "current_loop": "L11-next (menu 3: per-plant calibration recipe as candidate; trained-bridge; staleness-invariant implementation)",
+ "current_loop": "L11",
  "loops": {
   "L0": {
    "status": "closed",
@@ -136,6 +136,12 @@
   "L10": {
    "status": "closed-cycle10",
    "gate": "gates/gate_L10_cross.json"
+  },
+  "L11": {
+   "status": "open-cycle11-closed",
+   "gates": [
+    "gates/gate_L11_rep.json"
+   ]
   }
  },
  "gpu_budget_hours": {
@@ -158,7 +164,9 @@
   "L8_spent": 0.5,
   "L8_cap": 0.9,
   "L9_spent": 1.25,
-  "L9_cap": 1.5
+  "L9_cap": 1.5,
+  "L11_spent": 0.25,
+  "L11_cap": 1.2
  },
  "kill_switch": false
 }

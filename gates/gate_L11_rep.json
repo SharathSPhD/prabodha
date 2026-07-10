@@ -1,0 +1,16 @@
+{
+  "loop": "L11-rep",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "6 seeds pooled, independent streams",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"H_core_6seeds\": {\"value\": 0.3, \"threshold\": 0.2, \"pass\": true}, \"H_alignment_sign_consistency\": {\"value\": 1.0, \"threshold\": 1.0, \"pass\": true}}, \"per_seed\": {\"s42\": {\"gated\": 0.3, \"adv\": 0.075, \"dH\": 0.1118}, \"s123\": {\"gated\": 0.35, \"adv\": 0.125, \"dH\": 0.2457}, \"s777\": {\"gated\": 0.35, \"adv\": 0.075, \"dH\": 0.1087}, \"s2024\": {\"gated\": 0.35, \"adv\": 0.125, \"dH\": -0.006}, \"s31415\": {\"gated\": 0.35, \"adv\": 0.1, \"dH\": 0.0936}, \"s999\": {\"gated\": 0.35, \"adv\": 0.1, \"dH\": 0.1485}}, \"note\": \"CORE CLAIM at 6/6 independent-stream seeds: gated lift 0.30-0.35 within budget. Alignment advantage: sign-consistent 6/6 (+0.07..+0.12, mean +0.097; one-sided sign-test p=0.0156) \\u2014 a small effect stated by SIGN CONSISTENCY, not by a margin threshold it does not clear. This is the paper's citable form.\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

@@ -78,9 +78,15 @@ def propose_next(menu_path: str | Path, *, ledger: EFELedger,
     consumed = {rec["candidate"] for rec in ledger.records()
                 if rec.get("event") == "observe"
                 and rec.get("source", "") not in menu_sources and rec.get("source")}
+    blocked = {c["id"]: c["blocked"] for c in menu["candidates"] if c.get("blocked")}
     best: Proposal | None = None
     for cand in candidates:
         act = actions.get(cand.id)
+        if cand.id in blocked:
+            if not any(r.get("event") == "skip" and r.get("candidate") == cand.id
+                       for r in ledger.records()):
+                ledger.log_skip(cand.id, f"blocked: {blocked[cand.id]}")
+            continue
         if act is None or act.gpu_hours > budget or cand.id in consumed:
             continue
         prop = selector.score(cand, act)

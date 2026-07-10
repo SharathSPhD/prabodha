@@ -76,7 +76,10 @@ beyond J-space (scoping §10.3) — the band carries structure the standard lens
   uncommitted moments; min-gap hygiene from PWM) deliver full steering INSIDE the budget.
   [gate_L4b.json] STALE-NUMBER NOTE: all pre-L9 sampling estimates (the 0.40s) were
   measured under correlated per-run streams and are INFLATED; the clean-stream confirm is
-  the citable figure: 3/3 seeds at 0.30/0.35/0.35 within budget [gate_L9_alignconf.json].
+  the citable figure: SIX independent seeds at 0.30–0.35 within budget (6/6)
+  [gate_L9_alignconf.json, gate_L11_rep.json]; the alignment advantage over rate-matched
+  controls is small (+0.07..+0.12, mean +0.097) and SIGN-CONSISTENT across all six seeds
+  (one-sided sign-test p≈0.016) — stated by sign consistency, not by a margin bar.
   Historical gates retained for provenance [gate_L4b, gate_L5_tau, gate_L6_confirm].
 - Event ALIGNMENT beats rate-matched periodic writes (+0.40 vs +0.23 at ~matched rates;
   per-write 0.056 vs 0.046), and the advantage holds at every amplitude in the dose grid

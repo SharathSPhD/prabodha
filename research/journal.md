@@ -446,3 +446,11 @@
   borrowed site. The nemotron result required L2b->L3->L4b iterative site/timing
   calibration; transfer needs the same per-plant loop, not borrowed geometry. Paper carries
   the generality boundary. MENU 2 CONSUMED (5/5; cycles 6-10).
+
+## 2026-07-10 — cycle 11 (third replication set): core claim at 6/6; alignment by sign
+- gate_L11_rep pooling all six clean-stream seeds: gated lift 0.30-0.35 within budget 6/6
+  — the program's central number at publication-grade stability. Alignment advantage
+  positive in EVERY seed (+0.07..+0.12, mean +0.097; sign-test p≈0.016): the honest
+  statistical form of a small consistent effect. Paper updated to cite by sign consistency.
+- Menu 3 live: trained_bridge_arm honestly skipped-as-blocked (ledgered); remaining:
+  plant_calibration_recipe, flash_multiseed. Loop law now enforced in code (efe/lint.py).
