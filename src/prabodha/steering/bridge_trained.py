@@ -13,12 +13,26 @@ as the analytic writer.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
 import torch
-import torch.nn.functional as F
+
+from prabodha.steering.writer import WriteCommand
+
+
+def _store_device(citta_store: Any) -> torch.device:
+    """Best-effort device of a CittaStore (its gate MLPs carry parameters).
+
+    Falls back to CPU for a mock store with no parameters (unit tests).
+    """
+    dev = getattr(citta_store, "device", None)
+    if isinstance(dev, torch.device):
+        return dev
+    try:
+        return next(citta_store.parameters()).device
+    except (StopIteration, AttributeError, TypeError):
+        return torch.device("cpu")
 
 
 class TrainedBridgeWriter:
@@ -70,8 +84,6 @@ class TrainedBridgeWriter:
             ValueError: if weights contain negatives (svātantrya doctrine) or if
                        CittaStore produces a degenerate direction
         """
-        from prabodha.steering.writer import WriteCommand
-
         u_rows = np.atleast_2d(np.asarray(u_rows, dtype=np.float64))
         if weights is None:
             weights = np.ones(len(u_rows))
@@ -84,8 +96,11 @@ class TrainedBridgeWriter:
         # This vector is fed to CittaStore.recall() as the memory query.
         query = (weights @ u_rows).astype(np.float32)  # [d]
 
-        # Convert to torch for CittaStore interface
-        query_t = torch.from_numpy(query).unsqueeze(0).float()  # [1, d]
+        # Convert to torch for CittaStore interface, on the STORE's device.
+        # The store is moved to the model device (cuda) at init; a CPU query would
+        # raise a cross-device addmm error inside the store's gate MLP.
+        store_device = _store_device(self.citta_store)
+        query_t = torch.from_numpy(query).unsqueeze(0).float().to(store_device)  # [1, d]
 
         # Retrieve direction from CittaStore (episodic mode: sharp recall)
         retrieved = self.citta_store.recall(query_t, level=0)  # [1, d]
@@ -139,7 +154,3 @@ def plan_write(
         weights=weights,
         positions=positions,
     )
-
-
-# Import WriteCommand for module exports
-from prabodha.steering.writer import WriteCommand
