@@ -575,3 +575,18 @@ Review count: 11. L14 status -> closed in state.json.
   — the "law" is now exactly as big as its evidence. Review count: 12.
 - L15 totals: 2 cycles, 0.85 GPU-h, H4 phase 2 shipped (Claude Code plugin), corpus-
   dependence of lift registered as a future-menu candidate.
+
+## 2026-07-10 — L16 cycle 19 CLOSED: corpus robustness 2/3; readback regresses at n=120
+- Corpus robustness (registered >=2/3): narrative-past +0.25 PASS, descriptive-scene
+  +0.30 PASS, L15-heldout replay +0.15 FAIL => 2/3, gate PASSES at screen. The core
+  claim's lift GENERALIZES ACROSS STUB STYLES with the L15 corpus as the known hard
+  case (its stubs end mid-phrase in ways that resist noun insertion — candidate
+  explanation, unregistered). gates/gate_L16_corpus.json; observe tier 2; spend 0.3h.
+- READBACK REGRESSION AT POWER (exploratory, disclosed as such in gate): pooled n=120
+  across L15-heldout + both L16 corpora at the FIXED setting: BA 0.590 (tpr 0.571,
+  tnr 0.609) — BELOW the 0.6 bar. Review #12's CI warning realized: the L15 pass
+  (BA 0.637, n=40) was inside its own noise. Standing assessment of āgama readback
+  DOWNGRADED: 'borderline predictor, BA ~0.59-0.64 depending on corpus; use as a weak
+  signal, never as an acceptance gate alone'. Plugin skill + paper to carry this.
+- Cycle 20 dispatched: nemotron_fine_grid alpha {0.002,0.005,0.01,0.02} (both knobs,
+  --loop L16) — closes or honestly bounds the two-plant dose-response scope.

@@ -1,0 +1,15 @@
+{
+ "loop": "L16",
+ "status": "closed",
+ "closed_at": "2026-07-10",
+ "code_gate": {
+  "verdict": "pass",
+  "evidence": "pytest green; ruff clean"
+ },
+ "domain_gate": {
+  "verdict": "pass",
+  "hypothesis": "core-claim gated lift (nemotron, e5align settings, alpha=0.1) reaches >= 0.2 within budget on >= 2 of 3 non-registered stub corpora (two pre-registered styles + the L15 held-out replay)",
+  "evidence": "{\"summary\": {\"H_corpus_robustness\": {\"value\": 2.0, \"threshold\": 2.0, \"pass\": true}}, \"per_corpus\": {\"narrative_past\": {\"gated_lift\": 0.25, \"gated_dH\": 0.0827, \"prefill_lift\": 0.025, \"source\": \"gates/gate_L16_corpus_a.json\"}, \"descriptive_scene\": {\"gated_lift\": 0.3, \"gated_dH\": 0.2608, \"prefill_lift\": 0.15, \"source\": \"gates/gate_L16_corpus_b.json\"}, \"l15_heldout_replay\": {\"gated_lift\": 0.15, \"gated_dH\": 0.052, \"prefill_lift\": 0.15, \"source\": \"gates/gate_L15_readback_heldout_raw.json\"}}, \"passing\": [\"narrative_past\", \"descriptive_scene\"], \"readback_pooled_exploratory\": {\"note\": \"NO registered criterion \\u2014 exploratory n-growth toward the n>=100 readback power debt; fixed setting (top_m=5, gain=0)\", \"n\": 120, \"n_hit\": 28, \"balanced_acc\": 0.5901, \"tpr\": 0.5714, \"tnr\": 0.6087, \"confusion\": {\"tp\": 16, \"fp\": 36, \"tn\": 56, \"fn\": 12}}, \"registered_in\": \"configs/efe_menu6.yaml:corpus_robustness\", \"seeds\": [42], \"tier\": \"screen\"}"
+ },
+ "signoff": "standing authorization (2026-07-09)"
+}

@@ -190,7 +190,7 @@
   "L14_cap": 1.0,
   "L15_spent": 0.85,
   "L15_cap": 1.0,
-  "L16_spent": 0,
+  "L16_spent": 0.3,
   "L16_cap": 1.0
  },
  "kill_switch": false
