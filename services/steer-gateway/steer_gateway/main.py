@@ -1,14 +1,16 @@
-import os
-import asyncio
 import json
 import hmac
-import hashlib
 import logging
-from typing import Optional
-from fastapi import FastAPI, Header, HTTPException, Response
-from fastapi.responses import StreamingResponse
+import os
 from contextlib import asynccontextmanager
+from typing import Optional
+
+from fastapi import FastAPI, Header, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+
+from steer_gateway.runtime import SteeringRuntimeAdapter
+from steer_gateway.schema import LiveEpisode
 
 # Secure logging - never log secrets
 logger = logging.getLogger(__name__)
@@ -22,38 +24,6 @@ if not STEER_GATEWAY_SECRET:
         "Gateway cannot start without authentication credentials."
     )
 
-# Import real trace models from prabodha
-from prabodha.contracts.trace import TraceToken, SteerTrace
-
-
-class SteeringRuntimeAdapter:
-    """Adapter seam to prabodha's steering runtime (real impl wraps the e4 composer;
-    the smoke-test fake implements the same generator API, GPU-free)."""
-
-    model_id: str = "Qwen/Qwen3-4B"
-
-    async def steer_stream(self, prompt: str, concept: str,
-                           alpha: float | None, arm: str):
-        """Yield TraceToken per decode step, then the completed SteerTrace.
-
-        Fake (smoke) implementation shown here; the real adapter (Task: gateway
-        runtime wiring) replaces the body by driving the prabodha steering
-        composer with --emit-trace semantics and yielding as tokens decode.
-        """
-        toks = [
-            TraceToken(t=0, token=" The", entropy=2.1, gated=False),
-            TraceToken(t=1, token=" fire", entropy=1.2, gated=True,
-                       write_norm=alpha or 0.3, band_topk=["fire", "flame"]),
-        ]
-        for tok in toks:
-            await asyncio.sleep(0.05)
-            yield tok
-        yield SteerTrace(
-            model_id=self.model_id, prompt=prompt, concept=concept,
-            arm=arm, seed=0, alpha=alpha or 0.3, tau_percentile=60,
-            site_layer=24, tokens=toks, created_at="1970-01-01T00:00:00Z",
-        )
-
 # Global runtime instance
 runtime: Optional[SteeringRuntimeAdapter] = None
 
@@ -61,9 +31,41 @@ runtime: Optional[SteeringRuntimeAdapter] = None
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     global runtime
-    runtime = SteeringRuntimeAdapter()
-    logger.info("Gateway initialized (model_id: %s)", runtime.model_id)
+    try:
+        # Load configuration from environment with defaults
+        model_config = os.getenv("PRABODHA_MODEL_CONFIG", "configs/models/qwen3.yaml")
+        lens_file = os.getenv("PRABODHA_LENS_FILE", "outputs/l10/lens_qwen3_mid30.pt")
+        site_layer = int(os.getenv("PRABODHA_SITE", "24"))
+        max_new_tokens = int(os.getenv("PRABODHA_MAX_NEW_TOKENS", "100"))
+        min_gap = int(os.getenv("PRABODHA_MIN_GAP", "2"))
+        tau_percentile = int(os.getenv("PRABODHA_TAU_PERCENTILE", "60"))
+
+        logger.info("Initializing SteeringRuntimeAdapter with: model_config=%s, lens_file=%s, site_layer=%d",
+                   model_config, lens_file, site_layer)
+
+        runtime = SteeringRuntimeAdapter(
+            model_config_path=model_config,
+            lens_file=lens_file,
+            site_layer=site_layer,
+            max_new_tokens=max_new_tokens,
+            min_gap=min_gap,
+            tau_percentile=tau_percentile,
+        )
+        logger.info("Gateway initialized (model_id: %s, site_layer: %d)", runtime.model_id, runtime.site_layer)
+    except Exception as e:
+        logger.error("Failed to initialize gateway: %s", e, exc_info=True)
+        raise
+
     yield
+
+    # Cleanup
+    if runtime is not None:
+        try:
+            # Clean up GPU memory if needed
+            import torch
+            torch.cuda.empty_cache() if torch.cuda.is_available() else None
+        except Exception as e:
+            logger.warning("Error during cleanup: %s", e)
     runtime = None
 
 app = FastAPI(
@@ -109,23 +111,25 @@ async def steer(
 
     async def generate():
         try:
-            # runtime.steer_stream yields TraceToken objects as they decode,
-            # then returns the completed SteerTrace (adapter seam: the fake
-            # runtime used in smoke tests implements the same generator API).
-            trace = None
-            async for tok in runtime.steer_stream(
+            # runtime.steer_stream yields TraceToken objects per decode step,
+            # then the completed LiveEpisode with generated text + trace.
+            episode = None
+            async for item in runtime.steer_stream(
                 prompt=request.prompt, concept=request.concept,
                 alpha=request.alpha, arm=request.arm,
             ):
-                if isinstance(tok, SteerTrace):
-                    trace = tok
+                if isinstance(item, LiveEpisode):
+                    episode = item
                     break
-                yield f"event: token\ndata: {tok.model_dump_json()}\n\n"
-            if trace is not None:
-                yield f"event: done\ndata: {trace.model_dump_json()}\n\n"
+                # Emit token events as they arrive (streaming transparency)
+                yield f"event: token\ndata: {item.model_dump_json()}\n\n"
+
+            # Emit the complete episode as the done event
+            if episode is not None:
+                yield f"event: done\ndata: {episode.model_dump_json()}\n\n"
         except Exception as e:
-            logger.error("Streaming error", exc_info=True)
-            yield f"event: error\ndata: {json.dumps({'error': 'Internal server error'})}\n\n"
+            logger.error("Streaming error: %s", e, exc_info=True)
+            yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
 
     return StreamingResponse(
         generate(),
