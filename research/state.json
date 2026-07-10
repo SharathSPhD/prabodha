@@ -1,5 +1,5 @@
 {
- "current_loop": "L16-closed",
+ "current_loop": "L17",
  "loops": {
   "L0": {
    "status": "closed",
@@ -161,6 +161,10 @@
   "L16": {
    "status": "closed",
    "menu": "configs/efe_menu6.yaml"
+  },
+  "L17": {
+   "status": "open",
+   "menu": "configs/efe_menu7.yaml"
   }
  },
  "gpu_budget_hours": {
@@ -191,7 +195,9 @@
   "L15_spent": 0.85,
   "L15_cap": 1.0,
   "L16_spent": 0.6,
-  "L16_cap": 1.0
+  "L16_cap": 1.0,
+  "L17_spent": 0,
+  "L17_cap": 1.0
  },
  "kill_switch": false
 }

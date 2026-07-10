@@ -1,0 +1,40 @@
+# EFE menu 7 — cycle 21+ (registered 2026-07-10, L17, from L16 carried debts)
+# Concept: two power debts (seed variance on corpora; cross-config dose integration)
+#   and the standing blocked comparator. Menu 7 is deliberately the CONSOLIDATION
+#   menu: close what review #13 left open with the cheapest decisive designs.
+# Source: research/journal.md 2026-07-10 (review #13); gates/gate_L16_*.json.
+budget_gpu_hours: 1.0
+candidates:
+  - id: corpus_seed_variance
+    cost_gpu_hours: 0.4
+    resolution: 0.8
+    description: "Review #13 debt: per-corpus seed variance is unknown (all corpus
+      results are seed-42 singletons). Rerun e16corpus_a and e16corpus_b at seeds
+      {123, 777} (4 runs). Success: gated lift >= 0.2 within budget in >= 3/4
+      seed-corpus cells => corpus robustness graduates screen -> confirm; <= 2/4 =>
+      the corpus claim stays screen and seed sensitivity becomes a result."
+    knobs: {exps: [configs/experiments/e16corpus_a.yaml, configs/experiments/e16corpus_b.yaml],
+            seeds: [123, 777]}
+    prior_value_hint: 2
+    replay: [gates/gate_L16_corpus.json]
+  - id: unified_dose_crossconfig
+    cost_gpu_hours: 0.45
+    resolution: 0.75
+    description: "Review #13's future-work item, cheapest decisive design: nemotron
+      dose mini-grid alpha {0.005, 0.01, 0.02} ON THE L8 CONFIG (e8dose) at seed 42 +
+      one replication seed 123 at the middle point. Success: within-grid rise > 0.05
+      on >= 1/2 adjacent pairs on e8dose too => the active-range dose response is
+      config-robust and the two-plant statement upgrades; flat => config dependence
+      is the result."
+    knobs: {exp: configs/experiments/e8dose.yaml, alphas: [0.005, 0.01, 0.02], seeds: [42, 123]}
+    prior_value_hint: 1
+    replay: [gates/gate_L16_fine.json, gates/gate_L8_dose.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    description: "Trained-bridge comparator arm (PWM CittaStore bridge) vs analytic
+      J^T u writes. BLOCKED: PWM world-model stack not yet integrated on GB10."
+    blocked: true
+    blocked_reason: "PWM WM stack integration is its own loop (carried since menu 3)"
+    prior_value_hint: 2
+    replay: [gates/gate_L3.json]
