@@ -329,7 +329,7 @@ def main(argv=None) -> None:
     agg = {"tau": round(tau, 4), "every_k_k": k,
            "drop_tau": round(drop_tau, 4) if drop_tau is not None else None}
     for arm in [x for x in ("continuous", "prefill_only", "entropy_gated",
-                            "entropy_drop_gated", "every_k") if x in results]:
+                            "entropy_drop_gated", "every_k", "trained_bridge") if x in results]:
         r = results[arm]
         agg[arm] = {"lift": round(r["surface"] - base_s, 4),
                     "camatk_drop": round(base_c - r["camatk"], 4),
