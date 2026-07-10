@@ -1,0 +1,2461 @@
+{
+  "claims": [
+    {
+      "id": "gate_L1.json_H_report",
+      "text": "H_report",
+      "tier": "screen",
+      "gates": [
+        "gate_L1.json"
+      ],
+      "numbers": {
+        "value": 0.17997520191669905,
+        "threshold": 0.4,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L1.json_H_bands",
+      "text": "H_bands",
+      "tier": "screen",
+      "gates": [
+        "gate_L1.json"
+      ],
+      "numbers": {
+        "value": 0.3060883504478691,
+        "threshold": 0.15,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L1.json_H_modulation",
+      "text": "H_modulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L1.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L10_cross.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L10_cross.json"
+      ],
+      "numbers": {
+        "value": 0.05,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L11_rep.json_H_core_6seeds",
+      "text": "H_core_6seeds",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep.json_H_alignment_sign_consistency",
+      "text": "H_alignment_sign_consistency",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep_s2024.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s2024.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep_s2024.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s2024.json"
+      ],
+      "numbers": {
+        "value": 0.125,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep_s31415.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s31415.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep_s31415.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s31415.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L11_rep_s999.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s999.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L11_rep_s999.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L11_rep_s999.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L12_flash.json_H_uncommitted_over_flash_sign",
+      "text": "H_uncommitted_over_flash_sign",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L12_flash_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L12_flash_s123.json_H_flash_vs_uncommitted",
+      "text": "H_flash_vs_uncommitted",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s123.json"
+      ],
+      "numbers": {
+        "value": -0.05,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L12_flash_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s42.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L12_flash_s42.json_H_flash_vs_uncommitted",
+      "text": "H_flash_vs_uncommitted",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s42.json"
+      ],
+      "numbers": {
+        "value": -0.1,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L12_flash_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s777.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L12_flash_s777.json_H_flash_vs_uncommitted",
+      "text": "H_flash_vs_uncommitted",
+      "tier": "confirm",
+      "gates": [
+        "gate_L12_flash_s777.json"
+      ],
+      "numbers": {
+        "value": -0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L13_probe_amp0.3.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_amp0.3.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L13_probe_amp0.6.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_amp0.6.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L13_probe_w12.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_w12.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L13_probe_w18.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_w18.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L13_probe_w24.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_w24.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L13_probe_w28.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_probe_w28.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L13_recipe.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L13_recipe.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp.json_H_dose_monotone",
+      "text": "H_dose_monotone",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp.json"
+      ],
+      "numbers": {
+        "value": 3,
+        "threshold": 3,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp.json_H_working_point_lift",
+      "text": "H_working_point_lift",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp.json_H_budget_all_points",
+      "text": "H_budget_all_points",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp.json"
+      ],
+      "numbers": {
+        "value": 4.0,
+        "threshold": 4.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp0.1.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp0.1.json"
+      ],
+      "numbers": {
+        "value": 0.05,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L14_amp0.2.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp0.2.json"
+      ],
+      "numbers": {
+        "value": 0.2,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp0.3.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp0.3.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_amp0.45.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_amp0.45.json"
+      ],
+      "numbers": {
+        "value": 0.775,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_ms123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_ms123.json"
+      ],
+      "numbers": {
+        "value": 0.475,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_ms2024.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_ms2024.json"
+      ],
+      "numbers": {
+        "value": 0.325,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_ms777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_ms777.json"
+      ],
+      "numbers": {
+        "value": 0.425,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_multiseed.json_H_recipe_multiseed",
+      "text": "H_recipe_multiseed",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_multiseed.json"
+      ],
+      "numbers": {
+        "value": 4.0,
+        "threshold": 3.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_multiseed.json_H_gated_over_prefill",
+      "text": "H_gated_over_prefill",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_multiseed.json"
+      ],
+      "numbers": {
+        "value": 4.0,
+        "threshold": 4.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_readback.json_H_readback_tracks_behavior",
+      "text": "H_readback_tracks_behavior",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_readback.json"
+      ],
+      "numbers": {
+        "value": 0.6845,
+        "threshold": 0.6,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_readback_raw.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_readback_raw.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L14_readback_raw.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L14_readback_raw.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L15_amp_joint.json_H_qwen3_per_seed_monotone",
+      "text": "H_qwen3_per_seed_monotone",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_joint.json"
+      ],
+      "numbers": {
+        "value": 3.0,
+        "threshold": 3.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_joint.json_H_two_plant_ordered",
+      "text": "H_two_plant_ordered",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_joint.json"
+      ],
+      "numbers": {
+        "value": 2.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_joint.json_H_budget_all_points",
+      "text": "H_budget_all_points",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_joint.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_s123_a0.1.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s123_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L15_amp_s123_a0.2.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s123_a0.2.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L15_amp_s123_a0.3.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s123_a0.3.json"
+      ],
+      "numbers": {
+        "value": 0.475,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_s123_a0.45.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s123_a0.45.json"
+      ],
+      "numbers": {
+        "value": 0.725,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_s777_a0.1.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s777_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L15_amp_s777_a0.2.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s777_a0.2.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L15_amp_s777_a0.3.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s777_a0.3.json"
+      ],
+      "numbers": {
+        "value": 0.425,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_amp_s777_a0.45.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_amp_s777_a0.45.json"
+      ],
+      "numbers": {
+        "value": 0.725,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_readback.json_H_readback_heldout",
+      "text": "H_readback_heldout",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_readback.json"
+      ],
+      "numbers": {
+        "value": 0.6373,
+        "threshold": 0.6,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L15_readback_heldout_raw.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L15_readback_heldout_raw.json"
+      ],
+      "numbers": {
+        "value": 0.15,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_corpus.json_H_corpus_robustness",
+      "text": "H_corpus_robustness",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_corpus.json"
+      ],
+      "numbers": {
+        "value": 2.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_corpus_a.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_corpus_a.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_corpus_b.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_corpus_b.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_fine.json_H_dose_signal_below_saturation",
+      "text": "H_dose_signal_below_saturation",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine.json"
+      ],
+      "numbers": {
+        "value": 2.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_fine.json_H_budget_all_points",
+      "text": "H_budget_all_points",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.002.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.002.json"
+      ],
+      "numbers": {
+        "value": 0.025,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.002.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.002.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.005.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.005.json"
+      ],
+      "numbers": {
+        "value": 0.15,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.005.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.005.json"
+      ],
+      "numbers": {
+        "value": -0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.01.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.01.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.01.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.01.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.02.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L16_fine_a0.02.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L16_fine_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_cvar.json_H_corpus_seed_robust",
+      "text": "H_corpus_seed_robust",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_cvar.json"
+      ],
+      "numbers": {
+        "value": 2.0,
+        "threshold": 3.0,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_cvar_a_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_cvar_a_s123.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_cvar_a_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_cvar_a_s777.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_cvar_b_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_cvar_b_s123.json"
+      ],
+      "numbers": {
+        "value": 0.2,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_cvar_b_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_cvar_b_s777.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose.json_H_dose_config_robust",
+      "text": "H_dose_config_robust",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose.json_H_budget_all_points",
+      "text": "H_budget_all_points",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s123_a0.01.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s123_a0.01.json"
+      ],
+      "numbers": {
+        "value": 0.325,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s123_a0.01.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s123_a0.01.json"
+      ],
+      "numbers": {
+        "value": -0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.005.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.005.json"
+      ],
+      "numbers": {
+        "value": 0.15,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.005.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.005.json"
+      ],
+      "numbers": {
+        "value": -0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.01.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.01.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.01.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.01.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.02.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L17_xdose_s42_a0.02.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L17_xdose_s42_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo.json_H_l8_levels_resolved",
+      "text": "H_l8_levels_resolved",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo.json"
+      ],
+      "numbers": {
+        "value": 3.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.02.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.02.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.05.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.05.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.05.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.05.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.1.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_l8redo_a0.1.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_l8redo_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L18_npretry.json_H_fragility_is_amplitude",
+      "text": "H_fragility_is_amplitude",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_npretry.json"
+      ],
+      "numbers": {
+        "value": 3.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_npretry_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_npretry_s123.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_npretry_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_npretry_s42.json"
+      ],
+      "numbers": {
+        "value": 0.425,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L18_npretry_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L18_npretry_s777.json"
+      ],
+      "numbers": {
+        "value": 0.225,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax.json_H_both_corpora_rise",
+      "text": "H_both_corpora_rise",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax.json_H_np_s777_margin",
+      "text": "H_np_s777_margin",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax.json"
+      ],
+      "numbers": {
+        "value": 0.025,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L19_cax_a_a0.1_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_a_a0.1_s42.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_a_a0.1_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_a_a0.1_s777.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L19_cax_a_a0.2_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_a_a0.2_s42.json"
+      ],
+      "numbers": {
+        "value": 0.425,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_a_a0.2_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_a_a0.2_s777.json"
+      ],
+      "numbers": {
+        "value": 0.225,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_b_a0.1_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_b_a0.1_s42.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_b_a0.1_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_b_a0.1_s777.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_b_a0.2_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_b_a0.2_s42.json"
+      ],
+      "numbers": {
+        "value": 0.525,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_cax_b_a0.2_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_cax_b_a0.2_s777.json"
+      ],
+      "numbers": {
+        "value": 0.575,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms.json_H_offset_confirmed_both_alphas",
+      "text": "H_offset_confirmed_both_alphas",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms.json"
+      ],
+      "numbers": {
+        "value": 2.0,
+        "threshold": 2.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms.json_H_no_sign_flip",
+      "text": "H_no_sign_flip",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.02_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.02_s123.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.02_s123.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.02_s123.json"
+      ],
+      "numbers": {
+        "value": 0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.02_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.02_s777.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.02_s777.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.02_s777.json"
+      ],
+      "numbers": {
+        "value": -0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.1_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.1_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.1_s123.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.1_s123.json"
+      ],
+      "numbers": {
+        "value": 0.125,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.1_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.1_s777.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L19_l8ms_a0.1_s777.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "confirm",
+      "gates": [
+        "gate_L19_l8ms_a0.1_s777.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L1_run1.json_H_report",
+      "text": "H_report",
+      "tier": "screen",
+      "gates": [
+        "gate_L1_run1.json"
+      ],
+      "numbers": {
+        "value": -0.32079718707864396,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L1_run1.json_H_bands",
+      "text": "H_bands",
+      "tier": "screen",
+      "gates": [
+        "gate_L1_run1.json"
+      ],
+      "numbers": {
+        "value": 0.41856014216779397,
+        "threshold": 0.15,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L1_run1.json_H_modulation",
+      "text": "H_modulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L1_run1.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L1b.json_H_report",
+      "text": "H_report",
+      "tier": "confirm",
+      "gates": [
+        "gate_L1b.json"
+      ],
+      "numbers": {
+        "value": 0.12429698639367782,
+        "threshold": 0.4,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L1b.json_H_bands",
+      "text": "H_bands",
+      "tier": "confirm",
+      "gates": [
+        "gate_L1b.json"
+      ],
+      "numbers": {
+        "value": 0.269359352986989,
+        "threshold": 0.15,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L1b.json_H_modulation",
+      "text": "H_modulation",
+      "tier": "confirm",
+      "gates": [
+        "gate_L1b.json"
+      ],
+      "numbers": {
+        "value": 0.55,
+        "threshold": 0.5,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L2.json_H_report",
+      "text": "H_report",
+      "tier": "screen",
+      "gates": [
+        "gate_L2.json"
+      ],
+      "numbers": {
+        "value": 0.3836845271612182,
+        "threshold": 0.4,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2.json_H_bands",
+      "text": "H_bands",
+      "tier": "screen",
+      "gates": [
+        "gate_L2.json"
+      ],
+      "numbers": {
+        "value": 0.13722015898777729,
+        "threshold": 0.15,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2.json_H_modulation",
+      "text": "H_modulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L2.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2.json_H_articulation",
+      "text": "H_articulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L2.json"
+      ],
+      "numbers": {
+        "value": 0.6391129032258065,
+        "threshold": 0.5,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s123.json"
+      ],
+      "numbers": {
+        "value": 0.5556,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s123.json_H_trained_bridge",
+      "text": "H_trained_bridge",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s123.json"
+      ],
+      "numbers": {
+        "value": 0.5556,
+        "entropy_delta": -0.0727,
+        "gap_vs_analytic": 0.0,
+        "threshold_lift": 0.15,
+        "threshold_entropy": 0.5,
+        "threshold_gap": 0.05,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s42.json"
+      ],
+      "numbers": {
+        "value": 0.4445,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s42.json_H_trained_bridge",
+      "text": "H_trained_bridge",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s42.json"
+      ],
+      "numbers": {
+        "value": 0.4445,
+        "entropy_delta": -0.3711,
+        "gap_vs_analytic": 0.0,
+        "threshold_lift": 0.15,
+        "threshold_entropy": 0.5,
+        "threshold_gap": 0.05,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s777.json"
+      ],
+      "numbers": {
+        "value": 0.3334,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L20_s777.json_H_trained_bridge",
+      "text": "H_trained_bridge",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_s777.json"
+      ],
+      "numbers": {
+        "value": 0.4445,
+        "entropy_delta": 0.041,
+        "gap_vs_analytic": 0.1111,
+        "threshold_lift": 0.15,
+        "threshold_entropy": 0.5,
+        "threshold_gap": 0.05,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L20_screen.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L20_screen.json"
+      ],
+      "numbers": {
+        "value": 0.4445,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L2_run1.json_H_report",
+      "text": "H_report",
+      "tier": "screen",
+      "gates": [
+        "gate_L2_run1.json"
+      ],
+      "numbers": {
+        "value": 0.3836845271612182,
+        "threshold": 0.4,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2_run1.json_H_bands",
+      "text": "H_bands",
+      "tier": "screen",
+      "gates": [
+        "gate_L2_run1.json"
+      ],
+      "numbers": {
+        "value": 0.13722015898777729,
+        "threshold": 0.15,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2_run1.json_H_modulation",
+      "text": "H_modulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L2_run1.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L2_run1.json_H_articulation",
+      "text": "H_articulation",
+      "tier": "screen",
+      "gates": [
+        "gate_L2_run1.json"
+      ],
+      "numbers": {
+        "value": 0.6391129032258065,
+        "threshold": 0.5,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L3.json_H_uptake",
+      "text": "H_uptake",
+      "tier": "screen",
+      "gates": [
+        "gate_L3.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L3.json_H_quality_per_lift",
+      "text": "H_quality_per_lift",
+      "tier": "screen",
+      "gates": [
+        "gate_L3.json"
+      ],
+      "numbers": {
+        "value": -0.0421,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L3_alpha005_exploratory.json_H_uptake",
+      "text": "H_uptake",
+      "tier": "screen",
+      "gates": [
+        "gate_L3_alpha005_exploratory.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L3_alpha005_exploratory.json_H_quality_per_lift",
+      "text": "H_quality_per_lift",
+      "tier": "screen",
+      "gates": [
+        "gate_L3_alpha005_exploratory.json"
+      ],
+      "numbers": {
+        "value": -0.0184,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L3_alpha02.json_H_uptake",
+      "text": "H_uptake",
+      "tier": "screen",
+      "gates": [
+        "gate_L3_alpha02.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.5,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L3_alpha02.json_H_quality_per_lift",
+      "text": "H_quality_per_lift",
+      "tier": "screen",
+      "gates": [
+        "gate_L3_alpha02.json"
+      ],
+      "numbers": {
+        "value": -0.0421,
+        "threshold": 0.05,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L4.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L4.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L4.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L4.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L4b.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L4b.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L4b.json_H_gated_vs_prefill",
+      "text": "H_gated_vs_prefill",
+      "tier": "confirm",
+      "gates": [
+        "gate_L4b.json"
+      ],
+      "numbers": {
+        "value": 0.2,
+        "threshold": 0.15,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau.json_H_tau_robust",
+      "text": "H_tau_robust",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau40.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau40.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau40_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau40_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau60.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau60.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau60_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau60_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau80.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau80.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L5_tau80_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L5_tau80_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_align.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_align.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_align.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_align.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_confirm.json_H_gated_budget_confirm",
+      "text": "H_gated_budget_confirm",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm.json"
+      ],
+      "numbers": {
+        "value": 0.225,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_confirm.json_H_gated_vs_prefill_confirm",
+      "text": "H_gated_vs_prefill_confirm",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm.json"
+      ],
+      "numbers": {
+        "value": 0.025,
+        "threshold": 0.15,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L6_confirm_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_confirm_s123.json_H_gated_vs_prefill",
+      "text": "H_gated_vs_prefill",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm_s123.json"
+      ],
+      "numbers": {
+        "value": 0.125,
+        "threshold": 0.15,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L6_confirm_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm_s777.json"
+      ],
+      "numbers": {
+        "value": 0.225,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L6_confirm_s777.json_H_gated_vs_prefill",
+      "text": "H_gated_vs_prefill",
+      "tier": "screen",
+      "gates": [
+        "gate_L6_confirm_s777.json"
+      ],
+      "numbers": {
+        "value": 0.025,
+        "threshold": 0.15,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L7_articulation_null.json_H_articulation_model_intrinsic",
+      "text": "H_articulation_model_intrinsic",
+      "tier": "screen",
+      "gates": [
+        "gate_L7_articulation_null.json"
+      ],
+      "numbers": {
+        "value": 0.6072580645161291,
+        "threshold": 0.5,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose.json_H_dose_robust",
+      "text": "H_dose_robust",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose.json"
+      ],
+      "numbers": {
+        "value": 0.375,
+        "threshold": 0.2,
+        "pass": true,
+        "note": "review #9 multi-seed check at the alpha=0.02 boundary: 2/3 seeds pass (0.38/0.38/0.17) \u2014 amplitude robustness CONFIRMED at alpha=0.1 (3/3, gate_L6_confirm), MARGINAL at 0.02. Composite verdict stands on the registered grid (seed 42) with the boundary disclosed."
+      }
+    },
+    {
+      "id": "gate_L8_dose.json_H_alignment_all_alphas",
+      "text": "H_alignment_all_alphas",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose.json"
+      ],
+      "numbers": {
+        "value": 0.15,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.375,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02_s123.json"
+      ],
+      "numbers": {
+        "value": 0.375,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02_s123.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02_s123.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02_s777.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.02_s777.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.02_s777.json"
+      ],
+      "numbers": {
+        "value": 0.05,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.05.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.05.json"
+      ],
+      "numbers": {
+        "value": 0.375,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.05.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.05.json"
+      ],
+      "numbers": {
+        "value": 0.15,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.1.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.4,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L8_dose_a0.1.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L8_dose_a0.1.json"
+      ],
+      "numbers": {
+        "value": 0.175,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf.json_H_gated_budget_confirm_cleanstreams",
+      "text": "H_gated_budget_confirm_cleanstreams",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf.json_H_alignment_confirm",
+      "text": "H_alignment_confirm",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s123.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s123.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s123.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s123.json"
+      ],
+      "numbers": {
+        "value": 0.125,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s42.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s42.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s42.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s42.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s777.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s777.json"
+      ],
+      "numbers": {
+        "value": 0.35,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_alignconf_s777.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_alignconf_s777.json"
+      ],
+      "numbers": {
+        "value": 0.075,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L9_flash.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_flash.json"
+      ],
+      "numbers": {
+        "value": 0.3,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_flash.json_H_flash_vs_uncommitted",
+      "text": "H_flash_vs_uncommitted",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_flash.json"
+      ],
+      "numbers": {
+        "value": -0.1,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L9_probe.json_hard_seed_explained",
+      "text": "hard_seed_explained",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_probe.json"
+      ],
+      "numbers": {
+        "value": 1.0,
+        "threshold": 1.0,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_probe_a0.02_s42_fixed.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_probe_a0.02_s42_fixed.json"
+      ],
+      "numbers": {
+        "value": 0.275,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_probe_a0.02_s42_fixed.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_probe_a0.02_s42_fixed.json"
+      ],
+      "numbers": {
+        "value": 0.1,
+        "threshold": 0.1,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_probe_a0.02_s777_fixed.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_probe_a0.02_s777_fixed.json"
+      ],
+      "numbers": {
+        "value": 0.25,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L9_probe_a0.02_s777_fixed.json_H_alignment",
+      "text": "H_alignment",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_probe_a0.02_s777_fixed.json"
+      ],
+      "numbers": {
+        "value": -0.025,
+        "threshold": 0.1,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L9_writecost.json_H_write_count_operationally_free",
+      "text": "H_write_count_operationally_free",
+      "tier": "screen",
+      "gates": [
+        "gate_L9_writecost.json"
+      ],
+      "numbers": {
+        "value": 1.2608032536858158,
+        "threshold": 0.9,
+        "pass": true
+      }
+    }
+  ]
+}

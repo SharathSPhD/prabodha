@@ -94,11 +94,14 @@ def build_results_json(gates: dict[str, Any]) -> dict[str, Any]:
         evidence = domain_gate.get("evidence", "{}")
         try:
             ev_obj = json.loads(evidence) if isinstance(evidence, str) else evidence
-        except json.JSONDecodeError as e:
-            raise ValueError(
-                f"Gate {gate_name} has malformed evidence JSON: {e}. "
-                "Cannot extract claims without valid evidence."
-            )
+        except json.JSONDecodeError:
+            # Legitimately prose-evidence gates (e.g. gate_L0.json) carry no
+            # machine-readable claims — not an error; skip, never fabricate numbers.
+            skipped_gates.append((gate_name, "prose evidence (no structured claims)"))
+            continue
+        if not isinstance(ev_obj, dict):
+            skipped_gates.append((gate_name, "non-object evidence"))
+            continue
 
         # Extract summary (hypothesis results)
         summary = ev_obj.get("summary", {})
@@ -181,13 +184,24 @@ def main(argv=None) -> None:
     results_file.write_text(json.dumps(results_json, indent=2))
     print(f"wrote {results_file}")
 
-    # Write individual replay files
+    # Write individual replay files + an index the app's ReplayTheatre loads
     replays_dir = out_app / "replays"
     replays_dir.mkdir(parents=True, exist_ok=True)
-    for slug, trace_obj in replays_dict.items():
+    index = []
+    for slug, trace_obj in sorted(replays_dict.items()):
         trace_file = replays_dir / f"{slug}.json"
         trace_file.write_text(json.dumps(trace_obj, indent=2))
-    print(f"wrote {len(replays_dict)} traces to {replays_dir}")
+        index.append({
+            "slug": slug,
+            "model_id": trace_obj.get("model_id", "unknown"),
+            "concept": trace_obj.get("concept", ""),
+            "arm": trace_obj.get("arm", ""),
+            "prompt": trace_obj.get("prompt", ""),
+            "n_tokens": len(trace_obj.get("tokens", [])),
+            "gate_ref": trace_obj.get("gate_ref"),
+        })
+    (replays_dir / "index.json").write_text(json.dumps({"replays": index}, indent=2))
+    print(f"wrote {len(replays_dict)} traces + index.json to {replays_dir}")
 
     # Write web prabodha-data.js
     out_web.parent.mkdir(parents=True, exist_ok=True)

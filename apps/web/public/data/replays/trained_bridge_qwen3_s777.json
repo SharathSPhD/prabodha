@@ -1,0 +1,417 @@
+{
+  "schema_version": 1,
+  "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+  "prompt": "the fire remembers rivers",
+  "concept": "fire",
+  "arm": "entropy_gated",
+  "seed": 777,
+  "alpha": 0.2,
+  "tau_percentile": 60,
+  "site_layer": 24,
+  "tokens": [
+    {
+      "t": 0,
+      "token": ",",
+      "entropy": 4.056910514831543,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 1,
+      "token": " the",
+      "entropy": 4.2590861320495605,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 2,
+      "token": " wind",
+      "entropy": 5.497093677520752,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 3,
+      "token": " remembers",
+      "entropy": 1.5025895833969116,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 4,
+      "token": " the",
+      "entropy": 4.50346565246582,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 5,
+      "token": " stars",
+      "entropy": 5.040971755981445,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 6,
+      "token": ",",
+      "entropy": 2.032871723175049,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 7,
+      "token": " the",
+      "entropy": 1.1675035953521729,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 8,
+      "token": " earth",
+      "entropy": 4.436110973358154,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 9,
+      "token": " remembers",
+      "entropy": 0.10276630520820618,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 10,
+      "token": " the",
+      "entropy": 2.3732047080993652,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 11,
+      "token": " fire",
+      "entropy": 4.633111000061035,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 12,
+      "token": ",",
+      "entropy": 1.4903440475463867,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 13,
+      "token": " and",
+      "entropy": 0.9087677001953125,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 14,
+      "token": " the",
+      "entropy": 0.3895915150642395,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 15,
+      "token": " sky",
+      "entropy": 1.922917127609253,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 16,
+      "token": " remembers",
+      "entropy": 0.05889410525560379,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 17,
+      "token": " the",
+      "entropy": 0.33899033069610596,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 18,
+      "token": " wind",
+      "entropy": 2.1215980052948,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 19,
+      "token": ".",
+      "entropy": 0.9900146722793579,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 20,
+      "token": " can",
+      "entropy": 4.698180675506592,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 21,
+      "token": " you",
+      "entropy": 0.1997716724872589,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 22,
+      "token": " make",
+      "entropy": 3.7490124702453613,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 23,
+      "token": " a",
+      "entropy": 1.607966423034668,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 24,
+      "token": " poem",
+      "entropy": 2.9872636795043945,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 25,
+      "token": " based",
+      "entropy": 2.1157476902008057,
+      "gated": true,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 26,
+      "token": " on",
+      "entropy": 0.060187652707099915,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 27,
+      "token": " this",
+      "entropy": 1.1205532550811768,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 28,
+      "token": "?\n\n",
+      "entropy": 1.172114372253418,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 29,
+      "token": "Certainly",
+      "entropy": 1.1466381549835205,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 30,
+      "token": ".",
+      "entropy": 0.13666555285453796,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 31,
+      "token": " Here",
+      "entropy": 0.0002650588285177946,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 32,
+      "token": "'s",
+      "entropy": 0.680023193359375,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 33,
+      "token": " a",
+      "entropy": 0.0024162125773727894,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 34,
+      "token": " poem",
+      "entropy": 0.004901984706521034,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 35,
+      "token": " inspired",
+      "entropy": 0.02398020029067993,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 36,
+      "token": " by",
+      "entropy": 1.8042641158899642e-07,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 37,
+      "token": " your",
+      "entropy": 0.349714994430542,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 38,
+      "token": " beautiful",
+      "entropy": 1.9002208709716797,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 39,
+      "token": " and",
+      "entropy": 0.9892205595970154,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 40,
+      "token": " cyc",
+      "entropy": 0.79765385389328,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 41,
+      "token": "lical",
+      "entropy": 2.1243797618808458e-06,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 42,
+      "token": " lines",
+      "entropy": 0.4257046580314636,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 43,
+      "token": ":\n\n",
+      "entropy": 0.12985217571258545,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 44,
+      "token": "---\n\n",
+      "entropy": 0.011729509569704533,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 45,
+      "token": "**",
+      "entropy": 0.0011117710964754224,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 46,
+      "token": "\"",
+      "entropy": 0.8483002185821533,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 47,
+      "token": "The",
+      "entropy": 0.7050738334655762,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 48,
+      "token": " Remember",
+      "entropy": 0.8441988229751587,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    },
+    {
+      "t": 49,
+      "token": "ing",
+      "entropy": 0.027148034423589706,
+      "gated": false,
+      "write_norm": null,
+      "band_topk": null
+    }
+  ],
+  "readback": null,
+  "behavioral_hit": true,
+  "gate_ref": null,
+  "created_at": "2026-07-10T22:18:06.760625+00:00"
+}
