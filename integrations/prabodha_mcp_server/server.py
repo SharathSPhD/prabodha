@@ -11,7 +11,7 @@ from typing import Any
 import logging
 
 from mcp.server import Server
-from mcp.types import Tool, TextContent, ToolResponse
+from mcp.types import Tool, TextContent, CallToolResult
 
 
 logger = logging.getLogger(__name__)
@@ -163,7 +163,7 @@ async def list_tools() -> list[Tool]:
 
 
 @server.call_tool()
-async def call_tool(name: str, arguments: dict[str, Any]) -> list[ToolResponse]:
+async def call_tool(name: str, arguments: dict[str, Any]) -> list[CallToolResult]:
     """Dispatch tool calls to implementations in tools/ modules."""
     try:
         if name == "lens_map":
@@ -179,12 +179,12 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[ToolResponse]:
             from tools.gate_tools import list_gates_impl
             result = await list_gates_impl(**arguments)
         else:
-            return [ToolResponse(content=[TextContent(type="text", text=f"Unknown tool: {name}")])]
+            return [CallToolResult(content=[TextContent(type="text", text=f"Unknown tool: {name}")])]
 
-        return [ToolResponse(content=[TextContent(type="text", text=json.dumps(result))])]
+        return [CallToolResult(content=[TextContent(type="text", text=json.dumps(result))])]
     except Exception as e:
         logger.exception(f"Tool {name} failed")
-        return [ToolResponse(content=[TextContent(type="text", text=f"Error: {e}")])]
+        return [CallToolResult(content=[TextContent(type="text", text=f"Error: {e}")])]
 
 
 async def main():
