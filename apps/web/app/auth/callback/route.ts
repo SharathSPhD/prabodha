@@ -5,7 +5,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from "@/lib/config";
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
-function isValidRedirectPath(path: string): boolean {
+function isValidRedirectPath(path: string | null): boolean {
   if (!path) return false;
 
   // Must be a relative path starting with /
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
   const nextParam = searchParams.get("next");
 
   // Validate redirect target: must be same-origin relative path
-  const next = isValidRedirectPath(nextParam) ? nextParam : "/dashboard";
+  const next: string = isValidRedirectPath(nextParam) ? (nextParam as string) : "/dashboard";
 
   if (!code) {
     return NextResponse.redirect(new URL("/login?error=no_code", request.url));

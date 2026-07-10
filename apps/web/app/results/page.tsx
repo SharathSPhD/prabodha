@@ -43,18 +43,6 @@ export default function ResultsPage() {
 
   if (loading) return <p className="text-sm text-slate-500">Loading...</p>;
   if (error) return <p className="text-sm text-red-300">{error}</p>;
-  if (!data) {
-    return (
-      <div className="card p-6">
-        <p className="text-sm text-slate-500">
-          No results available yet. Run the export tool to populate result data:
-        </p>
-        <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
-          python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
-        </code>
-      </div>
-    );
-  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
@@ -67,56 +55,69 @@ export default function ResultsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {data.claims.map((claim) => (
-            <div
-              key={claim.id}
-              className={`card p-6 space-y-3 border-l-4 ${
-                claim.tier === "confirm"
-                  ? "border-teal-600"
-                  : "border-saffron-600"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex-1">
-                  <p className="text-lg font-semibold text-slate-100">
-                    {claim.title}
-                  </p>
-                </div>
-                <span
-                  className={`chip text-xs capitalize ${
+        {!data ? (
+          <div className="card p-6">
+            <p className="text-sm text-slate-500">
+              No results available yet. Run the export tool to populate result data:
+            </p>
+            <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
+              python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
+            </code>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {data.claims.map((claim) => (
+                <div
+                  key={claim.id}
+                  className={`card p-6 space-y-3 border-l-4 ${
                     claim.tier === "confirm"
-                      ? "border-teal-600/60 text-teal-300"
-                      : "border-saffron-600/60 text-saffron-300"
+                      ? "border-teal-600"
+                      : "border-saffron-600"
                   }`}
                 >
-                  {claim.tier}
-                </span>
-              </div>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <p className="text-lg font-semibold text-slate-100">
+                        {claim.title}
+                      </p>
+                    </div>
+                    <span
+                      className={`chip text-xs capitalize ${
+                        claim.tier === "confirm"
+                          ? "border-teal-600/60 text-teal-300"
+                          : "border-saffron-600/60 text-saffron-300"
+                      }`}
+                    >
+                      {claim.tier}
+                    </span>
+                  </div>
 
-              <p className="text-2xl font-bold text-indigo-300">
-                {claim.value.toFixed(2)}
-              </p>
+                  <p className="text-2xl font-bold text-indigo-300">
+                    {claim.value.toFixed(2)}
+                  </p>
 
-              <p className="text-xs text-slate-500">{claim.context}</p>
+                  <p className="text-xs text-slate-500">{claim.context}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        <div className="mt-12 card p-6 space-y-3 bg-night-800/50">
-          <h2 className="text-lg font-semibold text-slate-100">About the data</h2>
-          <p className="text-sm text-slate-500">
-            All results are exported directly from{" "}
-            <code className="rounded bg-night-900 px-1.5 py-0.5 text-[11px] font-mono text-indigo-300">
-              gates/*.json
-            </code>{" "}
-            using{" "}
-            <code className="rounded bg-night-900 px-1.5 py-0.5 text-[11px] font-mono text-indigo-300">
-              scripts/tools/compose_*.py
-            </code>
-            . No hand-written numbers. Commit the JSON generator (not the JSON) to the repo.
-          </p>
-        </div>
+            <div className="mt-12 card p-6 space-y-3 bg-night-800/50">
+              <h2 className="text-lg font-semibold text-slate-100">About the data</h2>
+              <p className="text-sm text-slate-500">
+                All results are exported directly from{" "}
+                <code className="rounded bg-night-900 px-1.5 py-0.5 text-[11px] font-mono text-indigo-300">
+                  gates/*.json
+                </code>{" "}
+                using{" "}
+                <code className="rounded bg-night-900 px-1.5 py-0.5 text-[11px] font-mono text-indigo-300">
+                  scripts/tools/compose_*.py
+                </code>
+                . No hand-written numbers. Commit the JSON generator (not the JSON) to the repo.
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </main>
   );
