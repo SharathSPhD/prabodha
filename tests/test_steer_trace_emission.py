@@ -105,3 +105,25 @@ def test_steer_trace_has_nonempty_tokens_with_real_data():
     assert trace.tokens[1].entropy == 2.1
     assert trace.tokens[1].gated is True
     assert trace.tokens[1].write_norm == 0.42
+
+
+def test_build_trace_tokens_populates_per_step_fields():
+    """Regression: tokens[] must carry real per-step data, not be empty (review #WS2)."""
+    from prabodha.steering.e4_cli import _build_trace_tokens
+
+    toks = _build_trace_tokens(
+        step_texts=[" The", " fire", " glows"],
+        entropies=[2.31, 1.02, 0.55],
+        write_events=[(1, 1.02)],
+    )
+    assert len(toks) == 3
+    assert [t.t for t in toks] == [0, 1, 2]
+    assert toks[0].gated is False and toks[1].gated is True and toks[2].gated is False
+    assert toks[1].token == " fire" and abs(toks[1].entropy - 1.02) < 1e-9
+
+
+def test_build_trace_tokens_handles_length_mismatch_and_empty_events():
+    from prabodha.steering.e4_cli import _build_trace_tokens
+
+    toks = _build_trace_tokens(["a", "b"], [1.0], None)
+    assert len(toks) == 1 and toks[0].gated is False
