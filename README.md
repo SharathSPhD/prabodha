@@ -25,8 +25,32 @@ research/         state.json + journal.md — durable loop memory (ralph state l
 docs/             scoping doc · triz_log · prior_art_internal · decisions/ (ADRs)
 ```
 
-## Status
-Loop **L0 (foundation)** closed by this commit. Loop **L1 (E1: Qwen lens replication)** in progress — see `contracts/L1_qwen_replication.md`.
+## Status (2026-07-10)
+Loops **L0–L16 closed** (19 PRs, 20 selector cycles over 6 registered menus, 13 isolated
+adversarial reviews, ~21 GPU-hours on one DGX Spark). Full narrative: `docs/paper/paper.pdf`
+(technical) and `docs/artifact/prabodha_story.html` (dual-audience).
+
+### Results at a glance (every number cites a gate JSON in `gates/`)
+| Claim | Strength | Gate |
+|---|---|---|
+| Workspace band + verbalizable content replicate across 3 model families, 2 sizes | screen, multi-model | L1, L1b, L2 |
+| Band content is legible ONLY to a band-targeted lens | screen | L2b |
+| Event-gated writes steer within the entropy budget (core claim) | **confirm, 6 seeds** | L9, L11 |
+| Alignment beats rate-matched control | sign-consistent 6/6, p≈0.016 | L11 |
+| Method transfers to a 2nd model via calibration recipe | **confirm, 4 seeds** | L13, L14-ms |
+| Amplitude ∝ 1/lens-strength; monotone dose in each plant's active range | confirm (qwen3, 3 seeds) / screen (nemotron) | L14-amp, L15-amp, L16-fine |
+| Lift generalizes across stub styles (1 known hard corpus) | screen, 2/2 new corpora | L16-corpus |
+| Readback verdict is a weak signal (BA ≈ 0.59 at n=120) — never an acceptance gate alone | honest negative | L14/L15-readback, L16-corpus |
+| Greedy decoding masks decode-time writes; sampling regime required | mechanism | L4 |
+
+## Install & use
+```bash
+pip install -e .            # library + `prabodha` CLI
+pip install -e .[hybrid]    # + linear-attention model support
+prabodha --help             # lens-fit · lens-eval · lens-vis · steer · research · figures
+```
+Claude Code users: the plugin in `integrations/claude-code-plugin/` ships skills
+(`lens-map`, `steer-verify`, `research-propose`) whose defaults are the measured findings.
 
 ## Provenance & credit
 `vendor/jacobian-lens` is [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) (Apache-2.0), companion code for *Verbalizable Representations Form a Global Workspace in Language Models* (transformer-circuits, 2026). PWM concepts and machinery: Sharath S, *Pratyabhijñā World Model* (arXiv, 2026). See `NOTICE`.
