@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1783674201.30152 "paper.tex" "paper.pdf" "paper" 1783674201.47716 0
+["pdflatex"] 1783675899.56251 "paper.tex" "paper.pdf" "paper" 1783675899.76787 0
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1136768653 1536 12e8c510d3e158fdd0e9a42e75118bd9 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
   "/home/sharaths/.TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -87,15 +87,16 @@
   "/home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0800.600pk" 1783674201.24958 9268 581e535997505c8492d392d4f039e4a7 ""
   "/home/sharaths/.TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1772302127 2236237 a8649cd5d0b3b28f6d5908ce7826f1a2 ""
   "/home/sharaths/.TinyTeX/texmf.cnf" 1772302105.1762 637 edd806fb06a89761a6034e1968af9017 ""
-  "figures/fig1_loadability.pdf" 1783674123.04434 16780 0c36f9ac2760497a6e3e48d311768b36 ""
-  "figures/fig2_dose_grid.pdf" 1783674123.12534 18472 7fa330cd7cf073a7afc29bba631ad5b5 ""
-  "figures/fig3_core_claim.pdf" 1783674123.21134 15585 9bcdc640667390c5f23ff6b0e41c3d41 ""
-  "figures/fig4_recipe_and_articulation.pdf" 1783674123.30134 16094 3a2e21a266f393297079f16600e2d274 ""
-  "figures/fig5_compute_ledger.pdf" 1783674123.38434 18036 48870f9a8bbc61b7bda30fe88e7d1261 ""
-  "figures/fig6_architecture.pdf" 1783674123.45834 16631 1fec7881d16b3005b186a2e546fe6c9b ""
-  "paper.aux" 1783674201.45354 4608 490b1d53cc0358b4d2ad5288919ea9cc "pdflatex"
-  "paper.out" 1783674201.45354 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
-  "paper.tex" 1783674176.85748 9593 e7000b42df3f1154f5fca670330e0ba3 ""
+  "figures/fig1_loadability.pdf" 1783675898.5583 16780 4949c502307bd3419ccdbf08629889cd ""
+  "figures/fig2_dose_grid.pdf" 1783675898.6353 18472 07e7b2649607551d712c4a8e551b0622 ""
+  "figures/fig3_core_claim.pdf" 1783675898.7243 15585 5d224e162c9869bb732fca59a23e3686 ""
+  "figures/fig4_recipe_and_articulation.pdf" 1783675898.8163 16094 a40a69e2f11aed197cbdd56cde8a1644 ""
+  "figures/fig5_compute_ledger.pdf" 1783675898.9043 18136 32cb395c346b7049f4347e5de153315e ""
+  "figures/fig6_architecture.pdf" 1783675898.9803 16631 5d594afe53e6e6510a80f92c41a508b0 ""
+  "figures/fig7_scaling_law.pdf" 1783675899.0803 18894 021f07b4955da9b1f64bf5105ee3f25c ""
+  "paper.aux" 1783675899.7343 5085 327df114e5778b678b5cd72dc2c31748 "pdflatex"
+  "paper.out" 1783675899.7343 2049 d1cd0ca5abcee4e5e977ac705303bd0d "pdflatex"
+  "paper.tex" 1783675864.90149 10545 2979d3b7b09dd443e6b22beb2f240633 ""
   (generated)
   "paper.aux"
   "paper.log"

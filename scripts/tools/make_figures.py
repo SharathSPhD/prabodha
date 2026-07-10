@@ -158,6 +158,31 @@ def fig6():
     save(fig, "fig6_architecture")
 
 
-for f in (fig1, fig2, fig3, fig4, fig5, fig6):
+# fig7 — amplitude scaling law on the second plant (gate L14)
+def fig7():
+    e = ev("gates/gate_L14_amp.json")
+    grid = e["grid"]
+    alphas = sorted(grid, key=float)
+    x = [float(a) for a in alphas]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.6, 3.1))
+    a1.plot(x, [grid[a]["gated_lift"] for a in alphas], "o-", color="#2b6cb0",
+            label="sphurattā-gated")
+    a1.plot(x, [grid[a]["prefill_lift"] for a in alphas], "s--", color="#a0aec0",
+            label="prefill-only")
+    a1.axhline(0.2, ls=":", c="k", lw=0.8)
+    a1.set_xlabel("write amplitude α (= cap)")
+    a1.set_ylabel("concept-surface lift")
+    a1.set_title("Qwen3-4B dose curve: monotone, unsaturated")
+    a1.legend(fontsize=8)
+    a2.bar(alphas, [abs(grid[a]["gated_dH"]) for a in alphas], color="#2f855a")
+    a2.axhline(0.5, ls="--", c="#c53030", lw=1.0, label="svātantrya budget")
+    a2.set_xlabel("write amplitude α")
+    a2.set_ylabel("|Δ trajectory entropy| (nats)")
+    a2.set_title("Freedom cost: flat, far under budget")
+    a2.legend(fontsize=8)
+    save(fig, "fig7_scaling_law")
+
+
+for f in (fig1, fig2, fig3, fig4, fig5, fig6, fig7):
     f()
 print("all figures written to", OUT)

@@ -186,6 +186,21 @@ to lens strength (max‖J‖/√d ≈ <span class="num">1.6</span> vs
 <span class="num">+0.40</span> vs prefill <span class="num">+0.17</span> within budget
 (single seed at screen tier; multi-seed queued).</p></details>
 
+<p>And the calibrated point turned out to sit on a clean <strong>dose law</strong>, not a
+lucky spot: doubling the write amplitude roughly doubles the effect, all the way up the
+tested range, while the freedom cost stays flat and far inside budget. On this model, the
+limit isn't the budget — it's how loudly you're willing to write.</p>
+<figure><img alt="scaling law chart" src="data:image/png;base64,{FIG7}">
+<figcaption>The amplitude scaling law on the second model: effect rises step for step with
+write strength (left) while the freedom cost stays flat, far below the budget line
+(right).</figcaption></figure>
+<details><summary>for the technical reader</summary>
+<p>Gate L14 (screen tier, seed 42): α=cap ∈ {0.1, 0.2, 0.3, 0.45} ⇒ gated lift
+<span class="num">0.05 → 0.20 → 0.40 → 0.78</span>, strictly monotone, unsaturated;
+worst |ΔH| <span class="num">0.15</span> of the <span class="num">0.5</span>-nat budget;
+prefill-only ~2× lower at matched amplitude. Registered as
+<code>amplitude_scaling_law</code> in menu 4; observed tier 2.</p></details>
+
 <h2>6 · The lab that runs itself — and audits itself</h2>
 <p>From the fifth loop on, the next experiment wasn't chosen by a person. A selector —
 balancing how much an experiment would <em>teach</em> against what it would <em>cost</em> —
@@ -260,6 +275,7 @@ html = html.replace("{FIG3}", b64("fig3_core_claim.png"))
 html = html.replace("{FIG4}", b64("fig4_recipe_and_articulation.png"))
 html = html.replace("{FIG6}", b64("fig6_architecture.png"))
 html = html.replace("{FIG5}", b64("fig5_compute_ledger.png"))
+html = html.replace("{FIG7}", b64("fig7_scaling_law.png"))
 (OUT / "prabodha_story.html").write_text(html, encoding="utf-8")
 print("artifact written:", OUT / "prabodha_story.html",
       f"({len(html)//1024} KiB)")

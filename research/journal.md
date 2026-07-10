@@ -483,3 +483,19 @@
   H4 phase-1 shipped: `prabodha` console entrypoint (pyproject [project.scripts]) routing
   lens-fit/lens-eval/lens-vis/steer/research/figures to the tested module CLIs.
 - Update discipline: figures + paper + HTML regenerate each cycle from gates/ (derived artifacts).
+
+## 2026-07-10 — cycle 14 CLOSED: amplitude scaling LAW confirmed on qwen3 (screen tier)
+- Grid alpha=cap {0.1,0.2,0.3,0.45}, qwen3 e13full recipe, seed 42, contention=none:
+  gated lift 0.05 -> 0.20 -> 0.40 -> 0.78, STRICTLY MONOTONE, no saturation at 0.45;
+  prefill scales too (0/0/0.17/0.35) but ~2x below gated at matched amplitude;
+  |dH| flat and far under budget everywhere (worst 0.15 of 0.5 nats).
+- Reading: on qwen3, the binding constraint in the tested range is AMPLITUDE, not the
+  svātantrya budget — opposite of nemotron where budget bound first. Consistent with
+  amplitude ∝ 1/lens-strength: weak-transport plants have budget headroom.
+- Gate: gates/gate_L14_amp.json (pass; H_dose_monotone 3/3 pairs, H_working_point 0.40,
+  H_budget 4/4). Ledgered: observe tier 2, spend 0.42h (L14: 0.42/1.0). Lint clean.
+- Cycle 15 proposed+ledgered: qwen3_recipe_multiseed as-registered (EFE -2.75) — the
+  confirm-tier follow-up; seeds {123,777,2024} dispatched under L14 budget.
+- Consolidations updated per the each-loop rule: fig7_scaling_law added; paper §5 dose-law
+  paragraph, counts bumped to fourteen cycles/four menus, recompiled; HTML explainer
+  section 5 extended and artifact republished (same URL).

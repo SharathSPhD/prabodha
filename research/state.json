@@ -178,7 +178,7 @@
   "L9_cap": 1.5,
   "L11_spent": 1.1,
   "L11_cap": 1.2,
-  "L14_spent": 0,
+  "L14_spent": 0.42,
   "L14_cap": 1.0
  },
  "kill_switch": false
