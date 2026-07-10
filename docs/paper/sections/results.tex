@@ -1,1 +1,122 @@
-% Placeholder — to be filled in Task 4
+\label{sec:results}
+
+\subsection*{Finding 1: Instructed Loadability Replicates Across Models but Scales with Size and Lineage}
+
+Instructed loading---writing a verbalizable concept code into the residual stream---succeeds
+only in the workspace band and scales with model size and training objective (Figure~\ref{fig:load}).
+Qwen3-4B achieves 10\% hit-rate@5 (gate L1), Qwen3.6-27B 55\% (gate L1b), and the PWM twin 0\% (gate L2).
+Uninstructed controls and shuffled nulls separate true signal from byte-fallback artifacts.
+The recalibration from union-top-K to model-top-K support was essential: the original metric's structural null floor ($-0.72$)
+obscured the true pattern.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.72\linewidth]{fig1_loadability}
+\caption{Instructed concept loadability in a fixed depth-band across models
+(gates: L1, L1b, L2 runs 1--3). The uninstructed control and shuffled null catch
+byte-fallback artifacts; the PWM twin's zero is genuine.}\label{fig:load}
+\end{figure}
+
+\subsection*{Finding 2: Timing Matters---Sphura\d{t}\d{t}\=a-Gated Writes Beat Fixed Schedules}
+
+Under sampling (the regime where freedom cost is negative), event-gated writes outperform
+rate-matched and continuous baselines at matched amplitude (Figure~\ref{fig:dose}).
+The dose grid canonical clean-stream re-measurement (gate L18-l8redo, $\alpha \in \{0.02, 0.05, 0.1\}$)
+supersedes the pre-stream-fix L8 levels (which ran $\sim 0.1$ higher).
+Write \emph{count} is operationally free at this scale (throughput within noise of baseline),
+so schedule choice is about behavioral margins, not efficiency.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.72\linewidth]{fig2_dose_grid}
+\caption{Dose grid on the Qwen3-4B twin under sampling --- \emph{canonical clean-stream
+re-measurement} (gate L18-l8redo, superseding the pre-stream-fix L8 levels; the gated
+arm ran exactly $0.1$ higher pre-fix, other arms shifted by varying amounts, single
+seed). The gated schedule is amplitude-robust; continuous is also budget-feasible under
+sampling---gating is schedule-efficiency, not sole feasibility.}\label{fig:dose}
+\end{figure}
+
+\subsection*{Finding 3: The Core Claim---Six Independent-Stream Seeds Confirm Gated Steering within Budget}
+
+Gated writes achieve full concept steering within the $\pm 0.5$-nat freedom budget
+at six independent-stream seeds (42, 123, 777, 888, 999, 1234), with lift 0.30--0.35.
+The alignment advantage over rate-matched controls is small (+0.07...+0.12) but positive in every seed
+(one-sided sign test $p\approx0.016$; Figure~\ref{fig:core}, gate L11-rep).
+This is the core program claim and sits at confirm tier.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig3_core_claim}
+\caption{The core claim at six independent-stream seeds (gates L9-alignconf, L11-rep):
+gated lift 0.30--0.35 within the $\pm$0.5-nat budget; the alignment advantage over
+rate-matched controls is small (+0.07..+0.12) but positive in every seed
+(one-sided sign test $p\approx0.016$).}\label{fig:core}
+\end{figure}
+
+\subsection*{Finding 4: Generality via Recipe---Cross-Plant Transfer with Amplitude Calibration}
+
+One-shot transfer with borrowed geometry fails (+0.05 on Qwen3-4B); the calibration recipe
+(band-exit lens $\rightarrow$ site probe $\rightarrow$ amplitude scaled to inverse lens transport strength)
+reproduces the result: gated $+0.40$ vs prefill $+0.17$ within budget (gate L13).
+At four independent-stream seeds (42, 123, 777, 888), the calibrated recipe delivers
+gated lift 0.33--0.48, every seed over threshold, within budget, and above its prefill control (gate L14-multiseed, confirm tier).
+Qwen3's band-exit Jacobians are $\sim 10 \times$ weaker than Nemotron's; working amplitude must scale inversely.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig4_recipe_and_articulation}
+\caption{Left: the per-plant calibration recipe rescues cross-plant transfer (gates L10,
+L13). Right: the articulation-depth gradient measured through two independent instruments
+(gate L7) --- a residual-stream property, not lens construction.}\label{fig:recipe}
+\end{figure}
+
+\subsection*{Finding 5: Amplitude Dose Law---Monotone Lift per Seed on the Weak-Transport Plant}
+
+Sweeping amplitude $\alpha = \mathrm{cap}$ over $\{0.1, 0.2, 0.3, 0.45\}$ on Qwen3-4B,
+gated lift rises monotonically \emph{per seed} at three independent-stream seeds
+($0 \rightarrow \sim 0.18 \rightarrow 0.4$--$0.48 \rightarrow 0.72$--$0.78$; gates L14-amp, L15-amp-joint),
+with no saturation in the tested range, while trajectory-entropy cost stays flat and far inside the $\pm 0.5$-nat budget
+(gate L15-amp-joint).
+On Nemotron (strong-transport plant), a coarse grid was flat (saturated), prompting a fine-grained sweep
+below its saturation point: at $\alpha \in \{0.002, 0.005, 0.01, 0.02\}$ gated lift rises
+$0.03 \rightarrow 0.15 \rightarrow 0.28$ and saturates (gate L16-fine, single seed).
+Each plant shows within-grid monotone dose response in its own active range ---
+Nemotron at $\alpha \sim 0.002$--$0.01$, Qwen3 at $0.1$--$0.45$, $\sim 1.5$ orders of magnitude apart,
+consistent with amplitude $\propto 1/$lens-strength (Figure~\ref{fig:scaling}).
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig7_scaling_law}
+\caption{The amplitude dose law across two plants (gates L14-amp, L15-amp-joint,
+L16-fine, L8 replay): per-seed monotone lift on the weak-transport plant (three seeds)
+and, on a log-$\alpha$ axis, the strong-transport plant's own rise-then-saturate curve
+an order of magnitude lower --- amplitude $\propto$ 1/lens-strength (left). Freedom
+cost flat and within budget throughout (right).}
+\label{fig:scaling}
+\end{figure}
+
+\subsection*{Finding 6: System Architecture---The Research Loop as Active-Inference Selection}
+
+The research program itself ran as expected-free-energy selection over registered experiment menus,
+with twenty-four cycles, three menus, fourteen adversarial reviews, and every honest negative
+in a replayable ledger (Figures~\ref{fig:arch}, \ref{fig:ledger}).
+The loop debugged itself: miscalibrated cost model, replay bugs, sampling-seed correlations (the stream fix),
+and staleness violations were all caught and corrected on the record.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.86\linewidth]{fig6_architecture}
+\caption{System architecture: controller--actuator--plant with the auto-research loop and
+adversarial review harness around it.}\label{fig:arch}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=.8\linewidth]{fig5_compute_ledger}
+\caption{Compute ledger: the entire program to date on one DGX Spark (GB10), guard-shared
+with co-resident training jobs, contention recorded in every gate.}\label{fig:ledger}
+\end{figure}
+
+% L20-PENDING: Trained-Bridge Comparator (Finding 7)
+% This section will be appended after WS1 completes and gate_L20*.json is available.
+% Placeholder for trained-bridge comparator: lift curves across trained-CittaStore write vs analytic write.
+% Trigger: merge WS1 results and read gates/gate_L20*.json; invoke python3 scripts/tools/make_figures.py;
+% insert subsection "Finding 7: ..." before end of results.tex.
+
+% Fig8 STATUS: Fire-Case Slice Visualization (PREPARED, GPU-dependent)
+% Searching outputs/ for pre-rendered slice PNG... [handled by make_figures.py, Task 5]
+% If PNG found: included via \includegraphics{fig8_fire_case_slice}.
+% If not found: document in Task 5 Step 3 with GPU dispatch command for future execution.
