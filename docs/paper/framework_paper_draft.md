@@ -76,9 +76,16 @@ beyond J-space (scoping §10.3) — the band carries structure the standard lens
   steering INSIDE the budget. [gate_L4b.json] CONFIRMED: 3 seeds × 3 τ-percentiles, lifts
   0.23–0.40, all within budget (H_gated_budget 3/3). [gate_L5_tau.json, gate_L6_confirm.json]
 - Event ALIGNMENT beats rate-matched periodic writes (+0.40 vs +0.23 at ~matched rates;
-  per-write 0.056 vs 0.046). [gate_L6_align.json] HONEST margins: the advantage over a
-  single prefill write is ~0.1 and did NOT confirm at the registered 0.15 margin
-  (0.20/0.12/0.03 across seeds).
+  per-write 0.056 vs 0.046), and the advantage holds at every amplitude in the dose grid
+  (+0.15..0.18 at α ∈ {0.02, 0.05, 0.1}). [gate_L6_align.json, gate_L8_dose.json]
+  HONEST margins: the advantage over a single prefill write is ~0.1 and did NOT confirm at
+  the registered 0.15 margin (0.20/0.12/0.03 across seeds).
+- DOSE-RESPONSE CORRECTION (gate_L8_dose.json): under sampling, CONTINUOUS writes are also
+  within the entropy budget (ΔH −0.11..−0.16) and reach lift 0.47 — L3's budget-blow was
+  regime-specific (greedy decoding / at-position currency). The svātantrya claim is hereby
+  restated: sphurattā gating is WRITE-EFFICIENT (~85% of continuous lift at ~27% of the
+  writes) with a robust alignment advantage — not the sole budget-feasible schedule. The
+  gated operating point is amplitude-robust down to α=0.02 (lift 0.38 at 5×-smaller writes).
 - Clause-by-clause scorecard: site (band) — supported with the band-lens proviso; content
   (non-negative concept codes) — functional; timing (sphurattā) — load-bearing, confirmed;
   budget (svātantrya) — the binding constraint, now an operating point; acceptance (āgama

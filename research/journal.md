@@ -361,3 +361,17 @@
 - Program state after audit loop: all cheap paper-blocking caveats cleared. Remaining menu:
   dose_response (0.9 GPU-h); queued beyond menu: trained-bridge arm, selector trade-off
   case, L3 currency restatement. Paper skeleton ready for prose expansion.
+
+## 2026-07-10 — cycle 5 (dose_response): amplitude-robust, and a claim correction
+- gates/gate_L8_dose.json (composed from 3 per-alpha gates, contention=psalm shared mode):
+  H_dose_robust PASS (gated lift 0.375-0.40 within budget at α 0.02/0.05/0.1) and
+  H_alignment holds at every alpha (+0.15..0.18 over rate-matched every_k).
+- CLAIM CORRECTION (the dose grid's real payoff): under sampling, CONTINUOUS writes also
+  sit within the entropy budget (ΔH −0.11..−0.16) at lift 0.47 — L3's −2.08 budget-blow was
+  regime-specific. Restated everywhere (paper §4): gating = write-efficiency (~85% lift at
+  ~27% writes) + alignment advantage, NOT sole feasibility. Science self-corrected by its
+  own registered requirement (review #5 demanded this grid precisely to police dominance
+  claims — it did).
+- Menu CONSUMED (5/5 candidates, 5 cycles). Selector's next proposal will raise
+  no-candidate — the menu refresh (trade-off case, trained-bridge, confirm extensions) is
+  the next registration act.

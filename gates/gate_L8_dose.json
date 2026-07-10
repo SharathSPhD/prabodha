@@ -1,0 +1,16 @@
+{
+  "loop": "L8-dose",
+  "status": "open",
+  "closed_at": null,
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "3-alpha x 4-arm grid completed; contention=psalm (shared mode)",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": "{\"summary\": {\"H_dose_robust\": {\"value\": 0.375, \"threshold\": 0.2, \"pass\": true}, \"H_alignment_all_alphas\": {\"value\": 0.15, \"threshold\": 0.1, \"pass\": true}}, \"grid\": {\"0.02\": {\"continuous\": {\"lift\": 0.375, \"camatk_drop\": -0.0285, \"step_entropy_delta\": -0.1093, \"writes_per_gen\": 28.2}, \"prefill_only\": {\"lift\": 0.2, \"camatk_drop\": -0.0262, \"step_entropy_delta\": 0.1115, \"writes_per_gen\": 1.0}, \"entropy_gated\": {\"lift\": 0.375, \"camatk_drop\": -0.0233, \"step_entropy_delta\": -0.0868, \"writes_per_gen\": 7.38}, \"every_k\": {\"lift\": 0.2, \"camatk_drop\": -0.0219, \"step_entropy_delta\": 0.0052, \"writes_per_gen\": 5.78}}, \"0.05\": {\"continuous\": {\"lift\": 0.475, \"camatk_drop\": -0.0313, \"step_entropy_delta\": -0.126, \"writes_per_gen\": 29.05}, \"prefill_only\": {\"lift\": 0.225, \"camatk_drop\": -0.0173, \"step_entropy_delta\": 0.0197, \"writes_per_gen\": 1.0}, \"entropy_gated\": {\"lift\": 0.375, \"camatk_drop\": -0.0269, \"step_entropy_delta\": -0.1293, \"writes_per_gen\": 7.33}, \"every_k\": {\"lift\": 0.225, \"camatk_drop\": -0.0186, \"step_entropy_delta\": 0.0168, \"writes_per_gen\": 5.78}}, \"0.1\": {\"continuous\": {\"lift\": 0.475, \"camatk_drop\": -0.0224, \"step_entropy_delta\": -0.1643, \"writes_per_gen\": 26.18}, \"prefill_only\": {\"lift\": 0.2, \"camatk_drop\": -0.0128, \"step_entropy_delta\": 0.003, \"writes_per_gen\": 1.0}, \"entropy_gated\": {\"lift\": 0.4, \"camatk_drop\": -0.01, \"step_entropy_delta\": -0.0799, \"writes_per_gen\": 7.15}, \"every_k\": {\"lift\": 0.225, \"camatk_drop\": -0.0169, \"step_entropy_delta\": -0.0449, \"writes_per_gen\": 5.0}}}, \"claim_update\": \"under SAMPLING, continuous writes are ALSO within the entropy budget (dH -0.11..-0.16) and reach lift 0.47 > gated 0.38-0.40: L3's budget-blow was regime-specific (greedy/at-position currency). Honest restatement: gated = write-efficient (~85% of continuous lift at ~27% of the writes) with alignment advantage over rate-matched controls at every alpha; NOT the sole budget-feasible schedule.\"}",
+    "deviations": []
+  },
+  "signoff": "pending"
+}

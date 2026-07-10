@@ -57,3 +57,5 @@
 {"event": "observe", "candidate": "dose_response", "primary_tier": 0, "secondary_tier": null, "posterior": [0.7235142118863049, 0.23255813953488375, 0.03617571059431526, 0.007751937984496125], "source": "gates/gate_L3.json", "ts": 1783656601.0837026}
 {"event": "observe", "candidate": "dose_response", "primary_tier": 1, "secondary_tier": null, "posterior": [0.5603922745922145, 0.4052836985890123, 0.03222255578905234, 0.0021014710297208045], "source": "gates/gate_L4.json", "ts": 1783656601.0839508}
 {"event": "propose", "candidate": "dose_response", "action": "as-registered", "efe": -0.06478059848781981, "epistemic": 0.7237473752315404, "pragmatic": -0.6589667767437206, "belief": [0.5603922745922145, 0.4052836985890123, 0.03222255578905234, 0.0021014710297208045], "budget_remaining": 1.0, "ts": 1783656601.0862966}
+{"event": "observe", "candidate": "dose_response", "primary_tier": 2, "secondary_tier": null, "posterior": [0.13461538461538464, 0.28846153846153844, 0.4326923076923077, 0.14423076923076922], "source": "gates/gate_L8_dose.json", "ts": 1783658081.3057766}
+{"event": "spend", "candidate": "dose_response", "gpu_hours": 0.35, "ts": 1783658081.3058047}
