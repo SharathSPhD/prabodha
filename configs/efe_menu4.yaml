@@ -1,0 +1,42 @@
+# Menu 4 (L14+) — registered after menu-3 consumption (cycles 11–13).
+# Program phase: consolidation-with-teeth — confirm the recipe transfer, quantify the
+# amplitude/lens-strength scaling rule, and calibrate the readback verifier from the
+# clean-stream corpus. Side consolidations (paper PDF, HTML artifact, H4 CLI) update each
+# cycle but are NOT menu candidates (they are deliverables, not experiments).
+candidates:
+  - id: qwen3_recipe_multiseed
+    cost_gpu_hours: 0.4
+    resolution: 0.9
+    description: "Confirm tier for the recipe transfer: e13full (qwen3, site 24, alpha 0.3)
+      at seeds {123, 777, 2024} — does the second plant's 0.40 hold beyond seed 42?"
+    knobs: {exp: configs/experiments/e13full.yaml, seeds: [123, 777, 2024]}
+    prior_value_hint: 2
+    replay: [gates/gate_L13_recipe.json]
+  - id: amplitude_scaling_law
+    cost_gpu_hours: 0.35
+    resolution: 0.75
+    description: "Quantify the recipe's scaling rule: gated lift vs alpha {0.1, 0.2, 0.3,
+      0.45} on qwen3 (cap = alpha per point; pre-dispatch inert-knob checklist applies).
+      Combined with nemotron's dose grid, tests amplitude ∝ 1/lens-strength as a LAW,
+      not a one-plant anecdote."
+    knobs: {exp: configs/experiments/e13full.yaml, alphas: [0.1, 0.2, 0.3, 0.45]}
+    prior_value_hint: null
+    replay: [gates/gate_L13_recipe.json, gates/gate_L8_dose.json]
+  - id: readback_recalibration
+    cost_gpu_hours: 0.15
+    resolution: 0.6
+    description: "The open acceptance-test caveat: recalibrate uptake thresholds (top_m,
+      min_rank_gain) against the clean-stream corpus so readback verdicts track behavioral
+      hits (currently screen-tier settings from L3)."
+    knobs: {analysis: readback_vs_behavior, gates: [gates/gate_L9_alignconf.json, gates/gate_L11_rep.json]}
+    prior_value_hint: 1
+    replay: [gates/gate_L3.json]
+  - id: trained_bridge_arm
+    cost_gpu_hours: 1.0
+    resolution: 0.9
+    blocked: "requires PWM WM stack integration — carried from menu 3"
+    description: "v3 vs PWM's TRAINED bridge (review #5 standing threat)."
+    knobs: {depends: PWM WM stack}
+    prior_value_hint: null
+    replay: [gates/gate_L3.json]
+budget_gpu_hours: 1.0

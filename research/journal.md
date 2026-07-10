@@ -469,3 +469,75 @@
   lesson needs to live in a pre-dispatch checklist, added to the recipe doc.)
 - Menu 3: runnable items consumed (trained_bridge remains blocked+ledgered). Thirteen
   selector cycles across three menus.
+
+## 2026-07-09 — L14 cycle 14 dispatch + consolidation artifacts
+- Guard REFUSED first amplitude-grid dispatch: "budget exceeded for L11 (spent=1.1 cap=1.2)" —
+  correct behavior; the dispatch reused a stale loop tag. Fix: L14 budget line added to
+  research/state.json (cap 1.0h = menu-4 registered budget), re-dispatched as L14.
+  Lesson (now habit): every new menu opens a new budget line BEFORE first dispatch.
+- Cycle-14 grid live: qwen3 e13full recipe at alpha=cap in {0.1, 0.2, 0.3, 0.45}, both knobs
+  overridden (--alpha AND --norm-cap-rel; the inert-knob checklist applied).
+- Consolidations (operator-directed, side-of-run): paper.tex compiled to docs/paper/paper.pdf
+  (6 figures regenerated from gate JSONs via scripts/tools/make_figures.py); dual-audience HTML
+  explainer generated (scripts/tools/make_artifact.py) and published as a Claude artifact;
+  H4 phase-1 shipped: `prabodha` console entrypoint (pyproject [project.scripts]) routing
+  lens-fit/lens-eval/lens-vis/steer/research/figures to the tested module CLIs.
+- Update discipline: figures + paper + HTML regenerate each cycle from gates/ (derived artifacts).
+
+## 2026-07-10 — cycle 14 CLOSED: amplitude scaling LAW confirmed on qwen3 (screen tier)
+- Grid alpha=cap {0.1,0.2,0.3,0.45}, qwen3 e13full recipe, seed 42, contention=none:
+  gated lift 0.05 -> 0.20 -> 0.40 -> 0.78, STRICTLY MONOTONE, no saturation at 0.45;
+  prefill scales too (0/0/0.17/0.35) but ~2x below gated at matched amplitude;
+  |dH| flat and far under budget everywhere (worst 0.15 of 0.5 nats).
+- Reading: on qwen3, the binding constraint in the tested range is AMPLITUDE, not the
+  svātantrya budget — opposite of nemotron where budget bound first. Consistent with
+  amplitude ∝ 1/lens-strength: weak-transport plants have budget headroom.
+- Gate: gates/gate_L14_amp.json (pass; H_dose_monotone 3/3 pairs, H_working_point 0.40,
+  H_budget 4/4). Ledgered: observe tier 2, spend 0.42h (L14: 0.42/1.0). Lint clean.
+- Cycle 15 proposed+ledgered: qwen3_recipe_multiseed as-registered (EFE -2.75) — the
+  confirm-tier follow-up; seeds {123,777,2024} dispatched under L14 budget.
+- Consolidations updated per the each-loop rule: fig7_scaling_law added; paper §5 dose-law
+  paragraph, counts bumped to fourteen cycles/four menus, recompiled; HTML explainer
+  section 5 extended and artifact republished (same URL).
+
+## 2026-07-10 — cycles 15+16 CLOSED; menu 4 CONSUMED; L14 loop closes
+- Cycle 15 (qwen3_recipe_multiseed) CONFIRM TIER: gated lift 0.475/0.425/0.325 at seeds
+  {123,777,2024} + 0.40 at seed 42 => 4/4 over threshold within budget, gated > prefill
+  4/4 (gates/gate_L14_multiseed.json, observe tier 2, spend 0.25h). THE RECIPE TRANSFER
+  IS CONFIRMED — generality claim now at the same evidential standard as the core claim.
+- Cycle 16 (readback_recalibration) with DISCLOSED AMENDMENT: registered replay gates
+  (L9/L11) carry only summaries — no per-generation readback — so the missing instrument
+  was built (e4_cli --record-readback: raw pre/post ranks at the write port, band lens,
+  thresholds deliberately NOT applied at record time) and a fresh instrumented
+  clean-stream run substituted (gate_L14_readback_raw.json; run independently reproduced
+  core claim +0.30 within budget; its own e5align margin hypotheses fail as known —
+  alignment margin +0.07 < 0.15, the standing honest negative).
+  Sweep result (gates/gate_L14_readback.json, pass, screen): best balanced accuracy 0.68
+  at (top_m=5, gain=0) vs threshold 0.6; L3 setting (10,100) already near-optimal at
+  0.67; the min_rank_gain clause contributes NOTHING (best at gain=0). Reading: āgama
+  readback is a real but modest predictor of behavioral uptake (TPR 0.83, TNR 0.54) —
+  acceptance-test caveat resolved from "uncalibrated" to "calibrated, modest".
+  Observe tier 2, spend 0.15h. Ops lesson: src is BAKED into the docker image (only
+  outputs/gates/hf_cache mounted) — rebuild before dispatching new CLI flags.
+- Menu 4 consumed: 0.82/1.0h spent; trained_bridge_arm remains blocked (PWM WM stack);
+  selector: "no candidate fits the remaining budget". Ledger lint clean end-to-end.
+- L14 totals: 3 cycles, 3 gates + 1 confirm set + 1 instrumented raw gate, ~0.82 GPU-h.
+  Consolidations regenerated: paper (sixteen cycles; multiseed-confirm + dose-law +
+  readback-recalibration text; fig4 with 4-seed scatter), HTML republished (same URL).
+
+## 2026-07-10 — adversarial review #11 (isolated agent, gates+menu brief only): MERGE-WITH-CORRECTIONS
+All four corrections APPLIED before merge:
+1. Amplitude "LAW" -> "screen-tier single-seed monotone TREND" (gate hypothesis, paper
+   §5, HTML): law status needs multi-seed + joint two-plant confirm. Carried as debt.
+2. Multiseed hypothesis wording: "THREE NEW independent-stream seeds + REPLAYED L13
+   seed 42" (provenance explicit; reviewer judged the claim itself SOUND).
+3. Readback gate re-labeled tier "screen-exploratory" with two added disclosures:
+   (a) source run's own e5align margin verdict is FAIL (standing honest negative,
+   alignment +0.07 < 0.15; core-claim hypothesis passed, record validity unaffected);
+   (b) 36-setting sweep, max reported, no multiple-comparisons correction, 0.6 threshold
+   set at analysis time not pre-registered — confirm needs a held-out corpus at the
+   chosen setting. Carried as debt.
+4. Eight ingredient gates relabeled loop L4 -> L14 (the --loop flag was omitted from
+   dispatches AGAIN — third occurrence; ops rule: --loop goes in the dispatch template,
+   not the operator's memory).
+Review count: 11. L14 status -> closed in state.json.

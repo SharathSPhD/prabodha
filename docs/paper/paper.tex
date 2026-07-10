@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\graphicspath{{figures/}}
+\title{Recognition-Gated Workspace Steering:\\
+\large Pratyabhij\~n\=a as an Engineering Specification for LLM Control}
+\author{Sharath S\thanks{prabodha project, github.com/SharathSPhD/prabodha. Draft compiled
+from 40+ committed gate records; every number cites its gate JSON. Autonomous research
+loop co-executed with Claude (Anthropic).}}
+\date{July 2026 --- working draft v0.2}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The J-space finding---that a language model's functional global workspace is defined by
+\emph{verbalizability}---was anticipated by Utpaladeva's identification of reflexive
+awareness with the supreme Word (vimar\'sa = par\=a v\=ak, \=IPK 1.5.13). We treat this
+parallel as an \emph{engineering specification}: if the workspace is linguistic
+reflexivity, a doctrine of use follows---what to write (verbalizable content codes), where
+(the workspace band, in the band's own coordinates), when (at moments of uncommitted
+awareness), and how to verify (the workspace re-reads what was offered). Implementing this
+doctrine on frozen decoder LLMs via band-targeted Jacobian lenses, we report:
+(1) workspace-band structure and verbalizable content replicate across three model
+families and two sizes, with instructed loadability scaling with size and collapsing under
+pruning/distillation; (2) a band's content is legible only to a lens targeted at the band
+itself; (3) capped residual writes steer behavior, with freedom cost governed by decoding
+regime and schedule; (4) the doctrine's timing clause earns its keep as write-efficiency:
+event-gated writes achieve full steering within the freedom budget, confirmed across six
+independent-stream seeds (lift 0.30--0.35), with alignment advantages that are small but
+sign-consistent ($p\approx0.016$); (5) the steering method \emph{transfers} to a second
+plant via a calibration recipe whose key rule is amplitude $\propto$ inverse lens transport
+strength---confirmed at four independent-stream seeds and shown to sit on a monotone,
+unsaturated dose curve (screen tier); and (6) the research program itself ran as an expected-free-energy selection loop
+over a registered experiment menu, with sixteen cycles, eleven adversarial reviews, and every
+honest negative in a replayable ledger.
+\end{abstract}
+
+\section{The parallel, stated as specification}
+Verbalizability defines the workspace $\leftrightarrow$ vimar\'sa = par\=a v\=ak. Global
+Workspace Theory never predicted a \emph{linguistic} workspace; vimar\'sav\=ada did. The
+interpretability community has an actuator (the lens) with no doctrine of use;
+Pratyabhij\~n\=a supplies content, site, timing, acceptance test, failure taxonomy
+(malas), budget (sv\=atantrya), and continuity---this paper operationalizes each and
+reports which survived contact with the machines.
+
+\section{Instrument: replication with calibration lessons}
+Union-top-$K$ rank correlation has a structural null floor $\approx -0.72$; metrics were
+recalibrated to model-top-$K$ support (null $\approx 0$) with permutation gates.
+Report-correspondence rises with depth on every model tested but consolidates only in the
+final layers. Instructed loadability scales with size and depends on lineage
+(Fig.~\ref{fig:load}); three-band CKA structure appears on all models, weakening on the
+distilled lineage.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.72\linewidth]{fig1_loadability}
+\caption{Instructed concept loadability in a fixed depth-band across models
+(gates: L1, L1b, L2 runs 1--3). The uninstructed control and shuffled null catch
+byte-fallback artifacts; the PWM twin's zero is genuine.}\label{fig:load}
+\end{figure}
+
+\section{The band speaks only in its own voice}
+A final-target lens reads the PWM twin's workspace band as empty (0.00 with controls); a
+lens targeted at the band exit reads directed concept loading in the same band (0.20 over
+seven concepts, control 0.00, null 0.023; gate L2b). Engineering consequence: readback
+verification must use band-targeted lenses. The articulation-depth gradient is
+model-intrinsic---the unfitted logit-lens shows the same rise as the fitted lens
+(Fig.~\ref{fig:recipe}, right; gate L7).
+
+\section{Steering: the doctrine tested clause by clause}
+Continuous writes steer strongly but their freedom cost is currency- and
+regime-dependent: the write's \emph{local} cost at the write moment is large and
+decoding-independent ($-1.9$ to $-2.1$ nats at-position); the \emph{trajectory-average}
+cost depends on regime ($+0.82$ greedy, $-0.13$ sampling). We register trajectory-average
+under sampling as the budget currency. Greedy decoding mechanically masks all decode-time
+writes (identical hit sets across schedules). Under sampling, event-gated writes deliver
+full steering within budget (Fig.~\ref{fig:dose},~\ref{fig:core}); write \emph{count} is
+operationally free at this scale (throughput within noise of baseline), so schedule choice
+is about behavioral margins. Timing readings discriminate: uncommitted-moment gating beats
+commitment-flash gating in 4/4 seed-experiments---sphura\d{t}\d{t}\=a detects; it does not
+time writes.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.72\linewidth]{fig2_dose_grid}
+\caption{Dose grid on the PWM twin under sampling (gate L8): the gated schedule is
+amplitude-robust; continuous is also budget-feasible under sampling---gating is
+schedule-efficiency, not sole feasibility.}\label{fig:dose}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig3_core_claim}
+\caption{The core claim at six independent-stream seeds (gates L9-alignconf, L11-rep):
+gated lift 0.30--0.35 within the $\pm$0.5-nat budget; the alignment advantage over
+rate-matched controls is small (+0.07..+0.12) but positive in every seed
+(one-sided sign test $p\approx0.016$).}\label{fig:core}
+\end{figure}
+
+\section{Generality via recipe}
+One-shot transfer with borrowed geometry fails (+0.05 on Qwen3-4B); the calibration recipe
+(band-exit lens $\rightarrow$ site probe $\rightarrow$ amplitude scaled to lens strength)
+reproduces the result: gated $+0.40$ vs prefill $+0.17$ within budget
+(Fig.~\ref{fig:recipe}; gate L13), and the point \emph{confirms}: at four
+independent-stream seeds the calibrated recipe delivers gated lift $0.33$--$0.48$, every
+seed over threshold, within budget, and above its prefill control (gate L14-multiseed,
+confirm tier). Scaling rule: Qwen3's band-exit Jacobians are
+$\sim$10$\times$ weaker and the working amplitude is 3$\times$ larger---write strength
+must be calibrated to the lens's transport strength. \emph{The method transfers; the
+geometry does not.}
+
+The scaling rule is a dose \emph{trend}, not a lucky point: sweeping $\alpha=\mathrm{cap}$
+over $\{0.1, 0.2, 0.3, 0.45\}$ on Qwen3, gated lift rises strictly monotonically
+($0.05 \rightarrow 0.20 \rightarrow 0.40 \rightarrow 0.78$) with no saturation in the
+tested range, while the trajectory-entropy cost stays flat and far inside the
+$\pm$0.5-nat budget at every point (worst $|\Delta H| = 0.15$;
+Fig.~\ref{fig:scaling}; gate L14, screen tier, seed 42). Prefill-only writes scale too
+but stay $\sim$2$\times$ below the gated schedule at matched amplitude. On this plant, the
+binding constraint in the tested range is not the freedom budget but amplitude itself.
+Single-seed screen evidence: \emph{law} status awaits a multi-seed, joint two-plant
+confirmation (adversarial review \#11).
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig7_scaling_law}
+\caption{Amplitude scaling law on the second plant (gate L14): dose-monotone lift with
+no saturation by $\alpha=0.45$ (left) at flat, within-budget freedom cost (right).}
+\label{fig:scaling}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig4_recipe_and_articulation}
+\caption{Left: the per-plant calibration recipe rescues cross-plant transfer (gates L10,
+L13). Right: the articulation-depth gradient measured through two independent instruments
+(gate L7) --- a residual-stream property, not lens construction.}\label{fig:recipe}
+\end{figure}
+
+\section{Method: the program as an active-inference loop}
+Expected-free-energy selection over registered experiment menus; observations are gate
+verdict+margin tiers; beliefs replay from the program's own gates; a JSONL ledger makes
+every proposal, disposition, spend, and divergence auditable (thirteen cycles, three
+menus). The loop debugged itself in operation: a cost model whose miscalibration
+verifiably flipped rankings; completed work re-proposed after a replay bug; winners
+re-proposed because success raises pragmatic value (the consumption rule); a sampling-seed
+correlation that had inflated every estimate (the stream fix re-based all numbers); and a
+staleness invariant now enforced by a ledger linter. Eleven adversarial reviews (isolated
+agents, gate+contract briefs only) shaped the claims as much as the runs did.
+
+\begin{figure}[t]\centering
+\includegraphics[width=.86\linewidth]{fig6_architecture}
+\caption{System architecture: controller--actuator--plant with the auto-research loop and
+adversarial review harness around it.}\label{fig:arch}
+\end{figure}
+
+\begin{figure}[t]\centering
+\includegraphics[width=.8\linewidth]{fig5_compute_ledger}
+\caption{Compute ledger: the entire program to date on one DGX Spark (GB10), guard-shared
+with co-resident training jobs, contention recorded in every gate.}\label{fig:ledger}
+\end{figure}
+
+\section{Honest negatives and open questions}
+The $\geq$0.15 schedule margins did not confirm (stated by sign consistency instead);
+the \=agama readback acceptance test, recalibrated against behavioral hits on the
+clean-stream corpus, carries real but modest signal (balanced accuracy $0.68$ at
+top-$m{=}5$ vs the $0.6$ threshold; the L3 screen setting was already near-optimal and
+the rank-gain clause contributes nothing --- gate L14-readback); the
+commitment-flash reading remains directionally weaker, not refuted; the trained-bridge
+comparator awaits the PWM world-model stack; anusa\d{m}dh\=ana (cross-episode continuity),
+the modality confound, and W-space beyond J-space remain deliberately unconverged.
+
+\section{Reproducibility}
+Everything derives from configs + seeds: 40+ gate JSONs, pre-registrations with disclosed
+amendments, a decision journal, the selector ledger, and a Docker recipe (GB10/aarch64;
+hybrid architectures need \texttt{flash-linear-attention} + \texttt{causal-conv1d}).
+$\sim$18 GPU-hours total.
+
+\appendix
+\section{Glossary (dual register)}
+\begin{tabular}{ll}
+\toprule
+Sanskrit-forward & engineering gloss\\
+\midrule
+vimar\'sa / par\=a v\=ak & verbalizable reflexivity; the workspace-defining property\\
+sphura\d{t}\d{t}\=a & commitment flash; operationalized via decode-step entropy events\\
+sv\=atantrya & output freedom; operationalized as an entropy budget $\epsilon$\\
+\=agama re-cognition & readback verification through band-targeted lenses\\
+malas & failure taxonomy: no-load / no-amplify / no-persist / budget\\
+madhyam\=a / vaikhar\=i & band-internal vs output-surface articulation\\
+anusa\d{m}dh\=ana & cross-episode continuity (untested here)\\
+\bottomrule
+\end{tabular}
+\end{document}
