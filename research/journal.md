@@ -410,3 +410,12 @@
   loop is being debugged BY its own operation — anusaṃdhāna in practice.
 - Remaining on menu 2: alignment_confirm (re-measurement under independent streams),
   cross_plant_gating, write_cost_operational.
+
+## 2026-07-10 — cycle 8 (alignment_confirm under clean streams): core claim at its cleanest
+- gate_L9_alignconf: 3/3 seeds 0.30/0.35/0.35 within budget — the program's central claim
+  re-confirmed on independent streams. Alignment margin +0.07/+0.12/+0.07: consistent
+  direction, ~+0.09 size, UNCONFIRMED at the 0.1 bar (2/3 below). Paper restated.
+- Disposition divergence ledgered: selector proposed write_cost_operational; agent ran
+  alignment_confirm first (stale-belief bootstrapping — the selector replays from gates
+  the stream fix invalidated; EFE cannot see its own evidence going stale). Candidate
+  improvement for menu 3: staleness discounting on replayed observations.
