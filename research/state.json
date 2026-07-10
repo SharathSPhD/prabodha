@@ -202,7 +202,7 @@
   "L16_cap": 1.0,
   "L17_spent": 0.7,
   "L17_cap": 1.0,
-  "L18_spent": 0,
+  "L18_spent": 0.3,
   "L18_cap": 1.0
  },
  "kill_switch": false

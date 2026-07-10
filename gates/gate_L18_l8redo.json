@@ -1,0 +1,15 @@
+{
+ "loop": "L18",
+ "status": "closed",
+ "closed_at": "2026-07-10",
+ "code_gate": {
+  "verdict": "pass",
+  "evidence": "pytest green; ruff clean"
+ },
+ "domain_gate": {
+  "verdict": "pass",
+  "hypothesis": "canonical re-measurement of L8's gated grid on current code discharges the provisional stale-levels flag (review #14): either confirms >=0.05 inflation at >=2/3 alphas (supersede) or shows levels within 0.05 (stand)",
+  "evidence": "{\"summary\": {\"H_l8_levels_resolved\": {\"value\": 3.0, \"threshold\": 2.0, \"pass\": true}}, \"per_alpha\": {\"0.02\": {\"clean_gated\": 0.275, \"l8_original\": 0.375, \"delta\": -0.1}, \"0.05\": {\"clean_gated\": 0.275, \"l8_original\": 0.375, \"delta\": -0.1}, \"0.1\": {\"clean_gated\": 0.3, \"l8_original\": 0.4, \"delta\": -0.1}}, \"n_below_0.05\": 3, \"n_within_0.05\": 0, \"finding\": \"INFLATION CONFIRMED across the grid: L8 gated levels were pre-stream-fix inflated (clean-stream runs >= 0.05 lower at 3/3 alphas). L8 LEVELS FORMALLY SUPERSEDED by this gate; L8 ordering conclusions unaffected.\", \"note\": \"gated arm only (the compared quantity); same e8dose config, seed 42, post-L9 stream fix. Discharges review #14's provisional flag to a RESULT either way.\", \"registered_in\": \"configs/efe_menu8.yaml:l8_canonical_remeasure\", \"seeds\": [42], \"tier\": \"screen\"}"
+ },
+ "signoff": "standing authorization (2026-07-09)"
+}
