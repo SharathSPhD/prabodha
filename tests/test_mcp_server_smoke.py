@@ -40,7 +40,7 @@ def test_mcp_server_starts():
 def test_mcp_tools_module_imports():
     """Verify the tools module imports without errors."""
     try:
-        from integrations.mcp_server.tools import lens_tools, steer_tools, gate_tools
+        from integrations.prabodha_mcp_server.tools import lens_tools, steer_tools, gate_tools
         assert hasattr(lens_tools, "lens_map_impl")
         assert hasattr(steer_tools, "steer_generate_impl")
         assert hasattr(gate_tools, "readback_verify_impl")
@@ -54,7 +54,7 @@ def test_mcp_tools_module_imports():
 async def test_list_gates_impl_callable():
     """Verify list_gates_impl is callable and returns expected schema."""
     try:
-        from integrations.mcp_server.tools.gate_tools import list_gates_impl
+        from integrations.prabodha_mcp_server.tools.gate_tools import list_gates_impl
         result = await list_gates_impl()
         assert isinstance(result, dict)
         assert "status" in result

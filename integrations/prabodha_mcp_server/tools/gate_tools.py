@@ -25,7 +25,7 @@ async def readback_verify_impl(trace_json_path: str) -> dict[str, Any]:
       - concept_rank: int | None (concept's rank in readout, if measured)
       - error: error message (if status != "ok")
       - caveat: "readback is probabilistic and noisy; single runs not confirmatory"
-      - default_gate: "gates/gate_L9_readback.json"
+      - default_gate: "gates/gate_L14_readback.json"
     """
     try:
         readback_cmd = [
@@ -44,7 +44,7 @@ async def readback_verify_impl(trace_json_path: str) -> dict[str, Any]:
                 "concept_rank": None,
                 "error": f"readback failed: {result.stderr}",
                 "caveat": "readback is probabilistic and noisy; single runs not confirmatory",
-                "default_gate": "gates/gate_L9_readback.json",
+                "default_gate": "gates/gate_L14_readback.json",
             }
 
         # Parse output (assume CLI outputs JSON)
@@ -67,7 +67,7 @@ async def readback_verify_impl(trace_json_path: str) -> dict[str, Any]:
             "concept_rank": output_obj.get("concept_rank"),
             "error": None,
             "caveat": "readback is probabilistic and noisy; single runs not confirmatory",
-            "default_gate": "gates/gate_L9_readback.json",
+            "default_gate": "gates/gate_L14_readback.json",
         }
 
     except subprocess.TimeoutExpired:
@@ -79,7 +79,7 @@ async def readback_verify_impl(trace_json_path: str) -> dict[str, Any]:
             "concept_rank": None,
             "error": "readback timeout (>120s)",
             "caveat": "readback is probabilistic and noisy; single runs not confirmatory",
-            "default_gate": "gates/gate_L9_readback.json",
+            "default_gate": "gates/gate_L14_readback.json",
         }
     except Exception as e:
         return {
@@ -90,7 +90,7 @@ async def readback_verify_impl(trace_json_path: str) -> dict[str, Any]:
             "concept_rank": None,
             "error": str(e),
             "caveat": "readback is probabilistic and noisy; single runs not confirmatory",
-            "default_gate": "gates/gate_L9_readback.json",
+            "default_gate": "gates/gate_L14_readback.json",
         }
 
 

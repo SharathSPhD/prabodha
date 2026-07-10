@@ -17,15 +17,6 @@ from mcp.types import Tool, TextContent, CallToolResult
 logger = logging.getLogger(__name__)
 
 
-def get_prabodha_command() -> str:
-    """Return the prabodha CLI command. Try 'prabodha', fallback to module invocation."""
-    try:
-        subprocess.run(["prabodha", "--help"], check=True, capture_output=True)
-        return "prabodha"
-    except (FileNotFoundError, subprocess.CalledProcessError):
-        return "python -m prabodha"
-
-
 server = Server("prabodha-mcp")
 
 
@@ -123,7 +114,7 @@ async def list_tools() -> list[Tool]:
                 "Returns: readback verdict (accepted|rejected), top_m, gain, concept_rank. "
                 "CAVEAT (weak-signal honest negative): readback is probabilistic and noisy; "
                 "single runs are not confirmatory. Multi-seed readback at confirm tier required. "
-                "Default gate: gates/gate_L9_readback.json (readback method + thresholds). "
+                "Default gate: gates/gate_L14_readback.json (readback method + thresholds). "
                 "Requires: trace_json_path (path to output trace from steer_generate)."
             ),
             inputSchema={
@@ -167,16 +158,16 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[CallToolResult
     """Dispatch tool calls to implementations in tools/ modules."""
     try:
         if name == "lens_map":
-            from tools.lens_tools import lens_map_impl
+            from .tools.lens_tools import lens_map_impl
             result = await lens_map_impl(**arguments)
         elif name == "steer_generate":
-            from tools.steer_tools import steer_generate_impl
+            from .tools.steer_tools import steer_generate_impl
             result = await steer_generate_impl(**arguments)
         elif name == "readback_verify":
-            from tools.gate_tools import readback_verify_impl
+            from .tools.gate_tools import readback_verify_impl
             result = await readback_verify_impl(**arguments)
         elif name == "list_gates":
-            from tools.gate_tools import list_gates_impl
+            from .tools.gate_tools import list_gates_impl
             result = await list_gates_impl(**arguments)
         else:
             return [CallToolResult(content=[TextContent(type="text", text=f"Unknown tool: {name}")])]

@@ -2,7 +2,7 @@
 
 Allows the server to be invoked as: python -m prabodha_mcp_server
 """
-from server import main
+from .server import main
 import asyncio
 
 

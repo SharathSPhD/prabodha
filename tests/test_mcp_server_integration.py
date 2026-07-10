@@ -14,7 +14,7 @@ import pytest
 async def test_list_gates_returns_real_gates():
     """Verify list_gates enumerates actual gates/ directory."""
     try:
-        from integrations.mcp_server.tools.gate_tools import list_gates_impl
+        from integrations.prabodha_mcp_server.tools.gate_tools import list_gates_impl
 
         result = await list_gates_impl()
         assert result["status"] == "ok", f"list_gates failed: {result.get('error')}"
@@ -37,7 +37,7 @@ async def test_list_gates_returns_real_gates():
 async def test_list_gates_filter_by_arm():
     """Verify list_gates respects arm filter."""
     try:
-        from integrations.mcp_server.tools.gate_tools import list_gates_impl
+        from integrations.prabodha_mcp_server.tools.gate_tools import list_gates_impl
 
         result = await list_gates_impl(filter_arm="entropy_gated")
         assert result["status"] == "ok"
@@ -55,7 +55,7 @@ async def test_list_gates_filter_by_arm():
 async def test_list_gates_filter_by_concept():
     """Verify list_gates respects concept filter."""
     try:
-        from integrations.mcp_server.tools.gate_tools import list_gates_impl
+        from integrations.prabodha_mcp_server.tools.gate_tools import list_gates_impl
 
         result = await list_gates_impl(filter_concept="fire")
         assert result["status"] == "ok"
