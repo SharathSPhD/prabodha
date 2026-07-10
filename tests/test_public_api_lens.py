@@ -4,11 +4,7 @@ Concept: ārambha (inception; the public gate to the instrument).
 Source: docs/jspace_pratyabhijna_scoping.md; RULES R8 (public surface).
 Primitive: typed, docstringed functions callable by external code.
 """
-import json
-import tempfile
-from pathlib import Path
 
-import pytest
 
 
 def test_lens_fit_signature():

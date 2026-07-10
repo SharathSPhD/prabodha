@@ -4,8 +4,6 @@ Concept: ārambha (inception; the public gate to the instrument).
 Source: docs/jspace_pratyabhijna_scoping.md; RULES R8 (public surface).
 Primitive: thin wrappers over CLI modules, typed and documented for external callers.
 """
-from pathlib import Path
-from typing import Optional
 
 
 def fit(

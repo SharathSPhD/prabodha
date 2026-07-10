@@ -4,11 +4,7 @@ Concept: sākṣāt-darśana (direct seeing; the trace as a record of steering).
 Source: docs/superpowers/plans/2026-07-10-closure-master.md (I1).
 Primitive: verify that e4_cli emits valid SteerTrace JSON.
 """
-import json
-import tempfile
-from pathlib import Path
 
-import pytest
 
 
 def test_emit_trace_flag_exists():

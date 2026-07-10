@@ -4,11 +4,8 @@ Concept: niryātana (emission; data flowing to public surfaces).
 Source: docs/superpowers/plans/2026-07-10-closure-master.md (I2).
 Primitive: read-verify-export pipeline with gate-provenance enforcement.
 """
-import json
-import tempfile
 from pathlib import Path
 
-import pytest
 
 
 def test_export_app_data_script_exists():
