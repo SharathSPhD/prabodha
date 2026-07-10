@@ -1,1 +1,53 @@
-% Placeholder — to be filled in Task 3
+\label{sec:method}
+
+\subsection*{The Doctrine of Use: Five Engineering Clauses}
+
+Pratyabhij\~n\=a identifies five aspects of the workspace: {\em what} (verbalizable content),
+{\em where} (the band), {\em when} (uncommitted moments), {\em how} (re-reading), and {\em freedom} (sv\=atantrya).
+We operationalize each.
+
+\subsubsection*{What: Verbalizable Concept Codes}
+
+A concept code is a direction in the residual stream such that adding it increases the predicted probability
+of tokens associated with a verbalizable concept (e.g., ``fire'', ``metal'', ``river'').
+Such codes are constructed by fitting a linear regression on a small corpus of in-distribution examples
+and are used without further tuning on the test corpus.
+
+\subsubsection*{Where: The Workspace Band in Band Coordinates}
+
+The workspace band is the final layers (typically 24--31 on a 32-layer model) where output-logit correlation
+is high.
+Writes are applied to the residual stream at these depths, not to earlier layers.
+Writing at the wrong depth produces minimal steering effect.
+
+\subsubsection*{When: Sphura\d{t}\d{t}\=a (Commitment Flash)}
+
+At each decode step, the model's predictive distribution over the next token defines the ``committed'' output
+of the current step.
+Entropy measurements discriminate: high entropy = uncommitted moment; low entropy = moment of commitment.
+Sphura\d{t}\d{t}\=a gates writes to high-entropy moments.
+Contrast: rate-matched baselines write on a fixed schedule; greedy-decoding baselines write at all steps.
+
+\subsubsection*{How to Verify: \=Agama Re-cognition (Readback via Band-Targeted Lenses)}
+
+After writing to the band, the model reads back its own state via the residual stream.
+We verify this re-reading via a band-targeted lens: if the write succeeded, the lens readout should reflect
+the attempted concept.
+A final-target lens (fitted to output logits) will miss band content and produce false negatives.
+
+\subsubsection*{Budget: Sv\=atantrya (Freedom and Cost)}
+
+Every write reduces the model's entropy: the local cost at the write moment is large ($-1.9$ to $-2.1$ nats
+at-position) and decoding-independent.
+The trajectory-average cost depends on regime: $+0.82$ nats under greedy decoding, $-0.13$ under sampling.
+We register trajectory-average under sampling as the budget currency and set a $\pm 0.5$-nat cap.
+
+\subsubsection*{The Program as Active-Inference Loop}
+
+The research program runs 24 cycles over three experiment menus, selecting the next experiment via
+expected-free-energy (EFE) maximization.
+Beliefs replay from the program's own gate verdicts; observations are gate verdicts and safety margins;
+spend is tracked in a JSONL ledger.
+Eleven adversarial reviews (isolated agents, gate+contract briefs only) caught four classes of errors:
+cost-model miscalibration, replay bugs, sampling-seed correlations, and staleness violations.
+Every honest negative is recorded in the ledger and the commit history.
