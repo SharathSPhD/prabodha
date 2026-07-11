@@ -1,0 +1,59 @@
+name: Deploy app to Vercel
+
+# Deploys the pro web app (apps/web) to Vercel from a full CI checkout.
+# This exists because the Vercel MCP file-tree deploy truncates payloads above
+# a few files, and the app is ~59 source files — CI has the whole checkout, so
+# there is no payload limit here.
+#
+# One-time setup by the operator:
+#   1. Create a Vercel access token: https://vercel.com/account/tokens
+#   2. Add it as a repo secret:  gh secret set VERCEL_TOKEN --body '<token>'
+# The org and project IDs below are not secret (prabodha project on team ss-projects).
+# After the secret is set, every push touching apps/web auto-deploys, and the
+# workflow can also be run manually from the Actions tab (workflow_dispatch).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - '.github/workflows/vercel-deploy.yml'
+  workflow_dispatch:
+
+env:
+  VERCEL_ORG_ID: team_qIaQJRTK68ppKLeE9X3HL7jV
+  VERCEL_PROJECT_ID: prj_vT8KSo1uY5doR1le73icFMt5GX11
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to production
+        run: |
+          URL=$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          echo "Deployed to: $URL"
+          echo "DEPLOY_URL=$URL" >> "$GITHUB_STEP_SUMMARY"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
