@@ -135,20 +135,22 @@ export default function LiveStudio() {
         {/* Concept Input + Presets */}
         <div className="space-y-2">
           <label className="label">
-            Concept
+            Select one concept
             {depth === "researcher" && (
               <span className="text-xs text-slate-500 font-normal ml-2">
                 — direction vector in workspace band
               </span>
             )}
           </label>
-          <p className="text-xs text-slate-600 mb-2">Click a preset or enter a custom concept (single select)</p>
-          <div className="flex gap-2 mb-2">
+          <p className="text-xs text-slate-600 mb-2">Click a preset or enter a custom concept</p>
+          <div className="flex gap-2 mb-2" role="radiogroup" aria-label="Concept presets">
             {CONCEPT_PRESETS.map((preset) => (
               <button
                 key={preset.value}
                 onClick={() => setConcept(preset.value)}
                 disabled={loading}
+                role="radio"
+                aria-checked={concept === preset.value}
                 className={`chip text-xs transition-colors ${
                   concept === preset.value
                     ? "border-indigo-600/60 text-indigo-300 bg-indigo-900/20"
@@ -162,7 +164,11 @@ export default function LiveStudio() {
           <input
             type="text"
             value={concept}
-            onChange={(e) => setConcept(e.target.value)}
+            onChange={(e) => {
+              // Clear preset selection when custom text is entered
+              const inputValue = e.target.value;
+              setConcept(inputValue);
+            }}
             disabled={loading}
             className="input text-sm"
             placeholder="Or enter a custom concept..."
