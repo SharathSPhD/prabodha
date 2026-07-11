@@ -71,3 +71,20 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// Lightweight health probe for the client (avoids POSTing an invalid empty request just to
+// detect the gateway). Returns { online: boolean } — online only when the gateway /health is 200.
+export async function GET() {
+  if (!STEER_GATEWAY_URL || !STEER_GATEWAY_SECRET) {
+    return NextResponse.json({ online: false, reason: "not_configured" });
+  }
+  try {
+    const res = await fetch(`${STEER_GATEWAY_URL}/health`, {
+      headers: { Authorization: `Bearer ${STEER_GATEWAY_SECRET}` },
+      signal: AbortSignal.timeout(8000),
+    });
+    return NextResponse.json({ online: res.ok });
+  } catch {
+    return NextResponse.json({ online: false, reason: "unreachable" });
+  }
+}

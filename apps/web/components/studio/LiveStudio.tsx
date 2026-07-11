@@ -30,23 +30,14 @@ export default function LiveStudio() {
   const { loading, error, tokens, episode, done, steer, cancel } =
     useSSESteer();
 
-  // Check if gateway is available on mount
+  // Check if the gateway is available on mount via the lightweight GET health probe
+  // (no more POSTing an invalid empty request that returned a spurious 400).
   useEffect(() => {
     const checkGateway = async () => {
       try {
-        const res = await fetch("/api/steer", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            prompt: "",
-            concept: "",
-            alpha: 0,
-            arm: "baseline",
-          }),
-        });
-        if (res.status === 503) {
-          setIsOffline(true);
-        }
+        const res = await fetch("/api/steer", { method: "GET" });
+        const data = await res.json().catch(() => ({ online: false }));
+        setIsOffline(!data.online);
       } catch {
         setIsOffline(true);
       }
@@ -350,7 +341,7 @@ export default function LiveStudio() {
               <div className="card p-4">
                 <p className="text-xs text-slate-500 mb-1">Amplitude</p>
                 <p className="font-mono text-sm text-saffron-300">
-                  {episode.alpha.toFixed(3)}
+                  {typeof episode.alpha === "number" ? episode.alpha.toFixed(3) : "—"}
                 </p>
               </div>
               <div className="card p-4">

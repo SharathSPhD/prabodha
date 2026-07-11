@@ -28,7 +28,7 @@ export default function StudioTraceViz({ tokens, done }: StudioTraceVizProps) {
   if (tokens.length === 0) return null;
 
   const currentToken = tokens[position];
-  const maxEntropy = Math.max(...tokens.map((t) => t.entropy));
+  const maxEntropy = Math.max(...tokens.map((t) => t.entropy ?? 0), 0.001);
   const width = 1000;
   const height = 300;
   const padding = 40;
@@ -137,7 +137,7 @@ export default function StudioTraceViz({ tokens, done }: StudioTraceVizProps) {
 
         {/* Entropy polyline */}
         <polyline
-          points={tokens.map((t, i) => `${xScale(i)},${yScale(t.entropy)}`).join(" ")}
+          points={tokens.map((t, i) => `${xScale(i)},${yScale(t.entropy ?? 0)}`).join(" ")}
           fill="none"
           stroke="url(#entropy-grad)"
           strokeWidth="2"
@@ -200,7 +200,7 @@ export default function StudioTraceViz({ tokens, done }: StudioTraceVizProps) {
         <div className="card p-4">
           <p className="text-xs text-slate-500 mb-1">Entropy</p>
           <p className="font-mono text-sm text-teal-300">
-            {currentToken.entropy.toFixed(3)}
+            {typeof currentToken.entropy === "number" ? currentToken.entropy.toFixed(3) : "—"}
           </p>
         </div>
 
@@ -214,13 +214,13 @@ export default function StudioTraceViz({ tokens, done }: StudioTraceVizProps) {
         <div className="card p-4">
           <p className="text-xs text-slate-500 mb-1">Write Norm</p>
           <p className="font-mono text-sm text-slate-300">
-            {currentToken.write_norm.toFixed(4)}
+            {typeof currentToken.write_norm === "number" ? currentToken.write_norm.toFixed(4) : "—"}
           </p>
         </div>
       </div>
 
       {/* Band topk (the model's inner words) */}
-      {currentToken.band_topk.length > 0 && (
+      {Array.isArray(currentToken.band_topk) && currentToken.band_topk.length > 0 && (
         <div className="card p-4 space-y-2">
           <p className="text-xs text-slate-500 font-semibold">
             Band Top-K (Inner Words)
