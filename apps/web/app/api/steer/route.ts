@@ -1,63 +1,72 @@
-import { NextRequest, NextResponse } from "next/server";
-import type { SteerRequest } from "@/lib/types/steering";
-
 /**
- * POST /api/steer
- * Proxy to the steering gateway with SSE forwarding.
- * The gateway is configured via environment variables:
- * - STEER_GATEWAY_URL: the base URL of the steering gateway
- * - STEER_GATEWAY_SECRET: Bearer token for authentication
+ * API proxy for steer gateway.
+ *
+ * Forwards requests to the real prabodha steer gateway with authentication.
+ * This handler validates the incoming request and proxies it to the gateway,
+ * allowing the frontend labs to call the steering endpoint.
  */
-export async function POST(req: NextRequest) {
-  try {
-    const gatewayUrl = process.env.STEER_GATEWAY_URL;
-    const gatewaySecret = process.env.STEER_GATEWAY_SECRET;
+import { NextRequest, NextResponse } from "next/server";
+import { STEER_GATEWAY_URL, STEER_GATEWAY_SECRET } from "@/lib/config";
 
-    if (!gatewayUrl || !gatewaySecret) {
+export async function POST(request: NextRequest) {
+  try {
+    // Validate that gateway URL and secret are configured
+    if (!STEER_GATEWAY_URL) {
       return NextResponse.json(
-        {
-          error: "Gateway not configured",
-          message:
-            "Steering gateway is offline or not configured. Showing a recorded run instead.",
-        },
+        { error: "Gateway not configured (STEER_GATEWAY_URL not set)" },
         { status: 503 }
       );
     }
 
-    const body: SteerRequest = await req.json();
+    if (!STEER_GATEWAY_SECRET) {
+      return NextResponse.json(
+        { error: "Gateway authentication not configured" },
+        { status: 503 }
+      );
+    }
 
-    // Forward to gateway
-    const gatewayRes = await fetch(`${gatewayUrl}/steer`, {
+    // Read the request body
+    const body = await request.json();
+
+    // Validate required fields
+    if (!body.prompt || !body.concept) {
+      return NextResponse.json(
+        { error: "Missing required fields: prompt and concept" },
+        { status: 400 }
+      );
+    }
+
+    // Forward to the steer gateway with authentication
+    const response = await fetch(`${STEER_GATEWAY_URL}/steer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${gatewaySecret}`,
+        Authorization: `Bearer ${STEER_GATEWAY_SECRET}`,
       },
       body: JSON.stringify(body),
     });
 
-    if (!gatewayRes.ok) {
+    if (!response.ok) {
+      const errorText = await response.text();
       return NextResponse.json(
-        { error: `Gateway error: ${gatewayRes.statusText}` },
-        { status: gatewayRes.status }
+        { error: `Gateway error: ${response.statusText}`, details: errorText },
+        { status: response.status }
       );
     }
 
-    // Stream the SSE response directly
-    return new NextResponse(gatewayRes.body, {
+    // Return the streaming response from the gateway
+    return new NextResponse(response.body, {
+      status: 200,
       headers: {
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
-        Connection: "keep-alive",
+        "X-Accel-Buffering": "no",
       },
     });
   } catch (error) {
-    console.error("Steering error:", error);
+    console.error("Steer API error:", error);
     return NextResponse.json(
-      {
-        error: "Steering request failed",
-        message: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
