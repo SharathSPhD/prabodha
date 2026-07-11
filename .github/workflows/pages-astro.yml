@@ -37,11 +37,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
-          cache-dependency-path: 'site/package-lock.json'
 
       - name: Install dependencies
-        run: cd site && npm ci
+        run: cd site && npm install --no-audit --no-fund
 
       - name: Build site (includes data extraction from gates/)
         run: cd site && npm run build
