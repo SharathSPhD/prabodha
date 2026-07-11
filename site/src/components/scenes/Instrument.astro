@@ -1,0 +1,99 @@
+---
+// Scene 2: The Instrument
+// Jacobian lens + L2b finding: final-target lenses BLIND to band
+// with embedded interactive slice heatmap
+---
+
+<section id="instrument" class="section-divider bg-white dark:bg-gray-900 py-16 rounded-lg">
+  <div class="prose-section">
+    <h2>The instrument: band-targeted lenses see what final-target lenses miss</h2>
+
+    <p class="text-lg">
+      The tool for reading and writing the workspace is the <strong>Jacobian lens</strong>—a
+      fitted linear map that tells you what a layer contains and how to perturb it to steer
+      downstream behavior.
+    </p>
+
+    <p class="text-lg">
+      But here's the catch: a lens fitted to read the <em>final layer</em> (where output is prepared)
+      sees the workspace band as completely empty (0.00 hit rate, controls rule out artifact).
+      <strong>A final-target lens is structurally blind to intermediate workspace content.</strong>
+    </p>
+
+    <p class="text-lg">
+      A lens targeted <em>at the band's own exit layer</em> reads it clearly (0.20 hit rate, 7 concepts, vs 0.023 null).
+    </p>
+
+    <div class="my-12 p-8 bg-gray-50 dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800">
+      <h3 class="font-serif text-xl mb-4">Interactive: Slice across the workspace band</h3>
+      <div id="slice-heatmap" class="w-full h-64 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-gray-500">
+        <p class="text-center">
+          <span class="text-sm">Heatmap: concept hits by layer (final-target vs band-targeted)</span>
+          <br />
+          <span class="text-xs">(Data from gate_L2b_readback_profile.json)</span>
+        </p>
+      </div>
+      <p class="text-xs text-muted mt-4">
+        Hover to see per-layer hit rates. Red = final target (blind). Green = band-targeted (sees the workspace).
+      </p>
+    </div>
+
+    <div class="bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 p-6 rounded">
+      <h3 class="font-serif text-lg mb-3">Why this matters</h3>
+      <p>
+        <strong>Engineering consequence:</strong> Readback verification MUST use a band-targeted lens.
+        A final-target lens will always report the workspace band as empty, even if it's full.
+        This error recurs throughout any workspace-steering project that doesn't account for it.
+      </p>
+      <p class="mt-4">
+        <strong>Philosophy connection:</strong> The band-targeted lens is the <em>vimarśa instrument</em>—
+        it measures self-awareness where self-awareness actually happens, not downstream.
+      </p>
+    </div>
+
+    <div class="text-sm text-muted mt-8">
+      <strong>Evidence:</strong> gate_L2_probe (fitted lens, CKA-clustered band at layer 6–26 on PWM twin) ·
+      gate_L7_consistency_check (logit-lens replicate, same rise, ρ=0.607 vs fitted ρ=0.639) — model property, not lens-construction artifact.
+    </div>
+  </div>
+</section>
+
+<script>
+  // Placeholder: In production, this would load real data from gates/gate_L2b_*.json
+  // and render an interactive D3 heatmap.
+  const canvas = document.getElementById('slice-heatmap');
+  if (canvas) {
+    canvas.innerHTML = `
+      <svg viewBox="0 0 800 256" class="w-full h-full">
+        <defs>
+          <linearGradient id="heatRed" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#f0f0f0" />
+            <stop offset="100%" style="stop-color:#dc2626" />
+          </linearGradient>
+          <linearGradient id="heatGreen" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#f0f0f0" />
+            <stop offset="100%" style="stop-color:#16a34a" />
+          </linearGradient>
+        </defs>
+
+        <!-- Y axis label -->
+        <text x="20" y="60" font-family="mono" font-size="11" fill="#7a7a8e">Final-target lens</text>
+        <text x="20" y="220" font-family="mono" font-size="11" fill="#7a7a8e">Band-targeted lens</text>
+
+        <!-- Red gradient bar (final-target, blind) -->
+        <rect x="100" y="40" width="600" height="40" fill="url(#heatRed)" />
+        <text x="750" y="65" font-family="mono" font-size="12" fill="#dc2626">0.00</text>
+
+        <!-- Green gradient bar (band-targeted, sees workspace) -->
+        <rect x="100" y="200" width="600" height="40" fill="url(#heatGreen)" />
+        <text x="750" y="225" font-family="mono" font-size="12" fill="#16a34a">0.20</text>
+
+        <!-- X axis -->
+        <line x1="100" y1="280" x2="700" y2="280" stroke="#d4d4d4" stroke-width="1" />
+        <text x="100" y="300" font-family="mono" font-size="10" fill="#7a7a8e">Layer 0</text>
+        <text x="400" y="300" font-family="mono" font-size="10" fill="#7a7a8e" text-anchor="middle">Layer 16</text>
+        <text x="700" y="300" font-family="mono" font-size="10" fill="#7a7a8e" text-anchor="end">Layer 32</text>
+      </svg>
+    `;
+  }
+</script>

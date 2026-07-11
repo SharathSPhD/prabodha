@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-base leading-relaxed;
+  }
+
+  h1 {
+    @apply font-serif text-4xl md:text-5xl font-semibold leading-tight;
+  }
+
+  h2 {
+    @apply font-serif text-3xl md:text-4xl font-semibold leading-snug;
+  }
+
+  h3 {
+    @apply font-serif text-xl md:text-2xl font-semibold;
+  }
+
+  p {
+    @apply text-base leading-relaxed text-gray-900 dark:text-gray-100;
+  }
+
+  a {
+    @apply text-accent hover:underline;
+  }
+
+  code {
+    @apply font-mono text-sm bg-gray-100 dark:bg-gray-900 px-1.5 py-0.5 rounded text-accent;
+  }
+
+  pre {
+    @apply bg-gray-100 dark:bg-gray-900 rounded-lg p-4 overflow-x-auto;
+  }
+}
+
+@layer components {
+  .section-divider {
+    @apply my-24 md:my-32;
+  }
+
+  .prose-section {
+    @apply max-w-2xl mx-auto px-4 md:px-8;
+  }
+
+  .cta-button {
+    @apply inline-block px-6 py-3 bg-accent text-white font-semibold rounded hover:opacity-90 transition-opacity;
+  }
+
+  .secondary-button {
+    @apply inline-block px-6 py-3 border-2 border-accent text-accent font-semibold rounded hover:bg-accent hover:text-white transition-colors;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 shadow-sm hover:shadow-md transition-shadow;
+  }
+
+  .band-visualization {
+    @apply relative h-96 bg-gradient-to-b from-primary via-band to-gray-800 rounded-lg overflow-hidden;
+  }
+}
+
+/* Depth toggle styles */
+.depth-toggle {
+  @apply fixed bottom-4 right-4 z-40 flex gap-2;
+}
+
+.depth-button {
+  @apply px-3 py-2 text-xs font-semibold rounded-lg border-2 transition-colors cursor-pointer;
+}
+
+.depth-button.active {
+  @apply bg-accent text-white border-accent;
+}
+
+.depth-button.inactive {
+  @apply bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-accent;
+}
+
+.researcher-only {
+  @apply hidden;
+}
+
+.depth-researcher .researcher-only {
+  @apply block;
+}
+
+.explorer-only {
+  @apply block;
+}
+
+.depth-researcher .explorer-only {
+  @apply hidden;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

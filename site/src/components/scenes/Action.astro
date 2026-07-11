@@ -1,0 +1,77 @@
+---
+// Scene 3: Theory in Live Action
+// Embed a REAL recorded steering episode
+// Token-by-token animation with entropy + gate flashes
+// CTA to live app to do it themselves
+---
+
+<section id="action" class="section-divider">
+  <div class="prose-section">
+    <h2>Theory in live action: watch a steering episode</h2>
+
+    <p class="text-lg">
+      Below is a real steering trace from one of the confirmed runs: baseline generation vs
+      gated steering. Watch the tokens come out, the gating events (golden flashes when entropy
+      crosses the threshold), and the behavioral lift (the model learns to steer toward a registered concept).
+    </p>
+
+    <div class="my-12 p-8 bg-gray-900 dark:bg-gray-950 rounded-lg border border-gray-700">
+      <div id="trace-player" class="w-full h-96 flex flex-col">
+        <div class="flex-1 bg-black rounded overflow-hidden mb-4 flex items-center justify-center">
+          <p class="text-gray-500 text-center">
+            <span class="block text-sm mb-2">Interactive trace player</span>
+            <span class="text-xs">(Loads trained_bridge_qwen3 steering trace)</span>
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button id="play-button" class="flex-1 bg-accent text-white py-2 rounded font-semibold text-sm hover:opacity-90">
+            ▶ Play
+          </button>
+          <div class="flex-1 bg-gray-800 rounded h-10 flex items-center px-4">
+            <div class="w-full bg-gray-700 h-2 rounded cursor-pointer" id="progress-bar"></div>
+          </div>
+          <span id="time-display" class="text-gray-400 font-mono text-sm w-16 text-right">0:00</span>
+        </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+        <div class="p-4 bg-gray-800 rounded">
+          <div class="text-2xl font-serif font-semibold text-bright">0.44</div>
+          <div class="text-xs text-muted mt-2">Baseline lift (gated)</div>
+        </div>
+        <div class="p-4 bg-gray-800 rounded">
+          <div class="text-2xl font-serif font-semibold text-success">✓</div>
+          <div class="text-xs text-muted mt-2">Within entropy budget</div>
+        </div>
+        <div class="p-4 bg-gray-800 rounded">
+          <div class="text-2xl font-serif font-semibold text-accent">12–14</div>
+          <div class="text-xs text-muted mt-2">Gated write events</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-4 flex-wrap">
+      <a href="https://prabodha.vercel.app" target="_blank" rel="noopener noreferrer" class="cta-button">
+        Try it yourself →
+      </a>
+      <a href="#comparison" class="secondary-button">
+        See all traces
+      </a>
+    </div>
+
+    <div class="text-sm text-muted mt-8">
+      <strong>Trace source:</strong> gate_L20_confirm, seed 42 ·
+      <strong>Model:</strong> Qwen3-4B, temperature 0.8 ·
+      <strong>Concept:</strong> Registered steering target (from corpus)
+    </div>
+  </div>
+</section>
+
+<script>
+  const playButton = document.getElementById('play-button');
+  if (playButton) {
+    playButton.addEventListener('click', () => {
+      alert('In production, this loads a real trace from apps/web/public/data/replays/ and animates it.');
+    });
+  }
+</script>

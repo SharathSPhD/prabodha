@@ -1,0 +1,92 @@
+---
+// Scene 4: Transfer — The recipe that transfers
+// amplitude ∝ 1/lens-strength
+---
+
+<section id="transfer" class="section-divider">
+  <div class="prose-section">
+    <h2>The recipe that transfers: geometry doesn't, method does</h2>
+
+    <p class="text-lg">
+      Steering a Nemotron-Mini-4B works great with a registered recipe: entropy gating, amplitude
+      α=0.1, write site at layer 20, etc. The question: does it work on a different model?
+    </p>
+
+    <p class="text-lg">
+      <strong>Direct transfer (naive):</strong> Copy the exact recipe to Qwen3-4B, unmodified.
+      <em>Result: fails flat. Lift +0.05, nowhere near the 0.2 threshold.</em>
+    </p>
+
+    <p class="text-lg">
+      <strong>Why?</strong> Qwen3's band-exit Jacobians are ~10× weaker in transport strength
+      (max‖J‖/√d) than Nemotron's. The geometry doesn't transfer. But the method does.
+    </p>
+
+    <div class="my-12 bg-gradient-to-r from-warning/10 to-success/10 border border-warning/50 rounded-lg p-8">
+      <h3 class="font-serif text-xl mb-6">The calibration recipe</h3>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h4 class="font-semibold text-sm mb-3 uppercase tracking-wide">Step 1: Probe</h4>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            Run a small dose-response scan on the target model to find candidate write sites
+            and measure the Jacobian transport strength at each site.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-3 uppercase tracking-wide">Step 2: Scale</h4>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            Compute <code>α_target = α_source × (J_source / J_target)</code>.
+            <br />
+            <strong>The rule:</strong> amplitude ∝ 1/lens-strength.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-3 uppercase tracking-wide">Step 3: Steer</h4>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            Run the full protocol (entropy gating, τ from the target's baseline,
+            readback verify) with the scaled amplitude on the target's calibrated site.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-3 uppercase tracking-wide">Step 4: Confirm</h4>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            Verify within budget and above threshold (≥ 0.2 lift) on ≥3 independent seeds.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-lg font-semibold">
+      Result on Qwen3-4B (site 24, α=0.3, 3 independent seeds):
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-4 my-8">
+      <div class="card">
+        <div class="text-sm text-muted uppercase tracking-wide">Gated lift</div>
+        <div class="text-3xl font-serif font-semibold text-success">0.40</div>
+        <div class="text-xs text-gray-600 dark:text-gray-400 mt-2">vs prefill 0.17</div>
+      </div>
+      <div class="card">
+        <div class="text-sm text-muted uppercase tracking-wide">Entropy cost</div>
+        <div class="text-3xl font-serif font-semibold text-success">−0.13</div>
+        <div class="text-xs text-gray-600 dark:text-gray-400 mt-2">Within ±0.5 nats budget</div>
+      </div>
+    </div>
+
+    <div class="bg-green-50 dark:bg-green-950 border-l-4 border-success p-6 rounded">
+      <p class="font-semibold mb-2">The paper's one-line summary:</p>
+      <p class="text-lg italic">
+        "The method transfers; the geometry does not."
+      </p>
+    </div>
+
+    <div class="text-sm text-muted mt-8">
+      <strong>Evidence:</strong> gate_L13_recipe (first calibrated transfer on Qwen3) ·
+      gate_L14_multiseed (confirmed at 4 seeds, 0.33–0.48 lift, all above threshold)
+    </div>
+  </div>
+</section>

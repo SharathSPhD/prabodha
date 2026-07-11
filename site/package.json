@@ -1,0 +1,21 @@
+{
+  "name": "prabodha-pages",
+  "version": "1.0.0",
+  "description": "Prabodha: recognition-gated workspace steering — dynamic story-driven site",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/build-data.mjs && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^4.14.0",
+    "@astrojs/tailwind": "^5.0.0",
+    "tailwindcss": "^3.4.0",
+    "d3": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  }
+}
