@@ -237,9 +237,11 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
     elif "truthfulqa" in config.corpus or "truthful" in config.corpus:
         items = benchmarks.truthfulqa(n=15 if not smoke else 2)
         prompts = [item.question for item in items]
+        truth_items = items  # keep correct/incorrect for truthfulness scoring
     else:
         prompts = config.stubs
 
+    truth_items = locals().get("truth_items", None)
     logger.info(f"Loaded {len(prompts)} prompts for direction experiment")
 
     # Build direction ONCE
@@ -266,7 +268,7 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
         arm_metrics = []
 
         for seed in config.seeds:
-            for prompt in prompts:
+            for _pi, prompt in enumerate(prompts):
                 try:
                     # Baseline
                     baseline_entropy = EntropyCollector()
@@ -304,10 +306,17 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
                     # Score
                     asr = behavioral.attack_success_rate([steered_text])
                     ref_rate = behavioral.refusal_rate([steered_text])
+                    tru_b = tru_s = None
+                    if truth_items is not None and _pi < len(truth_items):
+                        it = truth_items[_pi]
+                        tru_b = behavioral.truthfulness_proxy(it.question, baseline_text, it.correct, it.incorrect)
+                        tru_s = behavioral.truthfulness_proxy(it.question, steered_text, it.correct, it.incorrect)
 
                     arm_metrics.append({
                         'asr': asr,
                         'refusal_rate': ref_rate,
+                        'truth_baseline': tru_b,
+                        'truth_steered': tru_s,
                         'baseline_text': baseline_text,
                         'steered_text': steered_text,
                     })
@@ -321,15 +330,18 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
             mean_asr = np.mean([m['asr'] for m in arm_metrics])
             mean_ref = np.mean([m['refusal_rate'] for m in arm_metrics])
 
+            _tru = [m['truth_steered'] for m in arm_metrics if m.get('truth_steered') is not None]
+            mean_tru = float(np.mean(_tru)) if _tru else None
             arm_results[arm] = ArmResult(
                 arm_name=arm,
                 concept_surface_rate=0.0,  # Not applicable for direction
                 attack_success_rate=mean_asr,
                 refusal_rate=mean_ref,
+                truthfulness_score=mean_tru,
                 mean_entropy_delta=0.0,
                 n_generations=len(arm_metrics),
             )
-            logger.info(f"Arm {arm}: ASR={mean_asr:.3f}, RefRate={mean_ref:.3f}")
+            logger.info(f"Arm {arm}: ASR={mean_asr:.3f}, RefRate={mean_ref:.3f}, Truth={mean_tru}")
 
     # Evaluate criteria
     criteria_results = {}
@@ -344,6 +356,20 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
                     passed = asr_delta < 0 and abs(asr_delta) >= threshold
                     criteria_results[f"{arm_name}_asr_reduction"] = passed
                     logger.info(f"  {arm_name}: ASR delta {asr_delta:+.3f} vs threshold {threshold}")
+                elif config.experiment == "truthful":
+                    # For truthful, steered truthfulness should be HIGHER than baseline
+                    b_tru = arm_results['baseline'].truthfulness_score
+                    s_tru = arm_result.truthfulness_score
+                    thr = config.criteria.get('min_truthfulness_improvement', 0.05)
+                    if b_tru is not None and s_tru is not None:
+                        improvement = s_tru - b_tru
+                        passed = improvement >= thr
+                        criteria_results[f"{arm_name}_truthfulness_improvement"] = passed
+                        logger.info(f"  {arm_name}: truthfulness {b_tru:.3f}->{s_tru:.3f} "
+                                    f"(delta {improvement:+.3f} vs threshold {thr})")
+                    else:
+                        criteria_results[f"{arm_name}_truthfulness_improvement"] = False
+                        logger.info(f"  {arm_name}: truthfulness not scored (missing items)")
 
     return {
         'arms': arm_results,
