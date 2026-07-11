@@ -215,7 +215,6 @@ def fig8_fire_case_slice():
     Otherwise, dispatch a GPU job to compute slice data and export via slice_vis.html + screenshot.
     """
     import shutil
-    import glob
 
     # Check if pre-rendered fire-case slice PNG exists in outputs/
     candidates = list(ROOT.glob("outputs/**/fire*slice*.png")) + \
