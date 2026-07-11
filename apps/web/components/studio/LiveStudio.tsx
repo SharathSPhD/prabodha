@@ -5,6 +5,7 @@ import { useSSESteer } from "@/lib/hooks/useSSESteer";
 import { getDepthMode } from "@/lib/depth-toggle";
 import type { SteeringArm } from "@/lib/types/steering";
 import { Play, Pause, Send, AlertCircle } from "lucide-react";
+import { HelpTooltip } from "@/components/ui/HelpTooltip";
 import StudioTraceViz from "./StudioTraceViz";
 
 const CONCEPT_PRESETS = [
@@ -77,15 +78,22 @@ export default function LiveStudio() {
               Gateway Offline
             </h3>
             <p className="text-sm text-slate-400 mb-4">
-              The steering gateway is not available. You can still explore the
-              studio interface, or view pre-recorded runs in Replay mode.
+              Live steering is unavailable (admin-run GB10 gateway is offline). You can still explore the studio interface, replay pre-recorded runs, or bring your own model (BYOK). Live steering steering updates are available once the gateway comes back online.
             </p>
-            <a
-              href="/theatre"
-              className="btn-secondary text-sm"
-            >
-              View Recorded Runs
-            </a>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="/theatre"
+                className="btn-secondary text-sm"
+              >
+                View Recorded Runs
+              </a>
+              <a
+                href="/theatre?tab=byok"
+                className="btn-secondary text-sm"
+              >
+                Try BYOK Mode
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -134,6 +142,7 @@ export default function LiveStudio() {
               </span>
             )}
           </label>
+          <p className="text-xs text-slate-600 mb-2">Click a preset or enter a custom concept (single select)</p>
           <div className="flex gap-2 mb-2">
             {CONCEPT_PRESETS.map((preset) => (
               <button
@@ -172,6 +181,7 @@ export default function LiveStudio() {
           <div className="space-y-2">
             <label className="label">
               Amplitude (α)
+              <HelpTooltip text="Controls the strength of the steering write. Higher values = stronger direction influence, bounded by entropy budget ±0.5 nats. Typical range: 0.1–0.5." />
               {depth === "researcher" && (
                 <span className="text-xs text-slate-500 font-normal ml-2">
                   — write norm
@@ -205,7 +215,10 @@ export default function LiveStudio() {
 
           {/* Timing arm */}
           <div className="space-y-2">
-            <label className="label">Timing Arm</label>
+            <label className="label">
+              Timing Arm
+              <HelpTooltip text="Baseline: no steering. Gated: injects at sphuraṭṭā (entropy-gated moments). Continuous: every step. Logit-bias: output layer only." />
+            </label>
             <select
               value={arm}
               onChange={(e) => setArm(e.target.value as SteeringArm)}
@@ -229,6 +242,7 @@ export default function LiveStudio() {
           <div className="space-y-2">
             <label className="label">
               Site Layer
+              <HelpTooltip text="The workspace band layer where the write occurs. Qwen3: 6–30 (default 24); Nemotron: 6–26 (default 24). Higher layers = closer to output, stronger behavioral coupling." />
               {depth === "researcher" && (
                 <span className="text-xs text-slate-500 font-normal ml-2">
                   — workspace band depth
