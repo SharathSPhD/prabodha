@@ -215,3 +215,24 @@ All configs YAML; schema-validated; seeds explicit.
   (a/b/c: proceed-with-caveats / 27B retry / prune) awaits operator sign-off. NEXT-LOOP RULE
   from review #2: pre-register FIXED bands before running modulation (no band refit in the
   same run that scores modulation).
+- v0.21 (L22 benchmark loop, PR #55/#56, 2026-07-11): NEW INSTRUMENT — e4_cli
+  --readback-lens (tulanā): decode readback through a second lens while the write port
+  stays on --mid-lens; enables paired instrument comparisons on identical writes.
+  BENCHMARK CONSOLIDATION (gate_L22_benchmark, domain=pass, all numbers derived by
+  scripts/tools/compose_L22.py from gate JSONs): entropy-gated steering delivers ~66%
+  of continuous lift at ~29% of the writes = 2.32x mean lift-per-write (range
+  1.83–3.25), sign-consistent 6/6 clean-stream seed x alpha cells (gate_L18_l8redo s42
+  + gate_L19_l8ms s123/777) — the affirmative efficiency framing of the L8 schedule-
+  efficiency finding, now at confirm strength on clean streams. LENS HEAD-TO-HEAD
+  (80-pair concept x stub grid, exact McNemar; design lesson from review #16 applied:
+  stub readback is deterministic, replication axis = probe grid, not seeds): at
+  alpha=0.3 BOTH instruments saturate (band 1.00 vs final 0.95) — pre-registered
+  falsifier fired, band-lens necessity claim WITHDRAWN at that dose; at the alpha=0.1
+  transition dose band 0.475 vs final 0.2375 (p=2.1e-05) — FAIL-ON-MARGIN vs the
+  registered 0.3 gap, direction decisive, NOT re-rolled. Review #19 (isolated): PASS,
+  no fourth reasoning error; two Tier-1 clarifications applied (McNemar randomness
+  model under determinism; mean-of-ratios derivation disclosure) + an "equivalence from
+  null p" verdict-upgrade scrubbed from four surfaces. Flowcharts (PR #54): mermaid
+  architecture diagrams in README + Astro Pages + app + paper fig6, module names
+  ground-truthed against src/. Propagation (PR #56): Benchmark scene (Pages),
+  BenchmarkPanel (/results), README benchmark section, paper Finding 10.
