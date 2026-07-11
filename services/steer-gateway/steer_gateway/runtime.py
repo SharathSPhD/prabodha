@@ -4,8 +4,10 @@ Concept: the gateway is the app-facing proxy; this module holds the steering log
 reused from e4_cli (model loading, lens, injector, trace emission).
 
 Primitive: SteeringRuntimeAdapter loads model+lens once at startup, exposes
-async steer_stream(prompt, concept, alpha, arm) that yields TraceToken per step
-then a completed LiveEpisode.
+async steer_stream(prompt, concept, alpha, arm, direction_spec) that yields TraceToken per step
+then a completed LiveEpisode. Supports concept-based, contrastive, and vector steering modes.
+
+Extension: direction_spec enables contrastive (CAA-style) and explicit vector steering modes.
 """
 import asyncio
 import logging
@@ -21,7 +23,8 @@ from prabodha.lens.e1_metrics import _concept_candidate_ids
 from prabodha.steering.injector import ResidualInjector, entropy_observer
 from prabodha.steering.timing import EntropyGated, Continuous, PrefillOnly, EveryK
 from prabodha.steering.writer import plan_write
-from steer_gateway.schema import LiveEpisode
+from prabodha.steering.direction import contrastive_direction, apply_direction_write
+from steer_gateway.schema import LiveEpisode, DirectionSpec
 
 logger = logging.getLogger(__name__)
 
@@ -122,8 +125,58 @@ class SteeringRuntimeAdapter:
 
         logger.info("Runtime initialized: model_id=%s, site_layer=%d", self.model_id, self.site_layer)
 
+    def _extract_residuals_at_site(self, texts: list[str]) -> np.ndarray:
+        """Extract residual activations at site_layer for a batch of texts.
+
+        Args:
+            texts: List of text strings.
+
+        Returns:
+            Activations array of shape [len(texts), hidden_dim] (float32, CPU numpy).
+
+        This method forward-passes each text through the model with hooks attached
+        to the site_layer, capturing the residual stream at the last token position.
+        Used for contrastive direction computation.
+        """
+        import torch
+        import jlens
+
+        activations_list = []
+        lm = jlens.from_hf(self.hf, self.tok)
+        layer_module = lm.layers[self.site_layer]
+
+        # Hook to capture residual activations at the site layer (last token only)
+        captured_acts = None
+
+        def hook_fn(module, input, output):
+            nonlocal captured_acts
+            # output is the residual stream tensor [batch, seq_len, hidden_dim]
+            if isinstance(output, tuple):
+                output = output[0]
+            # Capture activations at the last token position
+            captured_acts = output[:, -1, :].detach().float().cpu()
+
+        hook_handle = layer_module.register_forward_hook(hook_fn)
+
+        try:
+            with torch.no_grad():
+                for text in texts:
+                    ids = self.tok(text, return_tensors="pt")["input_ids"].to(self.hf.device)
+                    _ = self.hf(ids)
+                    if captured_acts is not None:
+                        activations_list.append(captured_acts.numpy())
+                    captured_acts = None
+        finally:
+            hook_handle.remove()
+
+        if not activations_list:
+            raise ValueError("No activations captured; check text encoding")
+
+        return np.array(activations_list, dtype=np.float32)
+
     async def steer_stream(
-        self, prompt: str, concept: str, alpha: Optional[float], arm: str
+        self, prompt: str, concept: str, alpha: Optional[float], arm: str,
+        direction_spec: Optional[DirectionSpec] = None
     ) -> AsyncGenerator[TraceToken | LiveEpisode, None]:
         """Steer an episode: generate baseline, then steered continuation.
 
@@ -133,9 +186,11 @@ class SteeringRuntimeAdapter:
 
         Args:
             prompt: User prompt
-            concept: Steering concept (e.g., "fire", "honesty")
+            concept: Steering concept (e.g., "fire", "honesty") — used for identification
             alpha: Steering intensity (None -> use default from lens)
             arm: "baseline", "entropy_gated", "continuous", "prefill_only", or "rate_matched"
+            direction_spec: Optional DirectionSpec for contrastive or vector steering.
+                           If None, uses concept-based steering (legacy mode).
         """
         try:
             # Use default alpha if not provided
@@ -144,35 +199,89 @@ class SteeringRuntimeAdapter:
 
             alpha = float(alpha)
 
-            # Resolve concept to token ids (single-token preference, but graceful fallback)
-            logger.info("Resolving concept '%s' to token ids", concept)
-            devs = []
-            cids = _concept_candidate_ids(
-                self.tok, concept, None, devs, policy="single_token_only"
-            )
+            # Determine steering direction and source
+            direction_source = None
+            cmd = None
 
-            if not cids:
-                # Fallback: try multi-token or report error
-                logger.warning("Concept '%s' has no single-token variant; attempting multi-token", concept)
-                # For now, we'll encode the concept string directly if it fails
-                try:
-                    enc = self.tok(concept, return_tensors="pt")
-                    concept_ids = [int(cid) for cid in enc["input_ids"][0].tolist() if cid != self.tok.eos_token_id]
-                    if not concept_ids:
-                        raise ValueError(f"Concept '{concept}' resolves to no token ids")
-                except Exception as e:
-                    logger.error("Failed to resolve concept '%s': %s", concept, e)
-                    raise
+            if direction_spec is not None and direction_spec.mode != "concept":
+                # CONTRASTIVE or VECTOR steering mode
+                if direction_spec.mode == "contrastive":
+                    logger.info("Computing contrastive direction from %d positive and %d negative exemplars",
+                               len(direction_spec.pos_texts or []), len(direction_spec.neg_texts or []))
+                    if not direction_spec.pos_texts or not direction_spec.neg_texts:
+                        raise ValueError("Contrastive mode requires both pos_texts and neg_texts")
+
+                    # Extract residual activations
+                    pos_acts = self._extract_residuals_at_site(direction_spec.pos_texts)
+                    neg_acts = self._extract_residuals_at_site(direction_spec.neg_texts)
+
+                    # Compute direction via contrastive_direction
+                    direction = contrastive_direction(pos_acts, neg_acts, normalize=True)
+                    logger.info("Computed contrastive direction (dim=%d, norm=%.3f)",
+                               len(direction), float(np.linalg.norm(direction)))
+
+                    # Create WriteCommand via apply_direction_write
+                    cmd = apply_direction_write(
+                        direction, layer=self.site_layer, alpha=alpha,
+                        norm_cap_rel=1.0, positions="last",
+                        meta={"concept": concept, "n_pos": len(direction_spec.pos_texts),
+                              "n_neg": len(direction_spec.neg_texts)}
+                    )
+                    direction_source = f"contrastive:{concept}({len(direction_spec.pos_texts)}+/{len(direction_spec.neg_texts)}-)"
+
+                elif direction_spec.mode == "vector":
+                    logger.info("Using explicit vector steering (dim=%d)", len(direction_spec.vector or []))
+                    if not direction_spec.vector:
+                        raise ValueError("Vector mode requires a vector field")
+
+                    # Normalize the provided vector
+                    vector_array = np.asarray(direction_spec.vector, dtype=np.float64)
+                    vector_norm = float(np.linalg.norm(vector_array))
+                    if vector_norm == 0:
+                        raise ValueError("Provided vector has zero norm")
+                    direction = vector_array / vector_norm
+
+                    # Create WriteCommand
+                    cmd = apply_direction_write(
+                        direction, layer=self.site_layer, alpha=alpha,
+                        norm_cap_rel=1.0, positions="last",
+                        meta={"concept": concept, "type": "vector"}
+                    )
+                    direction_source = "vector"
+
+                else:
+                    raise ValueError(f"Unknown direction_spec.mode: {direction_spec.mode}")
             else:
-                concept_ids = sorted(set(cids.values()))
+                # CONCEPT steering mode (legacy, default)
+                logger.info("Resolving concept '%s' to token ids", concept)
+                devs = []
+                cids = _concept_candidate_ids(
+                    self.tok, concept, None, devs, policy="single_token_only"
+                )
 
-            logger.info("Resolved concept to ids: %s", concept_ids)
+                if not cids:
+                    # Fallback: try multi-token or report error
+                    logger.warning("Concept '%s' has no single-token variant; attempting multi-token", concept)
+                    # For now, we'll encode the concept string directly if it fails
+                    try:
+                        enc = self.tok(concept, return_tensors="pt")
+                        concept_ids = [int(cid) for cid in enc["input_ids"][0].tolist() if cid != self.tok.eos_token_id]
+                        if not concept_ids:
+                            raise ValueError(f"Concept '{concept}' resolves to no token ids")
+                    except Exception as e:
+                        logger.error("Failed to resolve concept '%s': %s", concept, e)
+                        raise
+                else:
+                    concept_ids = sorted(set(cids.values()))
 
-            # Plan the write command (steering direction + alpha)
-            ids = sorted(concept_ids)
-            norm_cap_rel = 1.0  # don't cap (alpha already scales)
-            cmd = plan_write(self.J, self.U[ids], self.site_layer, ids,
-                           alpha=alpha, norm_cap_rel=norm_cap_rel, positions="last")
+                logger.info("Resolved concept to ids: %s", concept_ids)
+
+                # Plan the write command (steering direction + alpha)
+                ids = sorted(concept_ids)
+                norm_cap_rel = 1.0  # don't cap (alpha already scales)
+                cmd = plan_write(self.J, self.U[ids], self.site_layer, ids,
+                               alpha=alpha, norm_cap_rel=norm_cap_rel, positions="last")
+                direction_source = f"concept:{concept}"
 
             # Get the layer module for injection
             import jlens
@@ -263,6 +372,7 @@ class SteeringRuntimeAdapter:
                 baseline_text=baseline_text,
                 steered_text=steered_text,
                 trace=steer_trace,
+                direction_source=direction_source,
                 readback=None,
                 behavioral_hit=None,
                 created_at=now,

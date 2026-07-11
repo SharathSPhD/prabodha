@@ -10,7 +10,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
 from steer_gateway.runtime import SteeringRuntimeAdapter
-from steer_gateway.schema import LiveEpisode
+from steer_gateway.schema import LiveEpisode, DirectionSpec
 
 # Secure logging - never log secrets
 logger = logging.getLogger(__name__)
@@ -75,11 +75,17 @@ app = FastAPI(
 )
 
 class SteerRequest(BaseModel):
-    """Interface I3 (master plan): prompt + concept required; alpha optional; arm fixed default."""
+    """Interface I3 (master plan): prompt + concept required; alpha optional; arm fixed default.
+
+    Extension: direction_spec allows contrastive or explicit vector steering.
+    If direction_spec is provided, concept is still required for identification but not
+    used for token-based steering (direction comes from pos/neg activations or vector instead).
+    """
     prompt: str
     concept: str
     alpha: float | None = None   # None -> runtime uses the plant's calibrated default
     arm: str = "entropy_gated"
+    direction_spec: Optional[DirectionSpec] = None  # Optional contrastive or vector steering
 
 @app.get("/health")
 async def health_check():
@@ -117,6 +123,7 @@ async def steer(
             async for item in runtime.steer_stream(
                 prompt=request.prompt, concept=request.concept,
                 alpha=request.alpha, arm=request.arm,
+                direction_spec=request.direction_spec,
             ):
                 if isinstance(item, LiveEpisode):
                     episode = item
