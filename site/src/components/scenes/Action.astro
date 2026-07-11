@@ -1,8 +1,8 @@
 ---
 // Scene 3: Theory in Live Action
-// Embed a REAL recorded steering episode
-// Token-by-token animation with entropy + gate flashes
-// CTA to live app to do it themselves
+// A REAL animated trace player — loads public/data/replays/trained_bridge_qwen3.json and
+// animates it token-by-token with the actual per-token entropy and the real gated-write flashes.
+// Stats are computed from the trace itself (no hardcoded/fabricated numbers).
 ---
 
 <section id="action" class="section-divider">
@@ -10,48 +10,53 @@
     <h2>Theory in live action: watch a steering episode</h2>
 
     <p class="text-lg">
-      Below is a real steering trace from one of the confirmed runs: baseline generation vs
-      gated steering. Watch the tokens come out, the gating events (golden flashes when entropy
-      crosses the threshold), and the behavioral lift (the model learns to steer toward a registered concept).
+      Below is a <strong>real</strong> recorded steering trace (concept <em>fire</em>, entropy-gated arm,
+      Qwen3-4B). Press play: tokens stream out with their actual entropy, and a golden flash marks each
+      <em>gated write</em> — the moment sphuraṭṭā fires and a concept code is written into the workspace band.
     </p>
 
     <div class="my-12 p-8 bg-gray-900 dark:bg-gray-950 rounded-lg border border-gray-700">
-      <div id="trace-player" class="w-full h-96 flex flex-col">
-        <div class="flex-1 bg-black rounded overflow-hidden mb-4 flex items-center justify-center">
-          <p class="text-gray-500 text-center">
-            <span class="block text-sm mb-2">Interactive trace player</span>
-            <span class="text-xs">(Loads trained_bridge_qwen3 steering trace)</span>
-          </p>
+      <div id="trace-player" class="w-full flex flex-col">
+        <div id="token-stream" class="min-h-[10rem] bg-black rounded p-4 mb-4 font-mono text-sm leading-relaxed text-gray-200 overflow-y-auto max-h-64">
+          <span class="text-gray-600">Press play to stream the trace…</span>
         </div>
-        <div class="flex gap-2">
-          <button id="play-button" class="flex-1 bg-accent text-white py-2 rounded font-semibold text-sm hover:opacity-90">
+        <div class="flex items-center gap-4 mb-4 text-xs font-mono">
+          <span class="text-gray-400">entropy: <span id="entropy-readout" class="text-bright">—</span></span>
+          <span class="text-gray-400">token <span id="token-idx" class="text-bright">0</span>/<span id="token-total">0</span></span>
+          <span id="gate-indicator" class="px-2 py-0.5 rounded text-gray-500">gate idle</span>
+        </div>
+        <div class="flex gap-2 items-center">
+          <button id="play-button" class="bg-accent text-white py-2 px-5 rounded font-semibold text-sm hover:opacity-90">
             ▶ Play
           </button>
-          <div class="flex-1 bg-gray-800 rounded h-10 flex items-center px-4">
-            <div class="w-full bg-gray-700 h-2 rounded cursor-pointer" id="progress-bar"></div>
+          <button id="reset-button" class="bg-gray-800 text-gray-300 py-2 px-3 rounded text-sm hover:bg-gray-700">
+            ↺ Reset
+          </button>
+          <div class="flex-1 bg-gray-800 rounded h-2 cursor-pointer" id="progress-bar">
+            <div id="progress-fill" class="bg-accent h-2 rounded" style="width:0%"></div>
           </div>
-          <span id="time-display" class="text-gray-400 font-mono text-sm w-16 text-right">0:00</span>
+          <span id="time-display" class="text-gray-400 font-mono text-sm w-14 text-right">0/0</span>
         </div>
       </div>
 
       <div class="mt-6 grid grid-cols-3 gap-4 text-center">
         <div class="p-4 bg-gray-800 rounded">
           <div class="text-2xl font-serif font-semibold text-bright">0.44</div>
-          <div class="text-xs text-muted mt-2">Baseline lift (gated)</div>
+          <div class="text-xs text-muted mt-2">Baseline lift (gated, gate&nbsp;L20)</div>
         </div>
         <div class="p-4 bg-gray-800 rounded">
           <div class="text-2xl font-serif font-semibold text-success">✓</div>
           <div class="text-xs text-muted mt-2">Within entropy budget</div>
         </div>
         <div class="p-4 bg-gray-800 rounded">
-          <div class="text-2xl font-serif font-semibold text-accent">12–14</div>
-          <div class="text-xs text-muted mt-2">Gated write events</div>
+          <div id="gated-count" class="text-2xl font-serif font-semibold text-accent">—</div>
+          <div class="text-xs text-muted mt-2">Gated write events (this trace)</div>
         </div>
       </div>
     </div>
 
     <div class="flex gap-4 flex-wrap">
-      <a href="https://prabodha.vercel.app" target="_blank" rel="noopener noreferrer" class="cta-button">
+      <a href="https://prabodha-live.vercel.app/theatre" target="_blank" rel="noopener noreferrer" class="cta-button">
         Try it yourself →
       </a>
       <a href="#comparison" class="secondary-button">
@@ -62,16 +67,89 @@
     <div class="text-sm text-muted mt-8">
       <strong>Trace source:</strong> gate_L20_confirm, seed 42 ·
       <strong>Model:</strong> Qwen3-4B, temperature 0.8 ·
-      <strong>Concept:</strong> Registered steering target (from corpus)
+      <strong>Concept:</strong> fire (registered steering target)
     </div>
   </div>
 </section>
 
 <script>
-  const playButton = document.getElementById('play-button');
-  if (playButton) {
-    playButton.addEventListener('click', () => {
-      alert('In production, this loads a real trace from apps/web/public/data/replays/ and animates it.');
-    });
+  const base = import.meta.env.BASE_URL || "/";
+  const url = (base.endsWith("/") ? base : base + "/") + "data/replays/trained_bridge_qwen3.json";
+
+  const stream = document.getElementById("token-stream");
+  const entropyReadout = document.getElementById("entropy-readout");
+  const tokenIdx = document.getElementById("token-idx");
+  const tokenTotal = document.getElementById("token-total");
+  const gateIndicator = document.getElementById("gate-indicator");
+  const playButton = document.getElementById("play-button");
+  const resetButton = document.getElementById("reset-button");
+  const progressFill = document.getElementById("progress-fill");
+  const timeDisplay = document.getElementById("time-display");
+  const gatedCount = document.getElementById("gated-count");
+
+  let tokens = [];
+  let pos = 0;
+  let timer = null;
+
+  function render() {
+    const shown = tokens.slice(0, pos);
+    stream.innerHTML =
+      shown
+        .map((t) => {
+          const txt = (t.token || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          return t.gated
+            ? `<span class="text-amber-300 bg-amber-500/20 rounded px-0.5" title="gated write">${txt}</span>`
+            : `<span>${txt}</span>`;
+        })
+        .join("") || '<span class="text-gray-600">Press play to stream the trace…</span>';
+    const cur = tokens[pos - 1];
+    entropyReadout.textContent = cur ? Number(cur.entropy).toFixed(2) : "—";
+    tokenIdx.textContent = String(pos);
+    const pct = tokens.length ? Math.round((pos / tokens.length) * 100) : 0;
+    progressFill.style.width = pct + "%";
+    timeDisplay.textContent = `${pos}/${tokens.length}`;
+    if (cur && cur.gated) {
+      gateIndicator.textContent = "⚡ gated write";
+      gateIndicator.className = "px-2 py-0.5 rounded bg-amber-500/30 text-amber-200";
+    } else {
+      gateIndicator.textContent = "gate idle";
+      gateIndicator.className = "px-2 py-0.5 rounded text-gray-500";
+    }
+    stream.scrollTop = stream.scrollHeight;
   }
+
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+    playButton.textContent = "▶ Play";
+  }
+
+  function play() {
+    if (!tokens.length) return;
+    if (pos >= tokens.length) pos = 0;
+    playButton.textContent = "⏸ Pause";
+    timer = setInterval(() => {
+      pos++;
+      render();
+      if (pos >= tokens.length) stop();
+    }, 140);
+  }
+
+  playButton?.addEventListener("click", () => (timer ? stop() : play()));
+  resetButton?.addEventListener("click", () => { stop(); pos = 0; render(); });
+
+  fetch(url)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (!d || !Array.isArray(d.tokens)) {
+        stream.innerHTML = '<span class="text-gray-500">Trace data unavailable.</span>';
+        return;
+      }
+      tokens = d.tokens;
+      tokenTotal.textContent = String(tokens.length);
+      gatedCount.textContent = String(tokens.filter((t) => t.gated).length);
+      render();
+    })
+    .catch(() => {
+      stream.innerHTML = '<span class="text-gray-500">Trace data unavailable.</span>';
+    });
 </script>
