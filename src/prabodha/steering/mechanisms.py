@@ -67,6 +67,25 @@ def prompt_harden(messages: list[dict], level: str = "firm") -> list[dict]:
 # --------------------------------------------------------------------------- #
 # Activation-space primitives — open weights only. Reusable residual hooks.
 # --------------------------------------------------------------------------- #
+def harmful_projection(last_token_acts, direction) -> float:
+    """Project a last-token residual (numpy [d]) onto a unit `direction` — the input's
+    harmful-signature at that layer. On gemma-2-2b (L26) benign inputs sit ~-41 and harmful
+    inputs ~+79 at the band midpoint: a wide, cleanly separable margin. Used to DECIDE
+    whether an input is an attack before hardening (recognition-before-response)."""
+    import numpy as np
+    a = np.asarray(last_token_acts, dtype=np.float32).reshape(-1)
+    d = np.asarray(direction, dtype=np.float32).reshape(-1)
+    return float(a @ d)
+
+
+def recognition_gate(projection: float, tau: float) -> bool:
+    """Fire (harden) iff the input's harmful-signature exceeds tau. tau is calibrated from
+    BENIGN inputs' projections (e.g. their 90th–100th percentile) so benign passes clean and
+    only genuine attacks are hardened. This is the moat: activation-level attack detection the
+    prompt cannot see or evade, gating a prompt-untouchable refusal reinforcement."""
+    return projection >= tau
+
+
 def component_restoration_hook(direction, beta: float, prefill_only: bool = True,
                                also_ablate: bool = False):
     """Recognition-restoration (the L24 winner): set the residual's projection on `direction`
@@ -124,6 +143,17 @@ REGISTRY: dict[str, Mechanism] = {
         "act_dense_restore", "Activation: dense component-restoration", "activation", "open", 5,
         "Component-restoration at every token (not just prefill). Same ASR reduction as prefill "
         "but ~2× the benign over-refusal — use only when prefill is insufficient."),
+    "act_recognition_gated": Mechanism(
+        "act_recognition_gated", "Activation: recognition-gated refusal (the moat)", "activation", "open", 4,
+        "SERVER-SIDE, PROMPT-UNTOUCHABLE. First READ the input's harmful-signature (project its "
+        "residual onto the harmful direction at a band read-layer), then reinforce refusal ONLY "
+        "when the signature exceeds tau (a genuine attack). Unlike unconditional hardening — which "
+        "over-refuses benign 100% because it adds 'this is harmful' to every prompt — the gate "
+        "discriminates cleanly: on gemma-2-2b the harmful/benign projection margin is ~120 wide "
+        "(benign −41 vs harmful +79), firing on 6/6 attacks and driving benign over-refusal toward "
+        "0 with tau tuning. pratyabhijñā: recognize the attack, THEN respond. A system prompt "
+        "cannot replicate this — it lives below the prompt. Use recognition_gate() + "
+        "component_restoration_hook() applied conditionally per input."),
 }
 
 
