@@ -164,7 +164,7 @@ class SteeringRuntimeAdapter:
                     ids = self.tok(text, return_tensors="pt")["input_ids"].to(self.hf.device)
                     _ = self.hf(ids)
                     if captured_acts is not None:
-                        activations_list.append(captured_acts.numpy())
+                        activations_list.append(captured_acts.numpy().reshape(-1))  # [1,d]->[d] so np.array gives 2D [n,d]
                     captured_acts = None
         finally:
             hook_handle.remove()
