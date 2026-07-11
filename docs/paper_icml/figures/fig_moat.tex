@@ -1,0 +1,28 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=30pt},
+  width=0.56\columnwidth, height=0.6\columnwidth,
+  ybar, /pgf/bar width=4pt,
+  symbolic x coords={Gemma-2-2B,Llama-3.2-1B,Qwen2.5-1.5B,SmolLM2-1.7B},
+  xtick=data, x tick label style={rotate=40, anchor=east, font=\tiny},
+  label style={font=\scriptsize}, tick label style={font=\scriptsize},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\nextgroupplot[ylabel={attack success rate}, ymin=0, ymax=1.0,
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none}]
+\addplot+[fill=gray!45, draw=gray!60] coordinates {(Gemma-2-2B,0.5) (Llama-3.2-1B,0.25) (Qwen2.5-1.5B,0.333) (SmolLM2-1.7B,0.583)};
+\addplot+[fill=orange!55, draw=orange!70!black] coordinates {(Gemma-2-2B,0.25) (Llama-3.2-1B,0.083) (Qwen2.5-1.5B,0.25) (SmolLM2-1.7B,0.917)};
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(Gemma-2-2B,0.25) (Llama-3.2-1B,0.083) (Qwen2.5-1.5B,0.333) (SmolLM2-1.7B,0.917)};
+\addlegendentry{no defence}
+\addlegendentry{unconditional}
+\addlegendentry{recognition-gated}
+\nextgroupplot[ylabel={benign over-refusal}, ymin=0, ymax=1.05,
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none}]
+\addplot+[fill=orange!55, draw=orange!70!black] coordinates {(Gemma-2-2B,1.0) (Llama-3.2-1B,0.6) (Qwen2.5-1.5B,1.0) (SmolLM2-1.7B,0.0)};
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(Gemma-2-2B,0.0) (Llama-3.2-1B,0.0) (Qwen2.5-1.5B,0.2) (SmolLM2-1.7B,0.0)};
+\addlegendentry{unconditional}
+\addlegendentry{recognition-gated}
+\end{groupplot}
+\end{tikzpicture}

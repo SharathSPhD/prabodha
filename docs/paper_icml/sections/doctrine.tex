@@ -1,0 +1,42 @@
+\section{The Doctrine as Engineering Specification}
+\label{sec:doctrine}
+
+This section states the five clauses precisely. Throughout, the plant is a frozen decoder transformer with residual stream $h_\ell \in \mathbb{R}^{d}$ at layer $\ell$, unembedding $W_U$, and next-token distribution $p_t$ at decode step $t$. The Jacobian lens at layer $\ell$ is the linear transport $J_\ell = \Exp{\partial h_{\mathrm{final}} / \partial h_\ell}$, estimated over a generic text corpus, composed with the unembedding to give the read-out $\mathrm{lens}_\ell(h) = W_U J_\ell h$ \cite{JacobianLens2026}. Figure~\ref{fig:doctrine} summarises the clauses together with the gates that tested them.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_doctrine}}
+\caption{The five doctrine clauses as a pipeline. Each clause (left, with its source concept) is paired with the verification signal and the gate records that tested it (right). Gate identifiers refer to the public ledger (Appendix~\ref{app:ledger}).}
+\label{fig:doctrine}
+\end{figure}
+
+\subsection{What: Verbalizable Concept Codes}
+
+A concept code for a nameable concept $c$ (the experiments use fire, metal, river, storm, memory, dream and related stubs) is a unit direction $u_c \in \mathbb{R}^{d}$ such that adding $\alpha u_c$ to the band residual raises the probability of tokens expressing $c$. Codes are fitted by linear regression on a small in-distribution corpus and used without tuning on the test corpus. The clause asserts that only verbalizable content loads into the workspace; the loadability experiments (Section~\ref{sec:results:loadability}) test whether instructed codes surface at all, per model.
+
+\subsection{Where: The Band, in Band Coordinates}
+
+The workspace band comprises the late layers (24 to 31 on the 32-layer plants studied) where lens read-outs correlate strongly with model output. Writes target the band and are applied through the transport transpose,
+\begin{equation}
+h_\ell \leftarrow h_\ell + \alpha \, J_\ell^{\top} u_c,
+\label{eq:write}
+\end{equation}
+so that the injected direction is expressed in the coordinates the band itself articulates, rather than in raw residual coordinates. The corresponding failure mode is registered: writing the same code at the wrong depth, or reading the band with a final-target lens, should produce null results. Both predictions are confirmed (Sections~\ref{sec:results:articulation} and~\ref{sec:results:transfer}).
+
+\subsection{When: Uncommitted Moments}
+\label{sec:doctrine:when}
+
+The timing clause holds that writes succeed when the plant has not yet committed to a continuation. Commitment is measured online by next-token entropy $H_t = -\sum_v p_t(v)\log p_t(v)$; a write is permitted at step $t$ only if $H_t > \tau$, with $\tau$ self-calibrated per model as an entropy percentile on unsteered traffic. The registered contrasts are a rate-matched control (writes on a fixed schedule at the same average rate) and a prefill control (a single write before decoding). An initial variant that gated on downward entropy spikes, the most literal reading of the flash concept, failed its gate and was revised to the uncommitted-moment form; both the failure and the revision are in the ledger (Section~\ref{sec:results:timing}).
+
+\subsection{How to Verify: Band-Targeted Readback}
+
+After a write, the verifier reads the band through a lens targeted at the band's own exit and checks the attempted concept against the read-out ranking. The clause encodes the recognition principle that offered content counts as received only when the receiving system re-articulates it. Operationally it makes a sharp, testable prediction: a final-target lens is the wrong verification instrument, and analyses that use it will report false negatives on real band content. Readback quality is quantified as balanced accuracy of hit prediction (Section~\ref{sec:results:readback}).
+
+\subsection{Budget: Freedom and Its Cost}
+\label{sec:doctrine:budget}
+
+Every accepted write perturbs the plant's continuation distribution. The programme prices this in nats: the at-position cost of a write is large and decoding-independent (approximately $-2$ nats of entropy at the write position), while the trajectory-average cost depends on decoding regime ($+0.82$ nats under greedy decoding, $-0.13$ under sampling, gates L4 and L4b). The registered budget currency is trajectory-average entropy change under sampling, $\overline{\Delta H}$, capped at $\pm 0.5$ nats. A steering result within this work counts only if it lands inside the cap. The uncapped alternative is documented as a failure case: continuous writing at high amplitude lifted concept surfacing to 0.40 but cost $-2.08$ nats, violating the budget by a factor of four (gate L3), and the associated failure taxonomy (\skt{malas}: writes rejected for budget, uptake, or quality reasons) is recorded in the same gate.
+
+\subsection{Scope}
+
+The doctrine governs transparency-oriented steering: making chosen verbalizable content surface in a model's behaviour while preserving its freedom of continuation, with verified uptake. Section~\ref{sec:results:l21} reports registered experiments on what the doctrine does not provide, namely raw concept-surface throughput and downstream alignment improvements from single contrastive directions.

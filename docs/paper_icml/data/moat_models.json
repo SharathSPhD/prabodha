@@ -1,0 +1,126 @@
+{
+  "finding": "The recognition-gated moat is MODEL-DEPENDENT, predicted by whether benign/attack projections form a CLEAN GAP at the read layer. It WORKS where they do \u2014 gemma-2-2b (ASR 0.50->0.25) and Llama-3.2-1B (0.25->0.083), both at 0 benign over-refusal. It FAILS where they overlap \u2014 Qwen2.5-1.5B (ineffective) and SmolLM2-1.7B (hardening backfires, ASR 0.58->0.92). 2 of 4 models work; the clean-gap test tells you which before you deploy.",
+  "models": [
+    {
+      "model": "google/gemma-2-2b-it",
+      "read_layer": 13,
+      "tau": -6.9,
+      "clean_projection_gap": true,
+      "benign_range": [
+        -52.9,
+        -17.7
+      ],
+      "attack_range": [
+        3.9,
+        72.9
+      ],
+      "arms": {
+        "none": {
+          "attack_asr": 0.5,
+          "benign_over_refusal": 0.0
+        },
+        "unconditional": {
+          "attack_asr": 0.25,
+          "benign_over_refusal": 1.0
+        },
+        "recognition_gated": {
+          "attack_asr": 0.25,
+          "benign_over_refusal": 0.0
+        }
+      },
+      "moat_works": true
+    },
+    {
+      "model": "meta-llama/Llama-3.2-1B-Instruct",
+      "read_layer": 8,
+      "tau": -0.8,
+      "clean_projection_gap": true,
+      "benign_range": [
+        -2.3,
+        -1.6
+      ],
+      "attack_range": [
+        -0.1,
+        1.6
+      ],
+      "arms": {
+        "none": {
+          "attack_asr": 0.25,
+          "benign_over_refusal": 0.0
+        },
+        "unconditional": {
+          "attack_asr": 0.083,
+          "benign_over_refusal": 0.6
+        },
+        "recognition_gated": {
+          "attack_asr": 0.083,
+          "benign_over_refusal": 0.0
+        }
+      },
+      "moat_works": true
+    },
+    {
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "read_layer": 14,
+      "tau": 9.1,
+      "clean_projection_gap": false,
+      "benign_range": [
+        5.3,
+        10.6
+      ],
+      "attack_range": [
+        7.6,
+        18.4
+      ],
+      "arms": {
+        "none": {
+          "attack_asr": 0.333,
+          "benign_over_refusal": 0.1
+        },
+        "unconditional": {
+          "attack_asr": 0.25,
+          "benign_over_refusal": 1.0
+        },
+        "recognition_gated": {
+          "attack_asr": 0.333,
+          "benign_over_refusal": 0.2
+        }
+      },
+      "moat_works": false
+    },
+    {
+      "model": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "read_layer": 12,
+      "tau": -31.1,
+      "clean_projection_gap": false,
+      "benign_range": [
+        -54.7,
+        -28.5
+      ],
+      "attack_range": [
+        -33.6,
+        3.9
+      ],
+      "arms": {
+        "none": {
+          "attack_asr": 0.583,
+          "benign_over_refusal": 0.0
+        },
+        "unconditional": {
+          "attack_asr": 0.917,
+          "benign_over_refusal": 0.0
+        },
+        "recognition_gated": {
+          "attack_asr": 0.917,
+          "benign_over_refusal": 0.0
+        }
+      },
+      "moat_works": false
+    }
+  ],
+  "caveats": [
+    "Exploratory: 12 attacks / 10 benign, single seed, greedy decode, band-midpoint read layer, one corpus.",
+    "A per-model read-layer / direction-corpus search might change these outcomes \u2014 that search is future work.",
+    "Every arm number is a real captured generation."
+  ]
+}

@@ -1,0 +1,28 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=0.6\columnwidth,
+  ybar, /pgf/bar width=5pt,
+  symbolic x coords={L1,L1b,L2,L2b,L3,L4,L5,L7,L8,L9,L11,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23},
+  xtick=data, x tick label style={rotate=60, anchor=east, font=\tiny},
+  ymin=0, ymax=7, ylabel={GPU-hours},
+  label style={font=\small}, tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.35,0.98)}, anchor=north west, draw=none, fill=none},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(L1,1.45) (L1b,6.1) (L2,0.5) (L2b,0.35) (L3,0.5) (L4,0.7) (L5,0.9) (L7,0.1) (L8,0.5) (L9,1.25) (L11,1.1) (L14,0.82) (L15,0.85) (L16,0.6) (L17,0.7) (L18,0.6) (L19,0.85) (L20,0.3) (L21,0.0) (L22,0.85) (L23,0)};
+\addlegendentry{per-loop spend}
+\end{axis}
+\begin{axis}[
+  width=\columnwidth, height=0.6\columnwidth,
+  symbolic x coords={L1,L1b,L2,L2b,L3,L4,L5,L7,L8,L9,L11,L14,L15,L16,L17,L18,L19,L20,L21,L22,L23}, xtick=\empty,
+  ymin=0, ymax=20, axis y line*=right, axis x line=none,
+  ylabel={cumulative GPU-hours}, ylabel near ticks,
+  label style={font=\small}, tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.35,0.88)}, anchor=north west, draw=none, fill=none},
+]
+\addplot+[red!70!black, thick, mark=*, mark size=1.2pt] coordinates {(L1,1.45) (L1b,7.55) (L2,8.05) (L2b,8.40) (L3,8.90) (L4,9.60) (L5,10.50) (L7,10.60) (L8,11.10) (L9,12.35) (L11,13.45) (L14,14.27) (L15,15.12) (L16,15.72) (L17,16.42) (L18,17.02) (L19,17.87) (L20,18.17) (L21,18.17) (L22,19.02) (L23,19.02)};
+\addlegendentry{cumulative (total 19.02\,h)}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,23 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{axis}[
+  ybar, /pgf/bar width=11pt,
+  width=\columnwidth, height=0.62\columnwidth,
+  ymin=0, ymax=0.65,
+  ylabel={Instructed hit-rate@5},
+  symbolic x coords={Qwen3-4B,Qwen3.6-27B,Nemotron-Mini-4B},
+  xtick=data, x tick label style={font=\scriptsize},
+  ytick={0,0.1,0.2,0.3,0.4,0.5,0.6},
+  ylabel style={font=\small}, tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.03,0.97)}, anchor=north west, draw=none, fill=none},
+  ymajorgrids, grid style={gray!25},
+  axis line style={gray!60},
+]
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(Qwen3-4B,0.1) (Qwen3.6-27B,0.55) (Nemotron-Mini-4B,0.0)};
+\addplot+[fill=gray!35, draw=gray!60, postaction={pattern=north east lines, pattern color=gray!70}] coordinates {(Qwen3-4B,0.010375) (Qwen3.6-27B,0.06824999999999999) (Nemotron-Mini-4B,0.0)};
+\addlegendentry{instructed write}
+\addlegendentry{shuffled-code null}
+\draw[dashed, red!70] (rel axis cs:0,0.769) -- (rel axis cs:1,0.769) node[pos=0.98, above left, font=\tiny, red!70] {registered threshold 0.5};
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,120 @@
+\section{Gate Record Schema}
+\label{app:schema}
+
+Every experimental result in this paper is backed by a gate record committed under \texttt{gates/} in the public repository. A record carries the loop identifier, the code-gate verdict (test suite and static analysis), the domain-gate verdict with the registered scientific evidence embedded, a deviations log for disclosed caveats, and a sign-off field. The listing below is the actual core-claim record (\texttt{gates/gate\_L11\_rep.json}), abbreviated only in its free-text note.
+
+\begin{verbatim}
+{
+  "loop": "L11-rep",
+  "status": "open",
+  "code_gate": {
+    "verdict": "pass",
+    "evidence": "6 seeds pooled, independent streams",
+    "deviations": []
+  },
+  "domain_gate": {
+    "verdict": "pass",
+    "evidence": {
+      "summary": {
+        "H_core_6seeds":
+          {"value": 0.3, "threshold": 0.2, "pass": true},
+        "H_alignment_sign_consistency":
+          {"value": 1.0, "threshold": 1.0, "pass": true}
+      },
+      "per_seed": {
+        "s42":    {"gated": 0.30, "adv": 0.075, "dH":  0.1118},
+        "s123":   {"gated": 0.35, "adv": 0.125, "dH":  0.2457},
+        "s777":   {"gated": 0.35, "adv": 0.075, "dH":  0.1087},
+        "s2024":  {"gated": 0.35, "adv": 0.125, "dH": -0.0060},
+        "s31415": {"gated": 0.35, "adv": 0.100, "dH":  0.0936},
+        "s999":   {"gated": 0.35, "adv": 0.100, "dH":  0.1485}
+      },
+      "note": "CORE CLAIM at 6/6 independent-stream seeds: gated
+        lift 0.30-0.35 within budget. Alignment advantage:
+        sign-consistent 6/6 (+0.07..+0.12, mean +0.097; one-sided
+        sign-test p=0.0156), a small effect stated by sign
+        consistency, not by a margin threshold it does not clear."
+    },
+    "deviations": []
+  },
+  "signoff": "pending"
+}
+\end{verbatim}
+
+One correction to the quoted record is applied in the body of this paper: the free-text note states a mean advantage of $+0.097$, whereas the arithmetic mean of the six committed per-seed values is $+0.100$, and the recomputed value is used in Table~\ref{tab:core}. The per-seed values themselves are unaffected.
+
+Records for interventional runs additionally embed per-arm aggregates (lift, entropy delta, writes per generation) and the full per-generation records from which the aggregates derive. Superseded gates are retained in the ledger with their supersession noted in later gates rather than being edited or removed.
+
+\section{Complete Gate Ledger}
+\label{app:ledger}
+
+Table~\ref{tab:ledger} summarises the programme's loops in dispatch order with the headline gate, tier, domain verdict, and the principal quantitative outcome. The ledger contains 130 gate records in total; per-seed and per-amplitude source gates are aggregated into their headline entries here. Verdicts are reported exactly as committed; fail entries are registered negative results, not discarded runs.
+
+\begin{table*}[t]
+\caption{Programme gate ledger (headline gates). HR@5 is instructed concept hit-rate@5; lift is concept surface lift over baseline; $\Delta H$ is trajectory-average entropy change in nats; BA is balanced accuracy.}
+\label{tab:ledger}
+\vskip 0.1in
+\centering
+{\footnotesize
+\begin{tabular}{lp{3.5cm}p{1.9cm}p{2.6cm}p{6.6cm}}
+\toprule
+\textbf{Loop} & \textbf{Headline gate(s)} & \textbf{Tier} & \textbf{Verdict} & \textbf{Principal outcome} \\
+\midrule
+L0  & gate\_L0 & smoke & pass & Scaffold, contracts, TRIZ contradictions C1--C3 resolved. \\
+L1  & gate\_L1 & screen & fail & Qwen3-4B loadability HR@5 0.10 (null 0.0104, $p\!\approx\!10^{-4}$); band contrast 0.306; reportability sub-hypothesis fails. \\
+L1b & gate\_L1b & screen & pass & Qwen3.6-27B loadability HR@5 0.55 (22/40, null 0.068); loadability scales with size. \\
+L2  & gate\_L2 & screen & fail & Nemotron twin loadability 0.00 (= null = control); articulation gradient $\rho=0.639$ ($p=2\times10^{-4}$). \\
+L2b & gate\_L2b & screen & registered outcome & Band-exit lens reads 0.20 across 7 concepts; final-target lens reads 0.00. \\
+L3  & gate\_L3 & screen & fail & Uncapped writes: lift 0.40 at $\Delta H=-2.081$; freedom cost binding (20/40 rejections). \\
+L4  & gate\_L4, gate\_L4b & screen & fail, then pass & Flash-gating fails (0.175); corrected entropy gating passes: lift 0.40 at $\Delta H=-0.127$, $\approx$9.85 writes/gen vs.\ prefill 0.20. \\
+L5  & gate\_L5\_tau (6 runs) & screen & pass & $\tau$ robustness 6/6 across P40/P60/P80 percentiles $\times$ 2 seeds; lift 0.35--0.40 in budget. \\
+L6  & gate\_L6\_align, \_confirm & confirm & pass / split & Gated 0.40 (7.15 writes) $>$ rate-matched 0.225 (5.0) $>$ prefill 0.20; 3-seed budget claim 3/3, margin claim 1/3. \\
+L7  & gate\_L7\_articulation\_null & screen & pass & Articulation gradient model-intrinsic: logit-lens null $\rho=0.607$ vs.\ Jacobian $\rho=0.639$, both $p=2\times10^{-4}$. \\
+L8  & gate\_L8\_dose & screen & pass (superseded) & Dose grid; gated levels later shown $\approx$0.1 high (pre-stream-fix); superseded by L18. \\
+L9  & gate\_L9\_probe, \_alignconf, \_flash, \_writecost & screen & pass / fail / fail / pass & Stream fix (per-generation seeds); clean 3-seed gated 0.30--0.35, margin $+0.07$/$+0.12$/$+0.07$; flash adds nothing; throughput cost of writes nil (24.8--25.0 vs.\ 19.7 tok/s). \\
+L10 & gate\_L10\_cross & screen & fail & Borrowed geometry on Qwen3-4B: gated 0.05; target Jacobians $\approx$10$\times$ weaker; generality boundary. \\
+L11 & gate\_L11\_rep & confirm & pass & Core claim at 6 seeds: gated 0.30--0.35 in budget; advantage sign-consistent 6/6, $p=0.0156$. \\
+L12 & gate\_L12\_flash (3 seeds) & screen & pass & Uncommitted-moment gating beats commitment-flash 3/3 ($+0.05$ to $+0.10$). \\
+L13 & gate\_L13\_recipe, probes & screen & pass & Calibrated amplitude (3$\times$) transfers: Qwen3-4B gated 0.40 vs.\ prefill 0.175; site probes eliminate layer choice. \\
+L14 & gate\_L14\_amp, \_multiseed, \_readback & confirm / screen & pass & Monotone dose 0.05/0.20/0.40/0.775; recipe 4/4 seeds (0.325--0.475); readback BA 0.684 (36-setting sweep disclosed). \\
+L15 & gate\_L15\_amp\_joint, \_readback & confirm / screen & pass & Per-seed monotone 3/3; two-plant ordering (screen); held-out readback BA 0.637 (margin inside CI; downgraded by review \#12). \\
+L16 & gate\_L16\_corpus, \_fine & screen & pass & Corpus robustness 2/3; pooled readback BA 0.590 (negative exploratory); donor fine grid saturates near $\alpha=0.01$. \\
+L17 & gate\_L17\_xdose, \_cvar & screen & pass / fail & Arm-set robustness holds; corpus-A seed-fragile (2/4 registered cells), self-audit negative. \\
+L18 & gate\_L18\_l8redo, \_npretry & screen & pass & L8 supersession measured ($-0.10$ at all three amplitudes); fragility repaired by amplitude (3/3 at $\alpha=0.2$). \\
+L19 & gate\_L19\_cax, \_l8ms & confirm / screen & fail-on-margin / pass & Both corpora double under amplitude; one per-seed margin fails (0.025 $<$ 0.05); supersession offset confirmed at $n=3$, all 6 offsets negative. \\
+L20 & gate\_L20\_confirm & confirm & pass (equivalence fail-on-margin) & Cold associative store steers 3/3 (0.4445/0.5556/0.4445); equivalence to analytic 2/3, third seed one concept-hit apart. \\
+L21 & gate\_L21\_baselines (3 seeds), \_jailbreak, \_truthful & screen & fail (all registered) & Continuous CSR 0.96 vs.\ gated 0.16 at matched entropy cost; AdvBench ASR 0.25 unchanged; truthfulness criterion fails. \\
+L22 & gate\_L22\_benchmark, \_lens\_headtohead, \_floor\_a$\ast$ & confirm & pass (head-to-head fail-on-margin) & Band vs.\ final-target lens: 0.475 vs.\ 0.2375 at $\alpha=0.1$ ($p=2.1\times10^{-5}$), converge at saturation (1.00 vs.\ 0.95); gated lift-per-write 2.32$\times$ continuous, 6/6 cells. \\
+L23 & gate\_L23\_harden & screen & fail & Fused prayoga-prabodha harden loop: gated preserves freedom (11.8 vs.\ 50 writes) but does not resist an activation-level attacker; motivates recognition gating. \\
+char & gate\_char\_qwen3-4b, \_nemotron-mini-4b & screen & pass & Both prompt-robust (attack 0.00) but activation-vulnerable (0.90 / 1.00); locates the harmful signature in the residual stream. \\
+L24 & gate\_L24\_innovation & screen & fail & Weight/prompt-space hardening mechanisms weak (best restore-prefill $\beta$0.1 leaves ASR 0.70); pushes toward recognition gating. \\
+L25 & gate\_L25\_promptspace & screen & fail & Prompt-space defences uninformative on this corpus (baseline wrapped ASR already 0.00). \\
+L26 & gate\_L26\_moat\_proof, \_llama, \_qwen, \_smol & screen (exploratory) & pass / pass / honest neg. / honest neg. & Recognition-gated moat: Gemma-2-2B 0.50$\to$0.25 and Llama-3.2-1B 0.25$\to$0.083 at 0 over-refusal; Qwen2.5-1.5B ineffective; SmolLM2-1.7B backfires 0.583$\to$0.917; clean-gap predicts 4/4. \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\section{Expected-Free-Energy Selector}
+\label{app:efe}
+
+Candidates in a registered menu are scored by expected free energy, the sum of an epistemic term (expected reduction in uncertainty over the programme's open hypotheses, estimated from the current belief state) and a pragmatic term (preference-weighted expected verdict), penalised by compute cost against the loop's GPU budget. Beliefs over hypothesis states update on gate verdicts and replay deterministically from the ledger: re-running the selector against \texttt{research/efe\_ledger.jsonl} reproduces the programme's decision sequence. The ledger records 267 observation events, 41 proposals, 27 spend entries, 2 consume events, and 2 formally resolved divergences across nine menus and twenty-seven cycles. The two divergences are the L18 supersession of L8 dose levels and the L20 renaming of the associative-store arm from a trained to a cold designation; both were resolved by registered supersession with the superseded records retained. Tier requirements were fixed programme-wide: smoke runs bounded at five minutes and permitted only on an idle GPU, screen runs at one or few seeds, confirm runs at three or more seeds with pre-registered margins. The selector, runner, ledger, and gate-to-observation adapter are released in \texttt{src/prabodha/efe/}, including a staleness linter that blocks proposals citing superseded evidence.
+
+\section{Adversarial Review Catalogue}
+\label{app:reviews}
+
+Reviews were conducted by isolated agents briefed only on gate records, contracts, and menu registrations. All verdicts and corrections are in the research journal; the two most recent reviews are additionally released as standalone documents. Reviews \#1--\#3 audited the loadability loops and their metric recalibration (the union-top-$K$ null floor near $-0.72$ that motivated the model-top-$K$ metric). Review \#4 mounted a tautology attack on the articulation gradient, answered by the registered logit-lens null of gate L7. Reviews \#5--\#9 covered the timing loops and the alignment confirmation, including detection of a cost-model miscalibration in the selector and a ledger-replay bug. Review \#10 audited the cross-plant failure diagnosis. Review \#11 returned merge-with-corrections on the amplitude law. Review \#12 downgraded the held-out readback gate from confirm to screen on a confidence-interval argument. Review \#13 returned four corrections on corpus robustness. Review \#14 flagged the overreaching candidate name in L17 and ran a systemic audit. Review \#15 withdrew an additive-bias inference in the L18 supersession, restricting it to arm-specific offsets. Review \#16 caught the determinism artifact in L19: an exact reproduction across loops was traced to hashed-seed determinism rather than independent replication, and the corresponding inference was withdrawn in full. Review \#17 audited L20, refuting a suspected determinism artifact by inspecting committed per-generation records, and tightening the equivalence-miss wording. Review \#18 was a program-wide release audit across all six public surfaces, returning two required corrections (both applied) and verifying, among other checks, that no consciousness claims appear on any released surface.
+
+\section{Glossary of Sanskrit Terms}
+\label{app:glossary}
+
+Each term is used in this paper solely as the name of an engineering construct. \skt{Pratyabhij\~n\=a}: recognition; the school whose analysis supplies the doctrine, and the act of re-cognising content as one's own, operationalised as readback verification. \skt{Vimar\'sa}: reflexive awareness; mapped to the model's capacity to articulate its own internal state, operationalised as lens read-out. \skt{Par\=a v\=ak}: the supreme Word; the claim that reflexivity is linguistic, mapped to the verbalizable character of the workspace. \skt{Sphura\d{t}\d{t}\=a}: the flash of manifestation; mapped to the moment structure of next-token commitment, operationalised as step-entropy gating (the literal flash variant failed and was revised to uncommitted-moment gating). \skt{\=Agama}: received doctrine; mapped to injected content, which counts as received only when re-articulated by the band. \skt{Sv\=atantrya}: intrinsic freedom; mapped to the model's continuation entropy, operationalised as the $\pm0.5$-nat trajectory budget. \skt{Malas}: impairments; the registered failure taxonomy for rejected writes (budget, uptake, and quality failures, recorded per gate). \skt{Anusa\d{m}dh\=ana}: synthesis across episodes; registered as open, deliberately unconverged, in the release notes. \skt{Camatk\=ara}: aesthetic wonder; unmapped, recorded as open in the scoping document. \skt{Yantra}: instrument or machine; the controller-actuator-plant frame of Figure~\ref{fig:architecture}. \skt{Citta}: mind-stuff; CittaStore is the associative memory of the companion predictive-world-model stack. \skt{S\=ak\d{s}\={\i}}: witness; the project's name for the session-stable invariant enforced by its research harness. \skt{B\=adha}: sublation; the project's term for precision-weighted supersession of contradicted evidence, as applied in the L18 and L20 divergence resolutions. \skt{Pratirodha}: resistance or obstruction; the fused attacker-defender hardening loop of Section~\ref{sec:results:moat}. \skt{Prayoga}: application or deployment; the separate sibling library supplying the attack and direction-extraction machinery that the recognition gate defends against. \skt{S\=ak\d{s}\=at-dar\'sana}: direct seeing; the lens slice-visualisation that renders internal state (Figure~\ref{fig:thought}). \skt{Prabodha}: awakening; the project name.
+
+\section{Module and Configuration Map}
+\label{app:modules}
+
+The released package \texttt{src/prabodha/} comprises: \texttt{efe/} (selector agent, runner, ledger, gate-to-observation adapter, staleness linter); \texttt{lens/} (Jacobian-lens adapter over the vendored reference implementation, fitting and comparison CLIs, the slice-visualisation CLI behind Figure~\ref{fig:thought}, public API); \texttt{steering/} (transported writer, entropy timing gate, readback verifier and failure taxonomy, contrastive direction extraction used in L21, the associative-store bridge of L20, and the main experiment CLI); \texttt{hardening/} (the fused attacker-defender loop and the input-conditioned recognition gate of L23--L26, loading the external \emph{prayoga} attack library through a soft import); \texttt{eval/} (the L21 comparative arms, behavioural metrics, and benchmark subsets); \texttt{contracts/} (the dual-closure gate evaluator and typed trace schemas); and \texttt{stats/} (permutation tests, effect sizes, and multiple-comparison helpers, following the tiered statistical policy). Every module docstring cites its source concept and primitive following the project convention. The configuration tree \texttt{configs/} holds 22 experiment configurations and 10 selector menus; the test suite comprises 27 test modules (57 tests passing, 4 skipped at release). The Claude Code plugin lives under \texttt{integrations/claude-code-plugin/} and the MCP server under \texttt{integrations/prabodha\_mcp\_server/}.
+
+\section{Figure Provenance}
+\label{app:figures}
+
+All data figures are generated by \texttt{generate\_figures.py} in the paper source directory, which reads only committed artifacts. Figure~\ref{fig:loadability}: gates L1, L1b, L2 (instructed and null hit rates from the modulation evidence blocks). Figure~\ref{fig:articulation}: gate L7 (per-layer negentropy arrays for both read-outs). Figure~\ref{fig:timing}: gates L18 (per-arm aggregates at three amplitudes). Figure~\ref{fig:core}: gate L11 (per-seed lift, advantage, and entropy delta). Figure~\ref{fig:recipe}: gate L14 multiseed and gate L10 (borrowed-geometry reference line). Figure~\ref{fig:scaling}: gates L15 (Qwen3-4B per-seed dose curves and donor replay) and L16 (donor fine grid). Figure~\ref{fig:l21}: gates L21 baselines at three seeds (arm blocks parsed from the evidence text). Figure~\ref{fig:l20}: gate L20 (per-seed cold-store and analytic lifts). Figure~\ref{fig:compute}: the per-loop spend fields of \texttt{research/state.json}. Figure~\ref{fig:lens_baseline} and Figure~\ref{fig:efficiency}: the floor-sweep rows and efficiency cells of gate L22. Figure~\ref{fig:moat} and Figure~\ref{fig:cleangap}: the released \texttt{moat\_models.json} consolidation of the L26 per-model gates. Figure~\ref{fig:harden}: the per-arm block of gate L23. The L22--L26 gates are drawn from the \texttt{loop/moat-4model} programme branch and committed as verbatim snapshots under \texttt{data/} in the paper source, so their provenance is auditable in the same way as the merged gates. Figures~\ref{fig:doctrine} and~\ref{fig:architecture} are hand-authored diagrams whose quantitative annotations cite the gates listed in their captions, and Figure~\ref{fig:thought} is a hand-authored read-out map whose cell shading follows the measured articulation gradient of gate L7.
