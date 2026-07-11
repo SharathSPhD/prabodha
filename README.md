@@ -25,6 +25,38 @@ The readback verdict is weak (BA ≈ 0.59 at n=120 — honest negative, gates L1
 corpus-amplitude coupling is confirmed directionally but fails the strict margin criterion
 (gate L19 fail-on-margin). No new claims are made; all numbers are committed to gates.
 
+## Benchmark: Efficiency and Instrument Comparison
+
+**L22 consolidation** measures what gated steering gains over naive continuous writes:
+
+| Metric | Value | Context |
+|---|---|---|
+| **Lift-per-write ratio** | **2.32×** (range 1.83–3.25, 6/6 sign-consistent) | Gating trades behavioral lift for write sparsity; all seed×alpha pairs outperform continuous |
+| Behavioral lift recovery | 66% | Gated steering reaches two-thirds of continuous lift |
+| Write sparsity | 29% | Gating fires ~1 in 3.5 timesteps; rest handled by workspace recurrence |
+
+**Lens detection across dose range** (floor-sweep amendment):
+
+| Dose (α) | Prabodha (band) | jSpace (final) | Gap | Verdict |
+|---|---|---|---|---|
+| 0.1 (subtle) | 0.475 | 0.2375 | +0.2375 | **FAIL-ON-MARGIN** — 2× better detection (p=2.1e-05, direction decisive) but misses 0.3 criterion by 0.06 |
+| 0.3 (saturating) | 1.0 | 0.95 | +0.05 | **WITHDRAWN** — both saturate; necessity claim falsified (gap 0.05 vs 0.125 p-value shows equivalence) |
+
+**Capability table** (8-row comparison):
+
+| Capability | jSpace | Prabodha | Sources |
+|---|---|---|---|
+| Read concepts from residual stream (final-target lens) | yes — vendored instrument | yes (vendored, Apache-2.0) | docs/jspace_pratyabhijna_scoping.md |
+| Read a steered write at the write site | detection 0.24 at α=0.1 (misses subtle) | **FAIL-ON-MARGIN**: detection 0.47 at α=0.1 (gap +0.24, p=2.1e-05); direction decisive, margin missed. At α=0.3 both saturate | gate_L22_lens_band.json, gate_L22_lens_final.json, gate_L22_floor_*.json |
+| Steer behavior (write into workspace band) | no — observation only | yes: lift 0.30/0.35/0.35 within ±0.5 nats, 3/3 seeds | gate_L9_alignconf.json |
+| Intervention efficiency (lift per write) | n/a (no writes) | **2.32× continuous** (range 1.83–3.25, 6/6 cells): 67% lift at 29% writes | gates L18/L19 efficiency cells |
+| Freedom budget (entropy cost bounded) | n/a | trajectory ΔH within ±0.5 nats (6 confirm seeds; continuous flooding blows budget) | gate_L9_alignconf.json, gate_L21_baselines_seed42.json |
+| Cross-model calibration recipe | n/a | amplitude ∝ 1/lens-strength transfers Nemotron→Qwen3, 4/4 seeds | gate_L14_multiseed.json |
+| Write verification (readback) | n/a | weak signal: āgama readback BA 0.59–0.68 (honest negative kept, never sole gate) | gate_L14_readback.json, gate_L16_corpus.json |
+| Alignment gains from naive contrastive steering | n/a | **NONE** — AdvBench ASR 0.25→0.25, TruthfulQA 0.697→0.680; transparency tool, not alignment assurance | gate_L21_jailbreak_seed42.json, gate_L21_truthful_seed42.json |
+
+Source: all numbers recomputed from **gate_L22_benchmark.json** at build time (scripts/tools/compose_L22.py).
+
 ## Architecture
 
 ### Steering Pipeline (Core)
