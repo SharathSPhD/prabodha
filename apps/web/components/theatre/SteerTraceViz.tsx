@@ -4,27 +4,41 @@ import { useEffect, useRef, useState } from "react";
 import { Play, Pause } from "lucide-react";
 
 interface SteerTrace {
+  label?: string;
   tokens: string[];
   entropies: number[];
   writes: Array<{ position: number; amplitude: number }>;
-  readback: { verdict: "accept" | "reject"; confidence: number };
+  readback?: { verdict: "accept" | "reject"; confidence: number } | null;
 }
 
 export default function SteerTraceViz({ trace }: { trace: SteerTrace }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [playing, setPlaying] = useState(false);
   const [position, setPosition] = useState(0);
-  const maxEntropy = Math.max(...trace.entropies);
+
+  // Defensive: never crash on a missing/empty trace. Compute a flag (all hooks still run
+  // unconditionally, per the rules of hooks); the empty-state early-return happens below.
+  const empty = !trace || !Array.isArray(trace.entropies) || trace.entropies.length === 0;
+  const tokenCount = trace?.tokens?.length || 0;
+  const maxEntropy = empty ? 1 : Math.max(...trace.entropies);
 
   useEffect(() => {
-    if (!playing) return;
+    if (!playing || empty) return;
 
     const interval = setInterval(() => {
-      setPosition((p) => (p + 1) % (trace.tokens.length || 1));
+      setPosition((p) => (p + 1) % (tokenCount || 1));
     }, 200);
 
     return () => clearInterval(interval);
-  }, [playing, trace.tokens.length]);
+  }, [playing, empty, tokenCount]);
+
+  if (empty) {
+    return (
+      <div className="card p-6 text-sm text-slate-500">
+        This trace has no per-token entropy data to visualize.
+      </div>
+    );
+  }
 
   const width = 1000;
   const height = 400;
@@ -184,7 +198,7 @@ export default function SteerTraceViz({ trace }: { trace: SteerTrace }) {
       </div>
 
       {/* Readback verdict (at end of trace) */}
-      {position === trace.tokens.length - 1 && (
+      {trace.readback && position === trace.tokens.length - 1 && (
         <div
           className={`card p-4 border-l-4 ${
             trace.readback.verdict === "accept"

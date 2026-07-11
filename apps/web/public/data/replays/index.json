@@ -1,3 +1,40 @@
 {
-  "replays": []
+  "replays": [
+    {
+      "slug": "trained_bridge_qwen3",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "concept": "fire",
+      "arm": "entropy_gated",
+      "prompt": "the fire remembers rivers",
+      "n_tokens": 50,
+      "gate_ref": null
+    },
+    {
+      "slug": "trained_bridge_qwen3_s123",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "concept": "fire",
+      "arm": "entropy_gated",
+      "prompt": "the fire remembers rivers",
+      "n_tokens": 50,
+      "gate_ref": null
+    },
+    {
+      "slug": "trained_bridge_qwen3_s42",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "concept": "fire",
+      "arm": "entropy_gated",
+      "prompt": "the fire remembers rivers",
+      "n_tokens": 50,
+      "gate_ref": null
+    },
+    {
+      "slug": "trained_bridge_qwen3_s777",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "concept": "fire",
+      "arm": "entropy_gated",
+      "prompt": "the fire remembers rivers",
+      "n_tokens": 50,
+      "gate_ref": null
+    }
+  ]
 }
