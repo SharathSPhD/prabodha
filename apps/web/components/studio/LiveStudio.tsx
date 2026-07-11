@@ -149,10 +149,12 @@ export default function LiveStudio() {
             <option value="meta-llama/Llama-3.2-1B-Instruct" />
             <option value="Qwen/Qwen2.5-1.5B-Instruct" />
             <option value="HuggingFaceTB/SmolLM2-1.7B-Instruct" />
+            <option value="nvidia/Nemotron-Mini-4B-Instruct" />
           </datalist>
           <p className="text-xs text-slate-600">
-            Any HF model works. Models with a fitted lens (Qwen3-4B) use the Jacobian lens; others use
-            real contrastive-direction steering.
+            All six listed models ship a real fitted Jacobian lens and steer via the lens; any other HF
+            model still works via real contrastive-direction steering. Lens steering may need a higher
+            amplitude (α≈1–3) than Qwen3-4B (α≈0.3).
           </p>
         </div>
 
