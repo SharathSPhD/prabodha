@@ -1,0 +1,67 @@
+---
+// Scene 5: Comparison with Baselines
+// Stub for L21 when baseline comparisons land
+---
+
+<section id="comparison" class="section-divider">
+  <div class="prose-section">
+    <h2>Steering for alignment & against jailbreaks: how it compares</h2>
+
+    <p class="text-lg">
+      A natural question: does this approach beat simpler baselines? How does it scale to real
+      alignment objectives?
+    </p>
+
+    <div class="bg-yellow-50 dark:bg-yellow-950 border-l-4 border-warning p-6 rounded my-8">
+      <p class="font-semibold mb-2">🔬 Results landing: L21 gates pending</p>
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        This section is a clearly-labeled placeholder. L21 baseline comparisons
+        (logit-bias, prompt engineering, LoRA fine-tune) are pre-registered and will land here
+        with real data when the runs complete. We ship honest placeholders, not filled fakes.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="card">
+        <h3 class="font-semibold text-sm mb-2">Baseline 1: Logit bias</h3>
+        <p class="text-sm text-muted">Bias the output softmax toward registered tokens.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500">
+          📋 gate_L21_logitbias — pending
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="font-semibold text-sm mb-2">Baseline 2: Prompt steering</h3>
+        <p class="text-sm text-muted">Prepend role/instruction prompts to the input.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500">
+          📋 gate_L21_prompt — pending
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="font-semibold text-sm mb-2">Baseline 3: LoRA fine-tune</h3>
+        <p class="text-sm text-muted">Low-rank adapter trained on steer+concept pairs.</p>
+        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500">
+          📋 gate_L21_lora — pending
+        </div>
+      </div>
+
+      <div class="card bg-bright/10 border-2 border-bright">
+        <h3 class="font-semibold text-sm mb-2">Our method: Band-targeted steering</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300">
+          Recognition-gated Jacobian writes at sphuraṭṭā moments.
+        </p>
+        <div class="mt-4 pt-4 border-t border-bright/30">
+          <div class="text-xs font-semibold text-bright">✓ Freeze-time friendly</div>
+          <p class="text-xs text-gray-600 dark:text-gray-400">No training needed; works on frozen models</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 p-4 bg-blue-50 dark:bg-blue-950 rounded text-sm">
+      <strong>Next steps:</strong> Parametric alignment steering (truthfulness, refusal),
+      cross-episode continuity (does CittaStore state persist?),
+      W-space generalization (does this work beyond text?).
+    </div>
+  </div>
+</section>
