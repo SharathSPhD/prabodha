@@ -77,6 +77,24 @@ multi-seed are next. Gate: `gates/gate_L26_moat_proof.json`; primitives: `recogn
   (garak + Crescendo) → moat experiment → integrate into app/Pages/plugin/paper → e2e +
   adversarial review → deploy → product reframe.
 
+## Generality — model-dependent (honest bound, L26)
+
+The moat is **not universal**, and we say so. It requires a clean activation-level projection gap
+between benign and attack inputs at the read layer:
+
+| Model | Clean projection gap? | Recognition-gated result | Moat works? |
+|---|---|---|---|
+| gemma-2-2b-it | **yes** (benign [−53,−18] vs attack [+4,+73]) | ASR 0.50→0.25, over-refusal 0.00 | **✓** |
+| Qwen2.5-1.5B-Instruct | **no** — projections overlap (benign [5,11], attack [8,18]) | ASR 0.33→0.33, over-refusal 0.10→0.20 | **✗** |
+
+Where the harmful signature is linearly separable (gemma), the gate cuts jailbreaks at zero benign
+cost. Where it is not (Qwen2.5-1.5B at the band-midpoint layer + this corpus), gating can neither cut
+ASR nor stay benign-clean — the gate fires on the wrong inputs. This is the mechanism's honest
+operating condition, not a bug to paper over. A per-model read-layer / direction-corpus search may
+recover separation on models like Qwen; that search is future work. Gates: `gate_L26_moat_proof.json`
+(gemma, works), `gate_L26_moat_qwen.json` (Qwen, honest negative). This is exactly why the product is a
+**graded library with per-model characterization**, not a single universal switch.
+
 ## Honest status
 
 L23–L25 + the graded `prabodha.steering.mechanisms` library + the characterization engine are

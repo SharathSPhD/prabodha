@@ -41,8 +41,25 @@ const ARM_LABEL: Record<Arm, string> = {
   recognition_gated: "Recognition-gated (the moat)",
 };
 
+interface ModelRow {
+  model: string;
+  read_layer: number;
+  tau: number;
+  clean_projection_gap: boolean;
+  benign_range: number[];
+  attack_range: number[];
+  arms: Record<Arm, { attack_asr: number; benign_over_refusal: number }>;
+  moat_works: boolean;
+}
+interface Models {
+  finding: string;
+  models: ModelRow[];
+  caveats: string[];
+}
+
 export default function MoatReplay() {
   const [d, setD] = useState<Replay | null>(null);
+  const [models, setModels] = useState<Models | null>(null);
   const [view, setView] = useState<"attack" | "benign">("attack");
   const [sel, setSel] = useState(0);
 
@@ -51,6 +68,10 @@ export default function MoatReplay() {
       .then((r) => (r.ok ? r.json() : null))
       .then(setD)
       .catch(() => setD(null));
+    fetch("/data/moat_models.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setModels)
+      .catch(() => setModels(null));
   }, []);
 
   if (!d) {
@@ -192,6 +213,49 @@ export default function MoatReplay() {
           ))}
         </div>
       </div>
+
+      {/* Generality — model-dependent, honest */}
+      {models && models.models.length > 1 && (
+        <div className="rounded-lg border border-gray-200 bg-white p-4">
+          <h3 className="font-semibold text-gray-900 mb-1">Does it generalize? (honest: model-dependent)</h3>
+          <p className="text-xs text-gray-600 mb-3">{models.finding}</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-gray-500 border-b">
+                  <th className="py-1 pr-3">Model</th>
+                  <th className="py-1 px-2">Clean gap?</th>
+                  <th className="py-1 px-2">Benign proj</th>
+                  <th className="py-1 px-2">Attack proj</th>
+                  <th className="py-1 px-2">Gated ASR</th>
+                  <th className="py-1 px-2">Gated over-refusal</th>
+                  <th className="py-1 px-2">Moat works?</th>
+                </tr>
+              </thead>
+              <tbody>
+                {models.models.map((m) => (
+                  <tr key={m.model} className="border-b border-gray-100">
+                    <td className="py-1 pr-3 font-mono text-xs">{m.model}</td>
+                    <td className="py-1 px-2">{m.clean_projection_gap ? "yes" : "no (overlap)"}</td>
+                    <td className="py-1 px-2 font-mono text-xs">[{m.benign_range.join(", ")}]</td>
+                    <td className="py-1 px-2 font-mono text-xs">[{m.attack_range.join(", ")}]</td>
+                    <td className="py-1 px-2 font-mono">{pct(m.arms.recognition_gated.attack_asr)}</td>
+                    <td className="py-1 px-2 font-mono">{pct(m.arms.recognition_gated.benign_over_refusal)}</td>
+                    <td className={`py-1 px-2 font-semibold ${m.moat_works ? "text-teal-600" : "text-red-600"}`}>
+                      {m.moat_works ? "✓" : "✗"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            The moat needs a clean activation-level projection gap. Where the harmful signature isn't linearly
+            separable at the read layer, the gate can't discriminate — so we report it, we don't hide it. Gate:{" "}
+            <code>gates/gate_L26_moat_qwen.json</code>.
+          </p>
+        </div>
+      )}
 
       <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
         <p className="text-xs font-semibold text-amber-800 mb-1">Honest caveats</p>
