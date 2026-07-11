@@ -870,3 +870,10 @@ at alpha=0.3 both instruments saturate (necessity claim withdrawn there); at the
 transition dose the band lens reads 2x what the final-target lens reads (p=2.1e-05,
 fail-on-margin vs 0.3). Budget: ~0.85h of 1.0h cap. All numbers derived by
 scripts/tools/compose_L22.py from gate JSONs; nothing hand-entered.
+
+### L22 correction (review #19, Tier-0): the closure entry above says lift-per-write
+range "1.85-3.25"; the gate value is [1.83, 3.25] (min cell = seed 42 alpha 0.1, ratio
+1.826). Wrong digit came from a hand-rounded intermediate table; gate value is canonical.
+Review #19 verdict: PASS (no fourth reasoning error); two Tier-1 clarifications applied
+on the propagation branch (McNemar randomness-model note; mean-of-means derivation
+disclosure citing compose_L22.py).
