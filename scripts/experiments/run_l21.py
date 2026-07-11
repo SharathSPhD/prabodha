@@ -153,7 +153,7 @@ def extract_residuals_at_site(hf, tok, texts: list, site_layer: int) -> np.ndarr
                 ids = tok(text, return_tensors="pt")["input_ids"].to(hf.device)
                 _ = hf(ids)
                 if captured_acts is not None:
-                    activations_list.append(captured_acts.numpy())
+                    activations_list.append(captured_acts.numpy().reshape(-1))  # [1,d]->[d] so np.array gives 2D [n,d]
                 captured_acts = None
     finally:
         hook_handle.remove()
