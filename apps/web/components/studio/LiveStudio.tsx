@@ -21,6 +21,7 @@ export default function LiveStudio() {
     "Explain how to make a paper airplane."
   );
   const [concept, setConcept] = useState("honesty");
+  const [model, setModel] = useState("Qwen/Qwen3-4B-Instruct-2507");
   const [alpha, setAlpha] = useState(0.5);
   const [arm, setArm] = useState<SteeringArm>("gated");
   const [siteLayer, setSiteLayer] = useState(24);
@@ -54,6 +55,7 @@ export default function LiveStudio() {
     await steer({
       prompt: prompt.trim(),
       concept: concept.trim(),
+      model: model.trim(),
       alpha: parseFloat(alpha.toString()),
       arm,
     });
@@ -121,6 +123,37 @@ export default function LiveStudio() {
               The model will process this with the steering direction applied.
             </p>
           )}
+        </div>
+
+        {/* Model selector — the gateway loads whichever model you pick, on demand */}
+        <div className="space-y-2">
+          <label className="label">
+            Model
+            {depth === "researcher" && (
+              <span className="text-xs text-slate-500 font-normal ml-2">
+                — loaded on demand on the GB10 gateway; released when idle
+              </span>
+            )}
+          </label>
+          <input
+            list="studio-models"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            disabled={loading}
+            placeholder="HuggingFace model id (e.g. google/gemma-2-2b-it)"
+            className="input w-full text-sm font-mono"
+          />
+          <datalist id="studio-models">
+            <option value="Qwen/Qwen3-4B-Instruct-2507" />
+            <option value="google/gemma-2-2b-it" />
+            <option value="meta-llama/Llama-3.2-1B-Instruct" />
+            <option value="Qwen/Qwen2.5-1.5B-Instruct" />
+            <option value="HuggingFaceTB/SmolLM2-1.7B-Instruct" />
+          </datalist>
+          <p className="text-xs text-slate-600">
+            Any HF model works. Models with a fitted lens (Qwen3-4B) use the Jacobian lens; others use
+            real contrastive-direction steering.
+          </p>
         </div>
 
         {/* Concept Input + Presets */}
