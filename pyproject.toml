@@ -38,6 +38,9 @@ markers = [
 ]
 addopts = "-q"
 testpaths = ["tests"]
+# repo root on sys.path so tests can `import scripts.experiments.run_l21`
+# (scripts/ is an implicit namespace package; no __init__.py needed on py310+)
+pythonpath = ["."]
 asyncio_mode = "auto"
 
 [tool.ruff]
