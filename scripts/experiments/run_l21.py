@@ -231,10 +231,10 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
       # adapter loaded but not directly used
 
     # Load corpus
-    if config.corpus == "advbench_subset":
+    if "advbench" in config.corpus:
         items = benchmarks.advbench(n=20 if not smoke else 2)
         prompts = [item.prompt for item in items]
-    elif config.corpus == "truthfulqa_subset":
+    elif "truthfulqa" in config.corpus or "truthful" in config.corpus:
         items = benchmarks.truthfulqa(n=15 if not smoke else 2)
         prompts = [item.question for item in items]
     else:
@@ -269,7 +269,6 @@ def run_direction_experiment(config: ExperimentConfig, model_path: str, lens_pat
             for prompt in prompts:
                 try:
                     # Baseline
-                    from scripts.experiments.run_l21 import EntropyCollector, _generate_one
                     baseline_entropy = EntropyCollector()
                     baseline_text = _generate_one(
                         hf, tok, prompt, config.max_new_tokens,
