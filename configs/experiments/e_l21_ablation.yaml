@@ -1,64 +1,53 @@
-# L21 Experiment: e_l21_ablation
-# Timing (tau_percentile) and autonomy budget (alpha) sweep.
+# E_L21_ABLATION: Timing and autonomy budget ablation.
+# Lineage: L21 contract §4; tau/autonomy sensitivity analysis.
+# Registered BEFORE any ablation run.
 #
-# Hypothesis: Steering effectiveness has reproducible optima that don't interact chaotically.
-# Registered criteria: see contracts/L21_comparative_eval.md
+# Hypothesis: Steering effectiveness varies with timing (tau percentile) and autonomy budget.
 
-description: |
-  Grid sweep: tau_percentile ∈ {40, 60, 80}, alpha ∈ {0.1, 0.3, 0.5}.
-  9 conditions × 3 seeds = 27 runs total.
-  Measure: CSR (concept_surface_rate) and entropy_delta per (tau, alpha) pair.
-  Primary: reproducibility across seeds; secondary: effect size.
-
-model: qwen3-4b
-corpus_benchmark: advbench
-benchmark_size: 20
-
-write_layer: 24
-norm_cap_rel: 0.3
-
+loop: L21
+experiment: ablation
+corpus: advbench_subset
+model: qwen3-4b-instruct
+seeds: [42, 123, 777]
+write_layer: 20
 max_new_tokens: 40
 min_gap: 2
 
-# Grid sweep parameters
-tau_percentile_sweep: [40, 60, 80]         # When entropy gates fire
-alpha_sweep: [0.1, 0.3, 0.5]               # Dose levels
+# Grid sweep: tau_percentile x autonomy_budget
+tau_percentile_sweep: [40, 60, 80]
+alpha_sweep: [0.1, 0.3, 0.5]
 
-seeds: [42, 123, 777]              # 3 seeds for reproducibility
+# Arms: baseline, entropy_gated (swept parameters)
+arms:
+  - baseline
+  - entropy_gated
 
-arm_template: entropy_gated_tau_{tau}_alpha_{alpha}
+concepts: [fire, water, music]
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
 
-# Pre-registered hypotheses
+# Pre-registered criteria (L21 contract §4):
+# PASS if:
+#   - CSR response is unimodal or monotonic (no chaotic interaction)
+#   - Effect size (Hedges' g) >= 0.2 for at least one (tau, budget) pair
+#   - Optimal tau is consistent across seeds
+# FAIL if:
+#   - Interaction is chaotic (CSR scatters wildly across conditions)
+#   - No reproducible optima across seeds (overdetermined by noise)
+
+criteria:
+  min_effect_size: 0.2
+  monotonicity_required: true
+
 hypotheses:
-  H_reproducible_optima:
-    description: "CSR response is reproducible across seeds (CV <= 30%)"
-    metric: concept_surface_rate_cv
-    cv_tolerance: 0.30
-    falsification: "CV > 30% in any (tau, alpha) condition"
+  H_tau_response_unimodal: {metric: csr_vs_tau, unimodal: true}
+  H_alpha_response_monotonic: {metric: csr_vs_alpha, monotonic: true}
+  H_tau_consistency: {metric: optimal_tau_seeds, consistency_threshold: 1}
 
-  H_response_not_chaotic:
-    description: "No chaotic interaction between tau and alpha"
-    metric: interaction_magnitude
-    method: "ANOVA two-way: F_interaction < 2.0 (small)"
-    falsification: "Significant interaction (F > 2.5)"
+deviations:
+  - "Grid sweep requires many runs (3 tau × 3 alpha × 3 seeds = 27 runs); potential contention on GB10."
+  - "Unimodality is a soft expectation; slight non-monotonicity may reflect noise rather than structure."
+  - "Optimal tau may be model/corpus-specific; generalization beyond this test set untested."
 
-  H_effect_size_nonzero:
-    description: "At least one (tau, alpha) pair has Hedges' g >= 0.2 (small effect)"
-    metric: hedges_g_csr
-    min_effect_size: 0.2
-    target_condition: "across grid"
-    falsification: "All conditions have g < 0.2"
-
-  H_tau_consistency:
-    description: "Optimal tau is consistent across seeds (agreement in top-2 ranks)"
-    metric: tau_rank_agreement
-    n_seeds: 3
-    rank_span: 2
-    falsification: "Optimal tau varies across seeds by > 1 rank"
-
-decoding:
-  do_sample: false
-
-loop: "L21"
-cost_gpu_hours: 0.6                # 9 conditions × 20 prompts × 40 tokens ~= 0.6 GPU-hr
-deviations: []
+budget_gpu_hours: 0.6

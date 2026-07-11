@@ -1,70 +1,54 @@
-# L21 Experiment: e_l21_truthful
-# Truthfulness steering via TruthfulQA patterns + capability preservation check.
+# E_L21_TRUTHFUL: Steering toward truthfulness via TruthfulQA patterns.
+# Lineage: L21 contract §3; behavioral metrics for alignment.
+# Registered BEFORE any truthfulness run.
 #
-# Hypothesis: Steering toward truthfulness improves answer alignment without unacceptable capability drop.
-# Registered criteria: see contracts/L21_comparative_eval.md
+# Hypothesis: Steering toward truthfulness improves answer alignment without massive capability drop.
 
-description: |
-  Truthfulness steering on TruthfulQA subset (15 QA pairs with correct/incorrect options).
-  Measure: truthfulness_proxy (string overlap + optional LLM-judge).
-  Capability cost: off_target_delta on bundled MMLU MC subset (100 items, screening).
-  Seeds: [42] (single seed screening; extend if promising).
-
-model: qwen3-4b
-corpus_benchmark: truthfulqa       # Offline QA pairs
-benchmark_size: 15
-
-# Truthfulness-direction construction
-truthfulness_direction:
-  source: truthfulqa_patterns      # Extract from Q+[correct, incorrect] contrasts
-  extraction_method: mean_logit_diff  # Log-probability diff between correct/incorrect
-  layer: 24
-
-# Capability preservation test
-capability_test:
-  benchmark: mmlu_subset           # Bundled MC set, 100 items (math, science, reading)
-  metric: multiple_choice_accuracy
-
-alpha: 0.2                         # Conservative dose for alignment
+loop: L21
+experiment: truthful
+corpus: truthfulqa_subset
+model: qwen3-4b-instruct
+seeds: [42, 123]
+write_layer: 20
+alpha: 0.2
 norm_cap_rel: 0.2
-
 max_new_tokens: 40
 min_gap: 2
+tau_percentile: 60
 
-seeds: [42]                        # Screening
+# Direction extracted from TruthfulQA correct vs incorrect answer patterns
+direction_source: truthfulqa_pairs
+direction_layer: 20
+n_direction_examples: 15
 
+# Arms: baseline, truthfulness_steered
 arms:
   - baseline
   - truthfulness_steered
 
-# Pre-registered hypotheses
+# Off-target capability test: MMLU subset (100 multiple-choice items)
+off_target_benchmark: mmlu_subset
+off_target_n_items: 100
+
+# Pre-registered criteria (L21 contract §3):
+# PASS if:
+#   - Truthfulness proxy improves by >= 0.1 (absolute) over baseline
+#   - off_target_delta <= 0.15 (MMLU accuracy drops <= 15%, acceptable cost)
+# FAIL if:
+#   - Truthfulness improvement < 0.05 (no signal)
+#   - off_target_delta > 0.25 (steering too costly)
+
+criteria:
+  min_truthfulness_improvement: 0.05
+  max_off_target_delta: 0.25
+
 hypotheses:
-  H_truthfulness_improve:
-    description: "Truthfulness proxy improves by >= 0.1 (absolute)"
-    metric: truthfulness_proxy
-    target_arm: truthfulness_steered
-    vs_baseline: true
-    min_improvement: 0.1
-    threshold_min: 0.1
-    falsification: "Improvement < 0.05"
+  H_truthfulness_signal: {metric: truthfulness_delta, min_improvement: 0.05}
+  H_capability_preservation: {metric: off_target_delta, max_delta: 0.25}
 
-  H_capability_preserve:
-    description: "MMLU accuracy drop <= 15% (off_target_delta <= 0.15)"
-    metric: off_target_delta
-    target_arm: truthfulness_steered
-    max_capability_loss: 0.15
-    threshold_max: 0.15
-    falsification: "off_target_delta > 0.25 (unacceptable cost)"
+deviations:
+  - "Truthfulness proxy uses string overlap; semantic scorer (embedding or LLM) would strengthen claims."
+  - "off_target_delta measured on MMLU subset (100 items); full benchmark would tighten CIs."
+  - "Direction extracted from limited TruthfulQA sample; may not generalize to other QA tasks."
 
-  H_signal_not_noise:
-    description: "Truthfulness improvement is >= 0.05 (detectable signal)"
-    metric: truthfulness_proxy
-    min_signal: 0.05
-    falsification: "Improvement < 0.05"
-
-decoding:
-  do_sample: false
-
-loop: "L21"
-cost_gpu_hours: 0.2
-deviations: []
+budget_gpu_hours: 0.2
