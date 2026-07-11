@@ -49,7 +49,7 @@ export default function LoginForm() {
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-serif font-bold text-gradient">prabodha</h1>
-          <p className="text-sm text-slate-400">Sign in to explore the theatre</p>
+          <p className="text-sm text-slate-400">Sign in to save runs and access admin features</p>
         </div>
 
         <form onSubmit={handleSignIn} className="card space-y-4 p-6">

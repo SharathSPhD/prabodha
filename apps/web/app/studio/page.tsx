@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import DepthToggle from "@/components/DepthToggle";
+import { AdminLink } from "@/components/AdminLink";
 import LiveStudio from "@/components/studio/LiveStudio";
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
@@ -26,7 +27,10 @@ export default function StudioPage() {
               </p>
             </div>
           </div>
-          <DepthToggle />
+          <div className="flex items-center gap-4">
+            <AdminLink />
+            <DepthToggle />
+          </div>
         </div>
       </nav>
 
