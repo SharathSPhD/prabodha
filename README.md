@@ -25,6 +25,137 @@ The readback verdict is weak (BA ≈ 0.59 at n=120 — honest negative, gates L1
 corpus-amplitude coupling is confirmed directionally but fails the strict margin criterion
 (gate L19 fail-on-margin). No new claims are made; all numbers are committed to gates.
 
+## Architecture
+
+### Steering Pipeline (Core)
+
+The steering core flows from prompt to steered output via a timed workspace write:
+
+```mermaid
+graph LR
+    A["Prompt + Concept"] --> B["Frozen LLM<br/>e.g. Qwen3-4B"]
+    B --> C["Workspace Band<br/>layers 6–26"]
+    C --> D["Jacobian Lens<br/>Band-targeted<br/>band_read/"]
+    D --> E["sphuraṭṭā Gate<br/>entropy percentile<br/>check"]
+    E -->|fired| F["writer.plan_write<br/>k-sparse concept<br/>codes α α_norm"]
+    F --> G["WriteCommand<br/>layer, direction,<br/>alpha, concept_ids"]
+    G --> H["Injector<br/>residual write"]
+    H --> I["verifier.readback_verdict<br/>load, amplify,<br/>persist"]
+    I -->|āgama uptake| J["svātantrya budget<br/>entropy Δ ≤ ε"]
+    J --> K["Output +<br/>SteerTrace"]
+    K --> L["JSON: gate/,<br/>tokens/, trace/"]
+    
+    style A fill:#e1f5ff
+    style E fill:#fff3e0
+    style F fill:#f3e5f5
+    style I fill:#e8f5e9
+    style K fill:#e0f2f1
+```
+
+**Key modules:**
+- **steering/e4_cli.py**: Main steering orchestrator
+- **steering/writer.py**: `plan_write()` – direction from Jacobian & concept unembedding
+- **steering/verifier.py**: `readback_verdict()` – uptake classification & mala diagnosis
+- **contracts/trace.py**: `SteerTrace` – per-token entropy, gate events, behavioral hits
+- **contracts/closure.py**: `GateReport` – dual-closure (code_gate ∧ domain_gate)
+
+### Research Loop (Dual Closure)
+
+The tiers progress from smoke → screen → confirm; gates require both code and domain verdicts:
+
+```mermaid
+graph LR
+    H["Hypothesis<br/>arm, concept,<br/>arms config"]
+    H --> EFE["EFE Selector<br/>maximize expected<br/>free energy"]
+    EFE --> SMOKE["Smoke Tier<br/>1 seed, 5 min<br/>quick sanity"]
+    SMOKE --> SCREEN["Screen Tier<br/>2–3 seeds<br/>sustained signal"]
+    SCREEN --> CONFIRM["Confirm Tier<br/>≥3 seeds<br/>n ≥ 120"]
+    CONFIRM --> CODE["Code Gate<br/>steering.e4_cli<br/>runs without<br/>exception"]
+    CODE --> DOMAIN["Domain Gate<br/>behavioral metrics<br/>refusal_rate,<br/>ASR, truthfulness"]
+    DOMAIN --> BOTH{"Both gates<br/>pass|pruned?"}
+    BOTH -->|yes| CLOSED["Loop Closed<br/>gates/*.json<br/>R1 satisfied"]
+    BOTH -->|no| PRUNE["Pruned Closure<br/>with diagnosis"]
+    CLOSED --> JOURNAL["Research Journal<br/>gates/.manifest,<br/>research/journal.md"]
+    PRUNE --> JOURNAL
+    JOURNAL --> SPEC["SPEC/PRD Evolve<br/>commit L-cycle<br/>findings"]
+    
+    style EFE fill:#fff3e0
+    style CONFIRM fill:#e8f5e9
+    style BOTH fill:#f3e5f5
+    style CLOSED fill:#e0f2f1
+    style JOURNAL fill:#c8e6c9
+```
+
+**Key modules:**
+- **eval/benchmarks.py**: AdvBench, TruthfulQA, RefusalPairs loaders
+- **eval/behavioral.py**: `refusal_rate()`, `attack_success_rate()`, `truthfulness_proxy()`
+- **eval/compare.py**: `run_arms_comparison()`, `comparison_to_gate_report()` – composer
+
+### Deployment & Artifact Map
+
+Artifacts flow across library, app, site, and paper; live steering bridges GB10 and app:
+
+```mermaid
+graph TB
+    subgraph "GitHub Repo"
+        SRC["src/prabodha/<br/>lens/, steering/,<br/>eval/, contracts/"]
+        CONFIGS["configs/<br/>models/, lens,<br/>experiments"]
+        GATES["gates/<br/>gate_L*.json<br/>dual-closure records"]
+    end
+    
+    subgraph "Package Distribution"
+        PYPI["PyPI<br/>prabodha library<br/>+ CLI tools"]
+        HF["HuggingFace<br/>qbz506/<br/>prabodha-lenses"]
+    end
+    
+    subgraph "Integration Points"
+        MCP["MCP Server<br/>gate_tools,<br/>lens_tools,<br/>gate_report,<br/>list_gates"]
+        PLUGIN["Claude Code<br/>Plugin<br/>lens-map,<br/>steer-verify"]
+    end
+    
+    subgraph "Live Steering (GB10)"
+        RUNTIME["SteeringRuntimeAdapter<br/>model + lens loaded"]
+        GATEWAY["FastAPI Gateway<br/>steer-gateway/<br/>main.py"]
+        HMAC["HMAC Auth<br/>STEER_GATEWAY_SECRET"]
+    end
+    
+    subgraph "Frontend"
+        VERCEL["Vercel App<br/>prabodha-live/<br/>React + Tailwind"]
+        PAGES["GitHub Pages<br/>Astro site<br/>reads gates/"]
+    end
+    
+    subgraph "Paper"
+        PAPER["docs/paper/<br/>fig8_architecture<br/>methods + results"]
+    end
+    
+    SRC --> PYPI
+    SRC --> HF
+    CONFIGS --> PYPI
+    GATES --> MCP
+    GATES --> PAGES
+    PYPI --> PLUGIN
+    PYPI --> MCP
+    PLUGIN --> GATEWAY
+    MCP --> GATEWAY
+    RUNTIME --> GATEWAY
+    HMAC --> GATEWAY
+    GATEWAY -->|SSE stream<br/>LiveEpisode| VERCEL
+    GATES --> PAPER
+    SRC --> PAPER
+    
+    style GATEWAY fill:#fff3e0
+    style VERCEL fill:#e1f5ff
+    style PAGES fill:#f3e5f5
+    style MCP fill:#e8f5e9
+    style PAPER fill:#c8e6c9
+```
+
+**Key services & artifacts:**
+- **steer-gateway/**: FastAPI + SSE live steering proxy
+- **apps/web/**: Vercel frontend (Live/Replay/BYOK modes)
+- **site/src/**: Astro Pages (gates manifest, architecture docs)
+- **docs/paper/**: LaTeX methods + embedded figures
+
 ## 60-second quickstart
 
 ```bash

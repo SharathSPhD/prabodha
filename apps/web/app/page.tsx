@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { ArchitecturePanel } from "@/components/ArchitecturePanel";
 
 export default function LandingPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -245,6 +246,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Architecture */}
+      <ArchitecturePanel />
 
       {/* Footer */}
       <footer className="border-t border-night-600 bg-night-900/50 py-8 px-6">

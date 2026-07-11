@@ -1,0 +1,176 @@
+---
+// Architecture visualization with mermaid diagrams
+---
+
+<section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+      Architecture
+    </h2>
+    <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-12">
+      Three interlocking systems: the steering pipeline (core control), the research loop (dual-closure gates), and the deployment topology (library → app → site → paper).
+    </p>
+
+    <!-- Steering Pipeline Diagram -->
+    <div class="mb-16">
+      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+        Steering Pipeline (Core)
+      </h3>
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+        <div class="mermaid">
+          {`
+            graph LR
+                A["Prompt + Concept"] --> B["Frozen LLM<br/>e.g. Qwen3-4B"]
+                B --> C["Workspace Band<br/>layers 6–26"]
+                C --> D["Jacobian Lens<br/>Band-targeted<br/>band_read/"]
+                D --> E["sphuraṭṭā Gate<br/>entropy percentile<br/>check"]
+                E -->|fired| F["writer.plan_write<br/>k-sparse concept<br/>codes α α_norm"]
+                F --> G["WriteCommand<br/>layer, direction,<br/>alpha, concept_ids"]
+                G --> H["Injector<br/>residual write"]
+                H --> I["verifier.readback_verdict<br/>load, amplify,<br/>persist"]
+                I -->|āgama uptake| J["svātantrya budget<br/>entropy Δ ≤ ε"]
+                J --> K["Output +<br/>SteerTrace"]
+                K --> L["JSON: gate/,<br/>tokens/, trace/"]
+
+                style A fill:#e1f5ff
+                style E fill:#fff3e0
+                style F fill:#f3e5f5
+                style I fill:#e8f5e9
+                style K fill:#e0f2f1
+          `}
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+        <strong>Key modules:</strong>
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/e4_cli.py</code> (orchestrator),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/writer.py</code> (plan_write),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/verifier.py</code> (readback_verdict),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">contracts/trace.py</code> (SteerTrace),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">contracts/closure.py</code> (GateReport)
+      </p>
+    </div>
+
+    <!-- Research Loop Diagram -->
+    <div class="mb-16">
+      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+        Research Loop (Dual Closure)
+      </h3>
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+        <div class="mermaid">
+          {`
+            graph LR
+                H["Hypothesis<br/>arm, concept,<br/>arms config"]
+                H --> EFE["EFE Selector<br/>maximize expected<br/>free energy"]
+                EFE --> SMOKE["Smoke Tier<br/>1 seed, 5 min<br/>quick sanity"]
+                SMOKE --> SCREEN["Screen Tier<br/>2–3 seeds<br/>sustained signal"]
+                SCREEN --> CONFIRM["Confirm Tier<br/>≥3 seeds<br/>n ≥ 120"]
+                CONFIRM --> CODE["Code Gate<br/>steering.e4_cli<br/>runs without<br/>exception"]
+                CODE --> DOMAIN["Domain Gate<br/>behavioral metrics<br/>refusal_rate,<br/>ASR, truthfulness"]
+                DOMAIN --> BOTH{"Both gates<br/>pass|pruned?"}
+                BOTH -->|yes| CLOSED["Loop Closed<br/>gates/*.json<br/>R1 satisfied"]
+                BOTH -->|no| PRUNE["Pruned Closure<br/>with diagnosis"]
+                CLOSED --> JOURNAL["Research Journal<br/>gates/.manifest,<br/>research/journal.md"]
+                PRUNE --> JOURNAL
+                JOURNAL --> SPEC["SPEC/PRD Evolve<br/>commit L-cycle<br/>findings"]
+
+                style EFE fill:#fff3e0
+                style CONFIRM fill:#e8f5e9
+                style BOTH fill:#f3e5f5
+                style CLOSED fill:#e0f2f1
+                style JOURNAL fill:#c8e6c9
+          `}
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+        <strong>Key modules:</strong>
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/benchmarks.py</code> (AdvBench, TruthfulQA),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/behavioral.py</code> (metrics),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/compare.py</code> (gate_report composer)
+      </p>
+    </div>
+
+    <!-- Deployment Diagram -->
+    <div class="mb-8">
+      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+        Deployment & Artifact Map
+      </h3>
+      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+        <div class="mermaid">
+          {`
+            graph TB
+                subgraph "GitHub Repo"
+                    SRC["src/prabodha/<br/>lens/, steering/,<br/>eval/, contracts/"]
+                    CONFIGS["configs/<br/>models/, lens,<br/>experiments"]
+                    GATES["gates/<br/>gate_L*.json<br/>dual-closure records"]
+                end
+
+                subgraph "Package Distribution"
+                    PYPI["PyPI<br/>prabodha library<br/>+ CLI tools"]
+                    HF["HuggingFace<br/>qbz506/<br/>prabodha-lenses"]
+                end
+
+                subgraph "Integration Points"
+                    MCP["MCP Server<br/>gate_tools,<br/>lens_tools,<br/>gate_report,<br/>list_gates"]
+                    PLUGIN["Claude Code<br/>Plugin<br/>lens-map,<br/>steer-verify"]
+                end
+
+                subgraph "Live Steering GB10"
+                    RUNTIME["SteeringRuntimeAdapter<br/>model + lens loaded"]
+                    GATEWAY["FastAPI Gateway<br/>steer-gateway/<br/>main.py"]
+                    HMAC["HMAC Auth<br/>STEER_GATEWAY_SECRET"]
+                end
+
+                subgraph "Frontend"
+                    VERCEL["Vercel App<br/>prabodha-live/<br/>React + Tailwind"]
+                    PAGES["GitHub Pages<br/>Astro site<br/>reads gates/"]
+                end
+
+                subgraph "Paper"
+                    PAPER["docs/paper/<br/>fig8_architecture<br/>methods + results"]
+                end
+
+                SRC --> PYPI
+                SRC --> HF
+                CONFIGS --> PYPI
+                GATES --> MCP
+                GATES --> PAGES
+                PYPI --> PLUGIN
+                PYPI --> MCP
+                PLUGIN --> GATEWAY
+                MCP --> GATEWAY
+                RUNTIME --> GATEWAY
+                HMAC --> GATEWAY
+                GATEWAY -->|SSE stream<br/>LiveEpisode| VERCEL
+                GATES --> PAPER
+                SRC --> PAPER
+
+                style GATEWAY fill:#fff3e0
+                style VERCEL fill:#e1f5ff
+                style PAGES fill:#f3e5f5
+                style MCP fill:#e8f5e9
+                style PAPER fill:#c8e6c9
+          `}
+        </div>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+        <strong>Key services:</strong>
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steer-gateway/</code> (FastAPI + SSE),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">apps/web/</code> (Vercel frontend),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">site/src/</code> (Astro Pages),
+        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">docs/paper/</code> (LaTeX)
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Load and initialize mermaid diagrams client-side
+  import mermaid from 'mermaid';
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    securityLevel: 'loose'
+  });
+  mermaid.contentLoaded();
+</script>
