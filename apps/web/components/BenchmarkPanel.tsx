@@ -174,7 +174,7 @@ export function BenchmarkPanel() {
                 <strong>α=0.1 (subtle dose):</strong> Prabodha lens detects 2× more (0.475 vs 0.2375, p=2.1e-05, direction decisive). Gap +0.2375 misses the registered margin of 0.3. Verdict: <strong>FAIL-ON-MARGIN</strong>.
               </li>
               <li>
-                <strong>α=0.3 (saturating):</strong> Both saturate (band 1.00 vs final 0.95, gap +0.05, p=0.125). The necessity claim is <strong>WITHDRAWN</strong> — equivalence, not superiority.
+                <strong>α=0.3 (saturating):</strong> Both saturate (band 1.00 vs final 0.95, gap +0.05, p=0.125). The necessity claim is <strong>WITHDRAWN</strong> — the registered falsifier fired; saturation makes this dose uninformative (a null p is not evidence of equivalence).
               </li>
             </ul>
           </div>

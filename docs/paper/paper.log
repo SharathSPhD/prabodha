@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  11 JUL 2026 09:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2026.2.28)  11 JUL 2026 10:37
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -845,19 +845,19 @@ LaTeX Warning: Label `sec:results' multiply defined.
 
 LaTeX Warning: Label `sec:results@cref' multiply defined.
 
-
-LaTeX Warning: Label `sec:discussion' multiply defined.
-
-
-LaTeX Warning: Label `sec:discussion@cref' multiply defined.
-
-
-LaTeX Warning: Label `sec:conclusion' multiply defined.
-
-
-LaTeX Warning: Label `sec:conclusion@cref' multiply defined.
-
 )
+Runaway argument?
+{\contentsline {figure}{\numberline {3}{\ignorespaces The core claim \ETC.
+! File ended while scanning use of \@writefile.
+<inserted text> 
+                \par 
+l.76 \begin{document}
+                     
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
@@ -878,7 +878,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 76.
 LaTeX Font Info:    ... okay on input line 76.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 76.
 LaTeX Font Info:    ... okay on input line 76.
- (/home/sharaths/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/home/sharaths/.TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/home/sharaths/.TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
@@ -1019,11 +1019,27 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 (Font)              scaled to size 7.29405pt on input line 78.
  (./sections/introduction.tex [1
 
-{/home/sharaths/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/sharaths/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}]) [2] (./sections/background.tex
+{/home/sharaths/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/sharaths/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}])
+
+LaTeX Warning: Reference `LastPage' on page 2 undefined on input line 84.
+
+[2] (./sections/background.tex
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 25.
  (/home/sharaths/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-) [3]) (./sections/methodology.tex [4]) (./sections/experimental_setup.tex [5]
+)
+
+LaTeX Warning: Reference `LastPage' on page 3 undefined on input line 43.
+
+[3]) (./sections/methodology.tex
+
+LaTeX Warning: Reference `LastPage' on page 4 undefined on input line 44.
+
+[4]) (./sections/experimental_setup.tex
+
+LaTeX Warning: Reference `LastPage' on page 5 undefined on input line 36.
+
+[5]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
@@ -1033,57 +1049,142 @@ Overfull \hbox (2.81703pt too wide) in paragraph at lines 5--11
 []\T1/ppl/m/n/12 (-20) Instructed loading---writing a ver-bal-iz-able con-cept code into the resid-ual stream---succeeds
  []
 
-<figures/fig1_loadability.pdf, id=104, 350.03775pt x 235.67598pt>
+<figures/fig1_loadability.pdf, id=67, 350.03775pt x 235.67598pt>
 File: figures/fig1_loadability.pdf Graphic file (type pdf)
 <use figures/fig1_loadability.pdf>
 Package pdftex.def Info: figures/fig1_loadability.pdf  used on input line 13.
 (pdftex.def)             Requested size: 348.26233pt x 234.48148pt.
-<figures/fig2_dose_grid.pdf, id=106, 348.80061pt x 257.13164pt>
+<figures/fig2_dose_grid.pdf, id=69, 348.80061pt x 257.13164pt>
 File: figures/fig2_dose_grid.pdf Graphic file (type pdf)
 <use figures/fig2_dose_grid.pdf>
 Package pdftex.def Info: figures/fig2_dose_grid.pdf  used on input line 29.
 (pdftex.def)             Requested size: 348.26233pt x 256.74649pt.
+
+LaTeX Warning: Reference `LastPage' on page 6 undefined on input line 37.
+
 [6]
-<figures/fig3_core_claim.pdf, id=120, 545.2603pt x 215.96146pt>
+
+LaTeX Warning: Reference `fig:core' on page 7 undefined on input line 42.
+
+<figures/fig3_core_claim.pdf, id=82, 545.2603pt x 215.96146pt>
 File: figures/fig3_core_claim.pdf Graphic file (type pdf)
 <use figures/fig3_core_claim.pdf>
 Package pdftex.def Info: figures/fig3_core_claim.pdf  used on input line 46.
 (pdftex.def)             Requested size: 474.02086pt x 187.74654pt.
-<figures/fig4_recipe_and_articulation.pdf, id=121, 522.66121pt x 232.60176pt>
+<figures/fig4_recipe_and_articulation.pdf, id=83, 522.66121pt x 232.60176pt>
 File: figures/fig4_recipe_and_articulation.pdf Graphic file (type pdf)
 <use figures/fig4_recipe_and_articulation.pdf>
 Package pdftex.def Info: figures/fig4_recipe_and_articulation.pdf  used on input line 63.
 (pdftex.def)             Requested size: 474.02086pt x 210.95453pt.
- [7 <./figures/fig1_loadability.pdf>]
-<figures/fig7_scaling_law.pdf, id=182, 506.76588pt x 233.93486pt>
+
+LaTeX Warning: Reference `fig:scaling' on page 7 undefined on input line 81.
+
+
+LaTeX Warning: Reference `LastPage' on page 7 undefined on input line 82.
+
+[7 <./figures/fig1_loadability.pdf>]
+<figures/fig7_scaling_law.pdf, id=141, 506.76588pt x 233.93486pt>
 File: figures/fig7_scaling_law.pdf Graphic file (type pdf)
 <use figures/fig7_scaling_law.pdf>
 Package pdftex.def Info: figures/fig7_scaling_law.pdf  used on input line 84.
 (pdftex.def)             Requested size: 474.02086pt x 218.82434pt.
- [8 <./figures/fig2_dose_grid.pdf> <./figures/fig3_core_claim.pdf>]
-<figures/fig6_architecture.pdf, id=288, 440.12431pt x 252.22733pt>
+
+
+LaTeX Warning: Reference `LastPage' on page 8 undefined on input line 93.
+
+[8 <./figures/fig2_dose_grid.pdf> <./figures/fig3_core_claim.pdf>]
+
+LaTeX Warning: Reference `fig:arch' on page 9 undefined on input line 97.
+
+
+LaTeX Warning: Reference `fig:ledger' on page 9 undefined on input line 97.
+
+<figures/fig6_architecture.pdf, id=243, 440.12431pt x 252.22733pt>
 File: figures/fig6_architecture.pdf Graphic file (type pdf)
 <use figures/fig6_architecture.pdf>
 Package pdftex.def Info: figures/fig6_architecture.pdf  used on input line 102.
 (pdftex.def)             Requested size: 415.9796pt x 238.4061pt.
-<figures/fig5_compute_ledger.pdf, id=289, 563.0975pt x 213.31381pt>
+<figures/fig5_compute_ledger.pdf, id=244, 563.0975pt x 213.31381pt>
 File: figures/fig5_compute_ledger.pdf Graphic file (type pdf)
 <use figures/fig5_compute_ledger.pdf>
 Package pdftex.def Info: figures/fig5_compute_ledger.pdf  used on input line 108.
 (pdftex.def)             Requested size: 386.95897pt x 146.58778pt.
- [9 <./figures/fig4_recipe_and_articulation.pdf> <./figures/fig7_scaling_law.pdf>] [10 <./figures/fig6_architecture.pdf> <./figures/fig5_compute_ledger.pdf>] [11]) (./sections/discussion.tex [12] [13]) (./sections/conclusion.tex [14]) [15] (./sections/appendix.tex
+
+LaTeX Warning: Reference `LastPage' on page 9 undefined on input line 113.
+
+[9 <./figures/fig4_recipe_and_articulation.pdf> <./figures/fig7_scaling_law.pdf>]
+
+LaTeX Warning: Reference `LastPage' on page 10 undefined on input line 124.
+
+[10 <./figures/fig6_architecture.pdf> <./figures/fig5_compute_ledger.pdf>]
+
+LaTeX Warning: Reference `LastPage' on page 11 undefined on input line 164.
+
+[11]
+! Undefined control sequence.
+l.194 ...nts (Prabodha lens read at write site \vs
+                                                  \ jSpace final-target lens).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+LaTeX Warning: Reference `LastPage' on page 12 undefined on input line 206.
+
+[12]
+
+! LaTeX Error: File `fig9_benchmark' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 ...hics[width=.98\linewidth]{fig9_benchmark}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.png,.jpg,.jpeg,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+) (./sections/discussion.tex
+
+LaTeX Warning: Reference `LastPage' on page 13 undefined on input line 12.
+
+[13]
+
+LaTeX Warning: Reference `LastPage' on page 14 undefined on input line 50.
+
+[14]) (./sections/conclusion.tex
+
+LaTeX Warning: Reference `LastPage' on page 15 undefined on input line 7.
+
+[15])
+
+LaTeX Warning: Reference `LastPage' on page 16 undefined on input line 126.
+
+[16] (./sections/appendix.tex
 Overfull \hbox (62.22562pt too wide) in paragraph at lines 6--21
  [] 
  []
 
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 28.
+
+LaTeX Warning: Reference `LastPage' on page 17 undefined on input line 32.
+
+[17]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 37.
-) (./paper.bbl [16]
+) (./paper.bbl
 
 Package natbib Warning: Empty `thebibliography' environment on input line 8.
 
-) [17] 
+)
+
+LaTeX Warning: Reference `LastPage' on page 18 undefined on input line 177.
+
+[18] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./paper.aux)
  ***********
@@ -1092,24 +1193,36 @@ L3 programming layer <2026-01-19>
  ***********
 
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 6D58F2911CD42129EB809A6779A1BA43;1897.
+
+Package rerunfilecheck Warning: File `paper.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `paper.out':
+(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
+(rerunfilecheck)             After:  6D58F2911CD42129EB809A6779A1BA43;1897.
+
+Package lastpage Warning: Rerun to get the references right on input line 177.
+
  ) 
 Here is how much of TeX's memory you used:
- 42391 strings out of 469514
- 923550 string characters out of 5470586
- 1671207 words of memory out of 5000000
- 69763 multiletter control sequences out of 15000+600000
- 705469 words of font info for 462 fonts, out of 8000000 for 9000
+ 42443 strings out of 469514
+ 924186 string characters out of 5470586
+ 1654207 words of memory out of 5000000
+ 69769 multiletter control sequences out of 15000+600000
+ 709090 words of font info for 492 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,12n,108p,1002b,1361s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,12n,108p,1002b,2173s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk> </home/sharaths/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ecss0800.450pk></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmr.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/mathpazo/fplmri.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb></home/sharaths/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on paper.pdf (17 pages, 288311 bytes).
+Output written on paper.pdf (18 pages, 293160 bytes).
 PDF statistics:
- 750 PDF objects out of 1000 (max. 8388607)
- 291 compressed objects within 3 object streams
- 96 named destinations out of 1000 (max. 500000)
- 102520 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 712 PDF objects out of 1000 (max. 8388607)
+ 249 compressed objects within 3 object streams
+ 99 named destinations out of 1000 (max. 500000)
+ 106544 words of extra memory for PDF output out of 106986 (max. 10000000)
 

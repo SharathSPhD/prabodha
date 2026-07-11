@@ -203,10 +203,12 @@ This confirms that gating trades raw lift for write sparsity and legibility whil
 (Prabodha) against the output (jSpace final-target) across doses $\alpha \in \{0.02, 0.05, 0.1, 0.3\}$
 (gate L22-floor-sweep):
 \begin{itemize}
-  \item At $\alpha=0.1$ (subtle dose): Prabodha detects $0.475$; jSpace final detects $0.2375$ (gap $+0.2375$, McNemar $p=2.1 \times 10^{-5}$, direction decisive). Gap misses the registered criterion ($|\text{gap}| \le 0.3$) by $0.06$. Verdict: \textbf{FAIL-ON-MARGIN}---the lens-site reading is twice as sensitive, but the margin is not recovered.
-  \item At $\alpha=0.3$ (saturating dose): Both saturate (Prabodha band $1.0$, jSpace final $0.95$, gap $+0.05$, McNemar $p=0.125$). The necessity claim---that the lens is required at high doses---is \textbf{WITHDRAWN} based on equivalence (indistinguishable at this dose).
+  \item At $\alpha=0.1$ (subtle dose): Prabodha detects $0.475$; jSpace final detects $0.2375$ (gap $+0.2375$, McNemar $p=2.1 \times 10^{-5}$, direction decisive). The gap misses the registered criterion (gap $\ge 0.3$) by $0.0625$. Verdict: \textbf{FAIL-ON-MARGIN}---the lens-site reading is twice as sensitive, but the margin is not recovered.
+  \item At $\alpha=0.3$ (saturating dose): Both saturate (Prabodha band $1.0$, jSpace final $0.95$, gap $+0.05$, McNemar $p=0.125$). The necessity claim---that the lens is required at high doses---is \textbf{WITHDRAWN}: the registered falsifier fired (final $\ge$ band $- 0.1$). With both rates at ceiling, the comparison is uninformative at this dose---saturation, not evidence of equivalence (a null $p=0.125$ establishes neither).
   \item At $\alpha \in \{0.02, 0.05\}$: Both detectors fall to floor or equivocal levels; neither has signal.
 \end{itemize}
+
+\textbf{Methods note} (review \#19): the McNemar $p$-values are exact tests over the fixed 80-pair (concept $\times$ stub) probe grid; stub readback is a deterministic forward pass, so $p$ speaks to the exchangeability of the two instruments' outcomes across probes, not to run-to-run sampling variation (there is none). Lift-recovery (67\%) and write-sparsity (29\%) are ratios of per-cell means; the $2.32\times$ figure is the mean of per-cell lift-per-write ratios (\texttt{compose\_L22.py}, \texttt{efficiency()}).
 
 \textbf{Interpretation:} The Prabodha lens architecture (reading at the write site and amplifying) genuinely
 improves sensitivity to subtle steering events. This directional advantage is clear; the practical gap to

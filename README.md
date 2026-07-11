@@ -39,8 +39,8 @@ corpus-amplitude coupling is confirmed directionally but fails the strict margin
 
 | Dose (α) | Prabodha (band) | jSpace (final) | Gap | Verdict |
 |---|---|---|---|---|
-| 0.1 (subtle) | 0.475 | 0.2375 | +0.2375 | **FAIL-ON-MARGIN** — 2× better detection (p=2.1e-05, direction decisive) but misses 0.3 criterion by 0.06 |
-| 0.3 (saturating) | 1.0 | 0.95 | +0.05 | **WITHDRAWN** — both saturate; necessity claim falsified (gap 0.05 vs 0.125 p-value shows equivalence) |
+| 0.1 (subtle) | 0.475 | 0.2375 | +0.2375 | **FAIL-ON-MARGIN** — 2× better detection (p=2.1e-05, direction decisive) but misses the registered ≥0.3 criterion by 0.0625 |
+| 0.3 (saturating) | 1.0 | 0.95 | +0.05 | **WITHDRAWN** — both saturate; the registered falsifier fired (final ≥ band − 0.1). Saturation makes this dose uninformative (a null p=0.125 is not evidence of equivalence) |
 
 **Capability table** (8-row comparison):
 
@@ -56,6 +56,14 @@ corpus-amplitude coupling is confirmed directionally but fails the strict margin
 | Alignment gains from naive contrastive steering | n/a | **NONE** — AdvBench ASR 0.25→0.25, TruthfulQA 0.697→0.680; transparency tool, not alignment assurance | gate_L21_jailbreak_seed42.json, gate_L21_truthful_seed42.json |
 
 Source: all numbers recomputed from **gate_L22_benchmark.json** at build time (scripts/tools/compose_L22.py).
+
+**Methods notes** (review #19 clarifications): (1) The lens-comparison McNemar p-value is an
+exact test over the fixed 80-pair (concept × stub) probe grid; readback is a deterministic
+forward pass, so the p-value speaks to exchangeability of the two instruments' outcomes across
+probes, not to sampling variation over repeated runs (there is none). (2) Lift-recovery (67%)
+and write-sparsity (29%) are ratios of cell means (mean-of-cells for each arm, then divided);
+the 2.32× figure is the mean of per-cell lift-per-write ratios. Both derivations live in
+`compose_L22.py` (`efficiency()`).
 
 ## Architecture
 
