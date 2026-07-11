@@ -22,12 +22,20 @@ logger = logging.getLogger(__name__)
 # Models that ship with a committed, pre-fitted Jacobian lens (full lens+Jacobian steering).
 # Any model NOT listed here is served with real contrastive-direction steering (no lens needed).
 LENS_REGISTRY: dict[str, dict] = {
+    # Every model the project works on now ships a REAL fitted Jacobian lens (scripts/experiments/
+    # fit_lenses.py, wikitext-2 corpus, n_prompts=16). Lenses live under outputs/lenses/ on the GB10
+    # host (gitignored; the gateway container mounts /repo so they resolve). site_layer = the band
+    # site the lens was fit for (~0.62 depth). These use the full lens+Jacobian steering — the
+    # contrastive path only remains as a fallback for models with no fitted lens yet.
     "Qwen/Qwen3-4B-Instruct-2507": {
-        # The live container mounts the lens at PRABODHA_LENS_FILE (e.g. /lens/l10/...); read it
-        # from the env so the real lens is found in production (no degradation to contrastive).
         "lens_file": os.getenv("PRABODHA_LENS_FILE", "outputs/l10/lens_qwen3_mid30.pt"),
         "site_layer": int(os.getenv("PRABODHA_SITE", "24")),
     },
+    "google/gemma-2-2b-it": {"lens_file": "outputs/lenses/gemma-2-2b-it.pt", "site_layer": 16},
+    "Qwen/Qwen2.5-1.5B-Instruct": {"lens_file": "outputs/lenses/qwen2.5-1.5b-instruct.pt", "site_layer": 17},
+    "meta-llama/Llama-3.2-1B-Instruct": {"lens_file": "outputs/lenses/llama-3.2-1b-instruct.pt", "site_layer": 9},
+    "HuggingFaceTB/SmolLM2-1.7B-Instruct": {"lens_file": "outputs/lenses/smollm2-1.7b-instruct.pt", "site_layer": 14},
+    "nvidia/Nemotron-Mini-4B-Instruct": {"lens_file": "outputs/lenses/nemotron-mini-4b-instruct.pt", "site_layer": 19},
 }
 
 
