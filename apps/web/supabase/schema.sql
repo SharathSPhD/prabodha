@@ -33,7 +33,7 @@ create policy "user_tiers select self"
 create table if not exists public.user_llm_credentials (
   id             uuid primary key default gen_random_uuid(),
   user_id        uuid not null references auth.users (id) on delete cascade,
-  provider       text not null check (provider in ('openrouter', 'anthropic', 'openai', 'llamacpp')),
+  provider       text not null check (provider in ('openrouter', 'anthropic', 'openai', 'llamacpp', 'huggingface')),
   api_key        text not null,
   created_at     timestamptz not null default now(),
   updated_at     timestamptz not null default now(),
@@ -178,3 +178,44 @@ drop policy if exists "export_logs select public" on public.export_logs;
 create policy "export_logs select public"
   on public.export_logs for select
   using (true);
+
+-- ---------------------------------------------------------------------------
+-- User alignment goals (prabodha hardening pack specifications)
+-- ---------------------------------------------------------------------------
+create table if not exists public.alignment_goals (
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid not null references auth.users (id) on delete cascade,
+  name           text not null,
+  description    text not null,
+  positive_examples jsonb not null default '[]',
+  negative_examples jsonb not null default '[]',
+  mechanism      text not null,
+  space          text not null check (space in ('prompt', 'activation')),
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now()
+);
+
+create index if not exists alignment_goals_user_idx on public.alignment_goals (user_id);
+
+alter table public.alignment_goals enable row level security;
+
+drop policy if exists "alignment_goals select own" on public.alignment_goals;
+create policy "alignment_goals select own"
+  on public.alignment_goals for select
+  using (auth.uid() = user_id);
+
+drop policy if exists "alignment_goals insert own" on public.alignment_goals;
+create policy "alignment_goals insert own"
+  on public.alignment_goals for insert
+  with check (auth.uid() = user_id);
+
+drop policy if exists "alignment_goals update own" on public.alignment_goals;
+create policy "alignment_goals update own"
+  on public.alignment_goals for update
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+drop policy if exists "alignment_goals delete own" on public.alignment_goals;
+create policy "alignment_goals delete own"
+  on public.alignment_goals for delete
+  using (auth.uid() = user_id);
