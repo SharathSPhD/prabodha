@@ -47,6 +47,149 @@ Guides you through:
 
 Output: SteerTrace JSON + readback verdict.
 
+## End-to-End Walkthrough: lens-map → steer-verify
+
+This walkthrough demonstrates a realistic workflow: fit a Jacobian lens to a model's workspace band, then run a steering episode with readback verification.
+
+### Step 1: Fit and evaluate the lens (lens-map)
+
+Run:
+```bash
+/lens-map
+```
+
+This guides you through fitting. The tool calls:
+1. `prabodha lens-fit --config configs/lens/Qwen_default.yaml --model Qwen/Qwen3-4B --output-dir ./my-lens`
+2. `prabodha lens-eval --gate-ref gates/gate_L13_recipe.json --output-dir ./my-lens`
+
+**Sample output (eval gate):**
+```json
+{
+  "schema_version": 1,
+  "fit_config": "Qwen_default.yaml",
+  "model_id": "Qwen/Qwen3-4B",
+  "eval_layer": 13,
+  "readback_correspondence": {
+    "method": "top-m rank correlation",
+    "top_m": 5,
+    "mean_rank": 1.8,
+    "median_rank": 2,
+    "percentile_95": 4,
+    "pass": true
+  },
+  "band_transport_strength": 0.92,
+  "timestamp": "2026-07-11T15:23:45Z",
+  "claim": "Layer 13 has strong workspace band correspondence (mean rank 1.8 on eval set). Writing to layer 13 is a sound target.",
+  "caveat": "Single-seed eval; multi-seed sweeps at higher confidence."
+}
+```
+
+**What to note:**
+- `readback_correspondence.mean_rank = 1.8` → when you write a concept to the band, the readback finds it ranked #2 on average
+- `band_transport_strength = 0.92` → the lens explains 92% of the workspace band dynamics (well-fitted)
+- This gate is now your **target layer reference** for steering
+
+### Step 2: Run a steering episode (steer-verify)
+
+Run:
+```bash
+/steer-verify
+```
+
+The skill guides you through:
+
+**2a. Steer with trace:**
+```bash
+prabodha steer \
+  --model Qwen/Qwen3-4B \
+  --prompt "What is fire?" \
+  --concept fire \
+  --alpha 0.3 \
+  --arm gated \
+  --gate-ref gates/gate_L13_recipe.json \
+  --emit-trace \
+  --output-dir ./my-steer
+```
+
+**Sample trace snippet (tokens array):**
+```json
+{
+  "schema_version": 1,
+  "model_id": "Qwen/Qwen3-4B",
+  "prompt": "What is fire?",
+  "concept": "fire",
+  "alpha": 0.3,
+  "arm": "entropy_gated",
+  "seed": 42,
+  "tokens": [
+    {
+      "t": 0,
+      "token": " A",
+      "entropy": 5.12,
+      "gated": false,
+      "band_topk": [" A", " The", " In"]
+    },
+    {
+      "t": 1,
+      "token": " chemical",
+      "entropy": 2.31,
+      "gated": true,
+      "band_write_norm": 0.3,
+      "band_topk": [" chemical", " physical", " natural"]
+    },
+    {
+      "t": 2,
+      "token": " reaction",
+      "entropy": 1.89,
+      "gated": false,
+      "band_topk": [" reaction", " process", " phenomenon"]
+    }
+  ],
+  "gate_ref": "gates/gate_L13_recipe.json"
+}
+```
+
+**What to read:**
+- `tokens[1].gated = true` → entropy at token 1 (2.31 nats) crossed the threshold (tau_percentile=60), so the write injected
+- `tokens[1].band_topk` → after the write, the workspace band's top-5 concepts are ranked in this order
+- `band_write_norm = 0.3` → the write magnitude was 0.3 (matches alpha)
+
+**2b. Readback verification:**
+```bash
+prabodha steer \
+  --readback \
+  --trace-json my-steer/trace.json \
+  --gate-ref gates/gate_L14_readback.json
+```
+
+**Sample readback verdict:**
+```json
+{
+  "status": "ok",
+  "verdict": "accepted",
+  "top_m": 5,
+  "concept": "fire",
+  "concept_rank": 2,
+  "gain": 0.0523,
+  "caveat": "single-seed readback; multi-seed required for claims"
+}
+```
+
+**Interpretation:**
+- `verdict = "accepted"` → the concept "fire" was successfully written and verified
+- `concept_rank = 2` → on readback, "fire" appeared in the top 5 workspace band concepts, ranked #2
+- `gain = 0.0523` → steering improved the concept's prominence by 5.23 percentage points vs. baseline
+- **Caveat:** one run is not confirmatory; commit multi-seed runs to `gates/` for publication
+
+### Summary
+
+This workflow demonstrates the full loop:
+1. **Fit** a lens (band-targeted Jacobian; outputs gate with correspondence metrics)
+2. **Write** a concept into the workspace at the entropy-gated moment (steering trace shows per-token entropy and band state)
+3. **Verify** via readback that the write persisted (rank correlation + concept prominence gain)
+
+Use the skill's guided walkthrough (`/lens-map` and `/steer-verify`) to run these end-to-end, or call the MCP tools directly for integration into other systems.
+
 ## Usage: MCP Tools (any MCP client)
 
 The plugin registers an MCP server exposing four tools:

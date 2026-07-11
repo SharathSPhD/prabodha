@@ -1,13 +1,26 @@
 ---
 // Depth Toggle — Explorer vs Researcher mode
 // Persisted in localStorage
+// Accessible toggle with aria-pressed for screen readers
 ---
 
-<div class="depth-toggle">
-  <button class="depth-button active" id="depth-explorer" data-depth="explorer">
+<div class="depth-toggle" role="group" aria-label="Depth mode selector">
+  <button
+    class="depth-button active"
+    id="depth-explorer"
+    data-depth="explorer"
+    aria-pressed="true"
+    aria-label="Explorer mode - simplified explanations"
+  >
     Explorer
   </button>
-  <button class="depth-button inactive" id="depth-researcher" data-depth="researcher">
+  <button
+    class="depth-button inactive"
+    id="depth-researcher"
+    data-depth="researcher"
+    aria-pressed="false"
+    aria-label="Researcher mode - technical details"
+  >
     Researcher
   </button>
 </div>
@@ -20,11 +33,17 @@
     document.documentElement.classList.add(`depth-${newDepth}`);
     localStorage.setItem(DEPTH_KEY, newDepth);
 
-    // Update button states
-    document.getElementById('depth-explorer').classList.toggle('active', newDepth === 'explorer');
-    document.getElementById('depth-explorer').classList.toggle('inactive', newDepth === 'researcher');
-    document.getElementById('depth-researcher').classList.toggle('active', newDepth === 'researcher');
-    document.getElementById('depth-researcher').classList.toggle('inactive', newDepth === 'explorer');
+    // Update button states and aria-pressed
+    const explorerBtn = document.getElementById('depth-explorer');
+    const researcherBtn = document.getElementById('depth-researcher');
+
+    explorerBtn.classList.toggle('active', newDepth === 'explorer');
+    explorerBtn.classList.toggle('inactive', newDepth === 'researcher');
+    explorerBtn.setAttribute('aria-pressed', newDepth === 'explorer');
+
+    researcherBtn.classList.toggle('active', newDepth === 'researcher');
+    researcherBtn.classList.toggle('inactive', newDepth === 'explorer');
+    researcherBtn.setAttribute('aria-pressed', newDepth === 'researcher');
   }
 
   // Load saved depth or default to explorer
