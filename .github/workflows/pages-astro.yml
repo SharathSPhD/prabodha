@@ -1,15 +1,16 @@
 name: Deploy Astro site to GitHub Pages
 
 on:
-  # Manually trigger via workflow_dispatch
+  # Manual trigger
   workflow_dispatch:
-  # OR trigger on push to main (optional — commented out for now)
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - 'site/**'
-  #     - 'gates/**'
-  #     - 'apps/web/public/data/**'
+  # Auto-deploy on merge to main when site content or its gate-bound data changes
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'gates/**'
+      - 'apps/web/public/data/**'
+      - '.github/workflows/pages-astro.yml'
 
 permissions:
   contents: read
