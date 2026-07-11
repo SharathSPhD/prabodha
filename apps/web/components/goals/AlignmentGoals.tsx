@@ -472,6 +472,17 @@ export default function AlignmentGoals() {
                         </label>
                       )}
 
+                      {isMoatEligible && (
+                        <p className="text-xs text-slate-400">
+                          See the real before/after transcripts this pack is measured on in the{" "}
+                          <a href="/jailbreak" className="text-indigo-400 underline">
+                            Jailbreak Defense Lab → Demo Replay
+                          </a>
+                          . For a custom goal on your own base model, effect is measured at serve time —
+                          this pack ships as an unmeasured recipe until you run <code>prabodha characterize</code>.
+                        </p>
+                      )}
+
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleRegisterPack(goal)}
