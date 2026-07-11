@@ -134,7 +134,7 @@ export function ArchitecturePanel() {
                 <div className="text-slate-400 space-y-1">
                   <div>steer-gateway</div>
                   <div>FastAPI + SSE</div>
-                  <div>HMAC Auth</div>
+                  <div>Bearer auth</div>
                 </div>
               </div>
 

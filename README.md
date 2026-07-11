@@ -34,10 +34,10 @@ The steering core flows from prompt to steered output via a timed workspace writ
 ```mermaid
 graph LR
     A["Prompt + Concept"] --> B["Frozen LLM<br/>e.g. Qwen3-4B"]
-    B --> C["Workspace Band<br/>layers 6–26"]
+    B --> C["Workspace Band<br/>twin [6,26) · Qwen3 [6,30)"]
     C --> D["Jacobian Lens<br/>Band-targeted<br/>band_read/"]
     D --> E["sphuraṭṭā Gate<br/>entropy percentile<br/>check"]
-    E -->|fired| F["writer.plan_write<br/>k-sparse concept<br/>codes α α_norm"]
+    E -->|fired| F["writer.plan_write<br/>k-sparse concept<br/>codes (α, norm cap)"]
     F --> G["WriteCommand<br/>layer, direction,<br/>alpha, concept_ids"]
     G --> H["Injector<br/>residual write"]
     H --> I["verifier.readback_verdict<br/>load, amplify,<br/>persist"]
@@ -75,7 +75,7 @@ graph LR
     DOMAIN --> BOTH{"Both gates<br/>pass|pruned?"}
     BOTH -->|yes| CLOSED["Loop Closed<br/>gates/*.json<br/>R1 satisfied"]
     BOTH -->|no| PRUNE["Pruned Closure<br/>with diagnosis"]
-    CLOSED --> JOURNAL["Research Journal<br/>gates/.manifest,<br/>research/journal.md"]
+    CLOSED --> JOURNAL["Research Journal<br/>gates/*.json,<br/>research/journal.md"]
     PRUNE --> JOURNAL
     JOURNAL --> SPEC["SPEC/PRD Evolve<br/>commit L-cycle<br/>findings"]
     
@@ -116,7 +116,7 @@ graph TB
     subgraph "Live Steering (GB10)"
         RUNTIME["SteeringRuntimeAdapter<br/>model + lens loaded"]
         GATEWAY["FastAPI Gateway<br/>steer-gateway/<br/>main.py"]
-        HMAC["HMAC Auth<br/>STEER_GATEWAY_SECRET"]
+        HMAC["Bearer auth<br/>constant-time compare"]
     end
     
     subgraph "Frontend"
