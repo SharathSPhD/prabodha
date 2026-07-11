@@ -60,12 +60,13 @@ can't evade it because detection is activation-level (benign projections `[−53
 A system prompt can't replicate this — the gate lives *below* the prompt, so an attacker can't see,
 override, or strip it. Gate: `gate_L26_moat_proof.json`.
 
-**5 · Honest generality bound.** The moat is **model-dependent**: it needs a clean projection gap *and* a
-valid refusal direction. Across three models — gemma-2-2b (clean gap → **works**), Qwen2.5-1.5B (overlap →
-ineffective), SmolLM2-1.7B (overlap; hardening **backfires**, ASR 0.58→0.92) — the lesson is that you must
-**characterize per-model before deploying; naive hardening can make a model less safe.** We report this, we
-don't hide it. That is *why* the product is a per-model-characterized library, not a universal switch.
-Gates: `gate_L26_moat_qwen.json`, `gate_L26_moat_smol.json`.
+**5 · Honest generality bound.** The moat is **model-dependent**, predicted by whether benign/attack
+projections form a clean gap at the read layer. Across **four** models it **works** where they do —
+gemma-2-2b (0.50→0.25) and Llama-3.2-1B (0.25→0.083), both at 0 benign over-refusal — and **fails** where
+they overlap — Qwen2.5-1.5B (ineffective) and SmolLM2-1.7B (hardening **backfires**, ASR 0.58→0.92). Two of
+four work; the clean-gap test tells you which **before** you deploy. The lesson: **characterize per-model;
+naive hardening can make a model less safe.** We report this, we don't hide it — it's *why* the product is a
+per-model-characterized library, not a universal switch. Gates: `gate_L26_moat_{proof,llama,qwen,smol}.json`.
 
 **6 · Define your own goal, see the effect, register a pack.** In the app: create an alignment goal
 (plain-language policy + do/don't examples + a mechanism), see the real before/after replay, and register
