@@ -1,0 +1,37 @@
+---
+// Depth Toggle — Explorer vs Researcher mode
+// Persisted in localStorage
+---
+
+<div class="depth-toggle">
+  <button class="depth-button active" id="depth-explorer" data-depth="explorer">
+    Explorer
+  </button>
+  <button class="depth-button inactive" id="depth-researcher" data-depth="researcher">
+    Researcher
+  </button>
+</div>
+
+<script define:vars={{ depth: 'explorer' }}>
+  const DEPTH_KEY = 'prabodha-depth';
+
+  function setDepth(newDepth) {
+    document.documentElement.classList.remove('depth-explorer', 'depth-researcher');
+    document.documentElement.classList.add(`depth-${newDepth}`);
+    localStorage.setItem(DEPTH_KEY, newDepth);
+
+    // Update button states
+    document.getElementById('depth-explorer').classList.toggle('active', newDepth === 'explorer');
+    document.getElementById('depth-explorer').classList.toggle('inactive', newDepth === 'researcher');
+    document.getElementById('depth-researcher').classList.toggle('active', newDepth === 'researcher');
+    document.getElementById('depth-researcher').classList.toggle('inactive', newDepth === 'explorer');
+  }
+
+  // Load saved depth or default to explorer
+  const saved = localStorage.getItem(DEPTH_KEY) || 'explorer';
+  setDepth(saved);
+
+  // Wire up buttons
+  document.getElementById('depth-explorer')?.addEventListener('click', () => setDepth('explorer'));
+  document.getElementById('depth-researcher')?.addEventListener('click', () => setDepth('researcher'));
+</script>

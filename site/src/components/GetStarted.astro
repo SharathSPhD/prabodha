@@ -1,0 +1,102 @@
+---
+// Get Started / Links — pip install, commands, live app, paper, plugin
+---
+
+<section class="py-20 bg-primary text-white">
+  <div class="prose-section">
+    <h2 class="text-white mb-12">Run it yourself</h2>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <div>
+        <h3 class="font-serif text-xl mb-4">Install the library</h3>
+        <p class="mb-4 text-gray-100">
+          The prabodha package is on PyPI. Works with Python 3.10+.
+        </p>
+        <pre><code class="text-sm">pip install prabodha</code></pre>
+        <p class="text-sm text-gray-300 mt-4">Optional: full feature set with flash-linear-attention:</p>
+        <pre><code class="text-sm">pip install prabodha[hybrid]</code></pre>
+      </div>
+
+      <div>
+        <h3 class="font-serif text-xl mb-4">Fit a lens and steer</h3>
+        <pre><code class="text-sm">prabodha lens-fit \
+  --model configs/models/qwen3.yaml \
+  --lens configs/lens_mid.yaml \
+  --out lens_qwen3.pt
+
+prabodha steer \
+  --model configs/models/qwen3.yaml \
+  --mid-lens lens_qwen3.pt \
+  --exp configs/experiments/e13full.yaml \
+  --alpha 0.3 \
+  --seed 42 \
+  --emit-trace trace.json</code></pre>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-12">
+      <a href="https://prabodha.vercel.app" target="_blank" rel="noopener noreferrer" class="bg-white text-primary p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="font-serif text-lg font-semibold mb-2">Live app</div>
+        <p class="text-sm text-gray-700">
+          J-space theatre: steer a real model in your browser via Vercel + Supabase.
+        </p>
+      </a>
+
+      <a href="https://huggingface.co/qbz506/prabodha-lenses" target="_blank" rel="noopener noreferrer" class="bg-white text-primary p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="font-serif text-lg font-semibold mb-2">Pre-fitted lenses</div>
+        <p class="text-sm text-gray-700">
+          HuggingFace Hub: Qwen3-4B & Nemotron-Mini-4B lenses ready to use.
+        </p>
+      </a>
+
+      <a href="https://github.com/SharathSPhD/prabodha" target="_blank" rel="noopener noreferrer" class="bg-white text-primary p-6 rounded-lg hover:shadow-lg transition-shadow">
+        <div class="font-serif text-lg font-semibold mb-2">Source code</div>
+        <p class="text-sm text-gray-700">
+          GitHub: Apache-2.0, includes examples, configs, test suite.
+        </p>
+      </a>
+    </div>
+
+    <div class="bg-band p-8 rounded-lg">
+      <h3 class="font-serif text-xl text-white mb-4">Additional resources</h3>
+
+      <ul class="space-y-3 text-gray-200">
+        <li>
+          <strong>Research paper:</strong>
+          <a href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper/paper.pdf" class="text-bright hover:underline">
+            Pratyabhijñā World Model (PDF)
+          </a>
+          — sole author, figures auto-generated from gates/.
+        </li>
+        <li>
+          <strong>Conceptual scoping:</strong>
+          <a href="https://github.com/SharathSPhD/prabodha/blob/main/docs/jspace_pratyabhijna_scoping.md" class="text-bright hover:underline">
+            J-space ↔ Pratyabhijñā mapping (MD)
+          </a>
+        </li>
+        <li>
+          <strong>Claude Code plugin:</strong>
+          <a href="https://github.com/SharathSPhD/prabodha/tree/main/integrations/claude-code-plugin" class="text-bright hover:underline">
+            Three public skills: lens-map, steer-verify, gate-cite
+          </a>
+        </li>
+        <li>
+          <strong>MCP server:</strong>
+          <a href="https://github.com/SharathSPhD/prabodha/tree/main/integrations/mcp-server" class="text-bright hover:underline">
+            Any MCP client can call: lens_map, steer_generate, readback_verify, list_gates
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-12 text-center text-gray-300 text-sm">
+      <p>
+        prabodha v1.0.0 · Author: Sharath S (qbz506@york.ac.uk) · License: Apache-2.0
+      </p>
+      <p class="mt-2">
+        All claims ground in gates/. Read the paper for full detail, the live app to steer a model yourself,
+        the plugin to integrate into your Claude Code workflow.
+      </p>
+    </div>
+  </div>
+</section>
