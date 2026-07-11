@@ -809,3 +809,89 @@ The correction process surfaced a genuine error I had made:
 - Program closure entry written 2026-07-10 by Claude Code (agent). All artifacts
   regenerated. CLAUDE.md, SPEC.md v0.21, PRD.md v0.21, research/state.json, and this
   journal entry all current.
+
+## L23 PRE-REGISTRATION (2026-07-11)
+
+**Loop**: L23: prayoga↔prabodha jailbreak→harden loop  
+**Builder**: Claude Code (agent)  
+**Status**: PRE-REGISTERED (hypotheses set, config locked, no results yet)
+
+**Concept**: pratirodha (hardening/resistance). Extract the refusal-ablation direction 
+via prayoga, identify the best injection layer via ablation scan, then run four arms 
+(baseline, attack, harden_naive, harden_gated) to test whether gated hardening reduces 
+jailbreak ASR comparably to naive continuous addition while PRESERVING FREEDOM (lower 
+over-refusal on benign prompts) — the L22 legibility-efficiency story, now on safety.
+
+**Registered Hypotheses**:
+- **H_attack**: Directional ablation of refusal direction raises ASR >= 0.3 over baseline  
+  (falsifier: if ablation does not raise ASR, jailbreak mechanism not captured)
+- **H_harden_gated**: Gated hardening achieves >= 50% of naive hardening's ASR reduction  
+  (falsifier: if gated is worse than naive by >50%, entropy gating selects poorly)
+- **H_freedom**: Gated hardening has LOWER over_refusal on benign prompts than naive  
+  (falsifier: if gated over_refusal >= naive, entropy gating fails to preserve svātantrya)
+
+**Design Principles**:
+1. **Determinism** (review #16): Fixed decoding (greedy), per-generation seeds derived  
+   from (base_seed, stream_tag) to ensure arm independence.
+2. **Unit directions**: Extracted via difference-in-means, normalized to unit norm.  
+   Portable across model wrappers; prayoga extraction -> prabodha injection in ONE model.
+3. **Single layer + single direction**: Ablation scan identifies best injection site;  
+   write only at that layer using same direction, no multi-layer stacking.
+4. **Entropy gating** (sphurattā): tau self-calibrated from baseline's OWN entropy  
+   distribution. Write only when entropy >= tau (plant is undecided). min_gap=2 for  
+   temporal hygiene (PWM principle ported).
+
+**Configuration** (locked, in configs/experiments/e_l23_harden.yaml):
+- Model: Qwen/Qwen3-4B-Instruct-2507 (4B, 32 layers, bfloat16)
+- Harmful corpus: jailbreak templates (train: 20, test: 10)
+- Benign corpus: normal assistant queries (train: 20, test: 10)
+- Candidate layers: [10, 12, 14, 16, 18] (mid-layer scan)
+- Injection strength: coeff=1.0, norm_cap_rel=1.0
+- Entropy gating: tau_percentile=50.0 (self-calibrated), min_gap=2
+- Generation: greedy, max_new_tokens=50, seed=42
+
+**Deliverables**:
+1. src/prabodha/hardening/__init__.py + harden_loop.py (importable fused loop)
+2. configs/experiments/e_l23_harden.yaml (PRE-REGISTERED config)
+3. src/prabodha/hardening/cli.py (orchestration entry point)
+4. scripts/dispatch/l23/run.sh (GB10 dispatch: gpu_guard + prayoga setup + docker)
+5. tests/test_l23_harden.py (unit tests + CPU smoke on tiny-gpt2)
+6. gates/gate_L23_harden.json (produced after real GB10 run; awaits orchestrator)
+
+**Smoke Test Plan**:
+- Unit tests (no torch): corpus split, metric aggregation, hypothesis composition
+- CPU smoke (pytest @mark.smoke): tiny-gpt2, verify injector fires, policy gates correctly
+- Run: `pytest tests/test_l23_harden.py -m "not smoke"` (unit only locally)
+- Run: `pytest tests/test_l23_harden.py::TestHardeningLoopSmoke` (CPU smoke if prayoga installed)
+
+**Orchestrator Command** (to be run on GB10):
+```bash
+cd /home/sharaths/projects/prabodha/.claude/worktrees/project-closure-handoff-a27804
+bash scripts/dispatch/l23/run.sh
+```
+
+**Injection Layer Selection Logic**:
+1. Ablation scan across candidate_layers=[10, 12, 14, 16, 18].
+2. For each layer: compute ASR_ablated - ASR_baseline on test_harmful[:5] (smoke).
+3. Select layer with highest lift (most causal for refusal direction).
+4. Use that layer for all four arms' injection.
+
+**Over-Refusal Metric**:
+- Refusal on benign prompts = false positive of the safety intervention.
+- Gated arm should show lower over_refusal than naive, proving freedom preservation.
+- Core claim: safety can be "targeted" (high on jailbreak, low on benign).
+
+**Pre-Registration Signature**:
+- Config: sha256(e_l23_harden.yaml) = [to be computed post-dispatch]
+- Hypotheses: H_attack (0.3), H_harden_gated (0.5), H_freedom (0.0)
+- Model/corpora: fixed in yaml; any deviations invalidate results
+- Recorded: 2026-07-11 (this entry)
+
+**Notes for Future Runs**:
+- If tiny-model smoke refusal is degenerate, assert on mechanism (injector.n_applications>0,  
+  arms produce different text) not on ASR values.
+- If prayoga import fails, ensure PYTHONPATH=/repo/src:/prayoga/src in dispatch container.
+- If GPU contention or budget exceeded, dispatch reschedules (gpu_guard handles).
+- False positives (naive arm over_refusal high): may indicate benign corpus too bland or  
+  refusal direction too broad. Adjust corpus quality or tau_percentile for next run.
+
