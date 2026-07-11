@@ -18,6 +18,7 @@ export interface DirectionSpec {
 export interface SteerRequest {
   prompt: string;
   concept?: string;
+  model?: string;   // HF model id to steer; the gateway loads it on demand. Omit -> gateway default.
   direction_spec?: DirectionSpec;
   alpha: number;
   arm: SteeringArm;
