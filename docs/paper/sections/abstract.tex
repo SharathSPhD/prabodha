@@ -17,8 +17,13 @@ calibration recipe where amplitude $\propto$ inverse lens transport strength (fo
 seeds, monotone dose curves); (6) gated steering provides a legibility/efficiency tradeoff, not a
 raw-lift maximizer---continuous flooding surfaces concepts at 0.96 vs gated's 0.16 (same entropy
 cost), a finding that reframes band-steering as a doctrine of internal-model transparency, not
-alignment gain; (7) naive contrastive refusal-direction steering does not reduce attack success on
-an already-aligned 4B model (AdvBench ASR unchanged at 0.25), and truthfulness-proxy metrics
-decrease slightly under contrastive steering (TruthfulQA 0.697 $\to$ 0.680); and (8) the research
-program ran as an expected-free-energy selection loop over registered menus, with twenty-six cycles,
-sixteen adversarial reviews, and every honest negative in a replayable ledger.
+alignment gain; (7) naive \emph{unconditional} contrastive refusal-direction steering does not reduce
+attack success on an already-aligned 4B model (AdvBench ASR unchanged at 0.25), but \emph{recognition-gated}
+hardening---reinforcing refusal only when the input's activation-level harmful signature crosses a
+threshold---cuts real wrapped-jailbreak attack success in half on gemma-2-2b (0.50 $\to$ 0.25) at zero
+benign over-refusal, where unconditional hardening reaches the same 0.25 only by refusing 100\% of benign
+traffic, and jailbreak wrapping cannot evade the gate because detection is activation-level (benign
+projections $[-53,-18]$ vs attack $[+4,+73]$); truthfulness-proxy metrics decrease slightly under
+contrastive steering (TruthfulQA 0.697 $\to$ 0.680); and (8) the research program ran as an
+expected-free-energy selection loop over registered menus, with twenty-six cycles, sixteen adversarial
+reviews, and every honest negative in a replayable ledger.
