@@ -40,17 +40,24 @@ export default function ReplayTheatre() {
     loadTraces();
   }, []);
 
-  if (loading) return <p className="text-sm text-slate-500">Loading traces...</p>;
+  if (loading) return <p className="text-sm text-slate-500">Loading fixture traces...</p>;
   if (error) return <p className="text-sm text-red-300">{error}</p>;
   if (traces.length === 0) {
     return (
-      <div className="card p-6">
-        <p className="text-sm text-slate-500">
-          No replays available yet. Run the export tool to populate trace data:
+      <div className="card p-6 space-y-4">
+        <h2 className="font-semibold text-slate-100">No runs yet</h2>
+        <p className="text-sm text-slate-400">
+          Results are generated from experiment gates (live steering runs or confirmed benchmarks) and made available in Replay mode. Fixture traces showcase pre-recorded episodes.
         </p>
-        <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
+        <p className="text-xs text-slate-500">
+          To populate fixture traces locally, run:
+        </p>
+        <code className="block text-xs text-slate-400 bg-night-900 p-3 rounded font-mono">
           python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
         </code>
+        <p className="text-xs text-slate-500">
+          See <a href="/glossary" className="text-indigo-400 hover:text-indigo-300">Glossary</a> and README for methodology. Live steering requires admin gateway. BYOK mode accepts your own model.
+        </p>
       </div>
     );
   }

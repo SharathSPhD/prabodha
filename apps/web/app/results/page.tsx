@@ -42,8 +42,20 @@ export default function ResultsPage() {
     loadResults();
   }, []);
 
-  if (loading) return <p className="text-sm text-slate-500">Loading...</p>;
-  if (error) return <p className="text-sm text-red-300">{error}</p>;
+  if (loading) return (
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
+      <div className="mx-auto max-w-6xl">
+        <p className="text-sm text-slate-500">Loading results...</p>
+      </div>
+    </main>
+  );
+  if (error) return (
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
+      <div className="mx-auto max-w-6xl">
+        <p className="text-sm text-red-300">{error}</p>
+      </div>
+    </main>
+  );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
@@ -57,13 +69,20 @@ export default function ResultsPage() {
         </div>
 
         {!data ? (
-          <div className="card p-6">
-            <p className="text-sm text-slate-500">
-              No results available yet. Run the export tool to populate result data:
+          <div className="card p-6 space-y-4">
+            <h2 className="font-semibold text-slate-100">No results yet</h2>
+            <p className="text-sm text-slate-400">
+              Results are generated from experiment gates (gates/*.json) and displayed here after export. Results showcase confirmed claims (confirm tier) and screening results (screen tier).
             </p>
-            <code className="block text-xs text-slate-400 mt-2 bg-night-900 p-2 rounded">
+            <p className="text-xs text-slate-500">
+              To populate results locally, run:
+            </p>
+            <code className="block text-xs text-slate-400 bg-night-900 p-3 rounded font-mono">
               python scripts/tools/export_app_data.py --repo-root . --out-app apps/web/public/data
             </code>
+            <p className="text-xs text-slate-500">
+              See <a href="/glossary" className="text-indigo-400 hover:text-indigo-300">Glossary</a> for term definitions and README for methodology.
+            </p>
           </div>
         ) : (
           <>
