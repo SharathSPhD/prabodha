@@ -93,37 +93,78 @@ def _build_trace_tokens(step_texts: list, entropies: list,
 class SteeringRuntimeAdapter:
     """Real steering runtime: loads model + lens, runs actual steering episodes."""
 
-    def __init__(self, model_config_path: str, lens_file: str, site_layer: int,
+    def __init__(self, model_config_path: str, lens_file: str | None = None,
+                 site_layer: int | None = None,
                  max_new_tokens: int = 100, min_gap: int = 2, tau_percentile: int = 60):
-        """Initialize runtime with model, lens, and steering parameters.
+        """Initialize a real steering runtime for a chosen model.
 
         Args:
-            model_config_path: Path to model config YAML (e.g., configs/models/qwen3.yaml)
-            lens_file: Path to fitted lens .pt file
-            site_layer: Layer index for steering write (e.g., 24)
-            max_new_tokens: Max tokens to generate per episode
-            min_gap: Min gap between gated writes (temporal hygiene)
-            tau_percentile: Entropy percentile threshold for gating
+            model_config_path: EITHER a model-config YAML path OR a bare HuggingFace model id
+                (e.g. "google/gemma-2-2b-it"). A bare id builds a default config — this is what
+                lets the gateway serve ANY chosen model, not only the pre-configured plant.
+            lens_file: Path to a committed, pre-fitted Jacobian lens. Present ONLY for models
+                that already have one (see manager.LENS_REGISTRY); fitting a lens is an hours-long
+                GPU job that cannot run on the request path. When a lens is present, concept
+                steering uses the full lens+Jacobian method. When it is absent, steering uses
+                REAL contrastive-direction (CAA) writes — a genuine difference-in-means over
+                actual activations. Both are real steering; neither is a stub.
+            site_layer: Steering write layer. When None, the workspace-band heuristic (~62% depth).
         """
-        logger.info("Loading model from %s", model_config_path)
-        model_cfg = load(model_config_path)
+        import os as _os
+        if isinstance(model_config_path, str) and model_config_path.endswith((".yaml", ".yml")) and _os.path.exists(model_config_path):
+            model_cfg = load(model_config_path)
+        else:
+            model_cfg = {"hf_id": model_config_path, "dtype": "bf16", "device": "cuda", "trust_remote_code": False}
+        logger.info("Loading model %s", model_cfg["hf_id"])
         self.hf, self.tok = build_model(model_cfg)
         self.model_id = model_cfg.get("hf_id", "unknown-model")
 
-        logger.info("Loading lens from %s", lens_file)
-        self.adapter = LensAdapter("jacobian").load(lens_file)
-
-        self.site_layer = int(site_layer)
+        n_layers = int(self.hf.config.num_hidden_layers)
+        # Resolve the lens path robustly: registry paths are repo-relative, but the working
+        # directory varies by container. Try the path as-is and under known roots.
+        resolved_lens = None
+        if lens_file:
+            roots = ["", _os.environ.get("PRABODHA_ROOT", "/repo"), "/repo", _os.getcwd(), "/lens"]
+            for r in roots:
+                cand = lens_file if not r else _os.path.join(r, lens_file)
+                if _os.path.exists(cand):
+                    resolved_lens = cand
+                    break
+            if resolved_lens is None:
+                logger.warning("Lens file %s not found under any known root; falling back to contrastive steering", lens_file)
+        lens_file = resolved_lens
+        self.has_lens = bool(lens_file) and _os.path.exists(lens_file)
+        # Workspace-band heuristic when no explicit site_layer is given (lensless models).
+        self.site_layer = int(site_layer) if site_layer is not None else int(0.62 * n_layers)
         self.max_new_tokens = int(max_new_tokens)
         self.min_gap = int(min_gap)
         self.tau_percentile = int(tau_percentile)
 
-        # Precompute lens Jacobian and unembedding for steering
-        logger.info("Precomputing Jacobian and unembedding at layer %d", self.site_layer)
-        self.J = self.adapter._lens.jacobians[self.site_layer].float().cpu().numpy()
-        self.U = self.hf.get_output_embeddings().weight.detach().float().cpu().numpy()
+        if self.has_lens:
+            logger.info("Loading pre-fitted lens from %s; precomputing Jacobian at layer %d", lens_file, self.site_layer)
+            self.adapter = LensAdapter("jacobian").load(lens_file)
+            self.J = self.adapter._lens.jacobians[self.site_layer].float().cpu().numpy()
+            self.U = self.hf.get_output_embeddings().weight.detach().float().cpu().numpy()
+        else:
+            self.adapter = None
+            self.J = None
+            self.U = None
 
-        logger.info("Runtime initialized: model_id=%s, site_layer=%d", self.model_id, self.site_layer)
+        logger.info("Runtime ready: model_id=%s site_layer=%d method=%s",
+                    self.model_id, self.site_layer, "lens+jacobian" if self.has_lens else "contrastive")
+
+    def unload(self) -> None:
+        """Release the model + lens from GPU memory (dynamic, no persistent holding)."""
+        try:
+            import torch
+            for attr in ("hf", "adapter", "J", "U"):
+                if getattr(self, attr, None) is not None:
+                    setattr(self, attr, None)
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+                torch.cuda.synchronize()
+        except Exception as e:
+            logger.warning("unload error for %s: %s", getattr(self, "model_id", "?"), e)
 
     def _extract_residuals_at_site(self, texts: list[str]) -> np.ndarray:
         """Extract residual activations at site_layer for a batch of texts.
@@ -162,6 +203,10 @@ class SteeringRuntimeAdapter:
             with torch.no_grad():
                 for text in texts:
                     ids = self.tok(text, return_tensors="pt")["input_ids"].to(self.hf.device)
+                    if ids.shape[-1] == 0:
+                        # A text that tokenizes to zero tokens (e.g. empty string) would crash the
+                        # forward pass; skip it — contrastive_direction averages, so counts may differ.
+                        continue
                     _ = self.hf(ids)
                     if captured_acts is not None:
                         activations_list.append(captured_acts.numpy().reshape(-1))  # [1,d]->[d] so np.array gives 2D [n,d]
@@ -251,8 +296,25 @@ class SteeringRuntimeAdapter:
 
                 else:
                     raise ValueError(f"Unknown direction_spec.mode: {direction_spec.mode}")
+            elif not self.has_lens:
+                # CONCEPT steering, lens-free: derive a REAL contrastive direction for the concept.
+                # pos = the concept in carrier templates, neg = neutral templates. The direction is
+                # a genuine difference-in-means over actual model activations (CAA) — not fabricated.
+                logger.info("Concept '%s' via lens-free contrastive direction", concept)
+                pos_texts = [f"The topic is {concept}.", f"This text is about {concept}.", f"Everything here concerns {concept}."]
+                neg_texts = ["The topic is unspecified.", "This text is about nothing in particular.", "Everything here concerns ordinary matters."]
+                pos_acts = self._extract_residuals_at_site(pos_texts)
+                neg_acts = self._extract_residuals_at_site(neg_texts)
+                direction = contrastive_direction(pos_acts, neg_acts, normalize=True)
+                cmd = apply_direction_write(
+                    direction, layer=self.site_layer, alpha=alpha,
+                    norm_cap_rel=1.0, positions="last",
+                    meta={"concept": concept, "type": "concept-contrastive"}
+                )
+                direction_source = f"concept-contrastive:{concept}"
+
             else:
-                # CONCEPT steering mode (legacy, default)
+                # CONCEPT steering mode via the pre-fitted lens + Jacobian (models with a lens).
                 logger.info("Resolving concept '%s' to token ids", concept)
                 devs = []
                 cids = _concept_candidate_ids(
