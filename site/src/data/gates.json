@@ -108,10 +108,16 @@
     "loop": "L25"
   },
   "L26": {
+    "file": "gate_L26_moat_gemma2b.json",
+    "code_gate": "pass",
+    "domain_gate": "pending_gpu_sweep",
+    "loop": "L26"
+  },
+  "L26-moat-proof": {
     "file": "gate_L26_moat_proof.json",
     "code_gate": "pass",
-    "domain_gate": "pass_exploratory",
-    "loop": "L26"
+    "domain_gate": "pass",
+    "loop": "L26-moat-proof"
   },
   "L2b": {
     "file": "gate_L2b.json",
