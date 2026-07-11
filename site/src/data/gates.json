@@ -113,11 +113,26 @@
     "domain_gate": "pending_gpu_sweep",
     "loop": "L26"
   },
+  "L26-moat-generality-llama": {
+    "file": "gate_L26_moat_llama.json",
+    "domain_gate": "recognition-gate WORKS on Llama-3.2-1B (clean gap)",
+    "loop": "L26-moat-generality-llama"
+  },
   "L26-moat-proof": {
     "file": "gate_L26_moat_proof.json",
     "code_gate": "pass",
     "domain_gate": "pass",
     "loop": "L26-moat-proof"
+  },
+  "L26-moat-generality": {
+    "file": "gate_L26_moat_qwen.json",
+    "domain_gate": "recognition-gate does NOT generalize to Qwen2.5-1.5B at band-midpoint layer/corpus",
+    "loop": "L26-moat-generality"
+  },
+  "L26-moat-generality-smol": {
+    "file": "gate_L26_moat_smol.json",
+    "domain_gate": "recognition-gate ineffective AND underlying hardening counterproductive on SmolLM2-1.7B",
+    "loop": "L26-moat-generality-smol"
   },
   "L2b": {
     "file": "gate_L2b.json",

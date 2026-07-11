@@ -1,69 +1,81 @@
 ---
 // Hero: animated J-space band visualization with tokens
-// The thesis in motion.
+// The thesis in motion — neuro-lab bioluminescent aesthetic.
 ---
 
-<section class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-primary via-band to-gray-800">
+<section class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #0a0e14 0%, #111824 50%, #0d1420 100%);">
   <!-- Background visualization: J-space band with animated tokens -->
-  <div id="hero-band" class="absolute inset-0 opacity-60"></div>
+  <div id="hero-band" class="absolute inset-0 opacity-70"></div>
 
   <!-- Content -->
-  <div class="relative z-10 prose-section text-center text-white">
-    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-6 leading-tight">
-      recognition<span class="text-bright">—</span>gated
+  <div class="relative z-10 prose-section text-center">
+    <div class="mb-8 inline-block">
+      <span class="scene-label">Introduction</span>
+    </div>
+
+    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-4 leading-tight text-ink">
+      recognition<span class="text-cyan">—</span>gated
     </h1>
-    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-12 leading-tight">
+    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-12 leading-tight text-ink">
       workspace steering
     </h1>
 
-    <p class="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto">
-      Steer a frozen language model through its verbalizable workspace. Writes timed by <em>sphuraṭṭā</em> events (uncommitted moments). Verified by <em>āgama</em> re-cognition. Bounded by <em>svātantrya</em> (autonomy).
+    <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto text-ink-soft">
+      Steer a frozen language model through its verbalizable workspace. Writes timed by <em class="text-cyan">sphuraṭṭā</em> events (uncommitted moments). Verified by <em class="text-violet">āgama</em> re-cognition. Bounded by <em class="text-amber">svātantrya</em> (autonomy).
     </p>
 
     <div class="flex gap-4 justify-center mt-12 flex-wrap">
-      <a href="#parallel" class="cta-button">See the parallel</a>
+      <a href="#parallel" class="cta-button">See the parallel →</a>
       <a href="#instrument" class="secondary-button">Read the research</a>
     </div>
 
-    <p class="text-sm md:text-base text-neutral mt-16">
-      Prabodha v1.0.0 · Verified across 20+ gates · Core claim: 0.30–0.35 lift within ±0.5 nat budget
-    </p>
+    <div class="mt-16 pt-8 border-t border-hairline">
+      <p class="text-sm md:text-base text-ink-faint">
+        Prabodha v1.0.0 · Verified across 20+ gates · Core claim: 0.30–0.35 lift within ±0.5 nat budget
+      </p>
+    </div>
   </div>
 </section>
 
 <script>
-  // Simple band visualization with animated tokens
+  // Animated J-space band visualization
   const canvas = document.getElementById('hero-band');
   if (canvas && typeof window !== 'undefined') {
-    // Create SVG visualization
     const svg = `
       <svg viewBox="0 0 1200 400" class="w-full h-full">
         <defs>
           <linearGradient id="bandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#3d3d5c;stop-opacity:0.8" />
-            <stop offset="50%" style="stop-color:#4a4a6a;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#2a2a3e;stop-opacity:0.8" />
+            <stop offset="0%" style="stop-color:#1d2d4d;stop-opacity:0.9" />
+            <stop offset="50%" style="stop-color:#2a3f5f;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#1a2a40;stop-opacity:0.9" />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
 
-        <!-- Band region -->
-        <rect y="150" width="1200" height="100" fill="url(#bandGrad)" />
+        <!-- Band region with glow -->
+        <rect y="140" width="1200" height="120" fill="url(#bandGrad)" opacity="0.8" />
 
-        <!-- Workspace boundary -->
-        <line x1="0" y1="150" x2="1200" y2="150" stroke="#ffd166" stroke-width="2" opacity="0.3" />
-        <line x1="0" y1="250" x2="1200" y2="250" stroke="#ffd166" stroke-width="2" opacity="0.3" />
+        <!-- Workspace boundary lines -->
+        <line x1="0" y1="140" x2="1200" y2="140" stroke="#22d3ee" stroke-width="1" opacity="0.4" />
+        <line x1="0" y1="260" x2="1200" y2="260" stroke="#a855f7" stroke-width="1" opacity="0.3" />
 
-        <!-- Animated tokens (represented as dots) -->
-        <circle cx="100" cy="200" r="4" fill="#ffd166" opacity="0.8" class="token" />
-        <circle cx="300" cy="190" r="4" fill="#ffd166" opacity="0.6" class="token" />
-        <circle cx="500" cy="210" r="4" fill="#e94b3c" opacity="0.9" class="token" />
-        <circle cx="700" cy="195" r="4" fill="#ffd166" opacity="0.5" class="token" />
-        <circle cx="900" cy="205" r="4" fill="#ffd166" opacity="0.7" class="token" />
-        <circle cx="1100" cy="185" r="4" fill="#ffd166" opacity="0.4" class="token" />
+        <!-- Animated tokens with glow -->
+        <circle cx="100" cy="200" r="5" fill="#22d3ee" opacity="0.9" class="token" filter="url(#glow)" />
+        <circle cx="300" cy="185" r="4" fill="#22d3ee" opacity="0.6" class="token" />
+        <circle cx="500" cy="215" r="5" fill="#f59e0b" opacity="0.8" class="token" filter="url(#glow)" />
+        <circle cx="700" cy="200" r="4" fill="#22d3ee" opacity="0.5" class="token" />
+        <circle cx="900" cy="210" r="5" fill="#a855f7" opacity="0.7" class="token" filter="url(#glow)" />
+        <circle cx="1100" cy="190" r="4" fill="#22d3ee" opacity="0.4" class="token" />
 
         <!-- Label -->
-        <text x="600" y="380" text-anchor="middle" fill="#d4d4d4" font-family="mono" font-size="12">
-          J-space workspace band | Tokens flow through verbalizable representations
+        <text x="600" y="380" text-anchor="middle" fill="#aebacb" font-family="monospace" font-size="12">
+          J-space workspace band | sphuraṭṭā writes flow through verbalizable representations
         </text>
       </svg>
     `;
@@ -73,11 +85,11 @@
 
 <style>
   #hero-band {
-    animation: fadeInUp 0.8s ease-out;
+    animation: fadeInUp 1s ease-out;
   }
 
   .token {
-    animation: drift 4s infinite ease-in-out;
+    animation: drift 5s infinite ease-in-out;
   }
 
   @keyframes fadeInUp {
@@ -93,10 +105,12 @@
 
   @keyframes drift {
     0%, 100% {
-      transform: translateY(0) scaleOpacity(1);
+      transform: translateY(0);
+      opacity: 0.6;
     }
     50% {
-      transform: translateY(-10px) scaleOpacity(0.7);
+      transform: translateY(-12px);
+      opacity: 0.95;
     }
   }
 </style>

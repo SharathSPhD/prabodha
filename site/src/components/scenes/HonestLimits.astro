@@ -6,86 +6,89 @@
 
 <section id="limits" class="section-divider">
   <div class="prose-section">
+    <div class="mb-4">
+      <span class="scene-label">Scene 6</span>
+    </div>
     <h2>Honest limits: readback is weak, amplitude coupling fails margin</h2>
 
-    <p class="text-lg">
+    <p class="text-lg text-ink-soft">
       The entire program prioritizes statistical rigor as a pruning mechanism, not a blessing mechanism.
       Some things work. Some don't. Both are findings.
     </p>
 
-    <div class="bg-orange-50 dark:bg-orange-950 border-2 border-orange-300 dark:border-orange-700 rounded-lg p-6 my-8">
-      <h3 class="font-serif text-xl mb-4">Negative 1: Readback verification is weak</h3>
+    <div class="card my-8" style="border-color: var(--amber); border-width: 2px;">
+      <h3 class="font-serif text-xl mb-4 text-amber">Negative 1: Readback verification is weak</h3>
 
-      <p>
+      <p class="text-ink-soft">
         The āgama re-cognition test: does the model take a written concept suggestion? Measured as
         the rank of that concept in the next generation's output probability distribution (top-M acceptance).
       </p>
 
       <div class="grid md:grid-cols-2 gap-4 my-6">
         <div>
-          <div class="text-sm text-orange-700 dark:text-orange-300 uppercase font-semibold mb-2">Achieved</div>
-          <div class="text-3xl font-serif font-semibold">BA ≈ 0.59</div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+          <div class="text-sm uppercase font-semibold mb-2 text-amber">Achieved</div>
+          <div class="text-3xl font-serif font-semibold text-amber">BA ≈ 0.59</div>
+          <p class="text-xs text-ink-faint mt-2">
             Balanced accuracy on held-out test corpus (n=120)
           </p>
         </div>
         <div>
-          <div class="text-sm text-orange-700 dark:text-orange-300 uppercase font-semibold mb-2">Threshold</div>
-          <div class="text-3xl font-serif font-semibold">0.60</div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+          <div class="text-sm uppercase font-semibold mb-2 text-amber">Threshold</div>
+          <div class="text-3xl font-serif font-semibold text-rose">0.60</div>
+          <p class="text-xs text-ink-faint mt-2">
             Minimum bar for a load-bearing readback claim
           </p>
         </div>
       </div>
 
-      <p>
-        <strong>Interpretation:</strong> Readback verification exists but is marginally insufficient as a
+      <p class="text-ink-soft">
+        <strong style="color: var(--cyan);">Interpretation:</strong> Readback verification exists but is marginally insufficient as a
         confidence test. It can't carry claims about what the model "understood." We don't use it as evidence.
       </p>
 
-      <div class="text-xs text-muted mt-4">
-        <strong>Gates:</strong> gate_L14_readback_sweep (36-setting search, screen-exploratory) ·
+      <div class="text-xs text-ink-faint mt-4">
+        <strong style="color: var(--violet);">Gates:</strong> gate_L14_readback_sweep (36-setting search, screen-exploratory) ·
         gate_L15_readback_holdout (held-out replication)
       </div>
     </div>
 
-    <div class="bg-orange-50 dark:bg-orange-950 border-2 border-orange-300 dark:border-orange-700 rounded-lg p-6">
-      <h3 class="font-serif text-xl mb-4">Negative 2: Corpus-amplitude coupling fails strict margin</h3>
+    <div class="card p-6" style="border-color: var(--rose); border-width: 2px;">
+      <h3 class="font-serif text-xl mb-4 text-rose">Negative 2: Corpus-amplitude coupling fails strict margin</h3>
 
-      <p>
+      <p class="text-ink-soft">
         Hypothesis: does steering lift scale monotonically with concept similarity to the training corpus?
         A dose-response curve is expected if workspace content is corpus-learned.
       </p>
 
-      <p class="mt-4">
-        <strong>Result:</strong> Direction confirmed (higher corpus overlap → higher lift). But magnitude
+      <p class="mt-4 text-ink-soft">
+        <strong style="color: var(--amber);">Result:</strong> Direction confirmed (higher corpus overlap → higher lift). But magnitude
         fails the pre-registered margin (effect size d ≈ 0.3, threshold ≥ 0.5).
       </p>
 
-      <div class="text-sm mt-4 p-3 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800">
-        <div class="text-xs text-muted uppercase font-semibold">Disposition</div>
-        <p class="mt-2 text-sm">
+      <div class="text-sm mt-4 p-3 panel">
+        <div class="text-xs uppercase font-semibold text-ink-faint">Disposition</div>
+        <p class="mt-2 text-sm text-ink-soft">
           Not a refutation—a downgrade. The effect is real (sign-consistent) but smaller than the
           registered bar. We report it by sign-consistency, not by claiming a confirmed margin.
         </p>
       </div>
 
-      <div class="text-xs text-muted mt-4">
-        <strong>Gate:</strong> gate_L19_corpus_amplitude (fail-on-margin)
+      <div class="text-xs text-ink-faint mt-4">
+        <strong style="color: var(--violet);">Gate:</strong> gate_L19_corpus_amplitude (fail-on-margin)
       </div>
     </div>
 
-    <div class="bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 p-6 rounded mt-8">
-      <h3 class="font-serif text-lg mb-3">Why ship honest negatives?</h3>
+    <div class="card mt-8" style="border-color: var(--violet); border-width: 2px;">
+      <h3 class="font-serif text-lg mb-3 text-violet">Why ship honest negatives?</h3>
 
-      <p>
-        <strong>Epistemology:</strong> The goal is understanding and steering of LLMs, not winning a grant.
+      <p class="text-ink-soft">
+        <strong style="color: var(--cyan);">Epistemology:</strong> The goal is understanding and steering of LLMs, not winning a grant.
         A weak readback metric tells you something real: steering works without readback verification being
         tight. That's interesting. It says the mechanism is NOT "write, then verify write was received."
       </p>
 
-      <p class="mt-4">
-        <strong>Engineering:</strong> You can't build a reliable system on a soft metric. If readback were
+      <p class="mt-4 text-ink-soft">
+        <strong style="color: var(--cyan);">Engineering:</strong> You can't build a reliable system on a soft metric. If readback were
         a critical path, the paper would be misleading. It isn't, so we say so.
       </p>
     </div>
