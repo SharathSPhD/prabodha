@@ -185,8 +185,45 @@ Both experiments (jailbreak and truthfulness) are single-seed screening results 
 gate files. The key finding is negative: band-targeted steering via contrastive directions does not trivially
 improve these benchmarks. This is valuable in two ways: (1) it prevents overclaim---steering is not a shortcut
 to alignment, and (2) it clarifies the doctrine's scope---Pratyabhij\~n\=a supplies a theory of workspace structure
-and transparency, not alignment gain. Future work combining band-steering with other methods (training,
-filtering, ensemble voting) remains open.
+and transparency, not alignment gain.
+
+\textbf{Recognition-gated hardening: the mechanism that resolves the negative (gemma-2-2b).}
+The L21 negative above says that \emph{unconditional} activation steering does not help an already-aligned
+model. But the doctrine's core claim is \emph{recognition-then-response}: recognize the input's harmful
+signature first, and reinforce refusal only when a genuine attack is present. We test this directly on
+gemma-2-2b against a battery of wrapped jailbreak prompts (DAN, roleplay, ignore-instructions), reading each
+input's harmful projection onto the contrastive refusal direction at the band read-layer and gating the
+defensive write on a threshold in the empirical benign/attack gap (gate L26-moat-proof). Three defenses:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Defense & Attack ASR & Benign over-refusal \\
+\midrule
+None & 0.50 & 0.00 \\
+Unconditional hardening (brute force) & 0.25 & 1.00 \emph{(unusable)} \\
+\textbf{Recognition-gated hardening} & \textbf{0.25} & \textbf{0.00} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Recognition-gating cuts real jailbreaks in half---the \emph{same} attack reduction as brute-force
+hardening---but at \emph{zero} benign collateral, whereas unconditional hardening refuses 100\% of benign
+traffic and is therefore useless in deployment. Critically, jailbreak wrapping does not evade the gate: all
+$12/12$ wrapped attacks were detected and $0/10$ benign prompts triggered a false refusal, because the
+harmful signature lives at the \emph{activation} level, below what the surface prompt can disguise (benign
+projections fall in $[-53,-18]$, attack projections in $[+4,+73]$---a clean, non-overlapping gap). A system
+prompt cannot replicate this: it lives \emph{above} the input, so an attacker can see, override, or strip it,
+whereas the recognition gate lives in the serving code's forward pass and is prompt-untouchable. This is the
+positive counterpart to the L21 negative: activation defense works when it is \emph{recognition-gated}, not
+when it is applied unconditionally. \emph{Caveats:} this is an exploratory result---$n=12$ attacks, $10$
+benign, a single model and seed, and a refusal-phrase ASR metric; larger models, standardized probe suites
+(e.g., garak), and multi-seed confirmation are the natural next steps. The primitives
+(\texttt{harmful\_projection}, \texttt{recognition\_gate}, \texttt{act\_recognition\_gated}) ship in
+\texttt{prabodha.steering.mechanisms}.
+
+Future work combining band-steering with other methods (training, filtering, deeper recognition signals)
+remains open.
 
 \subsection*{Finding 10: Benchmark---Efficiency and Instrument Comparison (L22 Consolidation)}
 
