@@ -1,11 +1,15 @@
 # prabodha — प्रबोध
 
-**Recognition-gated workspace steering for language models.**
+**Recognition-gated workspace steering for language models — and a jailbreak-hardening platform built on it.**
 
 Prabodha ("awakening") implements the missing control theory for the Jacobian-lens
 actuator: steer a frozen LLM through its global workspace using a small recognition-driven
 world model. Writes are timed by sphurattā events (uncommitted moments), verified by
 āgama re-cognition, bounded by svātantrya (autonomy), and diagnosed by the three malas.
+
+Its most concrete application is a **server-side jailbreak defense the model's own deployer bakes into
+their inference stack** — the *recognition-gated moat*: recognize the input's activation-level harmful
+signature, then reinforce refusal **only** for genuine attacks. See **[The product](#the-product--a-jailbreak-hardening-platform)** below.
 
 Built as a bridge between PWM (Pratyabhijñā World Model, Sharath S), the J-space
 (Anthropic's verbalizable global workspace), and GNW (Global Neuronal Workspace),
@@ -24,6 +28,54 @@ read as engineering.
 The readback verdict is weak (BA ≈ 0.59 at n=120 — honest negative, gates L14–L16);
 corpus-amplitude coupling is confirmed directionally but fails the strict margin criterion
 (gate L19 fail-on-margin). No new claims are made; all numbers are committed to gates.
+
+## The product — a jailbreak-hardening platform
+
+The research above is the actuator. The **product** points it at the threat that matters in a deployed
+model: **prompt jailbreaks**. End users of a served model can only attack through the prompt (no
+activation access) — so prompt jailbreak is the universal threat, identical for open and closed weights.
+Prabodha is a **bring-your-model hardening platform**:
+
+**1 · Bring any model.** Open weights self-hosted (GB10/local) for activation-space defenses; any model —
+open *or* closed — via BYOK/OpenRouter for prompt-space defenses.
+
+**2 · Characterize it.** Measure the model's jailbreak susceptibility and where its harmful signature
+lives, prompt-space and (for open weights) activation-space.
+
+**3 · Harden with a *graded* library, not one switch.** `prabodha.steering.mechanisms` ships a tiered
+menu — gentle→firm→constitutional prompt wrappers (any model) up to the **recognition-gated activation
+moat** (open weights). Each mechanism carries a capability/tradeoff profile; you pick by what you can
+touch and what you can tolerate.
+
+**4 · The moat — proven.** On gemma-2-2b against a real jailbreak battery:
+
+| Defense | Attack ASR | Benign over-refusal |
+|---|---|---|
+| None | 0.50 | 0.00 |
+| Brute-force hardening | 0.25 | **1.00 (unusable)** |
+| **Recognition-gated (the moat)** | **0.25** | **0.00** |
+
+Same attack cut as brute force at **zero** benign collateral; wrapping (DAN/roleplay/ignore-instructions)
+can't evade it because detection is activation-level (benign projections `[−53,−18]` vs attack `[+4,+73]`).
+A system prompt can't replicate this — the gate lives *below* the prompt, so an attacker can't see,
+override, or strip it. Gate: `gate_L26_moat_proof.json`.
+
+**5 · Honest generality bound.** The moat is **model-dependent**: it needs a clean projection gap. It has
+one on gemma-2-2b (works); Qwen2.5-1.5B's projections overlap (it doesn't) — we report this, we don't hide
+it. That is *why* the product is a per-model-characterized library, not a universal switch. Gate:
+`gate_L26_moat_qwen.json`.
+
+**6 · Define your own goal, see the effect, register a pack.** In the app: create an alignment goal
+(plain-language policy + do/don't examples + a mechanism), see the real before/after replay, and register
+a **prabodha hardening pack** to *your own* HuggingFace account (BYOK). A pack is the runtime spec a
+deployer loads (`hardening.json` + model card + `apply_hardening.py`) — not fake "hardened weights,"
+because activation hardening is a runtime hook.
+
+**Where it lives:** the [app](https://prabodha-live.vercel.app) (Studio, Jailbreak Defense Lab with a real
+Demo Replay, Alignment Goals + HF registration), [Pages](https://sharathsphd.github.io/prabodha), the
+Claude Code plugin + MCP server (8 tools incl. `list_mechanisms`/`harden_prompt`), and the paper.
+Every number above is committed to a gate; the honest caveats (exploratory n, single seed, refusal-phrase
+metric) travel with each claim.
 
 ## Benchmark: Efficiency and Instrument Comparison
 
