@@ -13,10 +13,9 @@ Source: L23 PRE-REGISTRATION; L22 legibility-efficiency story, now on safety.
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -168,8 +167,7 @@ def run_hardening_loop(config: HardeningConfig, prayoga_path: str | None = None)
     from prayoga.axis_a.direction_extraction import directions_all_layers
     from prayoga.axis_a.intervention_engine import InterventionEngine
 
-    from prabodha.steering.timing import make_policy, EntropyGated
-    from prabodha.steering.injector import ResidualInjector, entropy_observer
+    from prabodha.steering.timing import make_policy
     from prabodha.steering.writer import WriteCommand
 
     logger.info("L23: Loading model and building direction...")
@@ -466,7 +464,6 @@ def run_hardening_loop(config: HardeningConfig, prayoga_path: str | None = None)
 # Utility to convert result to gate-report format (for integration with prabodha gates/)
 def result_to_gate_json(result: HardeningResult, loop_label: str = "L23") -> dict[str, Any]:
     """Convert HardeningResult to gate-report JSON structure."""
-    import torch
     return {
         "loop": loop_label,
         "status": "open",

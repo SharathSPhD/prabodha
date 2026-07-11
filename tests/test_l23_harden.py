@@ -10,9 +10,6 @@ sshleifer/tiny-gpt2, runs 1-2 prompts per arm, verifies execution and injector b
 Source: L23 worklist; smoke marked @pytest.mark.smoke to allow `pytest -m "not smoke"`.
 """
 import json
-from dataclasses import dataclass
-from typing import Any
-from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
@@ -175,9 +172,8 @@ class TestHardeningLoopSmoke:
     @pytest.fixture(autouse=True)
     def setup_tiny_model(self):
         """Load tiny-gpt2 for CPU smoke."""
-        try:
-            from prayoga.lm.hf_model import HFModel
-        except ImportError:
+        import importlib.util
+        if importlib.util.find_spec("prayoga") is None:
             pytest.skip("prayoga not installed; skipping smoke")
 
         self.tiny_model_id = "sshleifer/tiny-gpt2"
