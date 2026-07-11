@@ -8,3 +8,10 @@ outputs/
 .ruff_cache/
 nohup.out
 vendor/pwm/
+
+# JS build artifacts (apps/web, site)
+node_modules/
+.next/
+.vercel/
+site/dist/
+site/.astro/
