@@ -6,13 +6,13 @@
     "loop": "L0"
   },
   "L1": {
-    "file": "gate_L1b.json",
+    "file": "gate_L1.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L1"
   },
   "L4": {
-    "file": "gate_L9_probe_a0.02_s777_fixed.json",
+    "file": "gate_L10_cross.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L4"
@@ -30,58 +30,94 @@
     "loop": "L12-flash"
   },
   "L14": {
-    "file": "gate_L14_readback_raw.json",
+    "file": "gate_L14_amp.json",
     "code_gate": "pass",
-    "domain_gate": "fail",
+    "domain_gate": "pass",
     "loop": "L14"
   },
   "L15": {
-    "file": "gate_L15_readback_heldout_raw.json",
+    "file": "gate_L15_amp_joint.json",
     "code_gate": "pass",
-    "domain_gate": "fail",
+    "domain_gate": "pass",
     "loop": "L15"
   },
   "L16": {
-    "file": "gate_L16_fine_a0.02.json",
+    "file": "gate_L16_corpus.json",
     "code_gate": "pass",
     "domain_gate": "pass",
     "loop": "L16"
   },
   "L17": {
-    "file": "gate_L17_xdose_s42_a0.02.json",
+    "file": "gate_L17_cvar.json",
     "code_gate": "pass",
-    "domain_gate": "pass",
+    "domain_gate": "fail",
     "loop": "L17"
   },
   "L18": {
-    "file": "gate_L18_npretry_s777.json",
+    "file": "gate_L18_l8redo.json",
     "code_gate": "pass",
     "domain_gate": "pass",
     "loop": "L18"
   },
   "L19": {
-    "file": "gate_L19_l8ms_a0.1_s777.json",
+    "file": "gate_L19_cax.json",
     "code_gate": "pass",
-    "domain_gate": "fail",
+    "domain_gate": "fail-on-margin",
     "loop": "L19"
   },
   "L2": {
-    "file": "gate_L2_run1.json",
+    "file": "gate_L2.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L2"
   },
   "L20": {
-    "file": "gate_L20_screen_v2.json",
+    "file": "gate_L20_confirm.json",
     "code_gate": "pass",
-    "domain_gate": "blocked",
+    "domain_gate": "pass",
     "loop": "L20"
   },
   "L21": {
-    "file": "gate_L21_truthful_seed42.json",
+    "file": "gate_L21_baselines_seed123.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L21"
+  },
+  "L22": {
+    "file": "gate_L22_benchmark.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L22"
+  },
+  "L23": {
+    "file": "gate_L23_harden.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L23"
+  },
+  "L24": {
+    "file": "gate_L24_innovation.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L24"
+  },
+  "L25": {
+    "file": "gate_L25_promptspace.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L25"
+  },
+  "L26": {
+    "file": "gate_L26_moat_gemma2b.json",
+    "code_gate": "pass",
+    "domain_gate": "pending_gpu_sweep",
+    "loop": "L26"
+  },
+  "L26-moat-proof": {
+    "file": "gate_L26_moat_proof.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L26-moat-proof"
   },
   "L2b": {
     "file": "gate_L2b.json",
@@ -90,7 +126,7 @@
     "loop": "L2b"
   },
   "L3": {
-    "file": "gate_L3_alpha02.json",
+    "file": "gate_L3.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L3"
@@ -99,7 +135,7 @@
     "file": "gate_L3_readiness.json"
   },
   "L5-tau": {
-    "file": "gate_L5_tau80_s123.json",
+    "file": "gate_L5_tau.json",
     "code_gate": "pass",
     "domain_gate": "pass",
     "loop": "L5-tau"
@@ -111,7 +147,7 @@
     "loop": "L6-align"
   },
   "L6-confirm": {
-    "file": "gate_L6_confirm_s777.json",
+    "file": "gate_L6_confirm.json",
     "code_gate": "pass",
     "domain_gate": "fail",
     "loop": "L6-confirm"
@@ -145,5 +181,11 @@
     "code_gate": "pass",
     "domain_gate": "pass",
     "loop": "L9-writecost"
+  },
+  "char": {
+    "file": "gate_char_nvidia-nemotron-mini-4b-instruct.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "char"
   }
 }

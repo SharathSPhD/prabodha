@@ -1703,6 +1703,110 @@
       }
     },
     {
+      "id": "gate_L22_floor_a0.02_band.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.02_band.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_floor_a0.02_final.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.02_final.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_floor_a0.05_band.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.05_band.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_floor_a0.05_final.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.05_final.json"
+      ],
+      "numbers": {
+        "value": 0.0,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_floor_a0.1_band.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.1_band.json"
+      ],
+      "numbers": {
+        "value": 0.0375,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_floor_a0.1_final.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_floor_a0.1_final.json"
+      ],
+      "numbers": {
+        "value": 0.0375,
+        "threshold": 0.2,
+        "pass": false
+      }
+    },
+    {
+      "id": "gate_L22_lens_band.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_lens_band.json"
+      ],
+      "numbers": {
+        "value": 0.5,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
+      "id": "gate_L22_lens_final.json_H_gated_budget",
+      "text": "H_gated_budget",
+      "tier": "confirm",
+      "gates": [
+        "gate_L22_lens_final.json"
+      ],
+      "numbers": {
+        "value": 0.5,
+        "threshold": 0.2,
+        "pass": true
+      }
+    },
+    {
       "id": "gate_L2_run1.json_H_report",
       "text": "H_report",
       "tier": "screen",

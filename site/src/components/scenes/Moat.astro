@@ -1,0 +1,88 @@
+---
+// Scene: Recognition-Gated Moat Proof
+// Renders ONLY the real data in public/data/moat.json (derived from
+// gates/gate_L26_moat_proof.json + the mechanisms REGISTRY). No invented numbers.
+import moat from "../../../public/data/moat.json";
+const pct = (x: number) => `${Math.round(x * 100)}%`;
+---
+
+<section id="moat" class="section-divider">
+  <div class="prose-section">
+    <h2>The recognition-gated moat</h2>
+
+    <p class="text-lg">
+      A deployed model's end users can only attack it through the <strong>prompt</strong> — they have no
+      access to its activations. So the real threat is prompt jailbreaks, and prabodha's edge is a
+      <strong>server-side</strong> defense the deployer bakes into their own inference stack: it lives
+      <em>below</em> the prompt, so an attacker cannot see, override, or strip it. {moat.headline}
+    </p>
+    <p class="text-sm opacity-70">Model: <code>{moat.model}</code> · {moat.source}</p>
+
+    <h3>Real jailbreak battery — three defenses</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm my-4">
+        <thead>
+          <tr class="text-left border-b">
+            <th class="py-2 pr-4">Defense</th>
+            <th class="py-2 px-3">Attack ASR</th>
+            <th class="py-2 px-3">Benign over-refusal</th>
+            <th class="py-2 px-3">Gate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {moat.defenses.map((x: any) => (
+            <tr class={x.moat ? "font-medium" : ""}>
+              <td class="py-2 pr-4">{x.name}{x.moat ? " ★" : ""}<br /><span class="text-xs opacity-60">{x.note}</span></td>
+              <td class="py-2 px-3 font-mono">{pct(x.asr)}</td>
+              <td class={`py-2 px-3 font-mono ${x.over_refusal === 0 ? "text-teal-600" : x.over_refusal >= 0.9 ? "text-red-600" : "text-amber-600"}`}>{pct(x.over_refusal)}</td>
+              <td class="py-2 px-3 text-xs opacity-60">{x.gate ?? "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm">
+      Brute-force hardening cuts jailbreaks as well as the moat but refuses <strong>all</strong> benign
+      traffic. The recognition-gated defense achieves the <strong>same</strong> attack reduction at
+      <strong>zero</strong> benign cost.
+    </p>
+
+    <h3>Why wrapping can't evade it</h3>
+    <p>
+      The defense reads the input's harmful-signature at the activation level and only reinforces refusal
+      for genuine attacks. Benign inputs project to
+      <code>[{moat.projection_separation.benign_range.join(", ")}]</code>; attacks (including
+      DAN / roleplay / ignore-instruction wrapped ones) project to
+      <code>[{moat.projection_separation.attack_range.join(", ")}]</code> — a clean gap. {moat.projection_separation.note}
+    </p>
+
+    <h3>The graded mechanism library</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+      {moat.mechanisms.map((m: any) => (
+        <div class={`rounded-lg border p-3 ${m.key === "act_recognition_gated" ? "border-indigo-500" : ""}`}>
+          <div class="flex items-center justify-between gap-2">
+            <strong class="text-sm">{m.name}</strong>
+            <span class="text-[10px] opacity-70">{m.space} · {m.weights === "both" ? "open+closed" : "open"} · tier {m.tier}</span>
+          </div>
+          <p class="text-xs opacity-80 mt-1">{m.summary}</p>
+          {m.measured_profile ? (
+            <p class="text-[11px] font-mono opacity-60 mt-1">
+              measured on {m.measured_profile.model}
+              {m.measured_profile.asr_reduction != null ? ` · ASR −${m.measured_profile.asr_reduction}` : ""}
+              {m.measured_profile.over_refusal_cost != null ? ` · over-refusal ${m.measured_profile.over_refusal_cost}` : ""}
+            </p>
+          ) : (
+            <p class="text-[11px] italic opacity-50 mt-1">no per-model measurement yet</p>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div class="rounded-lg border border-amber-500/40 p-3 text-sm">
+      <strong>Honest caveats.</strong>
+      <ul class="list-disc pl-5 mt-1 text-xs opacity-80">
+        {moat.caveats.map((c: string) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
