@@ -209,7 +209,9 @@ class SteeringRuntimeAdapter:
                         continue
                     _ = self.hf(ids)
                     if captured_acts is not None:
-                        activations_list.append(captured_acts.numpy().reshape(-1))  # [1,d]->[d] so np.array gives 2D [n,d]
+                        # Flatten to a 1D [hidden_dim] vector regardless of the captured tensor's
+                        # rank (some model layers emit [1, d] or [1, 1, d] at the last position).
+                        activations_list.append(np.asarray(captured_acts).reshape(-1))
                     captured_acts = None
         finally:
             hook_handle.remove()
@@ -217,7 +219,11 @@ class SteeringRuntimeAdapter:
         if not activations_list:
             raise ValueError("No activations captured; check text encoding")
 
-        return np.array(activations_list, dtype=np.float32)
+        # Guarantee a 2D [n, hidden_dim] array for contrastive_direction (never [n, 1, d]).
+        arr = np.asarray(activations_list, dtype=np.float32)
+        if arr.ndim != 2:
+            arr = arr.reshape(arr.shape[0], -1)
+        return arr
 
     async def steer_stream(
         self, prompt: str, concept: str, alpha: Optional[float], arm: str,
