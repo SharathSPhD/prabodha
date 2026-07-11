@@ -1,0 +1,45 @@
+---
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import ParallelScene from '@/components/scenes/Parallel.astro';
+import InstrumentScene from '@/components/scenes/Instrument.astro';
+import ActionScene from '@/components/scenes/Action.astro';
+import TransferScene from '@/components/scenes/Transfer.astro';
+import ComparisonScene from '@/components/scenes/Comparison.astro';
+import HonestLimits from '@/components/scenes/HonestLimits.astro';
+import GetStarted from '@/components/GetStarted.astro';
+import DepthToggle from '@/components/DepthToggle.astro';
+---
+
+<Base
+  title="prabodha — Recognition-gated workspace steering"
+  description="Steer frozen language models through their verbalizable workspace using recognition-driven writes, timed by sphuraṭṭā events, verified by āgama re-cognition."
+>
+  <Hero />
+
+  <div class="bg-gray-50 dark:bg-gray-950">
+    <!-- Scene 1: The Uncanny Parallel -->
+    <ParallelScene />
+
+    <!-- Scene 2: The Instrument -->
+    <InstrumentScene />
+
+    <!-- Scene 3: Theory in Live Action -->
+    <ActionScene />
+
+    <!-- Scene 4: Transfer Recipe -->
+    <TransferScene />
+
+    <!-- Scene 5: Comparison with Baselines -->
+    <ComparisonScene />
+
+    <!-- Scene 6: Honest Limits -->
+    <HonestLimits />
+  </div>
+
+  <!-- Get Started / Links -->
+  <GetStarted />
+
+  <!-- Depth Toggle -->
+  <DepthToggle />
+</Base>
