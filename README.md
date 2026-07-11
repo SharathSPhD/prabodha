@@ -238,6 +238,14 @@ vis(
 See `examples/quickstart_qwen3.md` and `examples/quickstart_nemotron.md` for full
 command-line workflows with expected numbers (gate-cited).
 
+## Try it live
+
+**No installation required:**
+
+- **Web app (Replay + BYOK):** https://prabodha-live.vercel.app — watch pre-recorded steering episodes, or bring your own model
+- **Pages site:** https://sharathsphd.github.io/prabodha — gates manifest, methods, and architecture diagrams
+- **Glossary:** https://prabodha-live.vercel.app/glossary — Sanskrit-English dual register for core concepts
+
 ## Install & use
 
 ### Library
