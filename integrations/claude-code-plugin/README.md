@@ -11,7 +11,9 @@ Workspace-band lens fitting, visualization, and recognition-gated steering for H
 
 This makes available:
 - **Skills** (Claude Code only): `lens-map`, `steer-verify` — operational workflows that guide you through the prabodha CLI
-- **MCP Tools** (any MCP client): `lens_map`, `steer_generate`, `readback_verify`, `list_gates` — programmatic access to steering tools
+- **MCP Tools** (any MCP client):
+  - Steering primitives: `lens_map`, `steer_generate`, `readback_verify`, `list_gates`
+  - **Graded hardening library**: `list_mechanisms`, `recommend_mechanism`, `characterize_model`, `harden_prompt` — pick a defense by capability/tradeoff (prompt-space works on open *and* closed models; the activation moat needs open weights)
 
 ## Usage: Skills (Claude Code)
 
@@ -164,6 +166,62 @@ Enumerate all committed gates in `gates/*.json`.
   "filtered_count": 5
 }
 ```
+
+## Graded hardening library (jailbreak resistance)
+
+Rather than shipping a single "winner" defense, prabodha exposes a **graded library** of
+hardening mechanisms so a deployer picks by capability and tradeoff. Prompt-space mechanisms
+are portable to **any** model (open or closed, via BYOK/OpenRouter); activation-space mechanisms
+are the prompt-untouchable server-side tier that needs open weights — culminating in the
+**recognition-gated moat** (`act_recognition_gated`), which reinforces refusal only when the
+input's activation-level harmful-signature crosses a threshold, so benign traffic is untouched
+and jailbreak wrapping can't disguise the attack.
+
+### list_mechanisms
+
+List every mechanism in `prabodha.steering.mechanisms` REGISTRY. No arguments.
+
+**Output:** `{ status, count, mechanisms: [{ key, name, space, weights, tier, summary, profiles }] }`
+— graded tier 1 (gentle prompt wrapper) → tier 4 (recognition-gated activation moat). Per-model
+`profiles` appear only where a real characterization measured them.
+
+### recommend_mechanism
+
+Recommend a graded menu filtered by deployment constraints.
+
+**Input:**
+- `weights` (optional): `open` (activation access) | `closed` (prompt-only, any model). Default `open`.
+- `max_over_refusal` (optional): max tolerated benign over-refusal, 0–1. Default 0.3.
+- `min_coherence` (optional): min tolerated output coherence, 0–1. Default 0.6.
+
+**Output:** `{ status, recommended: [...], rationale, count }` — gentle→aggressive. With
+`weights="closed"` only prompt-space mechanisms are returned.
+
+### characterize_model
+
+Describe (and, where measured, return) a model's steering/jailbreak susceptibility.
+
+**Input:**
+- `model_id`: HuggingFace model id (e.g., `Qwen/Qwen3-4B`)
+- `mode` (optional): `prompt` (no-GPU BYOK/OpenRouter sweep) | `weight` (white-box GPU sweep) | `both`. Default `prompt`.
+
+**Output:** `{ status, model, characterization_description, measured_data, data_source, caveat }`
+— measured rows come from `gates/` with an honest single-seed caveat; unmeasured models return a plan.
+
+### harden_prompt
+
+Apply prompt-space hardening to a chat message list (works on open **and** closed models).
+
+**Input:**
+- `messages`: list of `{role, content}` dicts (standard chat format)
+- `level` (optional): `gentle` | `firm` | `constitutional`. Default `firm`.
+
+**Output:** `{ status, hardened_messages, level_applied, system_prompt, caveat }` — prepends a
+graded refusal-reinforcing system message.
+
+**Caveat:** prompt hardening alone does not stop all jailbreaks; combine with the activation
+moat where the weights allow. The moat's proof (recognition-gated hardening cuts real jailbreaks
+2× with zero benign over-refusal) is in `gates/gate_L26_moat_proof.json`.
 
 ## Calibration rules
 

@@ -5,8 +5,6 @@ Source: WS3 plan (closure master plan, spec §3).
 Primitive: stdio MCP server spawning prabodha CLI tools.
 """
 import json
-import subprocess
-import sys
 from typing import Any
 import logging
 
@@ -150,6 +148,95 @@ async def list_tools() -> list[Tool]:
                 "required": [],
             },
         ),
+        Tool(
+            name="list_mechanisms",
+            description=(
+                "List the graded hardening mechanism library (prabodha.steering.mechanisms REGISTRY). "
+                "Returns every mechanism with key/name/space(prompt|activation)/weights(both|open)/tier/summary "
+                "and any measured per-model profiles. The library grades from gentle prompt wrappers (tier 1) "
+                "to the recognition-gated server-side moat (tier 4, act_recognition_gated). No arguments; no auth."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="recommend_mechanism",
+            description=(
+                "Recommend a graded menu of hardening mechanisms filtered by deployment constraints. "
+                "weights='closed' returns only prompt-space mechanisms (portable to any model via BYOK/OpenRouter); "
+                "weights='open' includes activation-space mechanisms that need open weights. "
+                "Filters by max_over_refusal and min_coherence; returns gentle→aggressive."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "weights": {
+                        "type": "string",
+                        "description": "'open' (activation access) | 'closed' (prompt-only, any model)",
+                        "default": "open",
+                    },
+                    "max_over_refusal": {
+                        "type": "number",
+                        "description": "Max tolerated benign over-refusal (0–1)",
+                        "default": 0.3,
+                    },
+                    "min_coherence": {
+                        "type": "number",
+                        "description": "Min tolerated output coherence (0–1)",
+                        "default": 0.6,
+                    },
+                },
+                "required": [],
+            },
+        ),
+        Tool(
+            name="characterize_model",
+            description=(
+                "Describe (and, where measured, return) a model's steering/jailbreak susceptibility. "
+                "mode='prompt' plans a no-GPU BYOK/OpenRouter jailbreak→defense sweep; mode='weight' plans a "
+                "white-box GPU ablation→restoration sweep; mode='both' unifies them. Returns any measured rows "
+                "from gates/ with honest single-seed caveats."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "model_id": {
+                        "type": "string",
+                        "description": "HuggingFace model id (e.g., 'Qwen/Qwen3-4B')",
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "'prompt' | 'weight' | 'both'",
+                        "default": "prompt",
+                    },
+                },
+                "required": ["model_id"],
+            },
+        ),
+        Tool(
+            name="harden_prompt",
+            description=(
+                "Apply prompt-space hardening to a chat message list (works on open AND closed models). "
+                "level='gentle'|'firm'|'constitutional' prepends a graded refusal-reinforcing system message. "
+                "Returns the hardened messages plus the system prompt used, with an honest caveat that prompt "
+                "hardening alone does not stop all jailbreaks — combine with the activation moat where weights allow."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "messages": {
+                        "type": "array",
+                        "description": "Chat messages: list of {role, content} dicts",
+                        "items": {"type": "object"},
+                    },
+                    "level": {
+                        "type": "string",
+                        "description": "'gentle' | 'firm' | 'constitutional'",
+                        "default": "firm",
+                    },
+                },
+                "required": ["messages"],
+            },
+        ),
     ]
 
 
@@ -169,6 +256,18 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[CallToolResult
         elif name == "list_gates":
             from .tools.gate_tools import list_gates_impl
             result = await list_gates_impl(**arguments)
+        elif name == "list_mechanisms":
+            from .tools.mechanism_tools import list_mechanisms_impl
+            result = await list_mechanisms_impl()
+        elif name == "recommend_mechanism":
+            from .tools.mechanism_tools import recommend_mechanism_impl
+            result = await recommend_mechanism_impl(**arguments)
+        elif name == "characterize_model":
+            from .tools.mechanism_tools import characterize_model_impl
+            result = await characterize_model_impl(**arguments)
+        elif name == "harden_prompt":
+            from .tools.mechanism_tools import harden_prompt_impl
+            result = await harden_prompt_impl(**arguments)
         else:
             return [CallToolResult(content=[TextContent(type="text", text=f"Unknown tool: {name}")])]
 
