@@ -4,11 +4,11 @@
  "kind": "paired-comparison",
  "code_gate": {
   "verdict": "pass",
-  "evidence": "e4_cli --readback-lens (tulan\u0101) run twice on identical stubs/writes; compose_L22.lens_headtohead"
+  "evidence": "e4_cli --readback-lens (tulan\u0101) run on identical stubs/writes; compose_L22.lens_headtohead + floor"
  },
  "domain_gate": {
   "verdict": "fail",
-  "evidence": "{\"n_pairs\": 80, \"top_m\": 5, \"band_detection_rate\": 1.0, \"final_detection_rate\": 0.95, \"gap\": 0.05, \"band_only\": 4, \"final_only\": 0, \"mcnemar_exact_p\": 0.125, \"H_lens_gap\": {\"pass\": false, \"threshold\": 0.2, \"p_bar\": 0.05}, \"H_band_detects\": {\"pass\": true, \"threshold\": 0.3}, \"falsifier_triggered\": true, \"median_post_rank_band\": 1.0, \"median_post_rank_final\": 1.0, \"sources\": [\"gate_L22_lens_band.json\", \"gate_L22_lens_final.json\"]}"
+  "evidence": "{\"n_pairs\": 80, \"top_m\": 5, \"band_detection_rate\": 1.0, \"final_detection_rate\": 0.95, \"gap\": 0.05, \"band_only\": 4, \"final_only\": 0, \"mcnemar_exact_p\": 0.125, \"H_lens_gap\": {\"pass\": false, \"threshold\": 0.2, \"p_bar\": 0.05}, \"H_band_detects\": {\"pass\": true, \"threshold\": 0.3}, \"falsifier_triggered\": true, \"median_post_rank_band\": 1.0, \"median_post_rank_final\": 1.0, \"sources\": [\"gate_L22_lens_band.json\", \"gate_L22_lens_final.json\"], \"floor_sweep_amendment1\": {\"rows\": [{\"alpha\": \"0.02\", \"n_pairs\": 80, \"band\": 0.0, \"final\": 0.0, \"gap\": 0.0, \"band_only\": 0, \"final_only\": 0, \"mcnemar_exact_p\": 1.0, \"sources\": [\"gate_L22_floor_a0.02_band.json\", \"gate_L22_floor_a0.02_final.json\"]}, {\"alpha\": \"0.05\", \"n_pairs\": 80, \"band\": 0.025, \"final\": 0.025, \"gap\": 0.0, \"band_only\": 1, \"final_only\": 1, \"mcnemar_exact_p\": 1.0, \"sources\": [\"gate_L22_floor_a0.05_band.json\", \"gate_L22_floor_a0.05_final.json\"]}, {\"alpha\": \"0.1\", \"n_pairs\": 80, \"band\": 0.475, \"final\": 0.2375, \"gap\": 0.2375, \"band_only\": 20, \"final_only\": 1, \"mcnemar_exact_p\": 2.1e-05, \"sources\": [\"gate_L22_floor_a0.1_band.json\", \"gate_L22_floor_a0.1_final.json\"]}], \"H_floor_gap\": {\"pass\": false, \"threshold\": 0.3, \"p_bar\": 0.05, \"passing_alphas\": []}, \"falsifier_triggered\": false}}"
  },
  "signoff": "pending"
 }

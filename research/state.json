@@ -244,7 +244,7 @@
   "L21_spent": 0.0,
   "L21_cap": 2.0,
   "L22_cap": 1.0,
-  "L22_spent": 0
+  "L22_spent": 0.85
  },
  "kill_switch": false
 }

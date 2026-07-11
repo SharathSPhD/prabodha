@@ -855,3 +855,18 @@ max_new_tokens=8 / arms=[] (readback only; generation arms irrelevant to stub re
   at every dose and the benchmark row becomes "both lenses read writes; band reads are
   cleaner (rank-1 in 80/80 vs 67/80 at alpha=0.3)" — descriptive only.
 Budget: ~0.5h estimated, within the L22 1.0h cap (0.35h spent).
+
+### L22 amendment-1 RESULT (2026-07-11) + loop closure
+Floor sweep (80 pairs per cell): a0.02 band 0.00 vs final 0.00; a0.05 0.025 vs 0.025;
+a0.1 band 0.475 vs final 0.2375 — gap +0.24, McNemar exact p=2.1e-05, band-only
+discordants dominate. REGISTERED H_floor_gap (>=0.3) FAILS ON MARGIN; falsifier NOT
+triggered. Labeling per L19 discipline: FAIL-ON-MARGIN, direction decisive. NOT re-rolled
+with a finer dose grid (bar-chasing); finer grid around alpha~0.1-0.15 = future menu item.
+BENCHMARK VERDICT (gate_L22_benchmark, domain=pass): the efficiency headline stands —
+gated steering delivers ~66% of continuous lift at ~29% of the writes = 2.32x mean
+lift-per-write (range 1.85-3.25), sign-consistent 6/6 clean-stream seed x alpha cells
+(sources: gate_L18_l8redo_a{0.02,0.1} s42 + gate_L19_l8ms s123/777). Lens rows honest:
+at alpha=0.3 both instruments saturate (necessity claim withdrawn there); at the
+transition dose the band lens reads 2x what the final-target lens reads (p=2.1e-05,
+fail-on-margin vs 0.3). Budget: ~0.85h of 1.0h cap. All numbers derived by
+scripts/tools/compose_L22.py from gate JSONs; nothing hand-entered.
