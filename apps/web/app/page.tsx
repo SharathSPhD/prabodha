@@ -77,14 +77,17 @@ export default function LandingPage() {
             prabodha
           </div>
           <div className="flex gap-6 items-center">
+            <Link href="/studio" className="text-sm text-slate-400 hover:text-indigo-400 transition">
+              Studio
+            </Link>
             <Link href="/theatre" className="text-sm text-slate-400 hover:text-indigo-400 transition">
               Theatre
             </Link>
-            <Link href="/glossary" className="text-sm text-slate-400 hover:text-indigo-400 transition">
-              Glossary
-            </Link>
             <Link href="/results" className="text-sm text-slate-400 hover:text-indigo-400 transition">
               Results
+            </Link>
+            <Link href="/glossary" className="text-sm text-slate-400 hover:text-indigo-400 transition">
+              Glossary
             </Link>
             <Link href="/login" className="btn-primary text-xs">
               Sign in
@@ -158,6 +161,86 @@ export default function LandingPage() {
               <p className="text-xs text-slate-500">
                 Preserve autonomy: constrain freedom-cost within ±0.5 nats of entropy (svātantrya).
               </p>
+            </div>
+          </div>
+
+          {/* Tools section */}
+          <div className="pt-16 mt-16 border-t border-night-600 space-y-8">
+            <div className="text-center space-y-3 pb-8">
+              <h2 className="text-3xl font-serif font-bold text-gradient">
+                Steering Tools
+              </h2>
+              <p className="text-slate-400 text-sm max-w-xl mx-auto">
+                Explore, build, and evaluate steering in multiple modes
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              <Link href="/studio" className="card p-6 hover:border-indigo-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-indigo-300 transition">
+                    Live Steering Studio
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Real-time steering with prompt, concept, amplitude, and timing control
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/build" className="card p-6 hover:border-teal-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-teal-300 transition">
+                    Steering Builder
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Create custom steering from concepts or contrastive examples, export as packs
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/jailbreak" className="card p-6 hover:border-red-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-red-300 transition">
+                    Jailbreak Lab
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Defensive research: test refusal steering on adversarial prompts
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/align" className="card p-6 hover:border-teal-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-teal-300 transition">
+                    Alignment Lab
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Test steering toward truthfulness on TruthfulQA-style questions
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/compare" className="card p-6 hover:border-indigo-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-indigo-300 transition">
+                    Arm Comparison
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Compare timing arms with effect sizes and metrics
+                  </p>
+                </div>
+              </Link>
+
+              <Link href="/lens" className="card p-6 hover:border-purple-600/40 transition-colors group">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-slate-100 group-hover:text-purple-300 transition">
+                    Lens Playground
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Visualize and explore the workspace band activation
+                  </p>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
