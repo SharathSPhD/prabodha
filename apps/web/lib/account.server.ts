@@ -2,27 +2,36 @@
 
 import { createClient as createServerClient } from "@/lib/supabase/server";
 
+// NOTE: this file has "use server" — it may ONLY export async functions. The AccountTier
+// type is erased at compile time (fine); the ACCOUNT_TIERS runtime array lives in the
+// client-safe lib/account.ts to avoid "a use server file can only export async functions".
 export type AccountTier = "guest" | "user" | "admin";
-export const ACCOUNT_TIERS: AccountTier[] = ["guest", "user", "admin"];
 
 /** Get the current user's tier (server-side). */
 export async function getMyTier(): Promise<AccountTier | null> {
-  const supabase = createServerClient();
-  if (!supabase) return null;
+  try {
+    const supabase = createServerClient();
+    if (!supabase) return null;
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) return null;
+    if (!user) return null;
 
-  const { data } = await supabase
-    .from("user_tiers")
-    .select("tier")
-    .eq("user_id", user.id)
-    .single();
+    // maybeSingle() returns null (not an error) when the user has no tier row yet,
+    // so an ordinary signed-in user never triggers a 500 in the Server Component.
+    const { data } = await supabase
+      .from("user_tiers")
+      .select("tier")
+      .eq("user_id", user.id)
+      .maybeSingle();
 
-  return (data?.tier || "guest") as AccountTier;
+    return (data?.tier || "guest") as AccountTier;
+  } catch {
+    // Never let a tier lookup crash a page render — treat as "not admin".
+    return null;
+  }
 }
 
 /** Look up a user by email and get their tier (admin only, server-side). */

@@ -4,14 +4,20 @@ import { useEffect, useState } from "react";
 import { BarChart, LineChart } from "@/components/charts";
 import { BenchmarkPanel } from "@/components/BenchmarkPanel";
 
+// Matches the real shape emitted by scripts/tools/export_app_data.py:
+// { claims: [{ id, text, tier, gates: string[], numbers: { value, threshold, pass } }] }
+interface Claim {
+  id: string;
+  text?: string;
+  title?: string; // tolerate either key
+  tier?: string;
+  gates?: string[];
+  numbers?: { value?: number; threshold?: number; pass?: boolean };
+  value?: number; // tolerate a flat value too
+  context?: string;
+}
 interface ResultsData {
-  claims: Array<{
-    id: string;
-    title: string;
-    tier: "confirm" | "screen";
-    value: number;
-    context: string;
-  }>;
+  claims: Claim[];
 }
 
 export default function ResultsPage() {
@@ -87,39 +93,59 @@ export default function ResultsPage() {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {data.claims.map((claim) => (
-                <div
-                  key={claim.id}
-                  className={`card p-6 space-y-3 border-l-4 ${
-                    claim.tier === "confirm"
-                      ? "border-teal-600"
-                      : "border-saffron-600"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <p className="text-lg font-semibold text-slate-100">
-                        {claim.title}
-                      </p>
+              {(data.claims || []).map((claim, i) => {
+                const title = claim.text || claim.title || claim.id || "claim";
+                const value = claim.numbers?.value ?? claim.value;
+                const threshold = claim.numbers?.threshold;
+                const pass = claim.numbers?.pass;
+                return (
+                  <div
+                    key={claim.id || i}
+                    className={`card p-6 space-y-3 border-l-4 ${
+                      claim.tier === "confirm" ? "border-teal-600" : "border-saffron-600"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <p className="text-lg font-semibold text-slate-100 flex-1 break-words">{title}</p>
+                      {claim.tier && (
+                        <span
+                          className={`chip text-xs capitalize ${
+                            claim.tier === "confirm"
+                              ? "border-teal-600/60 text-teal-300"
+                              : "border-saffron-600/60 text-saffron-300"
+                          }`}
+                        >
+                          {claim.tier}
+                        </span>
+                      )}
                     </div>
-                    <span
-                      className={`chip text-xs capitalize ${
-                        claim.tier === "confirm"
-                          ? "border-teal-600/60 text-teal-300"
-                          : "border-saffron-600/60 text-saffron-300"
-                      }`}
-                    >
-                      {claim.tier}
-                    </span>
+
+                    <div className="flex items-baseline gap-3">
+                      <p className="text-2xl font-bold text-indigo-300">
+                        {typeof value === "number" ? value.toFixed(3) : "—"}
+                      </p>
+                      {typeof threshold === "number" && (
+                        <span className="text-xs text-slate-500">threshold {threshold}</span>
+                      )}
+                      {typeof pass === "boolean" && (
+                        <span
+                          className={`text-xs px-1.5 py-0.5 rounded ${
+                            pass ? "bg-teal-900/40 text-teal-300" : "bg-amber-900/40 text-amber-300"
+                          }`}
+                        >
+                          {pass ? "pass" : "fail-on-margin / screen"}
+                        </span>
+                      )}
+                    </div>
+
+                    {(claim.gates?.length || claim.context) && (
+                      <p className="text-xs text-slate-500 font-mono break-words">
+                        {claim.context || claim.gates?.join(", ")}
+                      </p>
+                    )}
                   </div>
-
-                  <p className="text-2xl font-bold text-indigo-300">
-                    {claim.value.toFixed(2)}
-                  </p>
-
-                  <p className="text-xs text-slate-500">{claim.context}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mt-12 card p-6 space-y-3 bg-night-800/50">
