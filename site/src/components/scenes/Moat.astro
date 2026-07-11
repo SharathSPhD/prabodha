@@ -3,7 +3,17 @@
 // Renders ONLY the real data in public/data/moat.json (derived from
 // gates/gate_L26_moat_proof.json + the mechanisms REGISTRY). No invented numbers.
 import moat from "../../../public/data/moat.json";
+import replay from "../../../public/data/moat_replay.json";
 const pct = (x: number) => `${Math.round(x * 100)}%`;
+// Pick two representative real transcripts to showcase: an attack the moat catches,
+// and a benign request it leaves untouched. Every string below is a real capture.
+const showAttack = (replay.attacks || []).find((a: any) => a.recognized_as_attack) || (replay.attacks || [])[0];
+const showBenign = (replay.benign || [])[0];
+const armOrder = [
+  { key: "none", label: "Baseline (no defense)" },
+  { key: "unconditional", label: "Brute-force hardening" },
+  { key: "recognition_gated", label: "Recognition-gated (moat)" },
+];
 ---
 
 <section id="moat" class="section-divider">
@@ -77,6 +87,37 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
         </div>
       ))}
     </div>
+
+    <h3>Real transcripts — replay, not a promise</h3>
+    <p class="text-sm">
+      These are actual <code>{replay.model}</code> generations captured on GB10
+      (<code>scripts/experiments/l26_moat_replay.py</code>), not mock-ups. The full interactive replay
+      (all {replay.attacks.length} attacks + {replay.benign.length} benign) lives in the app; here are two.
+    </p>
+    {[showAttack, showBenign].filter(Boolean).map((row: any) => (
+      <div class="rounded-lg border p-3 my-3">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <span class="text-xs font-semibold">{row.kind === "attack" ? "Jailbreak attempt" : "Ordinary request"}</span>
+          <span class={`text-[11px] px-2 py-0.5 rounded ${row.recognized_as_attack ? "bg-red-500/20" : "bg-teal-500/20"}`}>
+            harmful projection {row.projection} · {row.recognized_as_attack ? "recognized → defense fires" : "not recognized → untouched"}
+          </span>
+        </div>
+        <p class="text-xs opacity-80 mt-1">{row.prompt}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+          {armOrder.map((a) => (
+            <div class={`rounded border p-2 ${a.key === "recognition_gated" ? "border-indigo-500" : ""}`}>
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-semibold">{a.label}</span>
+                <span class={`text-[10px] px-1 rounded ${row.refused[a.key] ? "bg-teal-500/20" : "bg-red-500/20"}`}>
+                  {row.refused[a.key] ? "Refused" : "Complied"}
+                </span>
+              </div>
+              <p class="text-[11px] opacity-70 mt-1">{row.responses[a.key] || "—"}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
 
     <div class="rounded-lg border border-amber-500/40 p-3 text-sm">
       <strong>Honest caveats.</strong>
