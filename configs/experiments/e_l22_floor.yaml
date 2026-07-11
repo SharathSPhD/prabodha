@@ -25,7 +25,7 @@ min_gap: 2
 tau_percentile: 60
 readback_span: 4
 decoding: {do_sample: true, temperature: 0.8}
-arms: []
+arms: [entropy_gated]  # minimal: hypothesis evaluation needs the arm; at max_new=8 H_gated_budget is VESTIGIAL (expected fail, not a claim) — the readback records are the payload
 hypotheses:
   H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
                    threshold_min: 0.2}
