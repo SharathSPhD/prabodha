@@ -63,7 +63,14 @@ function loadGates() {
   for (const file of files) {
     const gate = parseGate(path.join(GATES_DIR, file));
     if (gate) {
-      gates[gate.loop] = { file, ...gate };
+      // Prefer consolidation gates (benchmark, headtohead, etc.) over sub-component gates
+      // If a gate already exists for this loop, only override if the new one is a primary gate
+      const isPrimaryGate = /_(benchmark|consolidation|headtohead|summary)\.json$/.test(file);
+      const currentIsPrimary = gates[gate.loop] ? /_(benchmark|consolidation|headtohead|summary)\.json$/.test(gates[gate.loop].file) : false;
+
+      if (!gates[gate.loop] || (isPrimaryGate && !currentIsPrimary)) {
+        gates[gate.loop] = { file, ...gate };
+      }
     }
   }
   return gates;
@@ -241,6 +248,36 @@ function buildAlignment(gates) {
 }
 
 /**
+ * Scene 6: Benchmark — L22 efficiency and lens comparison
+ */
+function buildBenchmark(gates) {
+  const loopId = 'L22';
+  if (!gates[loopId]) {
+    return {
+      scene: "benchmark",
+      title: "Benchmark: efficiency and instrument comparison",
+      description: "L22 consolidation: efficiency gains from gated control vs continuous steering, and lens detection across dose range.",
+      evidence: [],
+      pass: false
+    };
+  }
+
+  const gate = gates[loopId];
+  const ev = parseEvidence(gate.domain_gate.evidence);
+
+  return {
+    scene: "benchmark",
+    title: "Benchmark: efficiency and instrument comparison",
+    description: "L22 consolidation: gated steering delivers 2.32× lift-per-write vs continuous (6/6 sign-consistent, 66% lift at 29% writes); lens reads 2× more writes at alpha=0.1 (0.475 vs 0.237, p=2.1e-05) but fails margin. At alpha=0.3 both saturate (gap +0.05, p=0.125, necessity claim withdrawn).",
+    efficiency: ev.efficiency || {},
+    lens_headtohead: ev.lens_headtohead?.floor_sweep_amendment1 || {},
+    capability_table: ev.capability_table || [],
+    evidence: [{ loop: loopId, status: gate.domain_gate.verdict, gate_file: gate.file }],
+    pass: gate.domain_gate.verdict === 'pass'
+  };
+}
+
+/**
  * Collect all scenes into one data structure
  */
 function buildScenesData(gates) {
@@ -253,6 +290,7 @@ function buildScenesData(gates) {
       buildTransfer(gates),
       buildTrainedStore(gates),
       buildHonestLimits(gates),
+      buildBenchmark(gates),
     ]
   };
 }
@@ -275,6 +313,74 @@ function loadReplayTrace() {
     console.warn(`Could not load replay index: ${e.message}`);
   }
   return { available: [], default: null };
+}
+
+/**
+ * Extract benchmark data from L22 gate for visualization
+ */
+function buildBenchmarkData(gates) {
+  const loopId = 'L22';
+  if (!gates[loopId]) return null;
+
+  const gate = gates[loopId];
+  const ev = parseEvidence(gate.domain_gate.evidence);
+
+  if (!ev.efficiency || !ev.lens_headtohead) return null;
+
+  // Build capability table from evidence
+  const capabilityTable = (ev.capability_table || []).map(row => ({
+    capability: row.capability,
+    jspace: row.jspace,
+    prabodha: row.prabodha,
+    sources: row.sources
+  }));
+
+  // Extract efficiency cells
+  const efficiencyCells = (ev.efficiency.cells || []).map(cell => ({
+    seed: cell.seed,
+    alpha: cell.alpha,
+    gated_lift: parseFloat(cell.gated_lift),
+    gated_writes: parseFloat(cell.gated_writes),
+    cont_lift: parseFloat(cell.cont_lift),
+    cont_writes: parseFloat(cell.cont_writes),
+    gated_lpw: parseFloat(cell.gated_lpw),
+    cont_lpw: parseFloat(cell.cont_lpw),
+    source: cell.source
+  }));
+
+  // Extract lens dose-response from floor_sweep_amendment1
+  const lensDoseRows = (ev.lens_headtohead?.floor_sweep_amendment1?.rows || []).map(row => ({
+    alpha: row.alpha,
+    n_pairs: row.n_pairs,
+    band: parseFloat(row.band),
+    final: parseFloat(row.final),
+    gap: parseFloat(row.gap),
+    mcnemar_exact_p: row.mcnemar_exact_p,
+    sources: row.sources
+  }));
+
+  return {
+    version: "1.0.0",
+    generated_at: new Date().toISOString(),
+    loop: "L22",
+    efficiency: {
+      lpw_ratio_mean: ev.efficiency.lpw_ratio_mean,
+      lpw_ratio_range: ev.efficiency.lpw_ratio_range,
+      lift_fraction_of_continuous: ev.efficiency.lift_fraction_of_continuous,
+      write_fraction_of_continuous: ev.efficiency.write_fraction_of_continuous,
+      sign_consistency: ev.efficiency.sign_consistency,
+      cells: efficiencyCells,
+      note: ev.efficiency.note
+    },
+    lens_dose_response: {
+      title: "Lens detection across dose range (alpha parameter)",
+      rows: lensDoseRows,
+      legend: "band = detection at write moment; final = detection at model output; gap = difference"
+    },
+    capability_table: capabilityTable,
+    gate_sources: gate.domain_gate.evidence ? [gate.file] : [],
+    status: gate.domain_gate.verdict
+  };
 }
 
 // ==== MAIN ====
@@ -312,5 +418,17 @@ fs.writeFileSync(
   JSON.stringify(gatesMeta, null, 2)
 );
 console.log(`✓ Written ${DATA_DIR}/gates.json (${Object.keys(gatesMeta).length} gates indexed)`);
+
+// Write benchmark data for L22
+const benchmarkData = buildBenchmarkData(gates);
+if (benchmarkData) {
+  fs.writeFileSync(
+    path.join(DATA_DIR, 'benchmark.json'),
+    JSON.stringify(benchmarkData, null, 2)
+  );
+  console.log(`✓ Written ${DATA_DIR}/benchmark.json (L22 efficiency & lens data)`);
+} else {
+  console.log(`⚠ L22 gate not found; skipping benchmark.json`);
+}
 
 console.log('\nData build complete. All numbers from gates/ — no hardcoding.');

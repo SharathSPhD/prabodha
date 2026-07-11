@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BarChart, LineChart } from "@/components/charts";
+import { BenchmarkPanel } from "@/components/BenchmarkPanel";
 
 interface ResultsData {
   claims: Array<{
@@ -118,6 +119,11 @@ export default function ResultsPage() {
             </div>
           </>
         )}
+
+        {/* Benchmark Panel (always shown) */}
+        <div className="mt-12">
+          <BenchmarkPanel />
+        </div>
       </div>
     </main>
   );

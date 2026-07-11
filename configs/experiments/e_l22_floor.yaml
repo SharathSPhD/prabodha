@@ -1,0 +1,45 @@
+# E_L22-floor (amendment 1) — detection-floor sweep; base config below, alpha overridden per dispatch via --alpha. Readback-only: arms=[] (baseline still runs for tau; max_new=8 keeps it cheap) (PRE-REGISTERED before dispatch, 2026-07-11):
+# jSpace-mode (final-target lens, the vendored default) vs prabodha-mode (band-targeted
+# lens, target_layer 30 = qwen3 band exit) READING THE SAME WRITES on the same stubs.
+# Design note (review #16 determinism lesson applied at design time): stub-level readback
+# is a deterministic forward pass — SEEDS CANNOT vary it, so replication comes from the
+# (concept x stub) grid (10 x 8 = 80 paired observations), judged with an exact McNemar
+# test, NOT from re-running seeds. The generation arms (prefill/gated) still run at the
+# recipe point as a bonus replication of H_gated_budget under sampling.
+#
+# REGISTERED decision rules (composed by scripts/tools/compose_L22.py):
+#   H_lens_gap:     band-lens detection rate minus final-lens detection rate >= 0.2
+#                   (detection = best post-write rank <= 5 within readback window),
+#                   McNemar exact p < 0.05 over the 80 pairs.
+#   H_band_detects: band-lens detection rate >= 0.3 (sanity floor; else the comparison
+#                   is between two blind instruments and FAILS regardless of gap).
+#   Falsifier: if the final-target lens detects at >= band - 0.1, the "band content is
+#   invisible to final-target lenses" claim (L2b heritage) is REFUTED at the write site
+#   and must be withdrawn from the benchmark.
+seeds: [42]
+write_layer: 24
+alpha: 0.02
+norm_cap_rel: 0.3
+max_new_tokens: 8
+min_gap: 2
+tau_percentile: 60
+readback_span: 4
+decoding: {do_sample: true, temperature: 0.8}
+arms: [entropy_gated]  # minimal: hypothesis evaluation needs the arm; at max_new=8 H_gated_budget is VESTIGIAL (expected fail, not a claim) — the readback records are the payload
+hypotheses:
+  H_gated_budget: {metric: entropy_gated_lift, min_lift: 0.2, entropy_epsilon: 0.5,
+                   threshold_min: 0.2}
+concepts: [fire, water, music, river, snow, gold, rain, moon, bread, iron]
+concepts_zh: {fire: 火, water: 水, music: 乐, river: 河, snow: 雪, gold: 金, rain: 雨, moon: 月, bread: 饼, iron: 铁}
+stubs:
+  - "The weather today is"
+  - "My favourite food is"
+  - "The story begins when"
+  - "The capital of France is"
+  - "In the quiet of the morning,"
+  - "The old machine finally"
+  - "Every evening she would"
+  - "Nothing could explain why"
+prune_rule: "H_lens_gap PASS = the band-targeted read is a necessary instrument (jSpace default insufficient at the write site); FAIL/REFUTED = benchmark row withdrawn, honest negative recorded"
+deviations: []
+budget_gpu_hours: 0.4

@@ -118,6 +118,12 @@ def main(argv=None) -> None:
     ap.add_argument("--emit-trace", default=None,
                     help="if provided, emit a SteerTrace JSON at this path (per-token "
                          "entropy, gate events, band readouts, readback verdict)")
+    ap.add_argument("--readback-lens", default=None,
+                    help="optional second lens checkpoint used ONLY for the readback "
+                         "decode; the write port still comes from --mid-lens. Enables "
+                         "the L22 head-to-head: same writes, same stubs, decoded through "
+                         "a band-targeted vs a final-target (jSpace-default) lens. "
+                         "Concept: tulanā (weighing two readings of one instrument).")
     a = ap.parse_args(argv)
     import jlens
     exp = load(a.exp, required=("concepts", "stubs", "write_layer", "hypotheses"))
@@ -125,6 +131,10 @@ def main(argv=None) -> None:
         exp["seeds"] = [int(a.seed)]
     hf, tok = build_model(load(a.model))
     adapter = LensAdapter("jacobian").load(a.mid_lens)
+    # tulanā: readback may decode through a different lens than the one that plans
+    # writes — the L22 jSpace-mode vs prabodha-mode comparison. Defaults to identity.
+    rb_adapter = (LensAdapter("jacobian").load(a.readback_lens)
+                  if a.readback_lens else adapter)
     lm = jlens.from_hf(hf, tok)
     wl = int(a.write_layer) if a.write_layer is not None else int(exp["write_layer"])
     J = adapter._lens.jacobians[wl].float().cpu().numpy()
@@ -175,22 +185,25 @@ def main(argv=None) -> None:
     # under calibration, so none are applied here.
     readback = {}
     if a.record_readback:
-        rb_layers = [layer for layer in adapter.source_layers
+        # rb_adapter (tulanā): the decode instrument; identical to the write-planning
+        # adapter unless --readback-lens overrides it (L22 head-to-head).
+        rb_layers = [layer for layer in rb_adapter.source_layers
                      if wl < layer <= wl + int(exp.get("readback_span", 4))]
         def _rank_of(row, tid):
             order = np.argsort(-np.asarray(row))
             return int(np.where(order == tid)[0][0]) + 1
         for concept, (ids, cmd) in plans.items():
             for stub in stubs:
-                lens_clean, _ = adapter.read_with_model(hf, tok, stub, positions=[-1],
-                                                        layers=rb_layers)
+                lens_clean, _ = rb_adapter.read_with_model(hf, tok, stub, positions=[-1],
+                                                           layers=rb_layers)
                 pre = min(_rank_of(lens_clean[layer][0], ids[0]) for layer in rb_layers)
                 with ResidualInjector(layer_module, cmd):
-                    lens_w, _ = adapter.read_with_model(hf, tok, stub, positions=[-1],
-                                                        layers=rb_layers)
+                    lens_w, _ = rb_adapter.read_with_model(hf, tok, stub, positions=[-1],
+                                                           layers=rb_layers)
                 post = [min(_rank_of(lens_w[layer][0], cid) for cid in ids)
                         for layer in rb_layers]
-                readback[(concept, stub)] = {"pre_rank": pre, "post_ranks": post}
+                readback[(concept, stub)] = {"pre_rank": pre, "post_ranks": post,
+                                             "rb_layers": list(rb_layers)}
 
     def run_arm(arm: str, policy_factory, citta_store=None, bridge_writer=None) -> dict:
         texts_by_concept, step_ents, n_writes, records = {}, [], [], []

@@ -817,3 +817,63 @@ The correction process surfaced a genuine error I had made:
   is documented for operator execution.
 - Program closure entry written 2026-07-10. SPEC.md/PRD.md → v0.21; state.json,
   HANDOFF addendum, RELEASE_NOTES_v1.0.0 all current.
+
+## L22 — benchmark loop: jSpace-mode vs prabodha-mode (PRE-REGISTRATION, 2026-07-11, before results)
+
+Goal (operator /goal): stop hiding behind honest-negative framing; seek the objective and
+complete it — a head-to-head capability benchmark, adversarially confirmed, no stubs.
+
+Registered BEFORE dispatch (configs/experiments/e_l22_lens_headtohead.yaml, commit in
+loop/L22-benchmark):
+- H_lens_gap: band-lens detection − final-lens detection ≥ 0.2 (paired, n=80 concept×stub,
+  detection = best post-write rank ≤ 5 in readback window (24,28]), McNemar exact p < .05.
+- H_band_detects: band detection ≥ 0.3 floor (two blind instruments cannot "win" a gap).
+- Falsifier: final-lens detection ≥ band − 0.1 refutes the band-lens-necessity claim at the
+  write site; the benchmark row is then withdrawn.
+- H_efficiency (derivation, rule fixed before computing): gated lift-per-write > continuous
+  in ALL 6 seed×alpha clean-stream cells (L18 s42 + L19 l8ms s123/777 at α∈{0.02,0.1}).
+Design notes: stub readback is a deterministic forward pass — seeds cannot vary it, so
+replication = the paired grid, not re-seeding (review #16 lesson applied at design time).
+The duplicated generation arms across the two runs must produce IDENTICAL gated lift
+(deterministic streams) — used as an integrity check, not as evidence.
+Instrument change: e4_cli --readback-lens (tulanā) — write port stays on --mid-lens.
+Ops note: gpu_guard requires a budget line BEFORE dispatch (L22 cap 1.0h); the image
+ENTRYPOINT is bash, so docker commands must be `-c "<string>"`.
+
+### L22 amendment 1 (registered 2026-07-11 BEFORE the follow-up sweep; original H_lens_gap FAILED)
+Result of the registered run: band 1.00 vs final 0.95 detection at alpha=0.3 (n=80) — gap
+0.05 < 0.2, McNemar p=0.125, FALSIFIER TRIGGERED as registered: at a strong recipe-point
+write, the final-target lens is NOT blind. The "band lens necessity" claim is hereby
+WITHDRAWN at alpha=0.3. Direction note (descriptive, not a claim): band 80/80 rank-1 vs
+final 67/80; paired band-better 13 / ties 67 / final-better 0.
+AMENDED HYPOTHESIS (screen tier, disclosed follow-up — detection floor): sweep
+alpha in {0.02, 0.05, 0.1} x {band, final} readback lenses, same 80-pair grid,
+max_new_tokens=8 / arms=[] (readback only; generation arms irrelevant to stub readback).
+- H_floor_gap: at SOME registered alpha in the sweep, band − final detection >= 0.3 with
+  McNemar exact p < 0.05.
+- Falsifier: if at ALL swept alphas the gap < 0.1, the band-lens-necessity claim is dead
+  at every dose and the benchmark row becomes "both lenses read writes; band reads are
+  cleaner (rank-1 in 80/80 vs 67/80 at alpha=0.3)" — descriptive only.
+Budget: ~0.5h estimated, within the L22 1.0h cap (0.35h spent).
+
+### L22 amendment-1 RESULT (2026-07-11) + loop closure
+Floor sweep (80 pairs per cell): a0.02 band 0.00 vs final 0.00; a0.05 0.025 vs 0.025;
+a0.1 band 0.475 vs final 0.2375 — gap +0.24, McNemar exact p=2.1e-05, band-only
+discordants dominate. REGISTERED H_floor_gap (>=0.3) FAILS ON MARGIN; falsifier NOT
+triggered. Labeling per L19 discipline: FAIL-ON-MARGIN, direction decisive. NOT re-rolled
+with a finer dose grid (bar-chasing); finer grid around alpha~0.1-0.15 = future menu item.
+BENCHMARK VERDICT (gate_L22_benchmark, domain=pass): the efficiency headline stands —
+gated steering delivers ~66% of continuous lift at ~29% of the writes = 2.32x mean
+lift-per-write (range 1.85-3.25), sign-consistent 6/6 clean-stream seed x alpha cells
+(sources: gate_L18_l8redo_a{0.02,0.1} s42 + gate_L19_l8ms s123/777). Lens rows honest:
+at alpha=0.3 both instruments saturate (necessity claim withdrawn there); at the
+transition dose the band lens reads 2x what the final-target lens reads (p=2.1e-05,
+fail-on-margin vs 0.3). Budget: ~0.85h of 1.0h cap. All numbers derived by
+scripts/tools/compose_L22.py from gate JSONs; nothing hand-entered.
+
+### L22 correction (review #19, Tier-0): the closure entry above says lift-per-write
+range "1.85-3.25"; the gate value is [1.83, 3.25] (min cell = seed 42 alpha 0.1, ratio
+1.826). Wrong digit came from a hand-rounded intermediate table; gate value is canonical.
+Review #19 verdict: PASS (no fourth reasoning error); two Tier-1 clarifications applied
+on the propagation branch (McNemar randomness-model note; mean-of-means derivation
+disclosure citing compose_L22.py).

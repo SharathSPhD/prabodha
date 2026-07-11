@@ -188,6 +188,55 @@ to alignment, and (2) it clarifies the doctrine's scope---Pratyabhij\~n\=a suppl
 and transparency, not alignment gain. Future work combining band-steering with other methods (training,
 filtering, ensemble voting) remains open.
 
+\subsection*{Finding 10: Benchmark---Efficiency and Instrument Comparison (L22 Consolidation)}
+
+A consolidation gate (L22) measures what gated steering gains over naive continuous writes and compares
+the two steering instruments (Prabodha lens read at write site \vs\ jSpace final-target lens).
+
+\textbf{Intervention efficiency (lift-per-write):} Gated steering delivers $2.32 \times$ lift-per-write
+versus continuous baseline across six independent seed$\times$alpha cells (sign-consistent 6/6),
+with per-cell ratios ranging 1.83--3.25 (gate L22-benchmark). Behavioral lift recovery is 66\%
+(gated achieves two-thirds of continuous lift) at only 29\% write budget (gating fires $\sim 1$ in 3.5 timesteps).
+This confirms that gating trades raw lift for write sparsity and legibility while maintaining strong per-intervention efficiency.
+
+\textbf{Lens detection across dose range (floor-sweep amendment):} Comparing detection rates at the write site
+(Prabodha) against the output (jSpace final-target) across doses $\alpha \in \{0.02, 0.05, 0.1, 0.3\}$
+(gate L22-floor-sweep):
+\begin{itemize}
+  \item At $\alpha=0.1$ (subtle dose): Prabodha detects $0.475$; jSpace final detects $0.2375$ (gap $+0.2375$, McNemar $p=2.1 \times 10^{-5}$, direction decisive). The gap misses the registered criterion (gap $\ge 0.3$) by $0.0625$. Verdict: \textbf{FAIL-ON-MARGIN}---the lens-site reading is twice as sensitive, but the margin is not recovered.
+  \item At $\alpha=0.3$ (saturating dose): Both saturate (Prabodha band $1.0$, jSpace final $0.95$, gap $+0.05$, McNemar $p=0.125$). The necessity claim---that the lens is required at high doses---is \textbf{WITHDRAWN}: the registered falsifier fired (final $\ge$ band $- 0.1$). With both rates at ceiling, the comparison is uninformative at this dose---saturation, not evidence of equivalence (a null $p=0.125$ establishes neither).
+  \item At $\alpha \in \{0.02, 0.05\}$: Both detectors fall to floor or equivocal levels; neither has signal.
+\end{itemize}
+
+\textbf{Methods note} (review \#19): the McNemar $p$-values are exact tests over the fixed 80-pair (concept $\times$ stub) probe grid; stub readback is a deterministic forward pass, so $p$ speaks to the exchangeability of the two instruments' outcomes across probes, not to run-to-run sampling variation (there is none). Lift-recovery (67\%) and write-sparsity (29\%) are ratios of per-cell means; the $2.32\times$ figure is the mean of per-cell lift-per-write ratios (\texttt{compose\_L22.py}, \texttt{efficiency()}).
+
+\textbf{Interpretation:} The Prabodha lens architecture (reading at the write site and amplifying) genuinely
+improves sensitivity to subtle steering events. This directional advantage is clear; the practical gap to
+register a confirmatory claim is $\sim 0.06$ (6\% of the range). The high-dose saturation shows that both
+instruments converge when the signal is strong, ruling out one class of artifacts. The honest reading is
+that Prabodha's design is a constructive improvement in a narrow regime (subtle doses) but does not constitute
+a finished instrument without further margin work.
+
+\textbf{Capability table (8-row synthesis):} A summary table (gate L22-benchmark) consolidates all eight
+capability comparisons: concept reading, write detection at site, behavior steering, intervention efficiency,
+entropy budget compliance, transfer recipe, readback strength, and alignment gain. Prabodha adds capability
+in steering and efficiency; jSpace provides the foundational lens instrument. Readback and alignment remain
+weak signals; the doctrine makes no claim in those domains. All rows are recomputed from the cited gates at
+build time (scripts/tools/compose\_L22.py); no hand-entered numbers.
+
+Tier: confirm (efficiency consistently positive 6/6 cells, lens direction correct but margin missed, capability
+synthesis complete). The benchmark consolidates L22 findings and sets a baseline for future instrument and
+efficiency improvements (gate \texttt{gate\_L22\_benchmark.json}).
+
+\begin{figure}[t]\centering
+\includegraphics[width=.98\linewidth]{fig9_benchmark}
+\caption{L22 benchmark consolidation: left, lift-per-write (LPW) efficiency grid (6 cells: seeds
+42, 123, 777 $\times$ alphas 0.02, 0.1). Right, lens detection dose-response: Prabodha (band)
+vs jSpace (final) across $\alpha \in \{0.02, 0.05, 0.1, 0.3\}$, with gap and McNemar $p$-values.
+Prabodha is twice as sensitive at $\alpha=0.1$ but misses the margin criterion by 0.06
+(gate L22-benchmark and floor-sweep gates).}\label{fig:benchmark}
+\end{figure}
+
 % Fig8 STATUS: Fire-Case Slice Visualization (PREPARED, GPU-dependent)
 % Searching outputs/ for pre-rendered slice PNG... [handled by make_figures.py, Task 5]
 % If PNG found: included via \includegraphics{fig8_fire_case_slice}.
