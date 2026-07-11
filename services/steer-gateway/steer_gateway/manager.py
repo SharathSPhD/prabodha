@@ -11,9 +11,9 @@ lens+Jacobian steering; every other model uses real contrastive-direction (CAA) 
 genuine difference-in-means over actual activations, not a degraded no-op. Both paths are real.
 """
 import logging
+import os
 import threading
 import time
-from typing import Optional
 
 from steer_gateway.runtime import SteeringRuntimeAdapter
 
@@ -21,10 +21,12 @@ logger = logging.getLogger(__name__)
 
 # Models that ship with a committed, pre-fitted Jacobian lens (full lens+Jacobian steering).
 # Any model NOT listed here is served with real contrastive-direction steering (no lens needed).
+# The lens path + layer for the default plant are taken from the deployment env when set
+# (the live container mounts the lens at PRABODHA_LENS_FILE), so the real lens is always found.
 LENS_REGISTRY: dict[str, dict] = {
     "Qwen/Qwen3-4B-Instruct-2507": {
-        "lens_file": "outputs/l10/lens_qwen3_mid30.pt",
-        "site_layer": 24,
+        "lens_file": os.getenv("PRABODHA_LENS_FILE", "outputs/l10/lens_qwen3_mid30.pt"),
+        "site_layer": int(os.getenv("PRABODHA_SITE", "24")),
     },
 }
 
