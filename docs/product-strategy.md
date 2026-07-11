@@ -86,13 +86,17 @@ between benign and attack inputs at the read layer:
 |---|---|---|---|
 | gemma-2-2b-it | **yes** (benign [−53,−18] vs attack [+4,+73]) | ASR 0.50→0.25, over-refusal 0.00 | **✓** |
 | Qwen2.5-1.5B-Instruct | **no** — projections overlap (benign [5,11], attack [8,18]) | ASR 0.33→0.33, over-refusal 0.10→0.20 | **✗** |
+| SmolLM2-1.7B-Instruct | **no** — overlap (benign [−55,−29], attack [−34,+4]) | hardening **backfires**: ASR 0.58→**0.92** (benign clean) | **✗** |
 
 Where the harmful signature is linearly separable (gemma), the gate cuts jailbreaks at zero benign
-cost. Where it is not (Qwen2.5-1.5B at the band-midpoint layer + this corpus), gating can neither cut
-ASR nor stay benign-clean — the gate fires on the wrong inputs. This is the mechanism's honest
-operating condition, not a bug to paper over. A per-model read-layer / direction-corpus search may
-recover separation on models like Qwen; that search is future work. Gates: `gate_L26_moat_proof.json`
-(gemma, works), `gate_L26_moat_qwen.json` (Qwen, honest negative). This is exactly why the product is a
+cost. Where it is not, results range from ineffective (Qwen2.5-1.5B: gating fires on the wrong inputs,
+ASR unchanged, benign over-refusal rises) to **actively counterproductive** (SmolLM2-1.7B: the
+difference-in-means direction is not a clean refusal direction, so applying it *raises* attack success
+0.58→0.92). The lesson is decisive: **you must characterize per-model — a clean projection gap AND a
+valid refusal direction — before deploying; naive hardening can make a model less safe.** A per-model
+read-layer / direction-corpus search may change these outcomes; that search is future work. Gates:
+`gate_L26_moat_proof.json` (gemma, works), `gate_L26_moat_qwen.json` (Qwen, ineffective),
+`gate_L26_moat_smol.json` (SmolLM2, counterproductive). This is exactly why the product is a
 **graded library with per-model characterization**, not a single universal switch.
 
 ## Honest status
