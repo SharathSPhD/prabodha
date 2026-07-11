@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Zap } from "lucide-react";
+import { AdminLink } from "@/components/AdminLink";
 import { ArchitecturePanel } from "@/components/ArchitecturePanel";
 
 export default function LandingPage() {
@@ -110,6 +111,13 @@ export default function LandingPage() {
 
         {/* Content */}
         <div className="relative z-10 max-w-3xl text-center space-y-8">
+          {/* Plain-language value prop */}
+          <div className="space-y-2">
+            <p className="text-base md:text-lg text-teal-300 font-semibold">
+              Steer a frozen language model's behavior in real time — see the change, verify it took, keep the model's freedom intact.
+            </p>
+          </div>
+
           <div className="space-y-4">
             <h1 className="text-5xl md:text-6xl font-serif font-bold leading-tight">
               <span className="text-gradient">Recognition</span>
@@ -252,13 +260,14 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-night-600 bg-night-900/50 py-8 px-6">
-        <div className="max-w-7xl mx-auto text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-6 text-xs text-slate-500">
           <p>
             prabodha is an open research project.{" "}
             <Link href="https://github.com/SharathSPhD/prabodha" className="text-indigo-400 hover:text-indigo-300">
               View on GitHub
             </Link>
           </p>
+          <AdminLink />
         </div>
       </footer>
     </main>
