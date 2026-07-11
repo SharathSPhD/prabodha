@@ -11,9 +11,9 @@ lens+Jacobian steering; every other model uses real contrastive-direction (CAA) 
 genuine difference-in-means over actual activations, not a degraded no-op. Both paths are real.
 """
 import logging
+import os
 import threading
 import time
-from typing import Optional
 
 from steer_gateway.runtime import SteeringRuntimeAdapter
 
@@ -23,8 +23,10 @@ logger = logging.getLogger(__name__)
 # Any model NOT listed here is served with real contrastive-direction steering (no lens needed).
 LENS_REGISTRY: dict[str, dict] = {
     "Qwen/Qwen3-4B-Instruct-2507": {
-        "lens_file": "outputs/l10/lens_qwen3_mid30.pt",
-        "site_layer": 24,
+        # The live container mounts the lens at PRABODHA_LENS_FILE (e.g. /lens/l10/...); read it
+        # from the env so the real lens is found in production (no degradation to contrastive).
+        "lens_file": os.getenv("PRABODHA_LENS_FILE", "outputs/l10/lens_qwen3_mid30.pt"),
+        "site_layer": int(os.getenv("PRABODHA_SITE", "24")),
     },
 }
 
