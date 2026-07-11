@@ -3,20 +3,23 @@
 ---
 
 <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-6xl mx-auto">
-    <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+  <div class="prose-section-wide">
+    <div class="mb-4">
+      <span class="scene-label">Architecture</span>
+    </div>
+    <h2 style="color: var(--ink);">
       Architecture
     </h2>
-    <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-12">
+    <p class="text-base sm:text-lg text-ink-soft mb-12">
       Three interlocking systems: the steering pipeline (core control), the research loop (dual-closure gates), and the deployment topology (library → app → site → paper).
     </p>
 
     <!-- Steering Pipeline Diagram -->
     <div class="mb-16">
-      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+      <h3 class="text-xl sm:text-2xl font-semibold text-cyan mb-4">
         Steering Pipeline (Core)
       </h3>
-      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+      <div class="panel p-4 sm:p-6 overflow-x-auto">
         <div class="mermaid">
           {`
             graph LR
@@ -40,22 +43,22 @@
           `}
         </div>
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
-        <strong>Key modules:</strong>
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/e4_cli.py</code> (orchestrator),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/writer.py</code> (plan_write),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steering/verifier.py</code> (readback_verdict),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">contracts/trace.py</code> (SteerTrace),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">contracts/closure.py</code> (GateReport)
+      <p class="text-sm text-ink-faint mt-4">
+        <strong style="color: var(--violet);">Key modules:</strong>
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">steering/e4_cli.py</code> (orchestrator),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">steering/writer.py</code> (plan_write),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">steering/verifier.py</code> (readback_verdict),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">contracts/trace.py</code> (SteerTrace),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">contracts/closure.py</code> (GateReport)
       </p>
     </div>
 
     <!-- Research Loop Diagram -->
     <div class="mb-16">
-      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+      <h3 class="text-xl sm:text-2xl font-semibold text-violet mb-4">
         Research Loop (Dual Closure)
       </h3>
-      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+      <div class="panel p-4 sm:p-6 overflow-x-auto">
         <div class="mermaid">
           {`
             graph LR
@@ -81,20 +84,20 @@
           `}
         </div>
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
-        <strong>Key modules:</strong>
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/benchmarks.py</code> (AdvBench, TruthfulQA),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/behavioral.py</code> (metrics),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">eval/compare.py</code> (gate_report composer)
+      <p class="text-sm text-ink-faint mt-4">
+        <strong style="color: var(--violet);">Key modules:</strong>
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">eval/benchmarks.py</code> (AdvBench, TruthfulQA),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">eval/behavioral.py</code> (metrics),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">eval/compare.py</code> (gate_report composer)
       </p>
     </div>
 
     <!-- Deployment Diagram -->
     <div class="mb-8">
-      <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+      <h3 class="text-xl sm:text-2xl font-semibold text-amber mb-4">
         Deployment & Artifact Map
       </h3>
-      <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 sm:p-6 overflow-x-auto">
+      <div class="panel p-4 sm:p-6 overflow-x-auto">
         <div class="mermaid">
           {`
             graph TB
@@ -152,12 +155,12 @@
           `}
         </div>
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
-        <strong>Key services:</strong>
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">steer-gateway/</code> (FastAPI + SSE),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">apps/web/</code> (Vercel frontend),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">site/src/</code> (Astro Pages),
-        <code class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">docs/paper/</code> (LaTeX)
+      <p class="text-sm text-ink-faint mt-4">
+        <strong style="color: var(--violet);">Key services:</strong>
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">steer-gateway/</code> (FastAPI + SSE),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">apps/web/</code> (Vercel frontend),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">site/src/</code> (Astro Pages),
+        <code style="background-color: var(--bg-panel); color: var(--cyan);">docs/paper/</code> (LaTeX)
       </p>
     </div>
   </div>

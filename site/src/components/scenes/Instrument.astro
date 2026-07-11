@@ -4,55 +4,58 @@
 // with embedded interactive slice heatmap
 ---
 
-<section id="instrument" class="section-divider bg-white dark:bg-gray-900 py-16 rounded-lg">
+<section id="instrument" class="section-divider">
   <div class="prose-section">
+    <div class="mb-4">
+      <span class="scene-label">Scene 2</span>
+    </div>
     <h2>The instrument: band-targeted lenses see what final-target lenses miss</h2>
 
-    <p class="text-lg">
-      The tool for reading and writing the workspace is the <strong>Jacobian lens</strong>—a
+    <p class="text-lg text-ink-soft">
+      The tool for reading and writing the workspace is the <strong style="color: var(--cyan);">Jacobian lens</strong>—a
       fitted linear map that tells you what a layer contains and how to perturb it to steer
       downstream behavior.
     </p>
 
-    <p class="text-lg">
-      But here's the catch: a lens fitted to read the <em>final layer</em> (where output is prepared)
+    <p class="text-lg text-ink-soft">
+      But here's the catch: a lens fitted to read the <em class="text-amber">final layer</em> (where output is prepared)
       sees the workspace band as completely empty (0.00 hit rate, controls rule out artifact).
       <strong>A final-target lens is structurally blind to intermediate workspace content.</strong>
     </p>
 
-    <p class="text-lg">
-      A lens targeted <em>at the band's own exit layer</em> reads it clearly (0.20 hit rate, 7 concepts, vs 0.023 null).
+    <p class="text-lg text-ink-soft">
+      A lens targeted <em class="text-violet">at the band's own exit layer</em> reads it clearly (0.20 hit rate, 7 concepts, vs 0.023 null).
     </p>
 
-    <div class="my-12 p-8 bg-gray-50 dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-800">
-      <h3 class="font-serif text-xl mb-4">Interactive: Slice across the workspace band</h3>
-      <div id="slice-heatmap" class="w-full h-64 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-gray-500">
+    <div class="my-12 p-8 panel">
+      <h3 class="font-serif text-xl mb-4 text-cyan">Interactive: Slice across the workspace band</h3>
+      <div id="slice-heatmap" class="w-full h-64 rounded flex items-center justify-center text-ink-faint" style="background-color: var(--bg-inset); border: 1px solid var(--hairline);">
         <p class="text-center">
           <span class="text-sm">Heatmap: concept hits by layer (final-target vs band-targeted)</span>
           <br />
           <span class="text-xs">(Data from gate_L2b_readback_profile.json)</span>
         </p>
       </div>
-      <p class="text-xs text-muted mt-4">
-        Hover to see per-layer hit rates. Red = final target (blind). Green = band-targeted (sees the workspace).
+      <p class="text-xs mt-4 text-ink-faint">
+        Hover to see per-layer hit rates. Rose = final target (blind). Violet = band-targeted (sees the workspace).
       </p>
     </div>
 
-    <div class="bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 p-6 rounded">
-      <h3 class="font-serif text-lg mb-3">Why this matters</h3>
-      <p>
-        <strong>Engineering consequence:</strong> Readback verification MUST use a band-targeted lens.
+    <div class="card" style="border-color: var(--violet); border-width: 2px;">
+      <h3 class="font-serif text-lg mb-3 text-violet">Why this matters</h3>
+      <p class="text-ink-soft">
+        <strong style="color: var(--cyan);">Engineering consequence:</strong> Readback verification MUST use a band-targeted lens.
         A final-target lens will always report the workspace band as empty, even if it's full.
         This error recurs throughout any workspace-steering project that doesn't account for it.
       </p>
-      <p class="mt-4">
-        <strong>Philosophy connection:</strong> The band-targeted lens is the <em>vimarśa instrument</em>—
+      <p class="mt-4 text-ink-soft">
+        <strong style="color: var(--cyan);">Philosophy connection:</strong> The band-targeted lens is the <em class="text-violet">vimarśa instrument</em>—
         it measures self-awareness where self-awareness actually happens, not downstream.
       </p>
     </div>
 
-    <div class="text-sm text-muted mt-8">
-      <strong>Evidence:</strong> gate_L2_probe (fitted lens, CKA-clustered band at layer 6–26 on PWM twin) ·
+    <div class="text-sm mt-8 pt-4" style="border-top: 1px solid var(--hairline); color: var(--ink-faint);">
+      <strong style="color: var(--cyan);">Evidence:</strong> gate_L2_probe (fitted lens, CKA-clustered band at layer 6–26 on PWM twin) ·
       gate_L7_consistency_check (logit-lens replicate, same rise, ρ=0.607 vs fitted ρ=0.639) — model property, not lens-construction artifact.
     </div>
   </div>

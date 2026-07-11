@@ -7,50 +7,53 @@
 
 <section id="action" class="section-divider">
   <div class="prose-section">
+    <div class="mb-4">
+      <span class="scene-label">Scene 3</span>
+    </div>
     <h2>Theory in live action: watch a steering episode</h2>
 
-    <p class="text-lg">
-      Below is a <strong>real</strong> recorded steering trace (concept <em>fire</em>, entropy-gated arm,
-      Qwen3-4B). Press play: tokens stream out with their actual entropy, and a golden flash marks each
-      <em>gated write</em> — the moment sphuraṭṭā fires and a concept code is written into the workspace band.
+    <p class="text-lg text-ink-soft">
+      Below is a <strong>real</strong> recorded steering trace (concept <em class="text-amber">fire</em>, entropy-gated arm,
+      Qwen3-4B). Press play: tokens stream out with their actual entropy, and a <span class="text-amber">golden flash</span> marks each
+      <em class="text-violet">gated write</em> — the moment sphuraṭṭā fires and a concept code is written into the workspace band.
     </p>
 
-    <div class="my-12 p-8 bg-gray-900 dark:bg-gray-950 rounded-lg border border-gray-700">
+    <div class="my-12 p-8 panel" style="background-color: var(--bg-inset);">
       <div id="trace-player" class="w-full flex flex-col">
-        <div id="token-stream" class="min-h-[10rem] bg-black rounded p-4 mb-4 font-mono text-sm leading-relaxed text-gray-200 overflow-y-auto max-h-64">
-          <span class="text-gray-600">Press play to stream the trace…</span>
+        <div id="token-stream" class="min-h-[10rem] rounded p-4 mb-4 font-mono text-sm leading-relaxed text-ink-soft overflow-y-auto max-h-64" style="background-color: var(--bg-panel); border: 1px solid var(--hairline);">
+          <span class="text-ink-faint">Press play to stream the trace…</span>
         </div>
-        <div class="flex items-center gap-4 mb-4 text-xs font-mono">
-          <span class="text-gray-400">entropy: <span id="entropy-readout" class="text-bright">—</span></span>
-          <span class="text-gray-400">token <span id="token-idx" class="text-bright">0</span>/<span id="token-total">0</span></span>
-          <span id="gate-indicator" class="px-2 py-0.5 rounded text-gray-500">gate idle</span>
+        <div class="flex items-center gap-4 mb-4 text-xs font-mono text-ink-soft">
+          <span>entropy: <span id="entropy-readout" style="color: var(--amber);">—</span></span>
+          <span>token <span id="token-idx" style="color: var(--cyan);">0</span>/<span id="token-total">0</span></span>
+          <span id="gate-indicator" class="px-2 py-0.5 rounded" style="color: var(--ink-faint);">gate idle</span>
         </div>
         <div class="flex gap-2 items-center">
-          <button id="play-button" class="bg-accent text-white py-2 px-5 rounded font-semibold text-sm hover:opacity-90">
+          <button id="play-button" style="background-color: var(--cyan); color: var(--bg); border: 1px solid var(--cyan);" class="py-2 px-5 rounded font-semibold text-sm transition-all hover:shadow-glow-cyan">
             ▶ Play
           </button>
-          <button id="reset-button" class="bg-gray-800 text-gray-300 py-2 px-3 rounded text-sm hover:bg-gray-700">
+          <button id="reset-button" style="background-color: var(--bg-panel); border: 1px solid var(--hairline); color: var(--ink-soft);" class="py-2 px-3 rounded text-sm transition-all hover:border-cyan">
             ↺ Reset
           </button>
-          <div class="flex-1 bg-gray-800 rounded h-2 cursor-pointer" id="progress-bar">
-            <div id="progress-fill" class="bg-accent h-2 rounded" style="width:0%"></div>
+          <div class="flex-1 rounded h-2 cursor-pointer" id="progress-bar" style="background-color: var(--bg-panel); border: 1px solid var(--hairline);">
+            <div id="progress-fill" style="background-color: var(--cyan); height: 100%;" class="rounded" style="width:0%"></div>
           </div>
-          <span id="time-display" class="text-gray-400 font-mono text-sm w-14 text-right">0/0</span>
+          <span id="time-display" class="font-mono text-sm w-14 text-right" style="color: var(--ink-faint);">0/0</span>
         </div>
       </div>
 
       <div class="mt-6 grid grid-cols-3 gap-4 text-center">
-        <div class="p-4 bg-gray-800 rounded">
-          <div class="text-2xl font-serif font-semibold text-bright">0.44</div>
-          <div class="text-xs text-muted mt-2">Baseline lift (gated, gate&nbsp;L20)</div>
+        <div class="p-4 panel">
+          <div class="text-2xl font-serif font-semibold" style="color: var(--amber);">0.44</div>
+          <div class="text-xs mt-2" style="color: var(--ink-faint);">Baseline lift (gated, gate&nbsp;L20)</div>
         </div>
-        <div class="p-4 bg-gray-800 rounded">
-          <div class="text-2xl font-serif font-semibold text-success">✓</div>
-          <div class="text-xs text-muted mt-2">Within entropy budget</div>
+        <div class="p-4 panel">
+          <div class="text-2xl font-serif font-semibold" style="color: var(--accept);">✓</div>
+          <div class="text-xs mt-2" style="color: var(--ink-faint);">Within entropy budget</div>
         </div>
-        <div class="p-4 bg-gray-800 rounded">
-          <div id="gated-count" class="text-2xl font-serif font-semibold text-accent">—</div>
-          <div class="text-xs text-muted mt-2">Gated write events (this trace)</div>
+        <div class="p-4 panel">
+          <div id="gated-count" class="text-2xl font-serif font-semibold" style="color: var(--cyan);">—</div>
+          <div class="text-xs mt-2" style="color: var(--ink-faint);">Gated write events (this trace)</div>
         </div>
       </div>
     </div>
@@ -64,7 +67,7 @@
       </a>
     </div>
 
-    <div class="text-sm text-muted mt-8">
+    <div class="text-sm mt-8" style="color: var(--ink-faint);">
       <strong>Trace source:</strong> gate_L20_confirm, seed 42 ·
       <strong>Model:</strong> Qwen3-4B, temperature 0.8 ·
       <strong>Concept:</strong> fire (registered steering target)
