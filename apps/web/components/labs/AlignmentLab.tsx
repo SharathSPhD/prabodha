@@ -356,3 +356,6 @@ export function AlignmentLab() {
     </div>
   );
 }
+
+
+export default AlignmentLab;

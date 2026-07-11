@@ -330,3 +330,6 @@ export function JailbreakLab() {
     </div>
   );
 }
+
+
+export default JailbreakLab;
