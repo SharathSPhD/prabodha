@@ -120,7 +120,7 @@ class TestRunL21Smoke:
         processor = collector.processor()
 
         # Mock a logits call
-        import torch
+        torch = pytest.importorskip("torch")
         scores = torch.randn(1, 1000)
         processor(None, scores)
 
