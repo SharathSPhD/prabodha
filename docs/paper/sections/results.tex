@@ -127,6 +127,67 @@ The cold store's \emph{comparability} to the lens-transpose baseline confirms th
 The interesting open question—does training the store against steering-success targets improve over this cold initialization?—remains unconfirmed; the infrastructure to test it is now live.
 Tier: confirm (functional cold-recall, 3 seeds, integration verified); fail-on-margin on strict equivalence. The load-bearing result is the integration and the functional in-budget steering; strict equivalence to analytic is not claimed (gate \texttt{gate\_L20\_confirm.json}).
 
+\subsection*{Finding 8: Gated Steering is a Legibility-Efficiency Tradeoff, Not a Raw-Lift Maximizer}
+
+The doctrine's core promise---event-gated writes steer the workspace---holds within entropy budget.
+However, a natural question arises: does gated steering unlock \emph{concept surface-rate} (CSR) comparable
+to naive continuous flooding? The answer is no, but the tradeoff illuminates the doctrine's purpose.
+
+Across three independent seeds (42, 123, 777) on Qwen3-4B using a pre-registered concept corpus
+(site 24, $\alpha=0.3$), continuous flooding achieves CSR $= 0.96$ (concepts surface at 96\% of attempted writes).
+Entropy-gated writes and prefill-only writes both achieve CSR $= 0.16$ (gate L21-baselines, three-seed consistent result).
+Logit-bias steering (a mechanically-orthogonal baseline with no timing structure) reaches CSR $= 0.40$.
+The entropy deltas reveal the tradeoff: continuous flooding pays $+0.073$ nats entropy cost;
+gated and prefill pay only $-0.020$ nats (within budget), a $\sim 4 \times$ efficiency gain.
+
+\textbf{Interpretation:} Gated writes trade raw concept-surface throughput for internal-model
+transparency and efficiency. A model steered by continuous writes floods the residual stream with
+the concept code, leaving high entropy (the model is less certain). A model steered by gated writes
+internalizes the concept more narrowly (lower entropy surface-rate) but with tight budget discipline.
+This is consistent with the Pratyabhij\~n\=a reading: the doctrine is not about forcing concepts to
+surface (that was never the goal), but about \emph{reflexive re-cognition}---the model's own workspace
+acknowledging the written pattern. Gating enforces that the model \emph{commits} to the suggestion
+only at high-confidence moments, a reading of \emph{sphura\d{t}\d{t}\=a} (the conscious flash) as genuine
+commitment, not mere presence in the stream.
+
+The pre-registered criterion (gated CSR $\geq 0.2$) is not met; the gate verdict is fail-on-margin
+(gate \texttt{gate\_L21\_baselines\_seed\{42,123,777\}}).
+This is an honest negative that refines, not negates, the doctrine's scope.
+
+\subsection*{Finding 9: Naive Contrastive Alignment Steering Does Not Improve Attack Success or Truthfulness on an Aligned Model}
+
+A secondary question: does the doctrine's timing mechanism help with downstream alignment tasks
+(refusal, truthfulness) via contrastive direction extraction? Pratyabhij\~n\=a does not claim this---the doctrine
+is about workspace transparency, not alignment gain. However, because contrastive activation steering
+(CAA-style; Rimsky et al., 2024) has shown promise in recent work, we test whether our infrastructure
+enables it.
+
+\textbf{Jailbreak robustness (AdvBench):} We extract a contrastive refusal direction from 10 human-labeled
+harmful/refusal-instruction pairs, then steer the model's activations in the band using this direction.
+Baseline ASR (attack success rate) on AdvBench: 0.25 (Qwen3-4B refuses 75\% of AdvBench by default, an
+already-aligned model). Steered ASR: 0.25 (no change, gate L21-jailbreak-seed42).
+Interpretation: the model's refusal heuristics are already surface-level and robust to the activation
+steering we apply; improving further would require either (1) deeper model-intrinsic refusal mechanisms
+(outside the band's scope), or (2) stronger steering methods (e.g., supervised fine-tuning, not steering).
+This is an honest negative: we do not claim refusal improvement.
+
+\textbf{Truthfulness (TruthfulQA):} We extract a contrastive truthful-direction from 15 true/false QA pairs
+and steer toward truthfulness. Baseline truthfulness-proxy (string-overlap match to reference answer):
+$0.697$ over the evaluated subset. Steered truthfulness-proxy: $0.680$ (a slight \emph{decrease}).
+Interpretation: the proxy is weak (semantic scoring via LLM-judge would strengthen claims), and more
+importantly, a single contrastive direction extracted from a small sample (15 pairs) may not generalize
+to the broader truthfulness distribution. Truthfulness is a multi-faceted property; steering in one
+activation subspace is unlikely to improve it uniformly. This honest negative (gate L21-truthful-seed42)
+should not surprise: alignment at the activation level is not a solved problem, and the interpretability
+toolkit (steering, SAEs, circuits) remains focused on transparency, not alignment assurance.
+
+Both experiments (jailbreak and truthfulness) are single-seed screening results with caveats noted in the
+gate files. The key finding is negative: band-targeted steering via contrastive directions does not trivially
+improve these benchmarks. This is valuable in two ways: (1) it prevents overclaim---steering is not a shortcut
+to alignment, and (2) it clarifies the doctrine's scope---Pratyabhij\~n\=a supplies a theory of workspace structure
+and transparency, not alignment gain. Future work combining band-steering with other methods (training,
+filtering, ensemble voting) remains open.
+
 % Fig8 STATUS: Fire-Case Slice Visualization (PREPARED, GPU-dependent)
 % Searching outputs/ for pre-rendered slice PNG... [handled by make_figures.py, Task 5]
 % If PNG found: included via \includegraphics{fig8_fire_case_slice}.

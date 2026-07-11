@@ -3,12 +3,28 @@
 \subsection*{Summary}
 
 This work operationalizes Pratyabhij\~n\=a's doctrine of reflexive awareness as an engineering specification
-for language-model workspace steering.
-Six independent findings confirm that (1) workspace-band structure replicates across models and scales with size,
-(2) band-targeted lenses are necessary for readback, (3) capped writes steer behavior within a freedom budget,
-(4) event-gated timing delivers steering efficiency, (5) the calibration recipe transfers across plants
-when amplitude scales to inverse lens strength, and (6) the research program itself can run as expected-free-energy selection
-over a registered experiment menu.
+for language-model workspace steering, and provides an honest map of what the doctrine enables and what it does not.
+
+\textbf{What the doctrine enables:}
+(1) Workspace-band structure replicates across three model families and two sizes; instructed loadability scales
+with model size and collapses under pruning/distillation. (2) Band-targeted lenses are necessary for readback;
+final-target lenses are structurally blind to intermediate content. (3) Capped residual writes into the band steer
+downstream behavior and preserve model freedom (entropy within $\pm 0.5$ nat budget) under sampling decoding.
+(4) Event-gated timing (entropy-based sphura\d{t}\d{t}\=a detection) delivers full steering within budget,
+confirmed across six independent-stream seeds (lift 0.30--0.35, sign-consistent alignment $p \approx 0.016$).
+(5) The steering method transfers to a second plant via a calibration recipe where amplitude $\propto$ inverse
+lens transport strength, confirmed at four independent-stream seeds with monotone dose response in each plant's
+active range. (6) The research program ran as expected-free-energy selection over nine registered menus, with
+twenty-six cycles and sixteen adversarial reviews catching real errors before merge.
+
+\textbf{What the doctrine does not deliver:}
+(1) Gated steering does not maximize concept surface-rate (CSR 0.16 vs continuous 0.96); it is a legibility-efficiency
+tradeoff, not a raw-lift maximizer. (2) Naive contrastive direction extraction for refusal/truthfulness does not improve
+downstream benchmarks on an already-aligned model (AdvBench ASR 0.25 $\to$ 0.25, TruthfulQA truthfulness 0.697 $\to$ 0.680).
+Alignment improvements at the activation level are not automatic and may require training-time methods.
+(3) The doctrine is fundamentally about workspace \emph{transparency} and reflexive re-cognition, not alignment assurance.
+Practitioners should not expect band-steering to solve alignment alone; it is a tool for interpretability and internal-model
+visibility, valuable in its own right.
 
 \subsection*{Impact and Next Steps}
 
