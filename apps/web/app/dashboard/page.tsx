@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { getMyTier } from "@/lib/account.server";
-import { Settings, LogOut, Shield } from "lucide-react";
+import { Settings, LogOut, Shield, Target } from "lucide-react";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
@@ -39,6 +39,18 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Link href="/dashboard/goals">
+            <div className="card p-6 space-y-3 hover:border-cyan-600 transition cursor-pointer">
+              <div className="flex items-center gap-2 text-cyan-300">
+                <Target className="w-5 h-5" />
+                <span className="font-semibold">Alignment Goals</span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Define and register hardening packs.
+              </p>
+            </div>
+          </Link>
+
           <Link href="/dashboard/settings">
             <div className="card p-6 space-y-3 hover:border-indigo-600 transition cursor-pointer">
               <div className="flex items-center gap-2 text-indigo-300">

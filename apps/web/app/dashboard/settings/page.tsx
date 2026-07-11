@@ -8,6 +8,7 @@ const PROVIDERS = [
   { id: "anthropic", label: "Anthropic" },
   { id: "openai", label: "OpenAI" },
   { id: "llamacpp", label: "LlamaCpp" },
+  { id: "huggingface", label: "HuggingFace" },
 ];
 
 export default function SettingsPage() {
