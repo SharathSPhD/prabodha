@@ -1,0 +1,149 @@
+{
+  "L0": {
+    "file": "gate_L0.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L0"
+  },
+  "L1": {
+    "file": "gate_L1b.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L1"
+  },
+  "L4": {
+    "file": "gate_L9_probe_a0.02_s777_fixed.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L4"
+  },
+  "L11-rep": {
+    "file": "gate_L11_rep.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L11-rep"
+  },
+  "L12-flash": {
+    "file": "gate_L12_flash.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L12-flash"
+  },
+  "L14": {
+    "file": "gate_L14_readback_raw.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L14"
+  },
+  "L15": {
+    "file": "gate_L15_readback_heldout_raw.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L15"
+  },
+  "L16": {
+    "file": "gate_L16_fine_a0.02.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L16"
+  },
+  "L17": {
+    "file": "gate_L17_xdose_s42_a0.02.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L17"
+  },
+  "L18": {
+    "file": "gate_L18_npretry_s777.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L18"
+  },
+  "L19": {
+    "file": "gate_L19_l8ms_a0.1_s777.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L19"
+  },
+  "L2": {
+    "file": "gate_L2_run1.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L2"
+  },
+  "L20": {
+    "file": "gate_L20_screen_v2.json",
+    "code_gate": "pass",
+    "domain_gate": "blocked",
+    "loop": "L20"
+  },
+  "L21": {
+    "file": "gate_L21_truthful_seed42.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L21"
+  },
+  "L2b": {
+    "file": "gate_L2b.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L2b"
+  },
+  "L3": {
+    "file": "gate_L3_alpha02.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L3"
+  },
+  "undefined": {
+    "file": "gate_L3_readiness.json"
+  },
+  "L5-tau": {
+    "file": "gate_L5_tau80_s123.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L5-tau"
+  },
+  "L6-align": {
+    "file": "gate_L6_align.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L6-align"
+  },
+  "L6-confirm": {
+    "file": "gate_L6_confirm_s777.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L6-confirm"
+  },
+  "L7-articulation-null": {
+    "file": "gate_L7_articulation_null.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L7-articulation-null"
+  },
+  "L8-dose": {
+    "file": "gate_L8_dose.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L8-dose"
+  },
+  "L9-alignconf": {
+    "file": "gate_L9_alignconf.json",
+    "code_gate": "pass",
+    "domain_gate": "fail",
+    "loop": "L9-alignconf"
+  },
+  "L9-probe": {
+    "file": "gate_L9_probe.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L9-probe"
+  },
+  "L9-writecost": {
+    "file": "gate_L9_writecost.json",
+    "code_gate": "pass",
+    "domain_gate": "pass",
+    "loop": "L9-writecost"
+  }
+}

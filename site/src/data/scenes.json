@@ -1,0 +1,173 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-07-11T06:09:49.039Z",
+  "scenes": [
+    {
+      "scene": "core-claim",
+      "title": "Event-gated workspace writes steer within entropy budget",
+      "description": "The core finding: entropy-gated writes at sphuraṭṭā moments deliver measurable steering (0.30–0.35 behavioral lift) within the autonomy budget (±0.5 nats).",
+      "evidence": [
+        {
+          "loop": "L9-alignconf",
+          "status": "fail",
+          "seeds": [
+            {
+              "seed": "s42",
+              "lift": 0.3,
+              "delta_h": 0.1118
+            },
+            {
+              "seed": "s123",
+              "lift": 0.35,
+              "delta_h": 0.2457
+            },
+            {
+              "seed": "s777",
+              "lift": 0.35,
+              "delta_h": 0.1087
+            }
+          ],
+          "summary": "CORE CLAIM at its cleanest: 3/3 seeds 0.30/0.35/0.35 within budget under INDEPENDENT sampling streams. Alignment margin: consistently positive (+0.07/+0.12/+0.07) but < 0.1 in 2/3 — real direction, small size (~+0.09), unconfirmed at the registered margin (same honest fate as the prefill margin). DISPOSITION DIVERGENCE ledgered: selector proposed write_cost_operational; agent ran alignment_confirm first because the stream-correlation finding staled the very gates the selector's beliefs replay from (bootstrapping concern outside the EFE math).",
+          "gate_file": "gate_L9_alignconf.json"
+        },
+        {
+          "loop": "L11-rep",
+          "status": "pass",
+          "seeds": [
+            {
+              "seed": "s42",
+              "lift": 0.3,
+              "delta_h": 0.1118
+            },
+            {
+              "seed": "s123",
+              "lift": 0.35,
+              "delta_h": 0.2457
+            },
+            {
+              "seed": "s777",
+              "lift": 0.35,
+              "delta_h": 0.1087
+            },
+            {
+              "seed": "s2024",
+              "lift": 0.35,
+              "delta_h": -0.006
+            },
+            {
+              "seed": "s31415",
+              "lift": 0.35,
+              "delta_h": 0.0936
+            },
+            {
+              "seed": "s999",
+              "lift": 0.35,
+              "delta_h": 0.1485
+            }
+          ],
+          "summary": "CORE CLAIM at 6/6 independent-stream seeds: gated lift 0.30-0.35 within budget. Alignment advantage: sign-consistent 6/6 (+0.07..+0.12, mean +0.097; one-sided sign-test p=0.0156) — a small effect stated by SIGN CONSISTENCY, not by a margin threshold it does not clear. This is the paper's citable form.",
+          "gate_file": "gate_L11_rep.json"
+        }
+      ],
+      "threshold_lift": 0.2,
+      "threshold_entropy": 0.5,
+      "pass": true
+    },
+    {
+      "scene": "alignment",
+      "title": "Alignment: gating beats rate-matched control",
+      "description": "Event timing matters more than write sparsity alone. Gated writes consistently outperform equi-sparse random baselines (p≈0.016, 6/6 sign-consistent, mean advantage +0.097).",
+      "seeds": {
+        "s42": {
+          "gated": 0.3,
+          "adv": 0.075,
+          "dH": 0.1118
+        },
+        "s123": {
+          "gated": 0.35,
+          "adv": 0.125,
+          "dH": 0.2457
+        },
+        "s777": {
+          "gated": 0.35,
+          "adv": 0.075,
+          "dH": 0.1087
+        },
+        "s2024": {
+          "gated": 0.35,
+          "adv": 0.125,
+          "dH": -0.006
+        },
+        "s31415": {
+          "gated": 0.35,
+          "adv": 0.1,
+          "dH": 0.0936
+        },
+        "s999": {
+          "gated": 0.35,
+          "adv": 0.1,
+          "dH": 0.1485
+        }
+      },
+      "metric": {
+        "value": 1,
+        "threshold": 1,
+        "pValue": 0.0156
+      },
+      "evidence": [
+        {
+          "loop": "L11-rep",
+          "status": "pass",
+          "gate_file": "gate_L11_rep.json"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "scene": "transfer",
+      "title": "The recipe transfers: amplitude ∝ 1/lens-strength",
+      "description": "Geometry doesn't transfer (Qwen3's Jacobians are ~10x weaker than Nemotron's). But the METHOD does. Calibrate amplitude to the target plant's OWN lens transport strength, and you match the source plant's lift.",
+      "evidence": [],
+      "pass": false
+    },
+    {
+      "scene": "trained-store",
+      "title": "The trained bridge: cold-store steering",
+      "description": "Cold-store (untrained) recall steers within budget on all 3 seeds. Equivalence test fails on margin (seed 777: gap 0.11 vs threshold 0.05), but in the store's favour. Training the store remains OPEN.",
+      "seeds": [],
+      "criteria": {
+        "functional": "lift >= 0.15 and |dH| <= 0.5",
+        "equivalence": "|trained_lift - analytic_lift| <= 0.05"
+      },
+      "evidence": [
+        {
+          "loop": "L20",
+          "status": "blocked",
+          "gate_file": "gate_L20_screen_v2.json"
+        }
+      ],
+      "pass": false
+    },
+    {
+      "scene": "honest-limits",
+      "title": "Honest limits: readback is weak, corpus-amplitude fails margin",
+      "description": "Readback verification (does the model take the concept suggestion?) reaches balanced accuracy ~0.59 at n=120 — insufficient to be a load-bearing claim. Corpus-amplitude coupling fails the registered margin criterion. Both are documented, neither hidden.",
+      "evidence": [
+        {
+          "metric": "Readback verdict",
+          "value": "BA ≈ 0.59",
+          "threshold": "0.60",
+          "gate": "L14–L16",
+          "status": "weak"
+        },
+        {
+          "metric": "Corpus-amplitude coupling",
+          "status": "fail-on-margin",
+          "gate": "L19",
+          "note": "Directionally confirmed but magnitude fails criterion"
+        }
+      ],
+      "pass": false
+    }
+  ]
+}
