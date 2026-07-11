@@ -15,3 +15,15 @@ node_modules/
 .vercel/
 site/dist/
 site/.astro/
+
+# Internal design / research docs — kept local, untracked from the public repo
+# (operator decision 2026-07-11: repo carries what's needed to run app/pages/library;
+#  the epistemic trail lives locally + in git history). gates/ stays (build reads it).
+/CLAUDE.md
+/SPEC.md
+/PRD.md
+/docs/HANDOFF_L19_TO_NEXT.md
+/docs/reviews/
+/docs/superpowers/
+/docs/triz_log.md
+/research/journal.md
