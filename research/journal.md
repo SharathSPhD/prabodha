@@ -817,3 +817,25 @@ The correction process surfaced a genuine error I had made:
   is documented for operator execution.
 - Program closure entry written 2026-07-10. SPEC.md/PRD.md → v0.21; state.json,
   HANDOFF addendum, RELEASE_NOTES_v1.0.0 all current.
+
+## L22 — benchmark loop: jSpace-mode vs prabodha-mode (PRE-REGISTRATION, 2026-07-11, before results)
+
+Goal (operator /goal): stop hiding behind honest-negative framing; seek the objective and
+complete it — a head-to-head capability benchmark, adversarially confirmed, no stubs.
+
+Registered BEFORE dispatch (configs/experiments/e_l22_lens_headtohead.yaml, commit in
+loop/L22-benchmark):
+- H_lens_gap: band-lens detection − final-lens detection ≥ 0.2 (paired, n=80 concept×stub,
+  detection = best post-write rank ≤ 5 in readback window (24,28]), McNemar exact p < .05.
+- H_band_detects: band detection ≥ 0.3 floor (two blind instruments cannot "win" a gap).
+- Falsifier: final-lens detection ≥ band − 0.1 refutes the band-lens-necessity claim at the
+  write site; the benchmark row is then withdrawn.
+- H_efficiency (derivation, rule fixed before computing): gated lift-per-write > continuous
+  in ALL 6 seed×alpha clean-stream cells (L18 s42 + L19 l8ms s123/777 at α∈{0.02,0.1}).
+Design notes: stub readback is a deterministic forward pass — seeds cannot vary it, so
+replication = the paired grid, not re-seeding (review #16 lesson applied at design time).
+The duplicated generation arms across the two runs must produce IDENTICAL gated lift
+(deterministic streams) — used as an integrity check, not as evidence.
+Instrument change: e4_cli --readback-lens (tulanā) — write port stays on --mid-lens.
+Ops note: gpu_guard requires a budget line BEFORE dispatch (L22 cap 1.0h); the image
+ENTRYPOINT is bash, so docker commands must be `-c "<string>"`.
