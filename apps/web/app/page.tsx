@@ -114,7 +114,7 @@ export default function LandingPage() {
           {/* Plain-language value prop */}
           <div className="space-y-2">
             <p className="text-base md:text-lg text-teal-300 font-semibold">
-              Steer a frozen language model's behavior in real time — see the change, verify it took, keep the model's freedom intact.
+              Harden any language model against jailbreaks — with a defense that lives <em>below</em> the prompt, where an attacker can&apos;t see, override, or strip it.
             </p>
           </div>
 
@@ -122,22 +122,23 @@ export default function LandingPage() {
             <h1 className="text-5xl md:text-6xl font-serif font-bold leading-tight">
               <span className="text-gradient">Recognition</span>
               <br />
-              as Steering
+              as Defense
             </h1>
             <p className="text-lg text-slate-400 max-w-xl mx-auto">
-              prabodha operationalizes a philosophical parallel between the J-space paper&apos;s finding
-              on language-model workspaces and 10th-century Pratyabhijñā philosophy—as an engineering
-              specification for steering frozen LLMs.
+              prabodha recognizes an input&apos;s harmful signature in the model&apos;s own activations, then
+              reinforces refusal <strong>only</strong> for genuine attacks — cutting real jailbreaks in half at
+              zero benign over-refusal on gemma-2-2b, where a brute-force defense refuses everything.
+              A graded, per-model library built on the J-space × Pratyabhijñā steering research.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-6">
-            <Link href="/theatre" className="btn-primary px-6 py-3">
-              Explore Theatre
+            <Link href="/jailbreak" className="btn-primary px-6 py-3">
+              See the moat &amp; graded library
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link href="/results" className="btn-secondary px-6 py-3">
-              View Results
+            <Link href="/dashboard/goals" className="btn-secondary px-6 py-3">
+              Define a goal &amp; register a pack
             </Link>
           </div>
 
@@ -145,30 +146,30 @@ export default function LandingPage() {
             <div className="card p-6 space-y-3">
               <div className="flex items-center gap-2 text-teal-400">
                 <Zap className="w-4 h-4" />
-                <span className="text-sm font-semibold">Steering</span>
+                <span className="text-sm font-semibold">Recognize</span>
               </div>
               <p className="text-xs text-slate-500">
-                Write concept codes directly into the model&apos;s global workspace, gated by entropy-based timing.
+                Read the input&apos;s harmful projection in the model&apos;s activations — below what the prompt can disguise.
               </p>
             </div>
 
             <div className="card p-6 space-y-3">
               <div className="flex items-center gap-2 text-indigo-400">
                 <Sparkles className="w-4 h-4" />
-                <span className="text-sm font-semibold">Verify</span>
+                <span className="text-sm font-semibold">Harden — graded, not one switch</span>
               </div>
               <p className="text-xs text-slate-500">
-                Re-read the workspace to confirm the model took the suggestion (āgama recognition).
+                Pick from a tiered library: gentle→firm prompt wrappers (any model) up to the recognition-gated activation moat (open weights).
               </p>
             </div>
 
             <div className="card p-6 space-y-3">
               <div className="flex items-center gap-2 text-saffron-400">
                 <Zap className="w-4 h-4" />
-                <span className="text-sm font-semibold">Budget</span>
+                <span className="text-sm font-semibold">Bring your model</span>
               </div>
               <p className="text-xs text-slate-500">
-                Preserve autonomy: constrain freedom-cost within ±0.5 nats of entropy (svātantrya).
+                Open weights on your own GPU, or any model via BYOK/OpenRouter. Characterize per-model, then register a hardening pack to your HF.
               </p>
             </div>
           </div>
