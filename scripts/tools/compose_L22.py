@@ -30,10 +30,14 @@ def _evidence(path: Path) -> dict:
 
 
 def _readback_pairs(ev: dict) -> dict[tuple[str, str], dict]:
-    """Per-(concept, stub) readback records from any arm (identical across arms)."""
-    arms = ev.get("arms", {})
+    """Per-(concept, stub) readback records from any arm (identical across arms).
+
+    e4_cli ships records at evidence['records'][arm] (list of per-(concept, stub)
+    dicts; stub truncated to 24 chars — all 8 registered stubs stay unique there).
+    """
+    recs_by_arm = ev.get("records", {})
     for arm in ("baseline", "prefill_only", "entropy_gated"):
-        recs = arms.get(arm, {}).get("records", [])
+        recs = recs_by_arm.get(arm, [])
         out = {(r["concept"], r["stub"]): r["readback"]
                for r in recs if r.get("readback")}
         if out:

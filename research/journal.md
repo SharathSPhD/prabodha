@@ -839,3 +839,19 @@ The duplicated generation arms across the two runs must produce IDENTICAL gated 
 Instrument change: e4_cli --readback-lens (tulanā) — write port stays on --mid-lens.
 Ops note: gpu_guard requires a budget line BEFORE dispatch (L22 cap 1.0h); the image
 ENTRYPOINT is bash, so docker commands must be `-c "<string>"`.
+
+### L22 amendment 1 (registered 2026-07-11 BEFORE the follow-up sweep; original H_lens_gap FAILED)
+Result of the registered run: band 1.00 vs final 0.95 detection at alpha=0.3 (n=80) — gap
+0.05 < 0.2, McNemar p=0.125, FALSIFIER TRIGGERED as registered: at a strong recipe-point
+write, the final-target lens is NOT blind. The "band lens necessity" claim is hereby
+WITHDRAWN at alpha=0.3. Direction note (descriptive, not a claim): band 80/80 rank-1 vs
+final 67/80; paired band-better 13 / ties 67 / final-better 0.
+AMENDED HYPOTHESIS (screen tier, disclosed follow-up — detection floor): sweep
+alpha in {0.02, 0.05, 0.1} x {band, final} readback lenses, same 80-pair grid,
+max_new_tokens=8 / arms=[] (readback only; generation arms irrelevant to stub readback).
+- H_floor_gap: at SOME registered alpha in the sweep, band − final detection >= 0.3 with
+  McNemar exact p < 0.05.
+- Falsifier: if at ALL swept alphas the gap < 0.1, the band-lens-necessity claim is dead
+  at every dose and the benchmark row becomes "both lenses read writes; band reads are
+  cleaner (rank-1 in 80/80 vs 67/80 at alpha=0.3)" — descriptive only.
+Budget: ~0.5h estimated, within the L22 1.0h cap (0.35h spent).

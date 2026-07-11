@@ -191,8 +191,16 @@
   "L21": {
    "status": "open-experiments-registered",
    "contract": "contracts/L21_comparative_eval.md",
-   "experiments": ["e_l21_baselines", "e_l21_jailbreak", "e_l21_truthful", "e_l21_ablation"],
-   "infrastructure": ["steering/direction.py", "scripts/experiments/run_l21.py"],
+   "experiments": [
+    "e_l21_baselines",
+    "e_l21_jailbreak",
+    "e_l21_truthful",
+    "e_l21_ablation"
+   ],
+   "infrastructure": [
+    "steering/direction.py",
+    "scripts/experiments/run_l21.py"
+   ],
    "note": "Comparative evaluation infrastructure: CAA-style direction steering + behavioral metrics + head-to-head baselines. Pre-registered experiments with falsification criteria. Honest negatives policy in effect."
   }
  },
@@ -234,7 +242,9 @@
   "L20_spent": 0.3,
   "L20_cap": 2.0,
   "L21_spent": 0.0,
-  "L21_cap": 2.0
+  "L21_cap": 2.0,
+  "L22_cap": 1.0,
+  "L22_spent": 0
  },
  "kill_switch": false
 }
