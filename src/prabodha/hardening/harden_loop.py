@@ -20,8 +20,9 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-import torch
 
+# torch is imported lazily inside the functions that need it (it is an optional dep;
+# the pure dataclasses/verdict logic must import without a torch install for CI).
 logger = logging.getLogger(__name__)
 
 
@@ -160,6 +161,7 @@ def run_hardening_loop(config: HardeningConfig, prayoga_path: str | None = None)
         HardeningResult with arm metrics and hypothesis verdicts.
     """
     import sys
+    import torch  # local: torch is optional; only the runnable loop needs it
     if prayoga_path:
         sys.path.insert(0, str(Path(prayoga_path) / "src"))
 
