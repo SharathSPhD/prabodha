@@ -13,28 +13,51 @@ immediately---{\em what} to write (verbalizable content codes), {\em where} (the
 
 \subsection*{Related Work and Positioning}
 
-Global Workspace Theory (GWT) predicts that consciousness arises from a cognitive workspace where multiple
-processes broadcast information to a global state.
-The interpretability community has built tools (SAEs, steering vectors, logit lens) but few theories of
-where those tools should point or how they should be used.
-Pratyabhij\~n\=a fills that gap: it operationalizes the \emph{what}, \emph{where}, \emph{when}, and \emph{how}
-as falsifiable engineering clauses, each with a distinct signal and failure mode.
+Global Workspace Theory (GWT; Baars, 1988; Dehaene, 2014) predicts that consciousness arises from a cognitive
+workspace where multiple processes broadcast information to a global state. The interpretability community has
+built tools for reading and writing this workspace---Sparse Autoencoders (SAEs), activation steering (RepE, Zou et al.,
+2023), Contrastive Activation Analysis (CAA; Rimsky et al., 2024), function vectors, and logit lenses.
+However, prior work focuses on \emph{what can be done with these tools}, not on \emph{a doctrine of responsible use}.
+
+Activation steering methods share key mechanics with our approach: both use direction vectors extracted from model
+activations, both target specific layers, and both rely on linear combinations of residual stream values.
+CAA (Rimsky et al., 2024) extracts contrastive directions from labeled pairs (harmful/benign, refused/compliant)
+and applies them to steering, similar to our L21 jailbreak and truthfulness experiments.
+RepE (Zou et al., 2023) and function vectors use regression and principal components to find steering directions.
+Our contribution is orthogonal: we supply a (1) timing doctrine (entropy-gated writes, \emph{sphura\d{t}\d{t}\=a}-detection),
+(2) a readback protocol for verifying workspace engagement (band-targeted lenses, \emph{\=agama}-recognition),
+(3) a calibration recipe for cross-plant transfer (amplitude $\propto$ 1/lens-strength), and (4) a philosophy-as-engineering-specification
+methodology that makes the steering doctrine falsifiable.
+L21's honest negative on contrastive alignment steering (Finding 9) is evidence that steering alone does not solve alignment---
+a finding that complements rather than contradicts prior CAA work, which tested on smaller refusal margins and different models.
+
+Pratyabhij\~n\=a supplies what prior steering work lacks: it operationalizes the \emph{what}, \emph{where}, \emph{when}, and \emph{how}
+as falsifiable engineering clauses, each with a distinct signal and failure mode, and grounds the whole program in a rigorous
+theory of verbalizable workspace structure.
 
 \subsection*{Research Questions and Scope}
 
-This work tests whether Pratyabhij\~n\=a's doctrine survives contact with frozen-decoder LLMs.
-Specifically:
+This work tests whether Pratyabhij\~n\=a's doctrine survives contact with frozen-decoder LLMs,
+and characterizes what mechanisms it enables versus what it does not. Specifically:
 \begin{enumerate}
 \item Does the workspace-band structure replicate across model families and sizes?
 \item Can a band's content be read only by a lens targeted at the band itself?
 \item Do capped residual writes steer behavior within a freedom budget?
 \item Does event-gated timing deliver steering efficiency?
 \item Does the calibration recipe transfer across plants?
+\item Does band-targeted concept steering surface information as efficiently as continuous flooding,
+      or is the tradeoff a feature, not a bug---transparency at efficiency cost?
+\item Can naive contrastive direction extraction improve alignment/refusal on an already-aligned model?
 \item Can the research loop itself run as expected-free-energy selection?
 \end{enumerate}
 
 \subsection*{Contributions}
 
-This paper presents six key findings, each verified at confirm tier (multi-seed or multi-model),
-a discussion of honest negatives, and a complete replayable research ledger from which every claim
-can be traced to a committed gate JSON.
+This paper presents nine key findings---six that confirm the Pratyabhij\~n\=a doctrine's core mechanisms,
+and three that honestly characterize its scope limits. Every finding is verified at confirm or screen tier with
+pre-registration, multi-seed replication where applicable, and a complete replayable research ledger from which
+every number can be traced to a committed gate JSON. The contribution is framed as an honest map: what the
+doctrine enables (workspace transparency, reflexive re-cognition, efficiency within budget) and what it does
+not (raw concept-surface throughput, downstream alignment gains from naive contrastive steering alone). This
+honesty is the paper's defining strength---overclaiming steering as an alignment shortcut would be technically
+cleaner, but false.

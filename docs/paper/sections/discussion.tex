@@ -1,6 +1,6 @@
 \label{sec:discussion}
 
-\subsection*{Honest Negatives and Limitations}
+\subsection*{Honest Negatives and Scope Clarifications}
 
 The $\geq 0.15$ schedule margins (anticipated steering speedup under gating) did not confirm;
 we observe sign consistency instead.
@@ -10,9 +10,49 @@ a margin inside its own binomial CI.
 When pooling three corpora at $n=120$ (gate L15-readback, L16-corpus), the accuracy regresses to 0.59.
 The readback signal is weak---not an acceptance test, but a directional hint.
 
-\subsection*{Scope Limits and Open Axes}
+\textbf{L21 findings refine the doctrine's scope:}
+(1) Gated steering achieves full behavior-steering within the freedom budget (Finding 3), but concept
+surface-rate ($0.16$ gated vs $0.96$ continuous) reveals that gating is a legibility-efficiency tradeoff,
+not a raw-lift maximizer (Finding 8, gate L21-baselines). The doctrine is not ``writes will make concepts
+surface at frequency $X$,'' but rather ``writes via gated moments preserve model autonomy while enabling
+reflexive re-cognition.'' This distinction reframes band-steering as a governance mechanism for workspace
+transparency, not a throughput optimizer.
+(2) Naive contrastive alignment steering (extracting refusal or truthfulness directions from small labeled
+sets) does not improve AdvBench ASR (baseline 0.25 $\to$ steered 0.25, gate L21-jailbreak) or TruthfulQA
+truthfulness-proxy (baseline 0.697 $\to$ steered 0.680, gate L21-truthful). This is an honest negative: the
+steering infrastructure does not unlock hidden alignment gains at the activation level. Alignment improvements
+at scale appear to require training-time or inference-time techniques (filtering, ensemble voting, supervised
+fine-tuning) outside the scope of activation steering (Finding 9).
 
-The single-seed fragility program reviewer \#6 flagged in narrative-past style resolved into a mechanism:
+\subsection*{Limitations: Metrics, Scale, and Experimental Design}
+
+\textbf{Behavioral metric proxies:} CSR (concept surface-rate), ASR (attack success rate), and truthfulness-proxy
+(string-overlap with reference answers) are heuristic-based. LLM-judge evaluation on the same tasks would strengthen
+all claims, especially jailbreak and truthfulness findings (gate L21 notes this in the deviations field).
+Our refusal-rate and ASR calculations use keyword matching; adversarial-robustness evaluation with human labeling
+would be more robust. Truthfulness via string-overlap is notoriously loose; semantic similarity scoring or full
+TruthfulQA evaluation would tighten confidence intervals.
+
+\textbf{Model scale:} All confirm-tier claims (core steering, recipe transfer, dose response) derive from Qwen3-4B
+or Nemotron-Mini-4B (both $\lesssim 5$B parameters). The L1b finding (loadability scales with size) suggests
+27B models should show stronger band signals, but this was not carried forward systematically into the L21 alignment
+work. Scaling the contrastive direction experiments (jailbreak, truthfulness) to larger models remains open.
+
+\textbf{Single-configuration contrastive steering:} L21 jailbreak and truthfulness experiments extract directions from
+a single labeled set (10 and 15 examples, respectively) and apply them in the same band. Extracting multiple directions
+(e.g., from different datasets or labelers) and testing their composition or conflict remains unexplored.
+The generalization of these directions to prompts outside the source domain is not tested.
+
+\textbf{Corpus and concept selection:} The concept corpus (25 instructed concepts on Qwen3-4B) is hand-selected and
+small. Scaling to larger, more diverse concept sets would strengthen generalization claims. The L16-corpus finding
+that steering-lift varies with corpus style suggests that corpus diversity itself is a confound that should be factored
+out with careful experimental design (e.g., randomized concept-to-corpus assignment).
+
+\textbf{Band identification methodology:} The band is identified via CKA clustering of attribution matrices across layers,
+with an assumption that the band's boundary is sharp. Fuzzy band boundaries or overlapping band structure are not explored;
+band-membership uncertainty (e.g., soft membership) could be incorporated into future steering designs.
+
+The single-seed fragility program reviewers flagged in narrative-past corpus style was resolved into a mechanism:
 the calibration recipe's amplitude term has a \emph{corpus} axis (stub difficulty) alongside its model axis (lens strength).
 A fixed amplitude across corpora was the real gap (gate L16-corpus).
 Once amplitude is calibrated per corpus, steering lift generalizes (descriptive-scene: 0.30/0.20/0.25 at $\alpha=0.1$;
