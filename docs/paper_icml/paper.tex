@@ -1,0 +1,100 @@
+% paper.tex -- ICML 2026 preprint
+% Recognition-Gated Workspace Steering: Pratyabhijna as an Engineering
+% Specification for Language Model Control
+% Sole author: Sharath Sathish, Independent Researcher.
+% Build: latexmk -pdf paper  (or: make)
+
+\documentclass{article}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{hyperref}
+
+% Attempt to make hyperref and algorithmic work together better:
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Preprint mode: author names and released-artifact links visible.
+\usepackage[preprint]{icml2026}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{groupplots}
+
+% Theorem environments
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+
+% Custom commands (shared with the companion MDPI draft)
+\newcommand{\EFE}{\ensuremath{\mathcal{G}}}
+\newcommand{\FE}{\ensuremath{\mathcal{F}}}
+\newcommand{\KL}[2]{\ensuremath{D_{\mathrm{KL}}\!\left(#1 \,\|\, #2\right)}}
+\newcommand{\Exp}[1]{\ensuremath{\mathbb{E}\!\left[#1\right]}}
+\newcommand{\vect}[1]{\ensuremath{\bm{#1}}}
+\newcommand{\norm}[1]{\ensuremath{\left\|#1\right\|}}
+
+% Sanskrit terms, engineering-glossed on first use (project convention)
+\newcommand{\skt}[1]{\emph{#1}}
+
+\icmltitlerunning{Recognition-Gated Workspace Steering}
+
+\begin{document}
+
+\twocolumn[
+\icmltitle{Recognition-Gated Workspace Steering: Pratyabhij\~n\=a as an\\Engineering Specification for Language Model Control}
+
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Sharath Sathish}{ind}
+\end{icmlauthorlist}
+
+\icmlaffiliation{ind}{Independent Researcher}
+
+\icmlcorrespondingauthor{Sharath Sathish}{sharath.sathish@gmail.com}
+
+\icmlkeywords{workspace steering, mechanistic interpretability, activation steering, expected free energy, Jacobian lens, global workspace}
+
+\vskip 0.3in
+]
+
+\printAffiliationsAndNotice{}
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/doctrine}
+\input{sections/system}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/moat}
+\input{sections/discussion}
+\input{sections/artifacts}
+\input{sections/conclusion}
+
+\section*{Impact Statement}
+\input{sections/impact}
+
+\section*{Acknowledgements}
+\input{sections/acknowledgements}
+
+\bibliography{references}
+\bibliographystyle{icml2026}
+
+\newpage
+\appendix
+\onecolumn
+\input{sections/appendix}
+
+\end{document}

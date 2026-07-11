@@ -27,3 +27,5 @@ site/.astro/
 /docs/superpowers/
 /docs/triz_log.md
 /research/journal.md
+.vercel
+.env*

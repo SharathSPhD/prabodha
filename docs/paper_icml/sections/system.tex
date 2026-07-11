@@ -1,0 +1,38 @@
+\section{System and Research-Loop Architecture}
+\label{sec:system}
+
+The programme's second contribution is architectural: the research loop that produced the results is itself a released, replayable system. Figure~\ref{fig:architecture} shows the three tiers.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_architecture}}
+\caption{System architecture. Lower tier: the frozen plant with its actuator pair, transported writes (Equation~\ref{eq:write}) and band-targeted lens readback. Middle tier: the doctrine as controller, an entropy timing gate, a readback verifier, and a budget monitor. Upper tier: the auto-research loop, in which an expected-free-energy selector chooses the next experiment from a registered menu, results close through dual gates, and isolated adversarial reviews feed corrections back. All state flows through committed ledgers.}
+\label{fig:architecture}
+\end{figure}
+
+\subsection{Control Loop}
+
+At each decode step the controller receives the step entropy $H_t$, permits a write when $H_t > \tau$ and the budget monitor projects the trajectory-average entropy change to remain inside $\pm0.5$ nats, and applies Equation~\ref{eq:write} at the band. The verifier periodically reads the band through the band-targeted lens and scores the read-out against the intended concept. Timing, amplitude, band membership, and budget are configuration, not code: every tunable lives in a versioned YAML file validated by typed schemas, so a gate record plus a configuration file reproduces a run exactly.
+
+\subsection{Dual-Closure Gates}
+
+A research loop closes only when two independent gates pass. The code gate requires the test suite and static analysis to be green. The domain gate evaluates the pre-registered scientific criterion for the loop, stated before dispatch with seeds, commands, and thresholds, and issues pass, fail, or fail-on-margin with the raw evidence embedded in the record. The two gates are deliberately non-fungible: several loops in the ledger have passing code gates and failing domain gates (L1, L2, L3, L4, L17, L21), and these closed as registered negative results rather than being re-run to a pass. Each gate record also carries an amendment log; retroactive corrections, such as the sampling-stream repair described below, are visible as amendments rather than silent edits.
+
+\subsection{Expected-Free-Energy Experiment Selection}
+
+Candidate experiments are registered in menus, each candidate carrying an expected information gain, a preference weight, a compute cost, and a tier (smoke, screen, or confirm, with escalating seed and sample requirements). The selector scores candidates by expected free energy, dispatches the maximiser, observes the resulting gate verdict, and updates its beliefs; beliefs replay deterministically from the ledger of past verdicts, so the entire programme's decision sequence can be re-derived from committed artifacts. Over the programme the selector consumed nine menus in twenty-seven cycles, and its ledger records 267 observation events, 41 proposals, and 27 spend entries. Two formally logged divergences, cases where new evidence superseded an earlier point estimate, were resolved by registered supersession rather than deletion (Appendix~\ref{app:efe}). Contradictions between engineering requirements (steering strength against freedom cost, rigour against velocity, GPU productivity against co-resident job safety) were worked through a TRIZ contradiction log before implementation \cite{Altshuller1984}; the log is released with the repository.
+
+\subsection{Adversarial Review}
+
+Eighteen reviews were performed by isolated agents given only gate records and contracts, without access to the working tree or the researcher's narrative. Reviews returned verdicts of the form merge-with-corrections, and every correction was applied and committed before the affected loop closed. Material catches include: a cost-model miscalibration in the selector; a ledger-replay bug; the discovery that a single per-run random seed correlated all forty generations within an arm, which invalidated the effective sample size of every earlier sampling estimate and forced per-generation seeding derived from a hash of seed, arm, concept, and stub (the stream fix, gate L9); a candidate name that overclaimed a robustness result (L17); the formal supersession of stale dose-response levels after the stream fix (L18, L19); and the withdrawal of an independence claim that a review showed to be a deterministic replay artifact rather than a replication (L19). Appendix~\ref{app:reviews} catalogues all eighteen.
+
+\subsection{Compute Discipline}
+
+All experiments ran on a single shared DGX Spark node (GB10, unified-memory aarch64) co-resident with unrelated training jobs. A guard script gates every dispatch on GPU idleness, per-loop budget, and a kill-switch file; contention events are recorded in gate metadata. The full programme consumed 18.17 GPU-hours across nineteen budgeted loops (Figure~\ref{fig:compute}), a figure reported to make the cost of the evidence auditable.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_compute}}
+\caption{Compute ledger. Bars give per-loop GPU-hours as recorded in the programme state file; the line gives the cumulative total (18.17 GPU-hours). The largest single item is the 27B loadability replication (L1b, 6.1 h).}
+\label{fig:compute}
+\end{figure}

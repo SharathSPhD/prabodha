@@ -1,0 +1,24 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=34pt},
+  width=0.56\columnwidth, height=0.56\columnwidth,
+  symbolic x coords={42,123,777,2024,31415,999},
+  xtick=data, xlabel={seed}, x tick label style={rotate=45, anchor=east},
+  label style={font=\scriptsize}, tick label style={font=\scriptsize},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\nextgroupplot[ybar, /pgf/bar width=4.5pt, ymin=0, ymax=0.45, ylabel={lift},
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none}]
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(42,0.3) (123,0.35) (777,0.35) (2024,0.35) (31415,0.35) (999,0.35)};
+\addplot+[fill=orange!55, draw=orange!70!black] coordinates {(42,0.075) (123,0.125) (777,0.075) (2024,0.125) (31415,0.1) (999,0.1)};
+\addlegendentry{gated lift}
+\addlegendentry{advantage over prefill}
+\draw[dashed, red!70] (rel axis cs:0,0.444) -- (rel axis cs:1,0.444);
+\nextgroupplot[ybar, /pgf/bar width=6pt, ymin=-0.55, ymax=0.55, ylabel={$\Delta H$ (nats)}]
+\addplot+[fill=teal!45, draw=teal!70!black] coordinates {(42,0.1118) (123,0.2457) (777,0.1087) (2024,-0.006) (31415,0.0936) (999,0.1485)};
+\draw[dashed, gray!80] (rel axis cs:0,0.954) -- (rel axis cs:1,0.954);
+\draw[dashed, gray!80] (rel axis cs:0,0.045) -- (rel axis cs:1,0.045);
+\end{groupplot}
+\end{tikzpicture}

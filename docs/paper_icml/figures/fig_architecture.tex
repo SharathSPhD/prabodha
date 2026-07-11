@@ -1,0 +1,51 @@
+% Hand-authored TikZ. System architecture: controller-actuator-plant with the
+% auto-research loop. Structure mirrors src/prabodha/ modules and the EFE
+% selector in src/prabodha/efe/ (see Appendix on module map).
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={draw, rounded corners=2pt, align=center, inner sep=4pt, minimum height=18pt},
+  plant/.style={box, fill=gray!12, minimum width=88pt},
+  act/.style={box, fill=blue!12, minimum width=88pt},
+  ctrl/.style={box, fill=orange!15, minimum width=88pt},
+  loop/.style={box, fill=teal!10, minimum width=100pt},
+  arr/.style={-{Latex[length=5pt]}, thick},
+  lbl/.style={font=\tiny, midway, fill=white, inner sep=1pt},
+]
+% plant
+\node[plant] (plant) at (0,0) {frozen decoder LLM\\residual stream, workspace band};
+% actuator column
+\node[act] (writer) at (-2.6,1.7) {writer\\$h \leftarrow h + \alpha\, J^{\top}u$};
+\node[act] (lens) at (2.6,1.7) {band-targeted lens\\readback $J_{\ell} h \to$ tokens};
+% controller
+\node[ctrl] (timing) at (-2.6,3.3) {timing gate\\write iff $H_t > \tau$};
+\node[ctrl] (verify) at (2.6,3.3) {verifier\\readback vs.\ intent};
+\node[ctrl] (budget) at (0,4.4) {budget monitor\\$|\overline{\Delta H}| \le 0.5$ nats};
+% research loop
+\node[loop] (menu) at (-2.6,6.0) {registered menu\\candidate experiments};
+\node[loop] (efe) at (0,7.1) {EFE selector\\$\arg\max\ \mathcal{G}$ over candidates};
+\node[loop] (gate) at (2.6,6.0) {dual-closure gate\\code gate $\wedge$ domain gate};
+\node[loop, fill=red!8] (review) at (0,5.2) {adversarial review\\isolated agent, gate brief only};
+% wiring: control loop
+\draw[arr] (timing) -- (writer) node[lbl] {permit};
+\draw[arr] (writer) -- (plant) node[lbl] {band write};
+\draw[arr] (plant) -- (lens) node[lbl] {band state};
+\draw[arr] (lens) -- (verify) node[lbl] {read-out};
+\draw[arr] (plant.north) to[bend left=12] node[lbl] {step entropy $H_t$} (timing.south east);
+\draw[arr] (verify) -- (budget);
+\draw[arr] (timing) -- (budget);
+% wiring: research loop
+\draw[arr] (efe) -- (menu) node[lbl] {select};
+\draw[arr] (menu.south) to[bend right=18] node[lbl] {dispatch} (budget.west);
+\draw[arr] (budget.east) to[bend right=18] node[lbl] {evidence} (gate.south);
+\draw[arr] (gate) -- (efe) node[lbl] {verdict $\to$ belief};
+\draw[arr] (gate) -- (review);
+\draw[arr] (review) -- (efe) node[lbl] {corrections};
+% ledgers
+\node[box, fill=yellow!12, minimum width=70pt] (ledger) at (3.4,7.6) {ledgers\\gates/*.json, efe\_ledger.jsonl};
+\draw[arr, dashed] (gate) -- (ledger);
+\draw[arr, dashed] (efe) -- (ledger);
+% braces
+\node[font=\tiny, rotate=90, gray] at (-4.4,1.0) {plant + actuator};
+\node[font=\tiny, rotate=90, gray] at (-4.4,3.8) {controller (doctrine)};
+\node[font=\tiny, rotate=90, gray] at (-4.4,6.4) {auto-research loop};
+\end{tikzpicture}

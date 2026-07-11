@@ -1,0 +1,21 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{axis}[
+  ybar, /pgf/bar width=7pt,
+  width=\columnwidth, height=0.6\columnwidth,
+  symbolic x coords={42,123,777,2024},
+  xtick=data, xlabel={seed},
+  ymin=0, ymax=0.55, ylabel={concept surface lift},
+  label style={font=\small}, tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {(42,0.4) (123,0.475) (777,0.425) (2024,0.325)};
+\addplot+[fill=gray!35, draw=gray!60] coordinates {(42,0.175) (123,0.15) (777,0.075) (2024,0.1)};
+\addlegendentry{calibrated recipe, gated}
+\addlegendentry{prefill control}
+\draw[dashed, red!70] (rel axis cs:0,0.0909) -- (rel axis cs:1,0.0909)
+  node[pos=0.55, above, font=\tiny, red!70] {borrowed geometry (L10): 0.05};
+\end{axis}
+\end{tikzpicture}

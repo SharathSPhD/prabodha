@@ -1,0 +1,24 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=0.66\columnwidth,
+  xmode=log, log ticks with fixed point,
+  xlabel={write amplitude $\alpha$ (log scale)}, ylabel={gated concept surface lift},
+  xmin=0.0015, xmax=0.6, ymin=0, ymax=0.85,
+  label style={font=\small}, tick label style={font=\scriptsize},
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\addplot+[blue!70!black, mark=*, thick, mark size=1.4pt] coordinates {(0.1,0.05) (0.2,0.2) (0.3,0.4) (0.45,0.775)};
+\addlegendentry{Qwen3-4B seed 42 (replay)}
+\addplot+[blue!50, mark=square*, thick, mark size=1.4pt] coordinates {(0.1,0.0) (0.2,0.175) (0.3,0.475) (0.45,0.725)};
+\addlegendentry{Qwen3-4B seed 123}
+\addplot+[blue!30!cyan, mark=triangle*, thick, mark size=1.4pt] coordinates {(0.1,0.0) (0.2,0.175) (0.3,0.425) (0.45,0.725)};
+\addlegendentry{Qwen3-4B seed 777}
+\addplot+[red!70!black, thick, mark=diamond*, mark size=1.6pt] coordinates {(0.002,0.025) (0.005,0.15) (0.01,0.275) (0.02,0.275)};
+\addlegendentry{Nemotron-Mini-4B fine grid (L16)}
+\addplot+[red!50, thick, dashed, mark=diamond, mark size=1.6pt] coordinates {(0.02,0.375) (0.05,0.375) (0.1,0.4)};
+\addlegendentry{Nemotron-Mini-4B replay (L8/L15)}
+\end{axis}
+\end{tikzpicture}

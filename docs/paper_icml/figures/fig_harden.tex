@@ -1,0 +1,22 @@
+% Auto-generated from committed gate JSONs by generate_figures.py. Do not edit by hand.
+
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=30pt},
+  width=0.56\columnwidth, height=0.58\columnwidth,
+  ybar, /pgf/bar width=6pt,
+  symbolic x coords={{baseline},{attacked},{harden\\naive},{harden\\gated}},
+  xtick=data, x tick label style={align=center, font=\tiny},
+  label style={font=\scriptsize}, tick label style={font=\scriptsize},
+  ymajorgrids, grid style={gray!25}, axis line style={gray!60},
+]
+\nextgroupplot[ymin=0, ymax=1.0, ylabel={rate},
+  legend style={font=\tiny, at={(0.02,0.98)}, anchor=north west, draw=none, fill=none}]
+\addplot+[fill=red!50, draw=red!70!black] coordinates {({baseline},0.0) ({attacked},0.9) ({harden\\naive},0.0) ({harden\\gated},0.0)};
+\addplot+[fill=orange!45, draw=orange!70!black] coordinates {({baseline},0.0) ({attacked},0.0) ({harden\\naive},0.6) ({harden\\gated},0.5)};
+\addlegendentry{attack success}
+\addlegendentry{benign over-refusal}
+\nextgroupplot[ymin=0, ymax=55, ylabel={writes per generation}]
+\addplot+[fill=blue!55, draw=blue!70!black] coordinates {({baseline},0.0) ({attacked},0.0) ({harden\\naive},50.0) ({harden\\gated},11.8)};
+\end{groupplot}
+\end{tikzpicture}

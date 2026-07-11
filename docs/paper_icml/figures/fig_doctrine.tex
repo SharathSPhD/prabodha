@@ -1,0 +1,30 @@
+% Hand-authored TikZ. The five doctrine clauses as a decision pipeline, each
+% clause paired with its verification signal and the gate that tested it.
+\begin{tikzpicture}[
+  font=\scriptsize,
+  clause/.style={draw, rounded corners=2pt, fill=blue!10, align=center, inner sep=3.5pt, minimum width=118pt, minimum height=24pt},
+  sig/.style={draw, rounded corners=2pt, fill=gray!10, align=center, inner sep=3pt, minimum width=94pt, font=\tiny},
+  arr/.style={-{Latex[length=5pt]}, thick},
+]
+\node[clause] (what) at (0,0)
+  {\textbf{what}: verbalizable concept code $u$\\\emph{vimar\'sa = par\=a v\=ak}};
+\node[clause] (where) at (0,-1.15)
+  {\textbf{where}: workspace band, band coordinates\\\emph{v\=ak hierarchy}};
+\node[clause] (when) at (0,-2.3)
+  {\textbf{when}: uncommitted moments, $H_t > \tau$\\\emph{sphura\d{t}\d{t}\=a}};
+\node[clause] (how) at (0,-3.45)
+  {\textbf{how}: readback via band-targeted lens\\\emph{\=agama recognition}};
+\node[clause] (budget) at (0,-4.6)
+  {\textbf{budget}: $|\overline{\Delta H}| \le 0.5$ nats\\\emph{sv\=atantrya}};
+\draw[arr] (what) -- (where);
+\draw[arr] (where) -- (when);
+\draw[arr] (when) -- (how);
+\draw[arr] (how) -- (budget);
+\node[sig, right=14pt of what]  (s1) {loadability gates L1/L1b/L2\\hit-rate@5: 0.10 / 0.55 / 0.00};
+\node[sig, right=14pt of where] (s2) {articulation gates L2b/L7\\band lens 0.20 vs.\ final lens 0.00};
+\node[sig, right=14pt of when]  (s3) {timing gates L4b--L6, L11/L12\\gated $>$ rate-matched $>$ prefill};
+\node[sig, right=14pt of how]   (s4) {readback gates L14/L15/L16\\BA 0.68 / 0.64 / 0.59};
+\node[sig, right=14pt of budget](s5) {budget gates L3 vs.\ L5--L19\\$-2.08$ nats uncapped; in-budget gated};
+\foreach \a/\b in {what/s1, where/s2, when/s3, how/s4, budget/s5}
+  \draw[arr, dashed, gray] (\a) -- (\b);
+\end{tikzpicture}

@@ -1,0 +1,15 @@
+{
+ "loop": "char",
+ "kind": "characterization",
+ "status": "open",
+ "model": "nvidia/Nemotron-Mini-4B-Instruct",
+ "code_gate": {
+  "verdict": "pass",
+  "evidence": "characterize_model.py"
+ },
+ "domain_gate": {
+  "verdict": "pass",
+  "evidence": "{\"model\": \"nvidia/Nemotron-Mini-4B-Instruct\", \"n_layers\": 32, \"band\": [6, 26], \"n\": 10, \"beta\": 0.1, \"rows\": {\"baseline\": {\"asr\": 0.0, \"over_refusal\": 0.0}, \"attack_weight\": {\"asr\": 1.0, \"over_refusal\": 0.1}, \"harden_prefill\": {\"asr\": 0.5, \"over_refusal\": 0.3, \"coherence\": 1.0}, \"attack_prompt\": {\"asr\": 0.0}, \"harden_prompt\": {\"asr\": 0.0, \"over_refusal\": 0.0}}}"
+ },
+ "signoff": "exploratory"
+}

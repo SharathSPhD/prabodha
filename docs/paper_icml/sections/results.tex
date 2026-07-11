@@ -1,0 +1,234 @@
+\section{Results}
+\label{sec:results}
+
+Results are organised by doctrine clause. Every number cites a gate record by identifier; fail verdicts are reported as registered negatives. Findings F1 to F6 confirm mechanisms; F7 to F9 bound scope.
+
+\subsection{F1: Loadability Replicates and Scales; Pruning Collapses It}
+\label{sec:results:loadability}
+
+Instructed loading writes a verbalizable concept code into the band and counts the fraction of prompts on which the concept surfaces in the model's top-5 continuation tokens (hit-rate@5, $n=40$ prompts, shuffled-code null with 200 resamples). On Qwen3-4B the instructed rate is 0.10 against a null of 0.0104 (permutation $p \approx 10^{-4}$, gate L1). On Qwen3.6-27B the rate rises to 0.55 (22 of 40, null 0.068), clearing the registered 0.5 threshold (gate L1b). On Nemotron-Mini-4B, a pruned-and-distilled model, the instructed rate is 0.00, indistinguishable from its null and from an uninstructed control (gate L2). Figure~\ref{fig:loadability} plots all three against their nulls. Loadability is therefore not a generic property of decoder transformers at a given size: it scales with size within a lineage and can be absent at 4B when the training pipeline includes pruning and distillation \cite{Minitron2024}. Band structure itself is present in all three models (CKA band contrast 0.306, 0.269, and 0.137 respectively, gates L1, L1b, L2), so what varies is writability, not banding. A registered reportability metric behaved anomalously in the same experiments, concentrating on the final layers rather than the late third on both Qwen sizes (Spearman $\rho$ of 0.180 at 4B and 0.124 at 27B against a 0.4 threshold); this is recorded as a failed sub-hypothesis in both gates rather than adjusted away.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_loadability}}
+\caption{Instructed loadability across plants (gates L1, L1b, L2). Bars give instructed hit-rate@5; hatched bars give the shuffled-code null. The 27B model clears the registered 0.5 threshold; the pruned-and-distilled twin shows no instructed loading at all.}
+\label{fig:loadability}
+\end{figure}
+
+\subsection{F2: Band Content Is Legible Only to a Band-Targeted Lens, and the Gradient Is Model-Intrinsic}
+\label{sec:results:articulation}
+
+On the twin whose instructed loading reads as absent, a lens fitted to final output logits reads the band as empty across seven instructed concepts (0.00), while a lens targeted at the band's own exit (layer 26) reads directed loading at 0.20 against a null of 0.023 (gate L2b). The same articulation-depth gradient, read-out negentropy rising through the band, appears on every plant tested. A registered null experiment addresses the concern that the gradient is an artifact of lens construction: the gradient survives under a logit-lens read-out that involves no fitted transport, with Spearman $\rho = 0.607$ against $\rho = 0.639$ for the Jacobian lens, both at permutation $p = 2 \times 10^{-4}$ (gate L7; Figure~\ref{fig:articulation}). The gradient is a property of the model's residual stream. The engineering consequence is direct: readback verification must use band-targeted lenses, and final-lens analyses of band interventions produce false negatives.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_articulation}}
+\caption{Per-layer read-out negentropy for the fitted Jacobian lens and for a logit-lens null with no fitted transport (gate L7). Both read-outs recover the articulation gradient with permutation $p=2\times10^{-4}$, establishing the gradient as model-intrinsic.}
+\label{fig:articulation}
+\end{figure}
+
+\subsection{F3: Uncapped Writing Steers but Destroys Freedom; the Budget Binds}
+\label{sec:results:budget}
+
+Unrestricted band writing lifts concept surfacing to 0.40 (baseline 0.00) but costs $-2.081$ nats of trajectory entropy, four times the registered budget (gate L3). The gate's failure taxonomy attributes 20 of the 40 write attempts to freedom-criterion rejection, 14 to uptake failure, and 2 to write-quality failure, identifying freedom cost as the binding constraint. Decomposition across gates L4 and L4b shows the at-position cost of a single write is large and decoding-independent (approximately $-2$ nats at the write position), while the trajectory-average cost is regime-dependent ($+0.82$ nats greedy, $-0.13$ sampling); the budget currency was registered accordingly (Section~\ref{sec:doctrine:budget}). These two gates are registered negatives that define the constraint the remaining experiments must satisfy.
+
+\subsection{F4: Timing Is the Mechanism; the Flash Variant Failed and Was Revised}
+\label{sec:results:timing}
+
+The first timing experiment failed its registered criterion: gated lift 0.175 against a 0.2 threshold, with no advantage over schedule or prefill controls (gate L4). Its successor, with corrected gating, passed: entropy-gated writes reach lift 0.40 at trajectory cost $-0.127$ nats using approximately 9.85 writes per generation, against 0.20 for a single prefill write (gate L4b), the programme's first interventional pass. The threshold $\tau$ is not delicate: six of six runs pass across the P40, P60, and P80 entropy percentiles at two seeds, with lift 0.35 to 0.40 and in-budget entropy deltas throughout (gate L5). Timing beats rate: at matched write budgets, entropy-gated placement (lift 0.40 at 7.15 writes per generation) exceeds a rate-matched schedule (0.225 at 5.0) and prefill (0.20), so when to write matters more than how often (gate L6). The literal flash reading of the timing clause, gating on commitment onsets, adds nothing over prefill (0.20 versus 0.30 for uncommitted-moment gating, gate L9); the revised uncommitted-moment form wins at all three seeds tested (advantages of 0.05 to 0.10, gate L12). The doctrine's timing clause survives in revised form, and the revision is documented in the ledger rather than presented as the original hypothesis.
+
+\subsection{F5: The Core Claim at Six Independent-Stream Seeds}
+\label{sec:results:core}
+
+An adversarial review of the early sampling estimates uncovered that a single per-run seed had correlated all generations within an arm, shrinking the effective sample size (gate L9, the stream fix; Section~\ref{sec:setup}). All headline claims were therefore restated on independent streams. The core claim, entropy-gated band writes steer within the freedom budget, holds at all six registered seeds, with gated lift 0.30 to 0.35 and trajectory entropy deltas between $-0.006$ and $+0.246$ nats, all inside the cap (gate L11; Table~\ref{tab:core}; Figure~\ref{fig:core}). The advantage over prefill is positive at every seed (mean $+0.100$, range $+0.075$ to $+0.125$), giving a one-sided sign-test $p = 1/2^6 = 0.0156$; its magnitude, however, clears the registered 0.1 margin at only three of six seeds, and an earlier three-seed confirmation had already split the same way (budget claim 3 of 3, margin claim 1 of 3, gate L6 confirm). The claim supported by the evidence is therefore direction, not size: gating always helps, by a margin near 0.1. Steering is also operationally free in throughput terms: steered arms decode at 24.8 to 25.0 tokens per second against a 19.7 baseline on the shared node, so write count imposes no serving cost at this scale (gate L9 write-cost).
+
+\begin{table}[t]
+\caption{Core claim at six independent-stream seeds (gate L11). Lift is concept hit-rate@5 over baseline; advantage is gated minus prefill; $\Delta H$ is trajectory-average entropy change (budget $\pm0.5$ nats). Sign consistency 6/6, one-sided $p=0.0156$.}
+\label{tab:core}
+\vskip 0.1in
+\centering
+{\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Seed} & \textbf{Gated lift} & \textbf{Advantage} & $\bm{\Delta H}$ \textbf{(nats)} \\
+\midrule
+42    & 0.30 & $+0.075$ & $+0.112$ \\
+123   & 0.35 & $+0.125$ & $+0.246$ \\
+777   & 0.35 & $+0.075$ & $+0.109$ \\
+2024  & 0.35 & $+0.125$ & $-0.006$ \\
+31415 & 0.35 & $+0.100$ & $+0.094$ \\
+999   & 0.35 & $+0.100$ & $+0.149$ \\
+\midrule
+mean  & 0.342 & $+0.100$ & $+0.117$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_core}}
+\caption{The core claim at six independent-stream seeds (gate L11). Left: gated lift and advantage over prefill per seed; the dashed line marks the registered 0.2 lift threshold. Right: trajectory entropy deltas, all within the $\pm0.5$-nat budget (dashed lines).}
+\label{fig:core}
+\end{figure}
+
+\subsection{F6a: Dose Response by Timing Arm, with a Documented Supersession}
+\label{sec:results:dose}
+
+The canonical dose grid (gate L18, three amplitudes, clean streams) is shown in Figure~\ref{fig:timing}. Continuous writing reaches the highest surface lift (0.45 to 0.50) at 24.7 to 29 writes per generation; entropy-gated writing reaches 0.275 to 0.30 at 8.4 to 9.0 writes; rate-matched and prefill controls sit at 0.15 to 0.225. All gated points are within budget. An earlier version of this grid (gate L8) predated the stream fix and ran approximately 0.1 high at the gated points; the supersession is formal, confirmed at three seeds and two amplitudes with all six per-seed offsets negative (mean $-0.108$ at $\alpha=0.02$ and $-0.067$ at $\alpha=0.1$, gate L19), and the superseded gate remains in the ledger with its status marked.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_timing}}
+\caption{Timing arms across write amplitude on Nemotron-Mini-4B, clean streams (gates L18). Left: concept surface lift; right: writes per generation. Entropy-gated writing obtains roughly 60\,\% of the continuous arm's lift at a third of its writes, within budget; the continuous arm's raw-lift dominance is quantified further in Section~\ref{sec:results:l21}.}
+\label{fig:timing}
+\end{figure}
+
+\subsection{F6b: The Calibration Recipe Transfers Across Plants; Geometry Does Not}
+\label{sec:results:transfer}
+
+Transplanting the working configuration from Nemotron-Mini-4B to Qwen3-4B unchanged fails: gated lift 0.05, prefill 0.00 (gate L10). The diagnosis is quantitative: the target-layer Jacobian transports on Qwen3-4B are roughly ten times weaker than on the donor, so the same amplitude under-drives the band. Site sweeps eliminate layer choice as the blocker (all probed sites read 0.00 under borrowed amplitude, gate L13 probes). The recipe that transfers sets amplitude inversely proportional to lens transport strength: at three times the donor amplitude, Qwen3-4B reaches gated lift 0.40 against prefill 0.175 (gate L13), the dose curve is strictly monotone over a four-point amplitude grid (0.05, 0.20, 0.40, 0.775 at $\alpha$ from 0.1 to 0.45, gate L14), the recipe holds at four seeds (gated 0.325 to 0.475, prefill 0.075 to 0.175, all in budget, gate L14 multiseed; Figure~\ref{fig:recipe}), and per-seed monotonicity replicates at two further seeds (gate L15). On the donor side, a fine amplitude grid finds the same law at one-tenth the scale, rising from 0.025 at $\alpha=0.002$ to saturation near 0.275 at $\alpha=0.01$ (gate L16). Together the two plants trace a dose law spanning roughly 1.5 orders of amplitude magnitude (Figure~\ref{fig:scaling}). The gate discloses the limits: the two-plant statement is ordering and saturation consistency at screen tier, the within-plant monotone law is the confirmed component, and the donor curve's flat first pair carries no dose signal (gate L15 disclosures).
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_recipe}}
+\caption{Recipe transfer to Qwen3-4B at four seeds (gate L14 multiseed): calibrated-amplitude gated writes against prefill controls. The dashed line marks the lift obtained by transplanting the donor configuration without calibration (0.05, gate L10).}
+\label{fig:recipe}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_scaling}}
+\caption{Two-plant amplitude law (gates L14, L15, L16, L8 replay). Gated lift against write amplitude on a log axis: Qwen3-4B at three seeds (blue), Nemotron-Mini-4B fine grid (red, solid) and replayed working points (red, dashed). The working amplitudes differ by an order of magnitude in the direction predicted by inverse lens transport strength.}
+\label{fig:scaling}
+\end{figure}
+
+\subsection{F6c: Readback Tracks Behaviour at Screen Tier; Pooled Generalisation Fails}
+\label{sec:results:readback}
+
+The verification clause requires that band readback predict behavioural uptake. On the development corpus, the best readback setting reaches balanced accuracy 0.684 (true-positive rate 0.833, true-negative rate 0.536, $n=40$); the gate disclosal notes that 36 settings were swept, the maximum is reported, and no multiple-comparison correction was applied (gate L14 readback, screen-exploratory). On a held-out corpus with the setting frozen, balanced accuracy is 0.637 against a registered 0.6 threshold, with the margin inside the binomial confidence interval; the same held-out run's steering lift failed its own budget-gate criterion, so lift is corpus-dependent (gate L15 readback, downgraded from confirm to screen by adversarial review). Pooled across three corpus styles ($n=120$), balanced accuracy falls to 0.590, below threshold, and is recorded as a negative exploratory result (gate L16). The verification clause is therefore supported at screen tier on matched corpora and unproven in pooled generalisation.
+
+\subsection{F6d: Corpus Robustness Is an Amplitude Question}
+\label{sec:results:corpus}
+
+Gated steering passes on two of three corpus styles at the working amplitude (narrative-past 0.25, descriptive-scene 0.30, held-out replay 0.15 against a 0.2 bar, gate L16). A seed-variance audit then found the narrative corpus seed-fragile at that amplitude (0.25, 0.075, 0.10 across three seeds) while the descriptive corpus is seed-robust (0.30, 0.20, 0.25), a self-audit fail recorded at 2 of 4 registered cells (gate L17). Doubling the amplitude repairs the fragile corpus at all three seeds (0.425, 0.275, 0.225, one margin thin at 0.225 against 0.2, gate L18), and both corpora approximately double their lift under the amplitude increase (0.175 to 0.325 and 0.275 to 0.55, with one registered per-seed margin failing at 0.025 against 0.05, gate L19). The supported statement is that corpus difficulty loads on the amplitude axis, held at screen tier with one disclosed margin failure; a stronger corpus-amplitude law is registered as open.
+
+\subsection{F7: An Untrained Associative-Memory Write Path Matches the Analytic Path}
+\label{sec:results:bridge}
+
+The doctrine's write direction $J^{\top}u$ is analytic. A biologically-motivated alternative routes the write through recall from a modern-Hopfield associative store \cite{Ramsauer2021}, the CittaStore of the author's predictive-world-model stack. Integrated end-to-end and run cold, with no patterns stored and no training, the store's recall direction steers within budget on all three seeds (lifts 0.4445, 0.5556, 0.4445, gate L20), and matches the analytic path exactly on two seeds (gaps 0.0000) while differing by a single concept-hit on the third (0.4445 against 0.3334, a gap of 0.1111 against a 0.05 equivalence criterion, in the cold store's favour, at the metric's 1/9 quantisation). The registered equivalence verdict is fail-on-margin at 2 of 3. The store is untrained, so the result is an integration proof that the associative write pathway is live and dimensionally compatible, not evidence that a trained store beats the analytic baseline. Whether training the store improves on cold initialisation is registered as open. Figure~\ref{fig:l20} plots both arms.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_l20}}
+\caption{Cold associative-store recall against the analytic write direction at three seeds (gate L20). Two seeds match exactly; the third differs by one concept-hit (the metric's quantisation unit) in the cold store's favour.}
+\label{fig:l20}
+\end{figure}
+
+\subsection{F8: Gated Steering Is a Legibility Mechanism, Not a Throughput Maximiser}
+\label{sec:results:l21}
+
+A five-arm comparative evaluation on Qwen3-4B ($n=25$ per arm per seed, three seeds) measures concept surface rate (CSR), a heuristic attack-success proxy (ASR), refusal rate, and entropy cost (gates L21 baselines; Table~\ref{tab:l21}; Figure~\ref{fig:l21}). Continuous flooding surfaces concepts at 0.96; entropy-gated and prefill writes surface at 0.16; a logit-bias arm with no layer or timing structure reaches 0.40. Entropy costs are small in all arms ($-0.043$ to $+0.073$ nats), so at matched, negligible entropy cost the continuous arm outperforms the gated arm on raw throughput by a factor of six. The gated arm's registered CSR criterion (at least 0.2) fails at all three seeds, and the verdicts are recorded as fails. The reading consistent with the full ledger is that gating purchases verified, budgeted, moment-targeted content placement rather than maximal surfacing; where raw surfacing is the goal, flooding a 4B model is easy and needs no doctrine. This reframes the doctrine's value as internal-model transparency under constraint, and Section~\ref{sec:discussion} develops the point.
+
+\begin{table}[t]
+\caption{Comparative evaluation on Qwen3-4B (gates L21 baselines, mean of seeds 42, 123, 777; $n=25$ per arm per seed). CSR is concept surface rate; ASR is a heuristic attack-success proxy on the same prompt set; $\Delta H$ is mean entropy cost in nats. Per-seed values are identical to three decimals across seeds.}
+\label{tab:l21}
+\vskip 0.1in
+\centering
+{\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Arm} & \textbf{CSR} & \textbf{ASR} & \textbf{Refusal} & $\bm{\Delta H}$ \\
+\midrule
+baseline       & 0.000 & 0.800 & 0.200 & $+0.000$ \\
+prefill        & 0.160 & 1.000 & 0.000 & $-0.020$ \\
+entropy-gated  & 0.160 & 1.000 & 0.000 & $-0.020$ \\
+logit bias     & 0.400 & 0.800 & 0.200 & $-0.043$ \\
+continuous     & 0.960 & 1.000 & 0.000 & $+0.073$ \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_l21}}
+\caption{Comparative evaluation arms (gates L21 baselines, three-seed means). Left: concept surface rate; right: mean entropy cost. Continuous flooding dominates raw surfacing at negligible entropy cost; the gated arm's value is verified placement, not throughput.}
+\label{fig:l21}
+\end{figure}
+
+\subsection{F9: Naive Contrastive Directions Do Not Improve Alignment on an Aligned Model}
+\label{sec:results:alignment}
+
+Two registered experiments test whether contrastive activation directions \cite{Rimsky2024,Zou2023RepE} improve safety-relevant behaviour on the already-aligned Qwen3-4B instruct model. A refusal direction extracted from labelled harmful and benign pairs and applied at the working site leaves attack success on an AdvBench subset \cite{Zou2023AdvBench} unchanged: ASR 0.250 with and without steering, refusal rate 0.750 in both arms ($n=20$, gate L21 jailbreak, registered fail). A truthfulness direction extracted from TruthfulQA contrasts \cite{Lin2022} fails its registered improvement criterion, with the gate recording identical heuristic scores in both arms ($n=15$, gate L21 truthful, registered fail). The gates disclose their limits: heuristic pattern-based metrics rather than judge models, single-seed direction extraction, and small subsets. Within those limits the result is consistent with the direction-structure analysis of the author's refusal-symmetry work \cite{Sathish2026Refusal} and with evidence that refusal behaviour, while direction-mediated, is not improved by naive single-direction addition on models whose alignment margin is already consolidated \cite{Arditi2024}. Alignment gains at the activation level are not an automatic dividend of naive workspace steering. Finding~F12 shows that the same activation signal, used for input-conditioned recognition rather than blanket addition, does provide a usable defence on some models.
+
+\subsection{F10: Band-Targeted Reading Is Twice as Sensitive as the Final-Target Baseline at Subtle Doses}
+\label{sec:results:baseline}
+
+A head-to-head benchmark compares the paper's band-targeted lens against the Jacobian-lens final-target baseline as reading instruments applied to the same deterministic writes, on a fixed grid of ten concepts by eight stubs ($n=80$ paired observations, exact McNemar test, since a deterministic forward pass cannot be reseeded; gate L22, consolidated from committed sub-gates by a recomputation script). Across a write-dose floor sweep (Figure~\ref{fig:lens_baseline}) the two instruments are indistinguishable at doses too small to load the band (both 0.00 at $\alpha=0.02$, both 0.025 at $\alpha=0.05$), then separate sharply at $\alpha=0.1$, where the band-targeted lens detects on 0.475 of pairs against 0.2375 for the final-target lens, a gap of $+0.2375$ with 20 band-only detections against one final-only ($p=2.1\times10^{-5}$). At the saturating dose $\alpha=0.3$ both instruments approach ceiling (band 1.00, final 0.95, gap $+0.05$, $p=0.125$). The registered gap criterion of at least 0.3 is missed by 0.0625, so the verdict is fail-on-margin, and the strong-form necessity claim (that band content is wholly invisible to a final-target lens) is withdrawn under its own falsifier, since the final-target lens does recover most content once the write saturates. The supported statement is that band-targeted reading is roughly twice as sensitive at subtle, budget-respecting doses, with the direction decisive at $p=2.1\times10^{-5}$, and that the two instruments converge only when the intervention is driven hard enough to be detectable by any reasonable readout.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_lens_baseline}}
+\caption{Band-targeted lens (this work) against the Jacobian-lens final-target baseline, detection rate across the write-dose floor sweep (gate L22, $n=80$ pairs). The instruments diverge at the subtle dose $\alpha=0.1$ ($p=2.1\times10^{-5}$) and converge at saturation.}
+\label{fig:lens_baseline}
+\end{figure}
+
+\subsection{F11: Gated Placement Is 2.3 Times More Write-Efficient than Continuous Flooding}
+\label{sec:results:efficiency}
+
+The same benchmark quantifies the efficiency of gated placement against continuous flooding in lift per write, across six clean-stream cells (seeds 42, 123, 777 by amplitudes 0.02 and 0.1, sourced from the superseded-corrected L18 and L19 gates). Gated lift per write exceeds continuous in every cell (sign consistency 6 of 6), with a mean ratio of 2.32 and a range of 1.83 to 3.25 (Figure~\ref{fig:efficiency}). Expressed in absolute terms, gated placement recovers 67 percent of the continuous arm's lift while spending 29 percent of its writes. Finding F8 established that continuous flooding wins on raw surfacing; Finding F11 establishes that when the cost of a write is counted, gated placement is the more efficient instrument, which is the regime in which the doctrine's timing clause pays for itself.
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_efficiency}}
+\caption{Lift per write, entropy-gated against continuous, across six seed-by-amplitude cells (gate L22 efficiency block). Gated placement wins every cell; mean ratio 2.32, recovering roughly two-thirds of the lift at under one-third of the writes.}
+\label{fig:efficiency}
+\end{figure}
+
+\subsection{F12: Recognition-Gated Hardening Is a Deployable Moat on Some Models, Predicted Before Deployment}
+\label{sec:results:moat}
+
+The activation signal that fails as a blanket steering direction (F9) succeeds when it is used the way the doctrine's verification clause suggests, as a recognition test on the input rather than an unconditional write. A defence built on the fused attacker-defender loop (external refusal-direction extraction supplied by the companion \emph{prayoga} attack library, injected through prabodha's entropy-gated writer and, in the final form, conditioned on an input-projection recognition gate) hardens a model against jailbreaks only when the input's projection onto the refusal direction crosses a threshold placed in a clean gap between benign and attack projections. On Gemma-2-2B the benign and attack projection ranges are cleanly separated at read layer 13 (benign $[-53,-18]$, attack $[+4,+73]$); placing the threshold in that gap cuts real jailbreak attack success from 0.50 to 0.25, matching brute-force unconditional hardening, but at zero benign over-refusal, whereas the unconditional defence reaches the same 0.25 only by refusing every benign prompt (over-refusal 1.00), which is unusable (gate L26 proof, exploratory, $n=12$ attacks and 10 benign, single seed).
+
+Generality is bounded and, importantly, predictable. Across four model families the moat works on exactly two, and the predictor is the clean-gap test computed before any deployment (Figure~\ref{fig:moat}, Figure~\ref{fig:cleangap}; Table~\ref{tab:moat}). Gemma-2-2B (0.50 to 0.25) and Llama-3.2-1B (0.25 to 0.083) have cleanly separated projection ranges and harden at zero benign over-refusal. Qwen2.5-1.5B and SmolLM2-1.7B have overlapping ranges: on the former the gate cannot discriminate and attack success is unchanged while over-refusal rises, and on the latter the underlying difference-in-means direction is not a clean refusal direction, so unconditional hardening raises attack success from 0.583 to 0.917. The operational consequence is that the same read-layer projection statistic that decides whether to fire the gate at inference time also predicts, offline and cheaply, whether the moat will hold for a given model, so a deployer can test before trusting. These results are exploratory (small samples, single seed, refusal-phrase attack metric), and they are reported as an existence-and-predictability result rather than a general guarantee.
+
+\begin{table}[t]
+\caption{Recognition-gated hardening across four model families (moat consolidation, from the released \texttt{moat\_models.json}). ASR is jailbreak attack success rate; OR is benign over-refusal. The clean-gap column is the offline predictor.}
+\label{tab:moat}
+\vskip 0.1in
+\centering
+{\footnotesize
+\begin{tabular}{lccccc}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \textbf{Clean} & \textbf{ASR} & \multicolumn{2}{c}{\textbf{Recognition-gated}} & \multirow{2}{*}{\textbf{Moat}} \\
+ & \textbf{gap} & \textbf{none} & \textbf{ASR} & \textbf{OR} & \\
+\midrule
+Gemma-2-2B    & yes & 0.500 & 0.250 & 0.00 & works \\
+Llama-3.2-1B  & yes & 0.250 & 0.083 & 0.00 & works \\
+Qwen2.5-1.5B  & no  & 0.333 & 0.333 & 0.20 & fails \\
+SmolLM2-1.7B  & no  & 0.583 & 0.917 & 0.00 & backfires \\
+\bottomrule
+\end{tabular}}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_moat}}
+\caption{Four-model recognition-gated hardening (moat consolidation). Left: jailbreak attack success under no defence, unconditional hardening, and recognition-gated hardening. Right: benign over-refusal. Recognition gating matches the unconditional attack-success reduction where the moat holds, at a fraction of the over-refusal cost.}
+\label{fig:moat}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_cleangap}}
+\caption{The clean-gap predictor. Benign (grey) and attack (coloured) projection ranges at each model's read layer, normalised per model. Separation predicts the moat: Gemma-2-2B and Llama-3.2-1B separate cleanly and harden; Qwen2.5-1.5B and SmolLM2-1.7B overlap and fail.}
+\label{fig:cleangap}
+\end{figure}
+
+The hardening loop was also characterised at the activation level directly. Both Qwen3-4B and Nemotron-Mini-4B are prompt-robust but activation-vulnerable: prompt-only jailbreaks fail entirely (attack success 0.00) while activation-level refusal ablation succeeds (0.90 on Qwen3-4B, 1.00 on Nemotron-Mini-4B), which locates the harmful signature in the residual stream rather than the prompt and motivates an activation-level, rather than prompt-level, defence (gates \texttt{char}). An earlier form of the harden loop that added the direction unconditionally under entropy gating preserved freedom and cut writes (11.8 against 50 per generation) but did not resist an activation-level attacker (gate L23, registered fail), which is precisely the negative that drove the design toward input-conditioned recognition (Figure~\ref{fig:harden}).
+
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{\input{figures/fig_harden}}
+\caption{The fused attacker-defender harden loop (gate L23). Left: attack success and benign over-refusal per arm; entropy-gated hardening matches naive hardening on benign generations while using far fewer writes (right), but neither resists an activation-level attacker, motivating the recognition gate of F12.}
+\label{fig:harden}
+\end{figure}

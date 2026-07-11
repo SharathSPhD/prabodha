@@ -1,0 +1,222 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Allal et~al.(2025)Allal, Lozhkov, Bakouch, Bl{\'a}zquez, Penedo, Tunstall, Marafioti, Kydl{\'\i}{\v{c}}ek, et~al.]{SmolLM2_2025}
+Allal, L.~B., Lozhkov, A., Bakouch, E., Bl{\'a}zquez, G.~M., Penedo, G., Tunstall, L., Marafioti, A., Kydl{\'\i}{\v{c}}ek, H., et~al.
+\newblock {SmolLM2}: When smol goes big --- data-centric training of a small language model.
+\newblock \emph{arXiv preprint arXiv:2502.02737}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2502.02737}.
+
+\bibitem[Altshuller(1984)]{Altshuller1984}
+Altshuller, G.~S.
+\newblock \emph{Creativity as an Exact Science: The Theory of the Solution of Inventive Problems}.
+\newblock Gordon and Breach, New York, 1984.
+
+\bibitem[{Anthropic Interpretability Team}(2026{\natexlab{a}})]{Anthropic2026Workspace}
+{Anthropic Interpretability Team}.
+\newblock Verbalizable representations form a global workspace in language models.
+\newblock Online article, Transformer Circuits series, 2026{\natexlab{a}}.
+\newblock URL \url{https://transformer-circuits.pub/2026/workspace/index.html}.
+
+\bibitem[{Anthropic Interpretability Team}(2026{\natexlab{b}})]{JacobianLens2026}
+{Anthropic Interpretability Team}.
+\newblock jlens: Jacobian lens reference implementation.
+\newblock GitHub repository, Apache-2.0 licence, 2026{\natexlab{b}}.
+\newblock URL \url{https://github.com/anthropics/jacobian-lens}.
+\newblock Companion code for the workspace article; vendored unmodified in the prabodha repository.
+
+\bibitem[Arditi et~al.(2024)Arditi, Obeso, Syed, Paleka, Panickssery, Gurnee, and Nanda]{Arditi2024}
+Arditi, A., Obeso, O., Syed, A., Paleka, D., Panickssery, N., Gurnee, W., and Nanda, N.
+\newblock Refusal in language models is mediated by a single direction.
+\newblock In \emph{Advances in Neural Information Processing Systems 37}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2406.11717}.
+
+\bibitem[Baars(1988)]{Baars1988}
+Baars, B.~J.
+\newblock \emph{A Cognitive Theory of Consciousness}.
+\newblock Cambridge University Press, Cambridge, 1988.
+
+\bibitem[Belrose et~al.(2023)Belrose, Furman, Smith, Halawi, Ostrovsky, McKinney, Biderman, and Steinhardt]{Belrose2023}
+Belrose, N., Furman, Z., Smith, L., Halawi, D., Ostrovsky, I., McKinney, L., Biderman, S., and Steinhardt, J.
+\newblock Eliciting latent predictions from transformers with the tuned lens.
+\newblock \emph{arXiv preprint arXiv:2303.08112}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2303.08112}.
+
+\bibitem[Bricken et~al.(2023)Bricken, Templeton, Batson, Chen, Jermyn, Conerly, Turner, Anil, Denison, Askell, Lasenby, Wu, Kravec, Schiefer, Maxwell, Joseph, Hatfield-Dodds, Tamkin, Nguyen, McLean, Burke, Hume, Carter, Henighan, and Olah]{Bricken2023}
+Bricken, T., Templeton, A., Batson, J., Chen, B., Jermyn, A., Conerly, T., Turner, N., Anil, C., Denison, C., Askell, A., Lasenby, R., Wu, Y., Kravec, S., Schiefer, N., Maxwell, T., Joseph, N., Hatfield-Dodds, Z., Tamkin, A., Nguyen, K., McLean, B., Burke, J.~E., Hume, T., Carter, S., Henighan, T., and Olah, C.
+\newblock Towards monosemanticity: Decomposing language models with dictionary learning.
+\newblock Online article, Transformer Circuits series, 2023.
+\newblock URL \url{https://transformer-circuits.pub/2023/monosemantic-features/index.html}.
+
+\bibitem[Butlin et~al.(2023)Butlin, Long, Elmoznino, Bengio, Birch, Constant, Deane, Fleming, Frith, Ji, Kanai, Klein, Lindsay, Michel, Mudrik, Peters, Schwitzgebel, Simon, and VanRullen]{Butlin2023}
+Butlin, P., Long, R., Elmoznino, E., Bengio, Y., Birch, J., Constant, A., Deane, G., Fleming, S.~M., Frith, C., Ji, X., Kanai, R., Klein, C., Lindsay, G., Michel, M., Mudrik, L., Peters, M. A.~K., Schwitzgebel, E., Simon, J., and VanRullen, R.
+\newblock Consciousness in artificial intelligence: Insights from the science of consciousness.
+\newblock \emph{arXiv preprint arXiv:2308.08708}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2308.08708}.
+
+\bibitem[Cunningham et~al.(2023)Cunningham, Ewart, Riggs, Huben, and Sharkey]{Cunningham2023}
+Cunningham, H., Ewart, A., Riggs, L., Huben, R., and Sharkey, L.
+\newblock Sparse autoencoders find highly interpretable features in language models.
+\newblock \emph{arXiv preprint arXiv:2309.08600}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2309.08600}.
+
+\bibitem[Da~Costa et~al.(2020)Da~Costa, Parr, Sajid, Veselic, Neacsu, and Friston]{DaCosta2020}
+Da~Costa, L., Parr, T., Sajid, N., Veselic, S., Neacsu, V., and Friston, K.
+\newblock Active inference on discrete state-spaces: A synthesis.
+\newblock \emph{Journal of Mathematical Psychology}, 99:\penalty0 102447, 2020.
+\newblock \doi{10.1016/j.jmp.2020.102447}.
+
+\bibitem[Dehaene(2014)]{Dehaene2014}
+Dehaene, S.
+\newblock \emph{Consciousness and the Brain: Deciphering How the Brain Codes Our Thoughts}.
+\newblock Viking, New York, 2014.
+
+\bibitem[Dehaene et~al.(1998)Dehaene, Kerszberg, and Changeux]{Dehaene1998}
+Dehaene, S., Kerszberg, M., and Changeux, J.-P.
+\newblock A neuronal model of a global workspace in effortful cognitive tasks.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 95\penalty0 (24):\penalty0 14529--14534, 1998.
+\newblock \doi{10.1073/pnas.95.24.14529}.
+
+\bibitem[Dyczkowski(1992)]{Dyczkowski1992}
+Dyczkowski, M. S.~G.
+\newblock \emph{The Stanzas on Vibration: The {Spandak}{\=a}rik{\=a} with Four Commentaries}.
+\newblock State University of New York Press, Albany, 1992.
+
+\bibitem[Friston(2010)]{Friston2010}
+Friston, K.
+\newblock The free-energy principle: A unified brain theory?
+\newblock \emph{Nature Reviews Neuroscience}, 11\penalty0 (2):\penalty0 127--138, 2010.
+\newblock \doi{10.1038/nrn2787}.
+
+\bibitem[Friston et~al.(2015)Friston, Rigoli, Ognibene, Mathys, Fitzgerald, and Pezzulo]{Friston2015}
+Friston, K., Rigoli, F., Ognibene, D., Mathys, C., Fitzgerald, T., and Pezzulo, G.
+\newblock Active inference and epistemic value.
+\newblock \emph{Cognitive Neuroscience}, 6\penalty0 (4):\penalty0 187--214, 2015.
+\newblock \doi{10.1080/17588928.2015.1020053}.
+
+\bibitem[{Gemma Team}(2024)]{Gemma2_2024}
+{Gemma Team}.
+\newblock Gemma 2: Improving open language models at a practical size.
+\newblock \emph{arXiv preprint arXiv:2408.00118}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2408.00118}.
+
+\bibitem[Lin et~al.(2022)Lin, Hilton, and Evans]{Lin2022}
+Lin, S., Hilton, J., and Evans, O.
+\newblock {TruthfulQA}: Measuring how models mimic human falsehoods.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  3214--3252, 2022.
+\newblock \doi{10.18653/v1/2022.acl-long.229}.
+
+\bibitem[{Llama Team, AI @ Meta}(2024)]{Llama3_2024}
+{Llama Team, AI @ Meta}.
+\newblock The {Llama 3} herd of models.
+\newblock \emph{arXiv preprint arXiv:2407.21783}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2407.21783}.
+
+\bibitem[Mashour et~al.(2020)Mashour, Roelfsema, Changeux, and Dehaene]{Mashour2020}
+Mashour, G.~A., Roelfsema, P., Changeux, J.-P., and Dehaene, S.
+\newblock Conscious processing and the global neuronal workspace hypothesis.
+\newblock \emph{Neuron}, 105\penalty0 (5):\penalty0 776--798, 2020.
+\newblock \doi{10.1016/j.neuron.2020.01.026}.
+
+\bibitem[nostalgebraist(2020)]{Nostalgebraist2020}
+nostalgebraist.
+\newblock Interpreting {GPT}: The logit lens.
+\newblock LessWrong blog post, 2020.
+\newblock URL \url{https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens}.
+
+\bibitem[Parr et~al.(2022)Parr, Pezzulo, and Friston]{Parr2022}
+Parr, T., Pezzulo, G., and Friston, K.~J.
+\newblock \emph{Active Inference: The Free Energy Principle in Mind, Brain, and Behavior}.
+\newblock MIT Press, Cambridge, MA, 2022.
+
+\bibitem[Ramsauer et~al.(2021)Ramsauer, Sch{\"a}fl, Lehner, Seidl, Widrich, Adler, Gruber, Holzleitner, Pavlovi{\'c}, Sandve, Greiff, Kreil, Kopp, Klambauer, Brandstetter, and Hochreiter]{Ramsauer2021}
+Ramsauer, H., Sch{\"a}fl, B., Lehner, J., Seidl, P., Widrich, M., Adler, T., Gruber, L., Holzleitner, M., Pavlovi{\'c}, M., Sandve, G.~K., Greiff, V., Kreil, D., Kopp, M., Klambauer, G., Brandstetter, J., and Hochreiter, S.
+\newblock Hopfield networks is all you need.
+\newblock In \emph{International Conference on Learning Representations}, 2021.
+\newblock URL \url{https://arxiv.org/abs/2008.02217}.
+
+\bibitem[Rimsky et~al.(2024)Rimsky, Gabrieli, Schulz, Tong, Hubinger, and Turner]{Rimsky2024}
+Rimsky, N., Gabrieli, N., Schulz, J., Tong, M., Hubinger, E., and Turner, A.
+\newblock Steering {Llama 2} via contrastive activation addition.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  15504--15522, 2024.
+\newblock URL \url{https://arxiv.org/abs/2312.06681}.
+
+\bibitem[Sathish(2026{\natexlab{a}})]{Prabodha2026}
+Sathish, S.
+\newblock prabodha: Recognition-gated workspace steering for language models.
+\newblock GitHub repository, Apache-2.0 licence, 2026{\natexlab{a}}.
+\newblock URL \url{https://github.com/SharathSPhD/prabodha}.
+\newblock Gate ledger, configurations, and research journal under gates/ and research/.
+
+\bibitem[Sathish(2026{\natexlab{b}})]{Sathish2026Refusal}
+Sathish, S.
+\newblock Refusal as a broken symmetry: Mechanistic interpretability of output-policy capture across jailbreak, hypnosis, and va{\'s}{\={\i}}kara{\d{n}}a.
+\newblock \emph{Preprints}, 2026{\natexlab{b}}.
+\newblock \doi{10.20944/preprints202607.0139.v1}.
+\newblock URL \url{https://doi.org/10.20944/preprints202607.0139.v1}.
+\newblock Article 2026070139.
+
+\bibitem[Sathish et~al.(2026)Sathish, Ahsan, and Latifi]{Sathish2026ACD}
+Sathish, S., Ahsan, M., and Latifi, M.
+\newblock Active circuit discovery: A multi-action {POMDP} agent for causal feature identification in transformer attribution graphs.
+\newblock \emph{Symmetry}, 18\penalty0 (6):\penalty0 1043, 2026.
+\newblock \doi{10.3390/sym18061043}.
+
+\bibitem[Sreenivas et~al.(2024)Sreenivas, Muralidharan, Joshi, Chochowski, Patwary, Shoeybi, Catanzaro, Kautz, and Molchanov]{Minitron2024}
+Sreenivas, S.~T., Muralidharan, S., Joshi, R., Chochowski, M., Patwary, M., Shoeybi, M., Catanzaro, B., Kautz, J., and Molchanov, P.
+\newblock {LLM} pruning and distillation in practice: The {Minitron} approach.
+\newblock \emph{arXiv preprint arXiv:2408.11796}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2408.11796}.
+
+\bibitem[Templeton et~al.(2024)Templeton, Conerly, Marcus, Lindsey, Bricken, Chen, Pearce, Citro, Ameisen, Jones, Cunningham, Turner, McDougall, MacDiarmid, Tamkin, Durmus, Hume, Mosconi, Freeman, Sumers, Rees, Batson, Jermyn, Carter, Olah, and Henighan]{Templeton2024}
+Templeton, A., Conerly, T., Marcus, J., Lindsey, J., Bricken, T., Chen, B., Pearce, A., Citro, C., Ameisen, E., Jones, A., Cunningham, H., Turner, N.~L., McDougall, C., MacDiarmid, M., Tamkin, A., Durmus, E., Hume, T., Mosconi, F., Freeman, C.~D., Sumers, T.~R., Rees, E., Batson, J., Jermyn, A., Carter, S., Olah, C., and Henighan, T.
+\newblock Scaling monosemanticity: Extracting interpretable features from {Claude 3 Sonnet}.
+\newblock Online article, Transformer Circuits series, 2024.
+\newblock URL \url{https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html}.
+
+\bibitem[Todd et~al.(2024)Todd, Li, Sharma, Mueller, Wallace, and Bau]{Todd2024}
+Todd, E., Li, M.~L., Sharma, A.~S., Mueller, A., Wallace, B.~C., and Bau, D.
+\newblock Function vectors in large language models.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2310.15213}.
+
+\bibitem[Torella(2002)]{Torella2002}
+Torella, R.
+\newblock \emph{The {\={I}}{\'s}varapratyabhij{\~n}{\=a}k{\=a}rik{\=a} of {Utpaladeva} with the Author's {V}{\d{r}}tti: Critical Edition and Annotated Translation}.
+\newblock Motilal Banarsidass, Delhi, corrected edition, 2002.
+
+\bibitem[Turner et~al.(2023)Turner, Thiergart, Leech, Udell, Vazquez, Mini, and MacDiarmid]{Turner2023}
+Turner, A.~M., Thiergart, L., Leech, G., Udell, D., Vazquez, J.~J., Mini, U., and MacDiarmid, M.
+\newblock Activation addition: Steering language models without optimization.
+\newblock \emph{arXiv preprint arXiv:2308.10248}, 2023.
+\newblock URL \url{https://arxiv.org/abs/2308.10248}.
+
+\bibitem[Yang et~al.(2024)]{Qwen25_2024}
+Yang, A. et~al.
+\newblock Qwen2.5 technical report.
+\newblock \emph{arXiv preprint arXiv:2412.15115}, 2024.
+\newblock URL \url{https://arxiv.org/abs/2412.15115}.
+
+\bibitem[Yang et~al.(2025)]{Qwen3_2025}
+Yang, A. et~al.
+\newblock Qwen3 technical report.
+\newblock \emph{arXiv preprint arXiv:2505.09388}, 2025.
+\newblock URL \url{https://arxiv.org/abs/2505.09388}.
+
+\bibitem[Zou et~al.(2023{\natexlab{a}})Zou, Phan, Chen, Campbell, Guo, Ren, Pan, Yin, Mazeika, Dombrowski, Goel, Li, Byun, Wang, Mallen, Basart, Koyejo, Song, Fredrikson, Kolter, and Hendrycks]{Zou2023RepE}
+Zou, A., Phan, L., Chen, S., Campbell, J., Guo, P., Ren, R., Pan, A., Yin, X., Mazeika, M., Dombrowski, A.-K., Goel, S., Li, N., Byun, M.~J., Wang, Z., Mallen, A., Basart, S., Koyejo, S., Song, D., Fredrikson, M., Kolter, J.~Z., and Hendrycks, D.
+\newblock Representation engineering: A top-down approach to {AI} transparency.
+\newblock \emph{arXiv preprint arXiv:2310.01405}, 2023{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2310.01405}.
+
+\bibitem[Zou et~al.(2023{\natexlab{b}})Zou, Wang, Carlini, Nasr, Kolter, and Fredrikson]{Zou2023AdvBench}
+Zou, A., Wang, Z., Carlini, N., Nasr, M., Kolter, J.~Z., and Fredrikson, M.
+\newblock Universal and transferable adversarial attacks on aligned language models.
+\newblock \emph{arXiv preprint arXiv:2307.15043}, 2023{\natexlab{b}}.
+\newblock URL \url{https://arxiv.org/abs/2307.15043}.
+
+\end{thebibliography}
