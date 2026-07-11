@@ -30,38 +30,35 @@ for src, dst in [("lens_qwen3_mid30.pt", "outputs/l10/lens_qwen3_mid30.pt"),
     print("staged", dst)
 PY
 
-DOCKER="docker run --rm --gpus all
-  -v ${ROOT}:/repo
-  -v /home/sharaths/.cache/huggingface:/workspace/hf_cache
-  -e HF_HOME=/workspace/hf_cache
-  -e PYTHONPATH=/repo/src
-  -w /repo
-  prabodha/gb10:0.1"
+# NOTE: the image's ENTRYPOINT is bash, so commands must be passed as `-c "<string>"`
+# (a bare `docker run image python3` becomes `bash python3` -> "cannot execute binary").
+drun() {
+  docker run --rm --gpus all \
+    -v "${ROOT}:/repo" \
+    -v /home/sharaths/.cache/huggingface:/workspace/hf_cache \
+    -e HF_HOME=/workspace/hf_cache \
+    -e PYTHONPATH=/repo/src \
+    -w /repo \
+    prabodha/gb10:0.1 -c "$1"
+}
 
 # Sanity inside the image: both lenses expose source layers covering (24,28]
-$DOCKER python3 - <<'PY'
-from prabodha.lens.adapter import LensAdapter
-for name in ("outputs/l10/lens_qwen3_mid30.pt", "outputs/l10/lens_qwen3_final.pt"):
-    ad = LensAdapter("jacobian").load(name)
-    win = [l for l in ad.source_layers if 24 < l <= 28]
-    print(name, "source_layers window (24,28]:", win)
-    assert win, f"{name}: empty readback window — head-to-head impossible"
-PY
+drun "python3 scripts/tools/l22_sanity.py"
 
 for RB in band final; do
   if [ "$RB" = band ]; then RBL="outputs/l10/lens_qwen3_mid30.pt"; else RBL="outputs/l10/lens_qwen3_final.pt"; fi
   OUT="gates/gate_L22_lens_${RB}.json"
   echo "=== L22 readback-lens=${RB} -> ${OUT} ==="
-  $DOCKER nice -n "${GUARD_NICE:-10}" python3 -m prabodha.steering.e4_cli \
+  drun "nice -n ${GUARD_NICE:-10} python3 -m prabodha.steering.e4_cli \
     --model configs/models/qwen3.yaml \
     --mid-lens outputs/l10/lens_qwen3_mid30.pt \
-    --readback-lens "${RBL}" \
+    --readback-lens ${RBL} \
     --exp configs/experiments/e_l22_lens_headtohead.yaml \
     --seed 42 \
     --record-readback \
     --loop L22 \
-    --out "${OUT}" \
-    --contention "${GUARD_CONTENTION:-unknown}"
+    --out ${OUT} \
+    --contention ${GUARD_CONTENTION:-unknown}"
 done
 
 echo "=== integrity: gated lift must match exactly across runs (determinism) ==="
