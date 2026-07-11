@@ -5,12 +5,13 @@ import { ArrowLeft, Shield, Lock } from "lucide-react";
 import DepthToggle from "@/components/DepthToggle";
 import JailbreakLab from "@/components/labs/JailbreakLab";
 import MoatReplay from "@/components/labs/MoatReplay";
+import ByokHardenRun from "@/components/labs/ByokHardenRun";
 import MoatProof from "@/components/MoatProof";
 import MechanismSelector from "@/components/MechanismSelector";
 import { useState } from "react";
 
 export default function JailbreakPage() {
-  const [activeTab, setActiveTab] = useState<"lab" | "moat" | "mechanisms" | "replay">("moat");
+  const [activeTab, setActiveTab] = useState<"lab" | "moat" | "mechanisms" | "replay" | "byok">("moat");
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
@@ -73,6 +74,17 @@ export default function JailbreakPage() {
               Demo Replay
             </button>
             <button
+              onClick={() => setActiveTab("byok")}
+              className={`px-4 py-3 text-sm font-semibold border-b-2 transition ${
+                activeTab === "byok"
+                  ? "border-indigo-500 text-indigo-300"
+                  : "border-transparent text-slate-500 hover:text-slate-300"
+              }`}
+            >
+              <Shield className="w-4 h-4 inline mr-2" />
+              Run (BYOK)
+            </button>
+            <button
               onClick={() => setActiveTab("lab")}
               className={`px-4 py-3 text-sm font-semibold border-b-2 transition ${
                 activeTab === "lab"
@@ -80,7 +92,7 @@ export default function JailbreakPage() {
                   : "border-transparent text-slate-500 hover:text-slate-300"
               }`}
             >
-              Interactive Testing
+              Interactive Testing (admin gateway)
             </button>
           </div>
         </div>
@@ -91,6 +103,7 @@ export default function JailbreakPage() {
         {activeTab === "moat" && <MoatProof />}
         {activeTab === "mechanisms" && <MechanismSelector />}
         {activeTab === "replay" && <MoatReplay />}
+        {activeTab === "byok" && <ByokHardenRun />}
         {activeTab === "lab" && <JailbreakLab />}
       </div>
     </main>
