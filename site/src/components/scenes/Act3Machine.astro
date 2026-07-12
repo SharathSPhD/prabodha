@@ -1,0 +1,97 @@
+---
+import ActBreak from '../ActBreak.astro';
+import FigurePlate from '../FigurePlate.astro';
+---
+
+<ActBreak
+  roman="Act III"
+  title="The Machine That Ran the Science"
+  tease="A lab that pre-registers its bets, argues with itself, and can't declare victory by accident."
+  id="act-3"
+/>
+
+<section class="section-divider" id="architecture">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">05</span> The system</div>
+    <h2>Three tiers, one loop</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      The doctrine became software in three tiers. At the bottom, the <strong>plant</strong>: a
+      frozen language model (no weights are ever updated, anywhere in this project) with the
+      lens-based writer and reader attached. In the middle, the doctrine as a
+      <strong>controller</strong>: the entropy timing gate, the readback verifier, the budget
+      monitor. And on top — the unusual part — an <strong>automated research loop</strong> that
+      chose which experiment to run next.
+    </p>
+
+    <FigurePlate
+      name="fig_architecture"
+      figNo="Paper Fig. 2"
+      alt="Three-tier system diagram: frozen plant with actuator pair, doctrine controller, and auto-research loop"
+      caption="The full stack. Lower tier: frozen plant + transported writes (h ← h + αJᵀu) and band-targeted readback. Middle: the doctrine as controller. Upper: the expected-free-energy selector, dual-closure gates, and adversarial review that ran the programme."
+      gates={["gates/*.json", "efe_ledger.jsonl"]}
+    />
+
+    <p>
+      Every experiment was <strong>pre-registered</strong> — seeds, commands, and pass criteria
+      committed <em>before</em> dispatch. Every result became a <strong>gate record</strong>: a
+      JSON file in the public repo binding claim to evidence. And closing a research loop required
+      <strong>two gates at once</strong> — a code gate (tests pass) <em>and</em> a domain gate (the
+      registered scientific criterion is met). Passing tests alone never closed anything.
+    </p>
+
+    <div class="stat-strip">
+      <div class="card"><div class="stat-big">130</div><div class="stat-label">gate records committed</div></div>
+      <div class="card"><div class="stat-big">27</div><div class="stat-label">selector cycles (EFE-chosen experiments)</div></div>
+      <div class="card"><div class="stat-big">18</div><div class="stat-label">isolated adversarial reviews</div></div>
+      <div class="card"><div class="stat-big">8</div><div class="stat-label">frozen checkpoints, 5 model families</div></div>
+    </div>
+
+    <details class="expand">
+      <summary>Who chose the experiments? An expected-free-energy selector</summary>
+      <div class="expand-body">
+        <p>
+          Experiment selection was delegated to an <strong>expected-free-energy (EFE) selector</strong>
+          operating over registered menus — the same explore/exploit calculus active-inference agents
+          use, here choosing which loop to fund next. Its ledger is public: 267 observation events,
+          41 proposals, 27 spend entries, 9 menus. Eighteen <strong>adversarial reviews</strong> —
+          agents briefed only on the gate records and contracts, never on the narrative — forced
+          documented corrections along the way (including downgrading a readback claim from
+          <em>confirm</em> to <em>screen</em>, review #12).
+        </p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="section-divider" id="compute">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">06</span> The bill</div>
+    <h2>Eighteen GPU-hours</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      Here's a number worth sitting with: the entire registered programme through L20 — every
+      replication, every seed, every negative result — cost <strong>18.17 GPU-hours</strong> on a
+      single shared node. Not a datacenter. One machine, three weekends' worth of compute, and a
+      discipline that wasted none of it.
+    </p>
+
+    <FigurePlate
+      name="fig_compute"
+      figNo="Paper Fig. 3"
+      alt="Per-loop GPU-hours as bars with a cumulative total line reaching about 19 hours including L22"
+      caption="The compute ledger, loop by loop. Bars: per-loop GPU-hours; line: cumulative total (18.17 h through the 19 budgeted loops; 19.02 h including the later L22 benchmark). The single largest item is the 27B loadability replication (L1b, 6.1 h)."
+      gates={["research/state.json"]}
+    />
+
+    <div class="callout">
+      <div class="callout-title">Why so cheap?</div>
+      <p>
+        Because the EFE selector treats compute like a portfolio: each candidate experiment is
+        scored by what it would <em>teach</em> against what it would <em>cost</em>, and the
+        pre-registration discipline means no experiment is ever re-run to fish for a better answer.
+        Frugality here isn't a constraint — it's a consequence of the method.
+      </p>
+    </div>
+  </div>
+</section>

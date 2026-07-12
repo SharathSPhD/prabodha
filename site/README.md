@@ -30,37 +30,43 @@ The build process:
 
 ## Architecture
 
+An act-structured interactive essay (Acts I–VII + coda), styled after
+sharathsphd.github.io/ActiveCIrcuitDiscovery:
+
 ```
 site/
+  scripts/
+    build-data.mjs       ← extracts scene/gate/replay data from ../gates
+    build-figures.sh     ← compiles docs/paper_icml/figures/*.tex → public/figures/*.svg
+  public/
+    figures/             ← all 17 paper figures as SVG (committed)
+    data/                ← moat.json, moat_replay.json, replay traces
   src/
-    layouts/
-      Base.astro         ← HTML skeleton, fonts, dark mode
-    styles/
-      global.css         ← Type scale, components (cards, buttons, depth toggle)
+    layouts/Base.astro
+    styles/global.css    ← palette + essay system (act breaks, figure plates, callouts)
     components/
-      Hero.astro         ← Animated J-space band visualization
-      GetStarted.astro   ← pip install, commands, resource links
+      Nav.astro          ← fixed top bar (Paper / Code / Live app)
+      Hero.astro         ← essay hook over the animated J-space band
+      ActBreak.astro     ← act divider
+      FigurePlate.astro  ← paper figure on a light plate + caption + gate chips
+      Coda.astro         ← provenance, author, references
       DepthToggle.astro  ← Explorer vs Researcher mode (localStorage)
       scenes/
-        Parallel.astro   ← Uncanny parallel (J-space ↔ Pratyabhijñā)
-        Instrument.astro ← Band-targeted lenses vs final-target lenses
-        Action.astro     ← Real steering trace player + live app CTA
-        Transfer.astro   ← Recipe calibration (amplitude ∝ 1/lens-strength)
-        Comparison.astro ← L21 baseline placeholder (logit-bias, prompt, LoRA)
-        HonestLimits.astro ← Readback weak, corpus-amplitude fails margin
-    pages/
-      index.astro        ← Main page orchestrator
-    data/
-      scenes.json        ← Generated from gates (build step)
-      replays.json       ← Replay trace metadata
-      gates.json         ← Gate index (loop→verdict→gate_file)
-  scripts/
-    build-data.mjs       ← Extract scenes, gate metadata, replay index from repo
-  dist/                  ← Output (created by `npm run build`)
-  package.json
-  astro.config.mjs
-  tailwind.config.mjs
+        Act1Problem.astro    ← the actuator without a doctrine
+        Act2Doctrine.astro   ← Pratyabhijñā: five falsifiable clauses + glossary
+        Act3Machine.astro    ← dual gates, EFE selector, compute ledger
+        Act4Evidence.astro   ← findings F1–F11 with paper figures + trace player
+        Action.astro         ← real replay trace player (fetches trace JSON)
+        Act5Negatives.astro  ← registered negatives (L21, readback)
+        Act6Moat.astro       ← jailbreak moat + clean-gap predictor
+        Moat.astro           ← data-driven live captures (moat.json)
+        Act7Value.astro      ← six product surfaces + quickstart
+    pages/index.astro    ← orchestrates the acts
 ```
+
+After changing any paper figure, re-run `bash scripts/build-figures.sh`
+(requires texlive + pdftocairo) and commit the regenerated SVGs.
+
 
 ## Data Flow: Gates → Site
 

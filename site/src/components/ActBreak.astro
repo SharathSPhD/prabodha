@@ -1,0 +1,15 @@
+---
+interface Props {
+  roman: string;   // "Act I"
+  title: string;
+  tease: string;
+  id?: string;
+}
+const { roman, title, tease, id } = Astro.props;
+---
+
+<div class="act-break" id={id}>
+  <p class="act-roman">{roman}</p>
+  <h2>{title}</h2>
+  <p class="act-tease">{tease}</p>
+</div>

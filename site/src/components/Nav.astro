@@ -1,0 +1,15 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<nav class="site-nav" aria-label="Main">
+  <a href={`${base}/#top`} class="font-serif font-semibold text-base" style="color: var(--ink);">
+    prabodha <span style="color: var(--ink-faint); font-weight: 400;">· प्रबोध</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-pill" href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper_icml/paper.pdf">Paper</a>
+    <a class="nav-pill" href="https://github.com/SharathSPhD/prabodha">Code &amp; gates</a>
+    <a class="nav-pill" href="https://prabodha-live.vercel.app">Live app</a>
+    <a class="nav-pill" href={`${base}/#value`}>Use it</a>
+  </div>
+</nav>

@@ -1,0 +1,111 @@
+---
+import ActBreak from '../ActBreak.astro';
+
+const surfaces = [
+  {
+    title: 'Live app — J-space Theatre',
+    what: 'Watch real steering traces replay, run BYOK prompt-space hardening on any model, and register your own hardening pack to your HuggingFace account.',
+    link: 'https://prabodha-live.vercel.app',
+    linkText: 'prabodha-live.vercel.app',
+    tag: 'no install',
+  },
+  {
+    title: 'Python library + CLI',
+    what: 'Fit band-targeted lenses on any HF decoder, run entropy-gated steering with readback and budget enforcement, or reproduce every figure from the gate ledger.',
+    code: 'pip install prabodha',
+    link: 'https://pypi.org/project/prabodha/',
+    linkText: 'PyPI',
+    tag: 'pip',
+  },
+  {
+    title: 'Claude Code plugin',
+    what: 'Three skills — lens-map (fit/eval/vis a lens), steer-verify (run a gated episode with readback), research-propose (EFE experiment selection) — each citing its default gate.',
+    code: '/plugin install integrations/claude-code-plugin',
+    link: 'https://github.com/SharathSPhD/prabodha/tree/main/integrations/claude-code-plugin',
+    linkText: 'plugin source',
+    tag: 'agents',
+  },
+  {
+    title: 'MCP server',
+    what: 'Eight tools for any MCP client: lens_map, steer_generate, readback_verify, list_gates, plus the graded hardening surface — list_mechanisms, recommend_mechanism, characterize_model, harden_prompt.',
+    code: 'pip install -e integrations/prabodha_mcp_server && prabodha-mcp',
+    link: 'https://github.com/SharathSPhD/prabodha/tree/main/integrations/prabodha_mcp_server',
+    linkText: 'server source',
+    tag: 'mcp',
+  },
+  {
+    title: 'Steer gateway',
+    what: 'FastAPI + SSE service streaming real lens internals from a GPU node — concept, contrastive, and explicit-vector steering modes behind bearer auth. This is what powers the app’s Live mode.',
+    link: 'https://github.com/SharathSPhD/prabodha/tree/main/services/steer-gateway',
+    linkText: 'gateway source',
+    tag: 'self-host',
+  },
+  {
+    title: 'Pre-fitted lenses',
+    what: 'Jacobian lenses, band maps, fit stats and null baselines for Qwen3-4B, Qwen3.6-27B and Nemotron-Mini-4B — skip the fitting step entirely.',
+    code: 'huggingface-cli download qbz506/prabodha-lenses',
+    link: 'https://huggingface.co/qbz506/prabodha-lenses',
+    linkText: 'HuggingFace',
+    tag: 'weights',
+  },
+];
+---
+
+<ActBreak
+  roman="Act VII"
+  title="From Paper to Product"
+  tease="One doctrine, six surfaces. Pick yours by what you can touch and what you can tolerate."
+  id="value"
+/>
+
+<section class="section-divider" id="get-started">
+  <div class="prose-section-wide">
+    <div class="prose-section" style="padding-left:0; padding-right:0; max-width: var(--maxw); margin-left:auto; margin-right:auto;">
+      <div class="num-label"><span class="num">20</span> Use it</div>
+      <h2>The hardening platform, graded</h2>
+      <p class="text-lg" style="color: var(--ink-soft);">
+        The product framing is <strong>bring-your-model hardening</strong>: bring any model (open
+        weights self-hosted, or any model via BYOK), <strong>characterize</strong> its jailbreak
+        susceptibility, then pick from a <strong>graded library</strong> — gentle → firm →
+        constitutional prompt wrappers for any model, up to the recognition-gated activation moat
+        for open weights, clean-gap test included. A menu with tradeoff profiles, not one switch.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 my-10">
+      {surfaces.map((s) => (
+        <div class="card">
+          <div class="flex items-baseline justify-between gap-2 mb-2">
+            <h4 style="margin:0;">{s.title}</h4>
+            <span class="gate-chip">{s.tag}</span>
+          </div>
+          <p style="font-size:0.92rem; color: var(--ink-soft);">{s.what}</p>
+          {s.code && <pre style="padding:0.6rem 0.9rem; margin:0.5rem 0;"><code>{s.code}</code></pre>}
+          <a href={s.link}>{s.linkText} →</a>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose-section" style="padding-left:0; padding-right:0; max-width: var(--maxw); margin-left:auto; margin-right:auto;">
+      <details class="expand">
+        <summary>Sixty-second quickstart</summary>
+        <div class="expand-body">
+          <pre><code>pip install prabodha[lens]
+
+# fit a band-targeted lens on your model
+prabodha lens-fit --model Qwen/Qwen3-4B-Instruct-2507
+
+# run an entropy-gated steering episode with readback
+prabodha steer --concept fire --emit-trace --readback
+
+# reproduce every paper figure from the gate ledger
+prabodha figures</code></pre>
+          <p style="font-size:0.85rem;">
+            Worked examples: <a href="https://github.com/SharathSPhD/prabodha/blob/main/examples/quickstart_qwen3.md">quickstart_qwen3.md</a> ·
+            <a href="https://github.com/SharathSPhD/prabodha/blob/main/examples/quickstart_nemotron.md">quickstart_nemotron.md</a>
+          </p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>

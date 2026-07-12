@@ -1,0 +1,215 @@
+---
+import ActBreak from '../ActBreak.astro';
+import FigurePlate from '../FigurePlate.astro';
+import Action from './Action.astro';
+---
+
+<ActBreak
+  roman="Act IV"
+  title="The Evidence"
+  tease="Twelve findings, six seeds, one rule: the gate file decides, not the narrative."
+  id="act-4"
+/>
+
+<section class="section-divider" id="loadability">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">07</span> Finding · loadability</div>
+    <h2>Can a concept be placed in the journal at all?</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      First question: if you <em>ask</em> a model to hold a concept — <em>fire</em>, <em>river</em>,
+      <em>storm</em> — does the concept actually appear in its workspace band, measurably? The
+      answer turns out to be a story about <strong>scale</strong> and about <strong>surgery</strong>.
+    </p>
+
+    <p>
+      At 4B parameters, barely: hit-rate <strong>0.10</strong>, but ten times its shuffled-code null
+      (0.0104, permutation p ≈ 10⁻⁴). At 27B, decisively: <strong>0.55</strong>, clearing the
+      registered 0.5 threshold. And on a model that had been <strong>pruned and distilled</strong> —
+      Nemotron-Mini-4B, same size as the first — <strong>exactly zero</strong>. The band structure
+      survives compression; the ability to <em>load</em> it does not. Efficiency surgery quietly
+      removes something real.
+    </p>
+
+    <FigurePlate
+      name="fig_loadability"
+      figNo="Paper Fig. 4"
+      alt="Grouped bar chart of instructed hit-rate against shuffled-code null for three models"
+      caption="Instructed loadability across plants. Solid bars: instructed hit-rate@5; hatched: shuffled-code null. The 27B model clears the registered 0.5 threshold (dashed); the pruned-and-distilled twin shows no instructed loading at all."
+      gates={["gate_L1", "gate_L1b", "gate_L2"]}
+    />
+  </div>
+</section>
+
+<section class="section-divider" id="instrument">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">08</span> Finding · the right instrument</div>
+    <h2>Point the microscope at the journal, not the mouth</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      Here is the finding the whole toolkit rests on. Read the workspace band through a lens aimed
+      at the model's <strong>final output</strong>, and a loaded band looks <strong>empty</strong> —
+      0.00 across seven concepts. Aim the same kind of lens at the <strong>band's own exit</strong>,
+      and the content appears: 0.20 against a 0.023 null. The standard instrument wasn't wrong —
+      it was pointed at the mouth when the action was in the journal.
+    </p>
+
+    <FigurePlate
+      name="fig_articulation"
+      figNo="Paper Fig. 5"
+      alt="Per-layer read-out negentropy curves for the Jacobian lens and a logit-lens null"
+      caption="The articulation gradient is model-intrinsic, not an artifact of the fitted lens: both the Jacobian lens (ρ = 0.639) and a logit-lens null with no fitted transport (ρ = 0.607) recover it, each at permutation p = 2×10⁻⁴."
+      gates={["gate_L7_articulation_null"]}
+    />
+
+    <p>
+      Late in the programme this became a head-to-head benchmark. At a <strong>subtle</strong> write
+      dose (α = 0.1) — the regime that matters for detecting covert manipulation — the band-targeted
+      lens detects <strong>0.475</strong> of writes; the final-target baseline sees
+      <strong>0.2375</strong>. Twenty band-only detections against one final-only, McNemar
+      <strong>p = 2.1×10⁻⁵</strong>. At saturation doses the two converge — anyone can hear a shout;
+      the band lens hears the whisper.
+    </p>
+
+    <FigurePlate
+      name="fig_lens_baseline"
+      figNo="Paper Fig. 10"
+      alt="Bar chart of detection rate across write-dose floor for band-targeted versus final-target lenses"
+      caption="Band-targeted (this work) vs final-target baseline across the write-dose floor sweep (n = 80 pairs). The instruments diverge at α = 0.1 and converge at saturation. The registered ≥0.3 gap criterion was missed by 0.0625 — reported as fail-on-margin, and the stronger necessity claim withdrawn."
+      gates={["gate_L22_lens_headtohead", "gate_L22_floor_*"]}
+    />
+  </div>
+</section>
+
+<section class="section-divider" id="core">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">09</span> Finding · the core claim</div>
+    <h2>Gated writes steer — within budget, at six seeds</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      The headline experiment. Write the concept code only at uncommitted moments, cap the freedom
+      budget, verify by readback — and the concept surfaces in the model's text at a rate of
+      <strong>0.30–0.35</strong>, against 0.20 for simply asking (prefill). The advantage over
+      prefill is positive at <strong>every one of six seeds</strong> (sign test p = 1/2⁶ = 0.0156),
+      and every run stays inside the ±0.5-nat entropy budget.
+    </p>
+
+    <FigurePlate
+      name="fig_core"
+      figNo="Paper Fig. 6"
+      alt="Two panels: gated lift and advantage over prefill per seed; trajectory entropy deltas within the budget lines"
+      caption="The core claim at six independent-stream seeds. Left: gated lift and advantage over prefill per seed (dashed: the registered 0.2 lift threshold). Right: trajectory entropy deltas, all within the ±0.5-nat budget."
+      gates={["gate_L11_rep", "gate_L11_rep_s2024", "gate_L11_rep_s31415", "gate_L11_rep_s999"]}
+    />
+
+    <div class="callout amber">
+      <div class="callout-title">Honest asterisk</div>
+      <p>
+        Direction is proven; <em>size</em> is not. The mean advantage is +0.100, but it clears the
+        registered 0.1 margin at only 3 of 6 seeds. The paper claims the sign, not the magnitude —
+        and so does this page. Bonus: steering is throughput-free (24.8–25.0 tok/s steered vs 19.7
+        baseline).
+      </p>
+    </div>
+
+    <p>
+      What does a gated write <em>look like</em>? The paper's static answer is below — a layer-by-token
+      map of one real decode, with the write landing at an uncommitted moment before the word
+      "fire" surfaces. The live answer follows it: the same kind of trace, replayed token by token.
+    </p>
+
+    <FigurePlate
+      name="fig_thought"
+      figNo="Paper Fig. 16"
+      alt="Heatmap of lens read-out negentropy by layer band and decode position with a marked gated write"
+      caption="Workspace read-out for a gated fire-case decode. Shading: lens read-out negentropy by layer band and position, grounded in the measured articulation gradient. The red arrow marks the entropy-gated write of the fire concept code; the band-exit row records the readback acceptance."
+      gates={["gate_L7_articulation_null"]}
+    />
+  </div>
+</section>
+
+<Action />
+
+<section class="section-divider" id="timing">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">11</span> Finding · timing beats volume</div>
+    <h2>The whisper economy</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      Why gate at all, when you could just write constantly? Because writes aren't free — and the
+      gate spends them <strong>2.32× more efficiently</strong>. Across all six seed-by-amplitude
+      cells, the gated arm wins on lift-per-write, recovering <strong>67% of the continuous arm's
+      lift with 29% of its writes</strong>. Same message, delivered only at the moments the listener
+      is actually undecided.
+    </p>
+
+    <FigurePlate
+      name="fig_timing"
+      figNo="Paper Fig. 7"
+      alt="Two panels comparing lift and writes per generation across timing arms and amplitudes"
+      caption="Timing arms across write amplitude (Nemotron-Mini-4B, clean streams). Entropy-gated writing obtains roughly 60% of the continuous arm's lift at a third of its writes, within budget."
+      gates={["gate_L18_l8redo"]}
+    />
+
+    <FigurePlate
+      name="fig_efficiency"
+      figNo="Paper Fig. 11"
+      alt="Bar chart of lift per write for gated versus continuous arms across six cells"
+      caption="Lift per write, entropy-gated vs continuous, across six seed-by-amplitude cells. Gated placement wins every cell; mean ratio 2.32×."
+      gates={["gate_L22_benchmark"]}
+    />
+  </div>
+</section>
+
+<section class="section-divider" id="transfer">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">12</span> Finding · the recipe travels</div>
+    <h2>Geometry doesn't transfer. The method does.</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      Take everything tuned on one model and transplant it, unchanged, onto another. Result:
+      collapse — gated lift <strong>0.05</strong>. Qwen3's target-layer Jacobians are roughly
+      <strong>10× weaker</strong> than Nemotron's; the raw settings are meaningless on new anatomy.
+      But the <em>calibration rule</em> is portable: set write amplitude
+      <strong>inversely proportional to lens transport strength</strong>. Recalibrated, the same
+      doctrine hits <strong>0.40</strong> lift on the new model, monotone in dose, at four seeds.
+    </p>
+
+    <FigurePlate
+      name="fig_recipe"
+      figNo="Paper Fig. 8"
+      alt="Bars of calibrated gated lift versus prefill at four seeds, with the uncalibrated transplant line"
+      caption="Recipe transfer to Qwen3-4B at four seeds: calibrated-amplitude gated writes vs prefill controls. Dashed line: what transplanting the donor configuration without calibration achieves (0.05)."
+      gates={["gate_L13_recipe", "gate_L14_multiseed"]}
+    />
+
+    <FigurePlate
+      name="fig_scaling"
+      figNo="Paper Fig. 9"
+      alt="Log-axis dose-response curves for two model plants"
+      caption="The two-plant amplitude law on a log axis. Working amplitudes differ by an order of magnitude — in exactly the direction inverse lens strength predicts, spanning ~1.5 orders of magnitude."
+      gates={["gate_L14_amp", "gate_L15_amp_joint", "gate_L16_fine"]}
+    />
+
+    <details class="expand">
+      <summary>One more integration: writing from a cold associative memory</summary>
+      <div class="expand-body">
+        <p>
+          The write direction doesn't have to come from the analytic formula. A completely
+          <strong>untrained</strong> modern-Hopfield associative store (the CittaStore — no patterns
+          stored, no training) steers within budget at all three seeds (lifts 0.44/0.56/0.44),
+          matching the analytic path exactly at two seeds and differing by a single concept-hit at
+          the third. An integration proof, not a superiority claim — the strict equivalence
+          criterion failed on that margin, and the gate says so.
+        </p>
+        <FigurePlate
+          name="fig_l20"
+          figNo="Paper Fig. 12"
+          alt="Bars comparing cold associative-store recall with the analytic write direction at three seeds"
+          caption="Cold associative-store recall vs the analytic write direction. Two seeds match exactly; the third differs by one concept-hit — the metric's quantisation unit — in the cold store's favour."
+          gates={["gate_L20_confirm", "gate_L20_s42", "gate_L20_s123", "gate_L20_s777"]}
+        />
+      </div>
+    </details>
+  </div>
+</section>
