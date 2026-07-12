@@ -1,37 +1,41 @@
 ---
-// Hero: animated J-space band visualization with tokens
-// The thesis in motion — neuro-lab bioluminescent aesthetic.
+// Hero: the essay's hook, over the animated J-space band visualization.
 ---
 
-<section class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #0a0e14 0%, #111824 50%, #0d1420 100%);">
+<section id="top" class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #0a0e14 0%, #111824 50%, #0d1420 100%);">
   <!-- Background visualization: J-space band with animated tokens -->
   <div id="hero-band" class="absolute inset-0 opacity-70"></div>
 
   <!-- Content -->
-  <div class="relative z-10 prose-section text-center">
-    <div class="mb-8 inline-block">
-      <span class="scene-label">Introduction</span>
-    </div>
+  <div class="relative z-10 prose-section text-center pt-24 pb-16">
+    <p class="scene-label mb-6">An interactive essay · prabodha — प्रबोध, “awakening”</p>
 
-    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-4 leading-tight text-ink">
-      recognition<span class="text-cyan">—</span>gated
-    </h1>
-    <h1 class="text-5xl md:text-7xl font-serif font-semibold mb-12 leading-tight text-ink">
-      workspace steering
+    <h1 class="text-4xl md:text-6xl font-serif font-semibold mb-6 leading-tight" style="color: var(--ink);">
+      A Thousand-Year-Old Theory of Mind,<br class="hidden md:block" />
+      Running Inside a Language Model
     </h1>
 
-    <p class="text-lg md:text-xl font-light mb-8 max-w-3xl mx-auto text-ink-soft">
-      Steer a frozen language model through its verbalizable workspace. Writes timed by <em class="text-cyan">sphuraṭṭā</em> events (uncommitted moments). Verified by <em class="text-violet">āgama</em> re-cognition. Bounded by <em class="text-amber">svātantrya</em> (autonomy).
+    <p class="text-lg md:text-xl font-light mb-4 max-w-3xl mx-auto" style="color: var(--ink-soft);">
+      Interpretability researchers recently found the place where a language model
+      <em>talks to itself</em> — and built a pen that can write there. Nobody knew the grammar.
+      This is the story of borrowing one from a 10th-century Kashmiri philosophy of recognition,
+      turning it into falsifiable engineering, and ending up with a jailbreak defense
+      that lives where attackers can't reach.
     </p>
 
-    <div class="flex gap-4 justify-center mt-12 flex-wrap">
-      <a href="#parallel" class="cta-button">See the parallel →</a>
-      <a href="#instrument" class="secondary-button">Read the research</a>
+    <p class="text-sm mb-10" style="color: var(--ink-faint);">
+      by <strong style="color: var(--ink-soft);">Sharath Sathish</strong> · a guided tour for the curious and the technical alike
+    </p>
+
+    <div class="flex gap-4 justify-center flex-wrap">
+      <a href="#act-1" class="cta-button">Scroll to begin ↓</a>
+      <a href="#act-6" class="secondary-button">Skip to the jailbreak moat</a>
     </div>
 
-    <div class="mt-16 pt-8 border-t border-hairline">
-      <p class="text-sm md:text-base text-ink-faint">
-        Prabodha v1.0.0 · Verified across 20+ gates · Core claim: 0.30–0.35 lift within ±0.5 nat budget
+    <div class="mt-16 pt-8" style="border-top: 1px solid var(--hairline);">
+      <p class="text-sm" style="color: var(--ink-faint);">
+        v1.0.0 · 130 gate records · every number on this page traces to a committed gate file ·
+        core claim replicated at 6 seeds (p = 0.016)
       </p>
     </div>
   </div>
@@ -42,7 +46,7 @@
   const canvas = document.getElementById('hero-band');
   if (canvas && typeof window !== 'undefined') {
     const svg = `
-      <svg viewBox="0 0 1200 400" class="w-full h-full">
+      <svg viewBox="0 0 1200 400" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
           <linearGradient id="bandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" style="stop-color:#1d2d4d;stop-opacity:0.9" />
@@ -75,7 +79,7 @@
 
         <!-- Label -->
         <text x="600" y="380" text-anchor="middle" fill="#aebacb" font-family="monospace" font-size="12">
-          J-space workspace band | sphuraṭṭā writes flow through verbalizable representations
+          the J-space workspace band — the late layers where representations become verbalizable
         </text>
       </svg>
     `;
@@ -93,24 +97,12 @@
   }
 
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes drift {
-    0%, 100% {
-      transform: translateY(0);
-      opacity: 0.6;
-    }
-    50% {
-      transform: translateY(-12px);
-      opacity: 0.95;
-    }
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(-12px); opacity: 0.95; }
   }
 </style>

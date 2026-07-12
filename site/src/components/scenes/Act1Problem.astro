@@ -1,0 +1,86 @@
+---
+import ActBreak from '../ActBreak.astro';
+---
+
+<ActBreak
+  roman="Act I"
+  title="The Actuator Without a Doctrine"
+  tease="We found where the model talks to itself. Then we built a pen — with no idea what to write."
+  id="act-1"
+/>
+
+<section class="section-divider" id="finding">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">01</span> The finding</div>
+    <h2>A journal in the machine</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      Deep inside a language model, most of what happens is mute. Billions of numbers churn,
+      and almost none of them can be put into words — not even by the model itself. But recent
+      interpretability work found an exception: a <strong>band of late layers</strong> where
+      representations become <em>verbalizable</em>. Perturb the model there, and it can
+      subsequently <em>report what changed, in words</em>. Everywhere else, it can't.
+    </p>
+
+    <p>
+      Think of it as the model's <strong>journal</strong> — a functional global workspace where
+      whatever is written can be read back out as language. The same work released an instrument
+      for reading and writing it: the <strong>Jacobian lens</strong>, a linear map that transports
+      any internal vector into the band's own coordinates and decodes it with the model's own
+      vocabulary. The band it defines is called the <strong>J-space</strong>.
+    </p>
+
+    <details class="expand">
+      <summary>The J-space, precisely</summary>
+      <div class="expand-body">
+        <p>
+          The lens is built from the average input–output Jacobian,
+          <code>J<sub>ℓ</sub> = E[∂h<sub>final</sub>/∂h<sub>ℓ</sub>]</code>, and decodes with the model's own
+          unembedding: <code>lens<sub>ℓ</sub>(h) = W<sub>U</sub> J<sub>ℓ</sub> h</code>. "Verbalizable" is operational,
+          not metaphorical: a representation is in the workspace if an intervened model can report
+          it in subsequent text. On the 32-layer models studied here, the band sits at layers
+          24–31, and its presence is measured by CKA band contrast (0.14–0.31 across the three
+          plants tested in loops L1/L1b/L2).
+        </p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section class="section-divider" id="gap">
+  <div class="prose-section">
+    <div class="num-label"><span class="num">02</span> The gap</div>
+    <h2>A pen with no grammar</h2>
+
+    <p class="text-lg" style="color: var(--ink-soft);">
+      So the field now owns an <strong>actuator</strong>: a way to write directly into the place
+      where a model's self-talk lives. What it doesn't own is a <strong>doctrine of use</strong>.
+      Five questions, and in early 2026 the honest answer to all of them was <em>nobody knows</em>:
+    </p>
+
+    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
+      <div class="card"><div class="stat-big" style="font-size:1.4rem;">What</div><div class="stat-label">content should be written?</div></div>
+      <div class="card"><div class="stat-big" style="font-size:1.4rem;">Where</div><div class="stat-label">in the network, in which coordinates?</div></div>
+      <div class="card"><div class="stat-big" style="font-size:1.4rem;">When</div><div class="stat-label">during generation?</div></div>
+      <div class="card"><div class="stat-big" style="font-size:1.4rem;">How</div><div class="stat-label">do you verify the write took?</div></div>
+      <div class="card"><div class="stat-big" style="font-size:1.4rem;">At what cost</div><div class="stat-label">to the model's freedom?</div></div>
+    </div>
+
+    <p>
+      Write carelessly and you don't steer the model — you <em>lobotomize</em> it. (Act IV shows
+      this measured: unrestricted writing steers, but burns four times the entropy budget doing it.)
+      Steering an intelligence through its own workspace needs a control theory. The surprise of
+      this project is where a complete, testable one was already waiting.
+    </p>
+
+    <div class="callout">
+      <div class="callout-title">Why care?</div>
+      <p>
+        If you can steer a model's workspace with care — verified writes, bounded side-effects —
+        you get a control surface <em>below the prompt</em>: invisible to users, untouchable by
+        prompt injection. That's not just a research trick. Act VI turns it into a jailbreak
+        defense a deployer can bake into their inference stack.
+      </p>
+    </div>
+  </div>
+</section>

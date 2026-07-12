@@ -1,57 +1,51 @@
 ---
 import Base from '@/layouts/Base.astro';
+import Nav from '@/components/Nav.astro';
 import Hero from '@/components/Hero.astro';
-import ParallelScene from '@/components/scenes/Parallel.astro';
-import InstrumentScene from '@/components/scenes/Instrument.astro';
-import ActionScene from '@/components/scenes/Action.astro';
-import TransferScene from '@/components/scenes/Transfer.astro';
-import ComparisonScene from '@/components/scenes/Comparison.astro';
-import HonestLimits from '@/components/scenes/HonestLimits.astro';
-import Architecture from '@/components/scenes/Architecture.astro';
-import Benchmark from '@/components/scenes/Benchmark.astro';
-import Moat from '@/components/scenes/Moat.astro';
-import GetStarted from '@/components/GetStarted.astro';
+import Act1Problem from '@/components/scenes/Act1Problem.astro';
+import Act2Doctrine from '@/components/scenes/Act2Doctrine.astro';
+import Act3Machine from '@/components/scenes/Act3Machine.astro';
+import Act4Evidence from '@/components/scenes/Act4Evidence.astro';
+import Act5Negatives from '@/components/scenes/Act5Negatives.astro';
+import Act6Moat from '@/components/scenes/Act6Moat.astro';
+import Act7Value from '@/components/scenes/Act7Value.astro';
+import Coda from '@/components/Coda.astro';
 import DepthToggle from '@/components/DepthToggle.astro';
 ---
 
 <Base
-  title="prabodha — Recognition-gated workspace steering"
-  description="Steer frozen language models through their verbalizable workspace using recognition-driven writes, timed by sphuraṭṭā events, verified by āgama re-cognition."
+  title="prabodha — A thousand-year-old theory of mind, running inside a language model"
+  description="An interactive essay on recognition-gated workspace steering: a 10th-century doctrine of recognition turned into falsifiable control engineering for frozen LLMs — and a jailbreak defense that lives below the prompt. Every number traces to a committed gate record."
 >
+  <Nav />
   <Hero />
 
   <div style="background-color: var(--bg);">
-    <!-- Scene 1: The Uncanny Parallel -->
-    <ParallelScene />
+    <!-- Act I: the actuator without a doctrine -->
+    <Act1Problem />
 
-    <!-- Scene 2: The Instrument -->
-    <InstrumentScene />
+    <!-- Act II: Pratyabhijñā as engineering specification -->
+    <Act2Doctrine />
 
-    <!-- Scene 3: Theory in Live Action -->
-    <ActionScene />
+    <!-- Act III: the auto-research machine -->
+    <Act3Machine />
 
-    <!-- Scene 4: Transfer Recipe -->
-    <TransferScene />
+    <!-- Act IV: the evidence (findings + live trace player) -->
+    <Act4Evidence />
 
-    <!-- Scene 5: Comparison with Baselines -->
-    <ComparisonScene />
+    <!-- Act V: registered negatives -->
+    <Act5Negatives />
 
-    <!-- Scene 6: Honest Limits -->
-    <HonestLimits />
+    <!-- Act VI: the recognition-gated moat (+ live captures) -->
+    <Act6Moat />
 
-    <!-- Architecture -->
-    <Architecture />
+    <!-- Act VII: concept → value -->
+    <Act7Value />
 
-    <!-- Benchmark: L22 Efficiency & Lens Comparison -->
-    <Benchmark />
-
-    <!-- Moat: Recognition-Gated Jailbreak Defense -->
-    <Moat />
+    <!-- Coda: provenance, author, references -->
+    <Coda />
   </div>
 
-  <!-- Get Started / Links -->
-  <GetStarted />
-
-  <!-- Depth Toggle -->
+  <!-- Explorer / Researcher depth toggle -->
   <DepthToggle />
 </Base>
