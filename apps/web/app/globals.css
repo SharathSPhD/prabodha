@@ -2,26 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design token utilities */
+/* Design token utilities — neuro-lab bioluminescent system */
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-glow transition-all hover:bg-indigo-500 hover:shadow-[0_0_28px_rgba(168,85,247,0.5)] disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 rounded-lg border border-indigo-300 bg-transparent px-4 py-2 text-sm font-medium text-indigo-300 transition-colors hover:border-indigo-400 hover:text-indigo-200 disabled:opacity-50;
+    @apply inline-flex items-center gap-2 rounded-lg border border-teal-400/40 bg-teal-400/5 px-4 py-2 text-sm font-medium text-teal-300 transition-colors hover:border-teal-400/70 hover:bg-teal-400/10 hover:text-teal-200 disabled:opacity-50;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 rounded-lg bg-transparent px-3 py-1.5 text-sm font-medium text-slate-400 transition-colors hover:text-slate-200 disabled:opacity-50;
+    @apply inline-flex items-center gap-2 rounded-lg bg-transparent px-3 py-1.5 text-sm font-medium text-slate-400 transition-colors hover:text-teal-300 disabled:opacity-50;
   }
 
   .card {
-    @apply rounded-lg border border-night-600 bg-night-800/50 backdrop-blur-sm;
+    @apply rounded-xl border border-night-600 bg-night-800/60 backdrop-blur-sm transition-colors;
+  }
+
+  /* An accent card that glows on hover — for interactive/primary surfaces */
+  .card-glow {
+    @apply rounded-xl border border-night-600 bg-night-800/60 backdrop-blur-sm transition-all hover:border-teal-400/40 hover:shadow-glow-teal;
   }
 
   .input {
-    @apply w-full rounded-lg border border-night-600 bg-night-900 px-4 py-2 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500;
+    @apply w-full rounded-lg border border-night-600 bg-night-950 px-4 py-2 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-400/60;
   }
 
   .label {
@@ -29,48 +34,62 @@
   }
 
   .chip {
-    @apply inline-flex items-center gap-1 rounded-full border border-night-600 px-3 py-1 text-xs font-medium text-slate-400 transition-colors;
+    @apply inline-flex items-center gap-1 rounded-full border border-night-600 bg-night-900/60 px-3 py-1 text-xs font-medium text-slate-400 transition-colors;
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-indigo-400 to-teal-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-teal-400 via-indigo-400 to-indigo-500 bg-clip-text text-transparent;
+  }
+
+  /* Small status pill (accept / reject / neutral) */
+  .pill-accept {
+    @apply inline-flex items-center gap-1 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-2.5 py-0.5 text-xs font-medium text-emerald-300;
+  }
+  .pill-reject {
+    @apply inline-flex items-center gap-1 rounded-full border border-rose-400/40 bg-rose-400/10 px-2.5 py-0.5 text-xs font-medium text-rose-300;
   }
 }
 
 /* Base styles */
 html {
-  background-color: #050a14;
-  color: #e2e8f0;
+  background-color: #0a0e14;
+  color: #e6edf3;
 }
 
 body {
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* subtle bioluminescent field, fixed behind content */
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(34, 211, 238, 0.06), transparent 55%),
+    radial-gradient(52rem 52rem at 100% 0%, rgba(168, 85, 247, 0.07), transparent 50%);
+  background-attachment: fixed;
 }
 
 a {
-  transition-colors: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #7c4dff;
+  color: #22d3ee;
 }
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1f3a;
+  background: #0a0e14;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #34395a;
+  background: #1d2839;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4a5178;
+  background: #2b3a52;
 }
