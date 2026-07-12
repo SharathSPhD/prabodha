@@ -44,11 +44,12 @@ export function useSSESteer() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         setState((prev) => ({
           ...prev,
           loading: false,
-          error: errorData.message || `HTTP ${response.status}`,
+          // The gateway proxy returns { error, code }; older paths used { message }.
+          error: errorData.error || errorData.message || `HTTP ${response.status}`,
         }));
         return;
       }

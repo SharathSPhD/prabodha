@@ -7,9 +7,26 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { STEER_GATEWAY_URL, STEER_GATEWAY_SECRET } from "@/lib/config";
+import { getMyTier } from "@/lib/account.server";
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: the live gateway runs on the admin's GB10. Only a signed-in ADMIN may trigger
+    // a GB10 run — everyone else uses BYOK (their own OpenRouter key) or the recorded replays.
+    // Without this gate, any anonymous visitor could spend the admin's GPU.
+    const tier = await getMyTier();
+    if (tier !== "admin") {
+      return NextResponse.json(
+        {
+          error:
+            "Live GB10 steering is admin-only. Sign in as an admin, or run on your own model " +
+            "with a BYOK key, or explore the recorded replays.",
+          code: "admin_required",
+        },
+        { status: 403 }
+      );
+    }
+
     // Validate that gateway URL and secret are configured
     if (!STEER_GATEWAY_URL) {
       return NextResponse.json(
