@@ -54,40 +54,37 @@ export default function LiveStudio() {
     });
   };
 
-  if (isOffline) {
-    return (
-      <div className="card p-8 border-l-4 border-yellow-600 bg-yellow-900/10 space-y-4">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-yellow-400 mt-0.5" />
-          <div>
-            <h3 className="font-semibold text-yellow-300 mb-2">
-              Gateway Offline
-            </h3>
-            <p className="text-sm text-slate-400 mb-4">
-              Live steering is unavailable (admin-run GB10 gateway is offline). You can still explore the studio interface, replay pre-recorded runs, or bring your own model (BYOK). Live steering steering updates are available once the gateway comes back online.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <a
-                href="/theatre"
-                className="btn-secondary text-sm"
-              >
-                View Recorded Runs
-              </a>
-              <a
-                href="/theatre?tab=byok"
-                className="btn-secondary text-sm"
-              >
-                Try BYOK Mode
-              </a>
+  return (
+    <div className="space-y-6">
+      {/* Non-blocking offline banner — the interface stays fully explorable even
+          when the admin GB10 gateway is down; only the live Run is disabled. */}
+      {isOffline && (
+        <div className="card p-4 border-l-4 border-saffron-500 bg-saffron-500/5">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-saffron-400 mt-0.5 shrink-0" />
+            <div>
+              <h3 className="font-semibold text-saffron-300 mb-1">
+                Live gateway offline
+              </h3>
+              <p className="text-sm text-slate-400 mb-3">
+                The admin-run GB10 gateway isn&apos;t answering right now, so a live
+                run is paused. You can still build a steering config below, browse the
+                concept presets, and see exactly what would run — or watch recorded
+                runs and bring your own model.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <a href="/theatre" className="btn-secondary text-sm">
+                  Watch recorded runs
+                </a>
+                <a href="/theatre?tab=byok" className="btn-secondary text-sm">
+                  Bring your own model
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
+      )}
 
-  return (
-    <div className="space-y-6">
       {/* Control Panel */}
       <div className="card p-6 space-y-6">
         <h2 className="text-lg font-semibold text-slate-100">
@@ -311,17 +308,23 @@ export default function LiveStudio() {
         {/* Run button */}
         <button
           onClick={loading ? cancel : handleSteer}
-          disabled={!prompt.trim() || !concept.trim()}
-          className={`w-full py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2 ${
+          disabled={(!loading && isOffline) || !prompt.trim() || !concept.trim()}
+          title={isOffline ? "Live gateway is offline — watch a recorded run instead" : undefined}
+          className={`w-full py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 shadow-glow disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed ${
             loading
-              ? "bg-red-600 hover:bg-red-700 text-white"
-              : "bg-indigo-600 hover:bg-indigo-700 text-white"
+              ? "bg-rose-600 hover:bg-rose-500 text-white"
+              : "bg-indigo-600 hover:bg-indigo-500 text-white hover:shadow-[0_0_28px_rgba(168,85,247,0.5)]"
           }`}
         >
           {loading ? (
             <>
               <Pause className="w-4 h-4" />
               Cancel
+            </>
+          ) : isOffline ? (
+            <>
+              <AlertCircle className="w-4 h-4" />
+              Gateway offline — live run paused
             </>
           ) : (
             <>
