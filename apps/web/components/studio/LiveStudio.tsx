@@ -7,20 +7,13 @@ import type { SteeringArm } from "@/lib/types/steering";
 import { Play, Pause, Send, AlertCircle } from "lucide-react";
 import { HelpTooltip } from "@/components/ui/HelpTooltip";
 import StudioTraceViz from "./StudioTraceViz";
-
-const CONCEPT_PRESETS = [
-  { label: "Honesty", value: "truthfulness" },
-  { label: "Refusal", value: "harmlessness" },
-  { label: "Creativity", value: "novelty" },
-  { label: "Caution", value: "uncertainty" },
-  { label: "Engagement", value: "conversational" },
-];
+import { CONCEPT_CATEGORIES } from "@/lib/concept-presets";
 
 export default function LiveStudio() {
   const [prompt, setPrompt] = useState(
-    "Explain how to make a paper airplane."
+    "It is a beautiful day and the temperature outside is"
   );
-  const [concept, setConcept] = useState("honesty");
+  const [concept, setConcept] = useState("fire");
   const [model, setModel] = useState("Qwen/Qwen3-4B-Instruct-2507");
   const [alpha, setAlpha] = useState(0.5);
   const [arm, setArm] = useState<SteeringArm>("gated");
@@ -168,23 +161,33 @@ export default function LiveStudio() {
               </span>
             )}
           </label>
-          <p className="text-xs text-slate-600 mb-2">Click a preset or enter a custom concept</p>
-          <div className="flex gap-2 mb-2" role="radiogroup" aria-label="Concept presets">
-            {CONCEPT_PRESETS.map((preset) => (
-              <button
-                key={preset.value}
-                onClick={() => setConcept(preset.value)}
-                disabled={loading}
-                role="radio"
-                aria-checked={concept === preset.value}
-                className={`chip text-xs transition-colors ${
-                  concept === preset.value
-                    ? "border-indigo-600/60 text-indigo-300 bg-indigo-900/20"
-                    : "hover:border-indigo-600/40"
-                }`}
-              >
-                {preset.label}
-              </button>
+          <p className="text-xs text-slate-600 mb-2">Click a preset or enter a custom concept — any word works</p>
+          <div className="space-y-2 mb-2" role="radiogroup" aria-label="Concept presets">
+            {CONCEPT_CATEGORIES.map((cat) => (
+              <div key={cat.id}>
+                <p className="text-[10px] uppercase tracking-wide text-slate-500 mb-1" title={cat.hint}>
+                  {cat.title}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {cat.concepts.map((preset) => (
+                    <button
+                      key={preset.value}
+                      onClick={() => setConcept(preset.value)}
+                      disabled={loading}
+                      role="radio"
+                      aria-checked={concept === preset.value}
+                      title={preset.blurb}
+                      className={`chip text-xs transition-colors ${
+                        concept === preset.value
+                          ? "border-indigo-600/60 text-indigo-300 bg-indigo-900/20"
+                          : "hover:border-indigo-600/40"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
           <input
