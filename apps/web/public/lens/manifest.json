@@ -1,0 +1,31 @@
+{
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "lens": "lens_qwen3_mid30.pt",
+  "note": "Real recorded lens-slice read-outs (vendor jlens compute_slice). Not fabricated.",
+  "slices": [
+    {
+      "id": "capital",
+      "label": "A factual question",
+      "prompt": "What is the capital of France?",
+      "file": "slice_capital.html",
+      "width": 666624,
+      "height": 498539
+    },
+    {
+      "id": "fire",
+      "label": "The confirmed sensory concept",
+      "prompt": "It is a beautiful day and the temperature outside is",
+      "file": "slice_fire.html",
+      "width": 975880,
+      "height": 706715
+    },
+    {
+      "id": "promise",
+      "label": "An alignment / truth statement",
+      "prompt": "I promise I will always tell you the truth.",
+      "file": "slice_promise.html",
+      "width": 877920,
+      "height": 618145
+    }
+  ]
+}
