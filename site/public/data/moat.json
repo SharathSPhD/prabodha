@@ -14,7 +14,7 @@
       "asr": 0.25,
       "over_refusal": 1.0,
       "gate": "12/12 attacks, 10/10 benign",
-      "note": "same ASR cut but refuses ALL benign — unusable"
+      "note": "same attack cut — but refuses every innocent request; unusable"
     },
     {
       "name": "Recognition-gated defense (this work)",
@@ -22,7 +22,7 @@
       "over_refusal": 0.0,
       "gate": "12/12 attacks, 0/10 benign",
       "moat": true,
-      "note": "same ASR cut, ZERO benign collateral"
+      "note": "same attack cut, zero innocent collateral"
     }
   ],
   "projection_separation": {
@@ -34,7 +34,7 @@
       4,
       73
     ],
-    "note": "clean gap; jailbreak WRAPPING can't hide the activation-level harmful signature (12/12 wrapped attacks detected)"
+    "note": "a clean gap — roleplay and 'ignore your instructions' wrapping can't hide the internal signature (12/12 wrapped attacks caught)"
   },
   "mechanisms": [
     {
