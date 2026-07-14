@@ -82,16 +82,19 @@ const clauses = [
       </p>
     </div>
 
-    <div class="researcher-only">
-      <p>
-        The load-bearing identity is ĪPK 1.5.13 (Torella 2002): reflexive awareness
-        (<em>vimarśa</em>) is the supreme Word (<em>parā vāk</em>). The failed-then-revised clauses:
-        the literal "commitment-flash" reading of sphurattā (gate L4: lift 0.175 vs 0.2 threshold;
-        L9: flash 0.20 vs uncommitted-moment 0.30) and any expectation of alignment dividends from
-        naive direction steering (L21). Adversarial review #18 verified that no released surface
-        makes consciousness claims.
-      </p>
-    </div>
+    <details class="expand">
+      <summary>For researchers: the precise mapping, and the clauses that failed</summary>
+      <div class="expand-body">
+        <p>
+          The load-bearing identity is ĪPK 1.5.13 (Torella 2002): reflexive awareness
+          (<em>vimarśa</em>) is the supreme Word (<em>parā vāk</em>). The failed-then-revised clauses:
+          the literal "commitment-flash" reading of sphurattā (gate L4: lift 0.175 vs 0.2 threshold;
+          L9: flash 0.20 vs uncommitted-moment 0.30) and any expectation of alignment dividends from
+          naive direction steering (L21). Adversarial review #18 verified that no released surface
+          makes consciousness claims.
+        </p>
+      </div>
+    </details>
   </div>
 </section>
 
@@ -102,8 +105,8 @@ const clauses = [
 
     <p>
       Translated into engineering, the doctrine answers each open question from Act I — and every
-      answer names the experiment that could kill it. Toggle
-      <strong>Researcher</strong> mode (bottom right) to see the technical version of each rule.
+      answer names the experiment that could kill it. Each card carries a
+      <em>for researchers</em> line with the technical version.
     </p>
 
     <div class="space-y-4 my-10">
@@ -113,12 +116,32 @@ const clauses = [
             <h4 style="margin:0;">{c.q}</h4>
             <span class="sanskrit-chip">{c.skt}</span>
           </div>
-          <p class="explorer-only" style="margin:0; font-size:1.02rem;">{c.lay}</p>
-          <p class="researcher-only" style="margin:0; font-size:0.98rem;">{c.tech}</p>
+          <p style="margin:0; font-size:1.02rem;">{c.lay}</p>
+          <details class="clause-tech">
+            <summary>For researchers</summary>
+            <p style="margin:0.4rem 0 0; font-size:0.95rem; color: var(--ink-faint);">{c.tech}</p>
+          </details>
           <p style="margin:0.6rem 0 0;"><span class="gate-chip">evidence: gates {c.gates}</span></p>
         </div>
       ))}
     </div>
+
+    <style>
+      details.clause-tech { margin-top: 0.55rem; }
+      details.clause-tech > summary {
+        cursor: pointer;
+        list-style: none;
+        font-family: var(--font-sans);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--teal-deep);
+      }
+      details.clause-tech > summary::-webkit-details-marker { display: none; }
+      details.clause-tech > summary::after { content: " +"; color: var(--ink-mute); }
+      details.clause-tech[open] > summary::after { content: " −"; }
+    </style>
 
     <FigurePlate
       name="fig_doctrine"

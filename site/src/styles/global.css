@@ -637,49 +637,6 @@
   }
 }
 
-/* ——— depth toggle (fixed, bottom-right) ——— */
-.depth-toggle {
-  position: fixed;
-  bottom: 1.1rem;
-  right: 1.1rem;
-  z-index: 40;
-  display: flex;
-  gap: 0.3rem;
-  background-color: var(--paper-bright);
-  border: 1px solid var(--hairline);
-  padding: 0.3rem;
-  border-radius: 999px;
-  box-shadow: 0 6px 24px rgba(27, 26, 22, 0.14);
-}
-
-.depth-button {
-  padding: 0.42rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: 999px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: 1px solid transparent;
-  font-family: var(--font-sans);
-  background: transparent;
-  color: var(--ink-faint);
-}
-
-.depth-button.active {
-  background-color: var(--teal-deep);
-  color: var(--paper-bright);
-}
-
-.depth-button.inactive:hover { color: var(--teal-deep); }
-
-/* depth-mode visibility */
-.researcher-only { display: none; }
-html.depth-researcher .researcher-only { display: block; }
-span.researcher-only { display: none; }
-html.depth-researcher span.researcher-only { display: inline; }
-.explorer-only { display: block; }
-html.depth-researcher .explorer-only { display: none; }
-
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   * {

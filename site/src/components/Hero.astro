@@ -27,6 +27,18 @@
       by <strong>Dr. Sharath Sathish</strong> · a guided tour for the curious and the technical alike
     </p>
 
+    <figure class="hero-cover">
+      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/cover.png`} target="_blank" rel="noopener" style="border-bottom:none; display:block;">
+        <img
+          src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/cover.webp`}
+          alt="Graphical abstract: Pratyabhijñā philosophy translated into five falsifiable engineering clauses, the transformer workspace, the recognition-gated control loop, experimental validation, and real-world outcomes"
+          width="1536" height="1024"
+          loading="eager"
+        />
+      </a>
+      <figcaption>The whole story in one picture — click to open full-size. Every panel is unpacked below.</figcaption>
+    </figure>
+
     <a href="#act-1" class="hero-scroll">Scroll to begin <span class="arr">↓</span></a>
   </div>
 </header>
@@ -93,10 +105,34 @@
     font-family: var(--font-sans);
     font-size: 0.95rem;
     color: var(--night-ink-faint);
-    margin-bottom: 4rem;
+    margin-bottom: 2.4rem;
   }
 
   .hero-byline strong { color: var(--night-ink); font-weight: 600; }
+
+  .hero-cover {
+    margin: 0 0 3.2rem;
+    max-width: 980px;
+  }
+
+  .hero-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(237, 232, 220, 0.14);
+    transition: transform 0.3s ease;
+  }
+
+  .hero-cover a:hover img { transform: translateY(-3px); }
+
+  .hero-cover figcaption {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: var(--night-ink-faint);
+    margin-top: 0.7rem;
+  }
 
   .hero-scroll {
     font-family: var(--font-sans);
