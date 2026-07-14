@@ -49,8 +49,16 @@ export function SiteNav() {
             );
           })}
           <a
-            href="https://sharathsphd.github.io/prabodha/"
+            href="https://www.preprints.org/frontend/manuscript/5b72d5c7d0e37f4f5b222acfab709652/download_pub"
+            target="_blank"
+            rel="noopener noreferrer"
             className="ml-1 hidden rounded-full border border-night-500 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:border-teal-400/60 hover:text-teal-300 sm:inline-block"
+          >
+            Paper ↗
+          </a>
+          <a
+            href="https://sharathsphd.github.io/prabodha/"
+            className="hidden rounded-full border border-night-500 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:border-teal-400/60 hover:text-teal-300 sm:inline-block"
           >
             The essay ↗
           </a>

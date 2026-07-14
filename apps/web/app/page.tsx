@@ -91,6 +91,14 @@ export default function LandingPage() {
             <Link href="/glossary" className="text-sm text-slate-400 hover:text-indigo-400 transition">
               Glossary
             </Link>
+            <a
+              href="https://www.preprints.org/frontend/manuscript/5b72d5c7d0e37f4f5b222acfab709652/download_pub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-slate-400 hover:text-indigo-400 transition"
+            >
+              Paper ↗
+            </a>
             <Link href="/login" className="btn-primary text-xs">
               Sign in
             </Link>
@@ -267,6 +275,15 @@ export default function LandingPage() {
             <Link href="https://github.com/SharathSPhD/prabodha" className="text-indigo-400 hover:text-indigo-300">
               View on GitHub
             </Link>
+            {" · "}
+            <a
+              href="https://www.preprints.org/frontend/manuscript/5b72d5c7d0e37f4f5b222acfab709652/download_pub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Read the paper
+            </a>
           </p>
           <AdminLink />
         </div>

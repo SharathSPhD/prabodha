@@ -99,8 +99,13 @@ export default function GlossaryPage() {
           <h2 className="text-lg font-semibold text-slate-100">Full reference</h2>
           <p className="text-sm text-slate-500">
             Complete glossary is in the paper appendix:{" "}
-            <a href="/docs/paper.pdf" className="text-indigo-400 hover:text-indigo-300">
-              docs/paper/paper.pdf
+            <a
+              href="https://www.preprints.org/frontend/manuscript/5b72d5c7d0e37f4f5b222acfab709652/download_pub"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              read the preprint
             </a>
           </p>
         </div>
