@@ -4,83 +4,84 @@ import ActBreak from '../ActBreak.astro';
 
 <ActBreak
   roman="Act I"
-  title="The Actuator Without a Doctrine"
-  tease="We found where the model talks to itself. Then we built a pen — with no idea what to write."
+  title="The Pen Without a"
+  accent="Rulebook"
+  tease="We found where the model talks to itself — and built a pen that writes there. Then everyone froze."
   id="act-1"
 />
 
 <section class="section-divider" id="finding">
   <div class="prose-section">
-    <div class="num-label"><span class="num">01</span> The finding</div>
-    <h2>A journal in the machine</h2>
+    <div class="num-label"><span class="num">01</span> The discovery</div>
+    <h2>Your chatbot keeps a journal</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Deep inside a language model, most of what happens is mute. Billions of numbers churn,
-      and almost none of them can be put into words — not even by the model itself. But recent
-      interpretability work found an exception: a <strong>band of late layers</strong> where
-      representations become <em>verbalizable</em>. Perturb the model there, and it can
-      subsequently <em>report what changed, in words</em>. Everywhere else, it can't.
+    <p>
+      When a language model answers you, billions of numbers churn in silence. Ask the model what
+      any one of them means and it can't tell you — most of its own machinery is as opaque to it
+      as your neurons are to you. But in early 2026, interpretability researchers found an
+      exception: a thin <strong>band of late layers</strong> where something remarkable happens.
+      Whatever is written there, the model can <em>read back out in words</em>.
     </p>
 
     <p>
-      Think of it as the model's <strong>journal</strong> — a functional global workspace where
-      whatever is written can be read back out as language. The same work released an instrument
-      for reading and writing it: the <strong>Jacobian lens</strong>, a linear map that transports
-      any internal vector into the band's own coordinates and decodes it with the model's own
-      vocabulary. The band it defines is called the <strong>J-space</strong>.
+      Nudge the model inside this band, and it will later tell you — in plain English — what
+      changed. Nudge it anywhere else, and it can't. The band behaves like a
+      <strong>journal</strong>: the one place in the machine where its internal states are legible,
+      to itself and to us. And the same researchers shipped a reading instrument for it — a
+      mathematical lens that translates the journal's contents into ordinary vocabulary.
     </p>
 
+    <div class="callout">
+      <div class="callout-title">Why care?</div>
+      <p>
+        Everything we want from AI oversight — auditing, debugging, safety — starts with
+        legibility. A journal you can read is rare enough. This one, it turns out, you can also
+        <em>write in</em>. That's where the story starts, and where it nearly went wrong.
+      </p>
+    </div>
+
     <details class="expand">
-      <summary>The J-space, precisely</summary>
+      <summary>For researchers: the J-space, precisely</summary>
       <div class="expand-body">
         <p>
-          The lens is built from the average input–output Jacobian,
-          <code>J<sub>ℓ</sub> = E[∂h<sub>final</sub>/∂h<sub>ℓ</sub>]</code>, and decodes with the model's own
-          unembedding: <code>lens<sub>ℓ</sub>(h) = W<sub>U</sub> J<sub>ℓ</sub> h</code>. "Verbalizable" is operational,
-          not metaphorical: a representation is in the workspace if an intervened model can report
-          it in subsequent text. On the 32-layer models studied here, the band sits at layers
-          24–31, and its presence is measured by CKA band contrast (0.14–0.31 across the three
-          plants tested in loops L1/L1b/L2).
+          The workspace is defined <em>functionally</em>: a representation is in it if an
+          intervened model can subsequently report the intervention in text. The instrument is the
+          <strong>Jacobian lens</strong> — the average input–output Jacobian
+          <code>J<sub>ℓ</sub> = E[∂h<sub>final</sub>/∂h<sub>ℓ</sub>]</code> used as a linear transport, decoded with the
+          model's own unembedding: <code>lens<sub>ℓ</sub>(h) = W<sub>U</sub> J<sub>ℓ</sub> h</code>. The verbalizable band
+          ("J-space") sits at layers 24–31 on the 32-layer models studied here; band structure is
+          measured by CKA band contrast (0.14–0.31 across the three plants in loops L1/L1b/L2).
         </p>
       </div>
     </details>
   </div>
 </section>
 
-<section class="section-divider" id="gap">
+<section class="section-divider" id="gap" style="padding-top:0;">
   <div class="prose-section">
-    <div class="num-label"><span class="num">02</span> The gap</div>
-    <h2>A pen with no grammar</h2>
-
-    <p class="text-lg" style="color: var(--ink-soft);">
-      So the field now owns an <strong>actuator</strong>: a way to write directly into the place
-      where a model's self-talk lives. What it doesn't own is a <strong>doctrine of use</strong>.
-      Five questions, and in early 2026 the honest answer to all of them was <em>nobody knows</em>:
-    </p>
-
-    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
-      <div class="card"><div class="stat-big" style="font-size:1.4rem;">What</div><div class="stat-label">content should be written?</div></div>
-      <div class="card"><div class="stat-big" style="font-size:1.4rem;">Where</div><div class="stat-label">in the network, in which coordinates?</div></div>
-      <div class="card"><div class="stat-big" style="font-size:1.4rem;">When</div><div class="stat-label">during generation?</div></div>
-      <div class="card"><div class="stat-big" style="font-size:1.4rem;">How</div><div class="stat-label">do you verify the write took?</div></div>
-      <div class="card"><div class="stat-big" style="font-size:1.4rem;">At what cost</div><div class="stat-label">to the model's freedom?</div></div>
-    </div>
+    <div class="num-label"><span class="num">02</span> The problem</div>
+    <h2>Nobody knew the rules of writing</h2>
 
     <p>
-      Write carelessly and you don't steer the model — you <em>lobotomize</em> it. (Act IV shows
-      this measured: unrestricted writing steers, but burns four times the entropy budget doing it.)
-      Steering an intelligence through its own workspace needs a control theory. The surprise of
-      this project is where a complete, testable one was already waiting.
+      Here's the situation the field found itself in. Imagine being handed a pen that writes
+      directly into someone's stream of thought — and no instructions. Write <em>what</em>,
+      exactly? Write <em>where</em> on the page? <em>When</em> — mid-sentence, or while the writer
+      pauses? How do you check the thought actually <em>landed</em>, rather than just smudging the
+      page? And the question nobody wanted to ask: what does each written word <em>cost</em> the
+      mind you're writing into?
     </p>
 
-    <div class="callout">
-      <div class="callout-title">Why care?</div>
-      <p>
-        If you can steer a model's workspace with care — verified writes, bounded side-effects —
-        you get a control surface <em>below the prompt</em>: invisible to users, untouchable by
-        prompt injection. That's not just a research trick. Act VI turns it into a jailbreak
-        defense a deployer can bake into their inference stack.
-      </p>
-    </div>
+    <p>
+      These aren't rhetorical worries. Later in this essay you'll watch what happens when you
+      write carelessly: the model does what you ask — and pays for it with
+      <strong>four times</strong> its safe budget of "freedom," drifting toward a single fixation.
+      Steering a mind, it turns out, needs a control theory. In 2026, none existed.
+    </p>
+
+    <p>
+      The surprise of this project — and the reason this essay exists — is <em>where</em> a
+      complete, testable control theory was already waiting. Not in a robotics textbook.
+      In 10th-century Kashmir.
+    </p>
   </div>
 </section>

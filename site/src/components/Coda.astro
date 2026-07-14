@@ -1,74 +1,102 @@
 ---
-// Coda: provenance, author, references.
+// Coda: provenance, about the author (ACD style), references.
 ---
 
-<section class="section-divider" id="coda">
+<section class="section-divider" id="coda" style="border-top: 1px solid var(--hairline-soft);">
   <div class="prose-section">
     <div class="num-label"><span class="num">21</span> Go deeper</div>
     <h2>Every number here has a receipt</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Nothing on this page was typed from memory. Every figure was compiled from the paper's
-      pgfplots sources, which are themselves generated from committed gate JSONs; every quoted
-      number traces to a gate record in the public repository. If a claim failed its registered
-      criterion, the fail is printed next to it — here and in the paper.
+    <p>
+      Nothing on this page was typed from memory. Every figure was compiled directly from the
+      paper's sources, which are themselves generated from committed evidence files; every quoted
+      number traces to a public record. Where a claim failed its pre-registered test, the failure
+      is printed beside it — here and in the paper.
     </p>
 
-    <div class="stat-strip">
-      <div class="card">
+    <div class="stat-strip" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+      <div class="card card-teal">
         <h4 style="margin:0 0 0.4rem;">The paper</h4>
-        <p style="font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.5rem;">"Recognition-Gated Workspace Steering: Pratyabhijñā as an Engineering Specification for Language Model Control"</p>
-        <a href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper_icml/paper.pdf">Read the PDF →</a>
+        <p style="font-size:0.92rem; margin:0 0 0.6rem;">"Recognition-Gated Workspace Steering: Pratyabhijñā as an Engineering Specification for Language Model Control"</p>
+        <a href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper_icml/paper.pdf" style="font-family: var(--font-sans); font-size:0.88rem; font-weight:600;">Read the PDF →</a>
       </div>
-      <div class="card">
-        <h4 style="margin:0 0 0.4rem;">The gate ledger</h4>
-        <p style="font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.5rem;">130 gate records, the EFE selector ledger, review notes, and every registered pre-commitment.</p>
-        <a href="https://github.com/SharathSPhD/prabodha/tree/main/gates">Browse gates/ →</a>
+      <div class="card card-teal">
+        <h4 style="margin:0 0 0.4rem;">The evidence ledger</h4>
+        <p style="font-size:0.92rem; margin:0 0 0.6rem;">130 gate records, the selector's spend ledger, review notes, and every sealed pre-commitment.</p>
+        <a href="https://github.com/SharathSPhD/prabodha/tree/main/gates" style="font-family: var(--font-sans); font-size:0.88rem; font-weight:600;">Browse gates/ →</a>
       </div>
-      <div class="card">
-        <h4 style="margin:0 0 0.4rem;">The app</h4>
-        <p style="font-size:0.9rem; color:var(--ink-soft); margin:0 0 0.5rem;">Replay real traces, run BYOK hardening, register your own pack.</p>
-        <a href="https://prabodha-live.vercel.app">prabodha-live.vercel.app →</a>
+      <div class="card card-teal">
+        <h4 style="margin:0 0 0.4rem;">The live app</h4>
+        <p style="font-size:0.92rem; margin:0 0 0.6rem;">Replay real episodes, test and harden your own model, publish a hardening pack.</p>
+        <a href="https://prabodha-live.vercel.app" style="font-family: var(--font-sans); font-size:0.88rem; font-weight:600;">prabodha-live.vercel.app →</a>
       </div>
     </div>
 
-    <div class="card mt-12">
-      <h3 style="margin-top:0;">About the author</h3>
-      <p style="color: var(--ink-soft);">
+    <!-- About the author — ACD style -->
+    <div style="margin-top: 4.5rem;">
+      <p class="num-label" style="margin-bottom:0.9rem;">About the author</p>
+      <p style="font-size:1.05rem; max-width: 640px;">
         <strong>Dr. Sharath Sathish</strong> works at the intersection of mechanistic
         interpretability, active inference, and contemplative philosophy read as engineering.
-        Prabodha is the sequel to
-        <a href="https://sharathsphd.github.io/ActiveCIrcuitDiscovery/">Active Circuit Discovery</a> —
-        where that project used a theory of the brain to choose interpretability experiments, this
-        one uses a theory of recognition to steer what those experiments found.
+        Read the paper and the code, or follow the work below.
       </p>
-      <div class="flex gap-2 flex-wrap mt-2">
-        <a class="nav-pill" href="https://github.com/SharathSPhD/prabodha">GitHub</a>
-        <a class="nav-pill" href="https://www.technektar.dev/">TechNektar</a>
-        <a class="nav-pill" href="https://www.linkedin.com/in/sharath-s">LinkedIn</a>
-        <a class="nav-pill" href="https://scholar.google.com/citations?hl=en&user=dcyu5ucAAAAJ">Google Scholar</a>
-        <a class="nav-pill" href="https://www.researchgate.net/profile/Sharath-Sathish/research">ResearchGate</a>
-        <a class="nav-pill" href="https://medium.com/@sharath.ai.colab">Medium</a>
-        <a class="nav-pill" href="https://technektar.substack.com/">Substack</a>
-        <a class="nav-pill" href="https://www.youtube.com/@SharathS-PhD">YouTube</a>
+      <div class="flex gap-2 flex-wrap mt-3">
+        <a class="pill-link" href="https://github.com/SharathSPhD/prabodha/blob/main/docs/paper_icml/paper.pdf">Paper</a>
+        <a class="pill-link" href="https://github.com/SharathSPhD/prabodha">Code &amp; data</a>
+        <a class="pill-link" href="https://sharathsphd.github.io/ActiveCIrcuitDiscovery/">Active Circuit Discovery</a>
+        <a class="pill-link" href="https://www.technektar.dev/">TechNektar</a>
+        <a class="pill-link" href="https://www.linkedin.com/in/sharath-s">LinkedIn</a>
+        <a class="pill-link" href="https://scholar.google.com/citations?hl=en&user=dcyu5ucAAAAJ">Google Scholar</a>
+        <a class="pill-link" href="https://www.researchgate.net/profile/Sharath-Sathish/research">ResearchGate</a>
+        <a class="pill-link" href="https://medium.com/@sharath.ai.colab">Medium</a>
+        <a class="pill-link" href="https://technektar.substack.com/">Substack</a>
+        <a class="pill-link" href="https://www.youtube.com/@SharathS-PhD">YouTube</a>
+        <a class="pill-link" href="https://podcasts.apple.com/us/podcast/oscillatory-odyssey-resonance-rising-part-3/id1796260484?i=1000697224806">Podcast</a>
       </div>
     </div>
 
-    <details class="expand">
-      <summary>Key references</summary>
-      <div class="expand-body">
-        <ol style="padding-left:1.2rem; font-size:0.9rem;">
-          <li>Utpaladeva, <em>Īśvarapratyabhijñākārikā</em> (c. 900–950 CE); R. Torella (ed. &amp; trans.), <em>The Īśvarapratyabhijñākārikā of Utpaladeva</em>, 2002.</li>
-          <li>The verbalizable global workspace ("J-space") and the Jacobian lens — the interpretability findings this project builds its actuator on (2026).</li>
-          <li>Sathish, S. <em>Recognition-Gated Workspace Steering</em>, 2026 — the paper behind this essay, with all 17 figures generated from the committed gate ledger.</li>
-          <li>Sathish, S. <em>Active Circuit Discovery</em>, Symmetry 18(6):1043 — the companion project on active-inference-driven interpretability.</li>
-        </ol>
-      </div>
-    </details>
+    <!-- References -->
+    <div style="margin-top: 4rem;">
+      <p class="num-label" style="margin-bottom:0.9rem;">References</p>
+      <ol class="ref-list">
+        <li><strong>The Īśvarapratyabhijñākārikā of Utpaladeva.</strong> R. Torella (ed. &amp; trans.), 2002 · Motilal Banarsidass — the 10th-century source of the five rules.</li>
+        <li><strong>The verbalizable global workspace and the Jacobian lens.</strong> 2026 — the interpretability findings this project builds its writing instrument on.</li>
+        <li><strong>Recognition-Gated Workspace Steering.</strong> Sathish, S., 2026 — the paper behind this essay; all 17 figures generated from the committed evidence ledger.</li>
+        <li><strong>Active Circuit Discovery.</strong> Sathish, S. · Symmetry 18(6):1043 — the companion project: active inference choosing interpretability experiments.</li>
+        <li><strong>Attention Is All You Need → frozen decoder-only plants.</strong> Model checkpoints: Qwen3-4B/-3.6-27B, Nemotron-Mini-4B, Gemma-2-2B, Llama-3.2-1B, Qwen2.5-1.5B, SmolLM2-1.7B — no weights updated anywhere in this work.</li>
+      </ol>
+    </div>
 
-    <p class="text-sm mt-12 text-center" style="color: var(--ink-faint);">
-      prabodha · प्रबोध · Apache-2.0 · written by Sharath Sathish · built as an interactive essay ·
+    <p class="mt-14 text-center" style="font-family: var(--font-sans); font-size: 0.8rem; color: var(--ink-mute);">
+      Prabodha · प्रबोध · Apache-2.0 · written by Dr. Sharath Sathish · built as an interactive essay ·
       figures compiled from the paper's sources · no consciousness claims, anywhere
     </p>
   </div>
 </section>
+
+<style>
+  .ref-list {
+    counter-reset: ref;
+    list-style: none;
+    padding: 0;
+    max-width: 680px;
+  }
+  .ref-list li {
+    counter-increment: ref;
+    position: relative;
+    padding: 0.65rem 0 0.65rem 2.6rem;
+    border-bottom: 1px solid var(--hairline-soft);
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+  }
+  .ref-list li::before {
+    content: counter(ref, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--teal);
+  }
+</style>

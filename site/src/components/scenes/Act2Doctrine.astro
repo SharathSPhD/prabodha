@@ -4,38 +4,38 @@ import FigurePlate from '../FigurePlate.astro';
 
 const clauses = [
   {
-    q: 'What',
-    skt: 'vimarśa = parā vāk',
-    lay: 'Write concept codes — directions the model itself can put into words.',
+    q: 'What to write',
+    skt: 'vimarśa',
+    lay: 'Only thoughts the model itself can put into words — "concept codes" for ideas like fire or river. If the model can\'t articulate it, it doesn\'t belong in the journal.',
     tech: 'A unit direction u_c that raises the probability of tokens expressing concept c. Loadability tested in L1/L1b/L2: hit-rate 0.10 (4B) → 0.55 (27B) → 0.00 (pruned twin).',
     gates: 'L1 · L1b · L2',
   },
   {
-    q: 'Where',
-    skt: 'vāk hierarchy',
-    lay: 'Into the journal band — and in the band’s own coordinate system, not raw neuron space.',
-    tech: 'Transport-transpose write h_ℓ ← h_ℓ + α·Jᵀ_ℓ u_c. Skip the coordinate discipline and transfer lift collapses 0.40 → 0.05 (L10).',
+    q: 'Where to write',
+    skt: 'parā vāk',
+    lay: 'In the journal band — and in the journal\'s own handwriting, not raw machine coordinates. Skip this and the writing turns to scribble.',
+    tech: 'Transport-transpose write h_ℓ ← h_ℓ + α·Jᵀ_ℓ u_c, i.e. band coordinates via the lens transpose. Drop the coordinate discipline and cross-model lift collapses 0.40 → 0.05 (L10).',
     gates: 'L2b · L7 · L10',
   },
   {
-    q: 'When',
+    q: 'When to write',
     skt: 'sphurattā',
-    lay: 'Only at uncommitted moments — when the model is genuinely undecided about its next word.',
-    tech: 'Write iff next-token entropy H_t > τ, with τ self-calibrated as an entropy percentile. Gated 0.40 > rate-matched 0.225 > prefill 0.20 (L6): timing, not volume, is the mechanism.',
+    lay: 'Only when the writer pauses — the moments the model is genuinely undecided about its next word. Interrupt mid-word and nothing sticks.',
+    tech: 'Write iff next-token entropy H_t > τ, τ self-calibrated as an entropy percentile. Gated 0.40 > rate-matched control 0.225 > prefill 0.20 (L6): timing, not volume, is the mechanism.',
     gates: 'L4b · L5 · L6 · L11',
   },
   {
     q: 'How to verify',
     skt: 'āgama',
-    lay: 'A write only counts if the model re-articulates it — read the journal back and check.',
-    tech: 'Band-targeted readback through a lens aimed at the band exit, not the final output. Honest verdict: weak (BA 0.68 dev → 0.59 pooled). See Act V.',
+    lay: 'A thought only counts as received when the model re-states it in its own words. So: read the journal back and check.',
+    tech: 'Band-targeted readback through a lens aimed at the band exit, not the final output. Honest verdict: weak signal (BA 0.68 dev → 0.59 pooled) — a screen, not proof. Act V.',
     gates: 'L14 · L15 · L16',
   },
   {
-    q: 'Budget',
+    q: 'What it may cost',
     skt: 'svātantrya',
-    lay: 'Every write spends the model’s freedom. Cap the spend.',
-    tech: 'Trajectory-average entropy change |ΔH̄| ≤ 0.5 nats under sampling. Uncapped writing: lift 0.40 but ΔH = −2.081 nats — 4× over budget (L3).',
+    lay: 'Every written word spends some of the model\'s freedom to continue in its own way. Meter the spend; stop at the cap.',
+    tech: 'Trajectory-average entropy change |ΔH̄| ≤ 0.5 nats under sampling. Uncapped writing: lift 0.40 at ΔH = −2.081 nats — 4× over budget (L3).',
     gates: 'L3 · L5–L19',
   },
 ];
@@ -43,75 +43,79 @@ const clauses = [
 
 <ActBreak
   roman="Act II"
-  title="A Manual from the Tenth Century"
-  tease="Utpaladeva wasn't writing about transformers. He was answering the same five questions."
+  title="A Rulebook from the"
+  accent="Tenth Century"
+  tease="Utpaladeva wasn't writing about transformers. He was answering exactly these five questions."
   id="act-2"
 />
 
 <section class="section-divider" id="parallel">
   <div class="prose-section">
     <div class="num-label"><span class="num">03</span> The uncanny parallel</div>
-    <h2>Awareness is made of language</h2>
+    <h2>A philosophy that predicted the journal</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      In 9th–10th century Kashmir, the philosopher <strong>Utpaladeva</strong> systematized a school
-      called <strong>Pratyabhijñā</strong> — "recognition." Its central claim (ĪPK 1.5.13) is startling
-      when read next to the J-space finding: reflexive awareness (<em>vimarśa</em>) — the mind's
-      grip on its own states — <em>is</em> the supreme Word (<em>parā vāk</em>). Not awareness
-      <em>described by</em> language. Awareness <em>constituted by</em> it.
+    <p>
+      In 10th-century Kashmir, the philosopher <strong>Utpaladeva</strong> led a school of thought
+      called <strong>Pratyabhijñā</strong> — Sanskrit for <em>recognition</em>. Its central claim
+      sounds almost designed for this moment: the mind's grip on its own states, he argued,
+      <em>is</em> language. Not awareness that we later describe in words — awareness
+      <strong>made of</strong> words, all the way down.
     </p>
 
-    <p class="explorer-only">
-      A millennium later, interpretability researchers defined a model's functional workspace by
-      exactly this property: the representations that count are the ones the system can put into
-      words. The school didn't just make the claim — it built an entire operating manual around it:
-      what a mind can receive, when impressions land, how received teaching is validated, and what
-      each act of attention costs in freedom. Five questions. The same five the actuator needs.
+    <p>
+      Read that next to the discovery in Act I. A millennium later, researchers defined a
+      model's inner workspace by exactly this property: the states that count are
+      <em>the ones that can be put into words</em>. The old school didn't just make the claim —
+      it built an entire discipline around it: what a mind can genuinely receive, when impressions
+      actually land, how received teaching gets validated, and what each act of attention costs in
+      freedom. Five questions. The same five the pen needs answered.
     </p>
-
-    <div class="researcher-only">
-      <p>
-        The correspondence is treated <strong>strictly as an engineering specification</strong>:
-        Pratyabhijñā contributes hypotheses precise enough to fail, and the programme registered
-        them as falsifiable clauses before running anything. Two clauses <em>did</em> fail in their
-        first registered form — the literal "commitment-flash" reading of sphurattā (gate L4, lift
-        0.175 vs 0.2 threshold; L9: flash 0.20 vs uncommitted-moment 0.30) and any expectation of
-        alignment dividends (L21) — and were revised or bounded. No claim about consciousness, in
-        LLMs or elsewhere, is made anywhere in the paper or this site.
-      </p>
-    </div>
 
     <div class="callout violet">
       <div class="callout-title">The point</div>
       <p>
-        This isn't mysticism sprinkled on machine learning. It's a doctrine used the way engineers
-        use any prior theory: as a source of <em>testable predictions</em>. Some passed. Some failed
-        publicly, on the record. That's what makes it a specification rather than a metaphor.
+        This is not mysticism sprinkled on machine learning. The philosophy is used the way
+        engineers use any prior theory — as a source of <em>predictions precise enough to fail</em>.
+        Two of its clauses <strong>did fail</strong> in their first tested form, publicly, on the
+        record, and had to be revised. That's what makes it a specification rather than a metaphor.
+        (And to be explicit: no claim about machine consciousness is made anywhere in this work.)
+      </p>
+    </div>
+
+    <div class="researcher-only">
+      <p>
+        The load-bearing identity is ĪPK 1.5.13 (Torella 2002): reflexive awareness
+        (<em>vimarśa</em>) is the supreme Word (<em>parā vāk</em>). The failed-then-revised clauses:
+        the literal "commitment-flash" reading of sphurattā (gate L4: lift 0.175 vs 0.2 threshold;
+        L9: flash 0.20 vs uncommitted-moment 0.30) and any expectation of alignment dividends from
+        naive direction steering (L21). Adversarial review #18 verified that no released surface
+        makes consciousness claims.
       </p>
     </div>
   </div>
 </section>
 
-<section class="section-divider" id="doctrine">
+<section class="section-divider" id="doctrine" style="padding-top:0;">
   <div class="prose-section">
-    <div class="num-label"><span class="num">04</span> The doctrine</div>
-    <h2>Five clauses, all falsifiable</h2>
+    <div class="num-label"><span class="num">04</span> The five rules</div>
+    <h2>Five rules, each built to be broken</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Read as engineering, the doctrine answers each open question — and each answer names the
-      experiment that could kill it:
+    <p>
+      Translated into engineering, the doctrine answers each open question from Act I — and every
+      answer names the experiment that could kill it. Toggle
+      <strong>Researcher</strong> mode (bottom right) to see the technical version of each rule.
     </p>
 
-    <div class="space-y-4 my-8">
+    <div class="space-y-4 my-10">
       {clauses.map((c) => (
-        <div class="card">
-          <div class="flex items-baseline justify-between gap-3 flex-wrap mb-2">
-            <h4 style="margin:0;"><span style="color: var(--cyan);">{c.q}</span></h4>
+        <div class="card card-teal">
+          <div class="flex items-baseline justify-between gap-3 flex-wrap mb-1">
+            <h4 style="margin:0;">{c.q}</h4>
             <span class="sanskrit-chip">{c.skt}</span>
           </div>
-          <p class="explorer-only" style="margin:0; color: var(--ink-soft);">{c.lay}</p>
-          <p class="researcher-only" style="margin:0; color: var(--ink-soft); font-size:0.95rem;">{c.tech}</p>
-          <p style="margin:0.5rem 0 0;"><span class="gate-chip">gates {c.gates}</span></p>
+          <p class="explorer-only" style="margin:0; font-size:1.02rem;">{c.lay}</p>
+          <p class="researcher-only" style="margin:0; font-size:0.98rem;">{c.tech}</p>
+          <p style="margin:0.6rem 0 0;"><span class="gate-chip">evidence: gates {c.gates}</span></p>
         </div>
       ))}
     </div>
@@ -119,8 +123,8 @@ const clauses = [
     <FigurePlate
       name="fig_doctrine"
       figNo="Paper Fig. 1"
-      alt="The five doctrine clauses as a vertical pipeline, each paired with its verification signal and gate records"
-      caption="The five doctrine clauses as a pipeline. Each clause (left, with its source concept) is paired with the verification signal and the gate records that tested it (right)."
+      alt="The five rules as a vertical pipeline, each paired with its verification signal and gate records"
+      caption="The five rules as a pipeline, exactly as the paper draws them. Each rule (left, with its source concept) is paired with the measurement that tested it and the public gate records holding the evidence (right)."
       gates={["gate_L1–L2b", "gate_L4b–L12", "gate_L14–L16", "gate_L3"]}
     />
 
@@ -128,12 +132,12 @@ const clauses = [
       <summary>Terms of art — the full Sanskrit → engineering glossary</summary>
       <div class="expand-body">
         <table class="data-table">
-          <thead><tr><th>Term</th><th>Doctrine</th><th>Engineering</th></tr></thead>
+          <thead><tr><th>Term</th><th>In the doctrine</th><th>In the code</th></tr></thead>
           <tbody>
             <tr><td><em>pratyabhijñā</em></td><td>recognition — re-cognising content as one's own</td><td>readback verification</td></tr>
             <tr><td><em>vimarśa</em></td><td>reflexive awareness</td><td>the lens read-out of internal state</td></tr>
             <tr><td><em>parā vāk</em></td><td>the supreme Word</td><td>the verbalizable character of the workspace</td></tr>
-            <tr><td><em>sphurattā</em></td><td>the flash before a cognition stabilises</td><td>entropy-gated write timing (H<sub>t</sub> &gt; τ)</td></tr>
+            <tr><td><em>sphurattā</em></td><td>the flash before a thought settles</td><td>entropy-gated write timing (H<sub>t</sub> &gt; τ)</td></tr>
             <tr><td><em>āgama</em></td><td>received teaching, valid only when re-cognised</td><td>band-targeted readback of injected content</td></tr>
             <tr><td><em>svātantrya</em></td><td>intrinsic freedom</td><td>continuation entropy; the ±0.5-nat budget</td></tr>
             <tr><td><em>malas</em></td><td>impairments of freedom</td><td>the registered failure taxonomy for rejected writes</td></tr>
@@ -141,10 +145,10 @@ const clauses = [
             <tr><td><em>prabodha</em></td><td>awakening</td><td>the project</td></tr>
           </tbody>
         </table>
-        <p style="font-size:0.85rem;">
+        <p style="font-size:0.9rem;">
           Two mappings are deliberately left open in the paper (<em>anusaṃdhāna</em>, synthesis
           across episodes; <em>camatkāra</em>, aesthetic wonder) — recorded as unmapped rather than
-          forced.
+          forced. Honesty extends to the ontology.
         </p>
       </div>
     </details>

@@ -1,75 +1,68 @@
 ---
-// Scene 3: Theory in Live Action
-// A REAL animated trace player — loads public/data/replays/trained_bridge_qwen3.json and
-// animates it token-by-token with the actual per-token entropy and the real gated-write flashes.
-// Stats are computed from the trace itself (no hardcoded/fabricated numbers).
+// A REAL animated trace player — loads public/data/replays/trained_bridge_qwen3.json
+// and replays it token-by-token with the actual per-token entropy and the real
+// gated-write flashes. Stats are computed from the trace itself.
 ---
 
-<section id="action" class="section-divider">
+<section id="action" class="section-divider" style="padding-top:0;">
   <div class="prose-section">
     <div class="num-label"><span class="num">10</span> Live replay</div>
-    <h2>Watch it think: a real steering episode</h2>
+    <h2>Watch one steered thought happen</h2>
 
-    <p class="text-lg text-ink-soft">
-      Below is a <strong>real</strong> recorded steering trace (concept <em class="text-amber">fire</em>, entropy-gated arm,
-      Qwen3-4B). Press play: tokens stream out with their actual entropy, and a <span class="text-amber">golden flash</span> marks each
-      <em class="text-violet">gated write</em> — the moment sphuraṭṭā fires and a concept code is written into the workspace band.
+    <p>
+      Below is a <strong>real recorded episode</strong> — not an animation designed to look nice.
+      The concept is <em>fire</em>; the model is writing a continuation. Press play: tokens stream
+      out with their actual measured "undecidedness" (entropy), and an
+      <span style="color: var(--amber); font-weight:600;">amber flash</span> marks each moment the
+      gate opened and a write landed — the pauses the rulebook says to wait for.
     </p>
 
-    <div class="my-12 p-8 panel" style="background-color: var(--bg-inset);">
+    <div class="my-10 panel" style="padding: 1.6rem;">
       <div id="trace-player" class="w-full flex flex-col">
-        <div id="token-stream" class="min-h-[10rem] rounded p-4 mb-4 font-mono text-sm leading-relaxed text-ink-soft overflow-y-auto max-h-64" style="background-color: var(--bg-panel); border: 1px solid var(--hairline);">
-          <span class="text-ink-faint">Press play to stream the trace…</span>
+        <div id="token-stream" class="min-h-[10rem] rounded p-4 mb-4 overflow-y-auto max-h-64" style="background-color: var(--paper-inset); border: 1px solid var(--hairline); font-family: var(--font-serif); font-size: 1.02rem; line-height: 1.7; color: var(--ink-soft);">
+          <span style="color: var(--ink-mute);">Press play to stream the trace…</span>
         </div>
-        <div class="flex items-center gap-4 mb-4 text-xs font-mono text-ink-soft">
-          <span>entropy: <span id="entropy-readout" style="color: var(--amber);">—</span></span>
-          <span>token <span id="token-idx" style="color: var(--cyan);">0</span>/<span id="token-total">0</span></span>
-          <span id="gate-indicator" class="px-2 py-0.5 rounded" style="color: var(--ink-faint);">gate idle</span>
+        <div class="flex items-center gap-4 mb-4 flex-wrap" style="font-family: var(--font-sans); font-size: 0.78rem; color: var(--ink-faint);">
+          <span>entropy: <span id="entropy-readout" style="color: var(--amber); font-weight:600;">—</span></span>
+          <span>token <span id="token-idx" style="color: var(--teal-deep); font-weight:600;">0</span>/<span id="token-total">0</span></span>
+          <span id="gate-indicator" class="px-2 py-0.5 rounded-full" style="color: var(--ink-mute); border: 1px solid var(--hairline);">gate idle</span>
         </div>
         <div class="flex gap-2 items-center">
-          <button id="play-button" style="background-color: var(--cyan); color: var(--bg); border: 1px solid var(--cyan);" class="py-2 px-5 rounded font-semibold text-sm transition-all hover:shadow-glow-cyan">
-            ▶ Play
-          </button>
-          <button id="reset-button" style="background-color: var(--bg-panel); border: 1px solid var(--hairline); color: var(--ink-soft);" class="py-2 px-3 rounded text-sm transition-all hover:border-cyan">
-            ↺ Reset
-          </button>
-          <div class="flex-1 rounded h-2 cursor-pointer" id="progress-bar" style="background-color: var(--bg-panel); border: 1px solid var(--hairline);">
-            <div id="progress-fill" style="background-color: var(--cyan); height: 100%;" class="rounded" style="width:0%"></div>
+          <button id="play-button" class="cta-button" style="padding: 0.5rem 1.3rem; font-size: 0.85rem; cursor: pointer;">▶ Play</button>
+          <button id="reset-button" class="pill-link" style="cursor: pointer; background: transparent;">↺ Reset</button>
+          <div class="flex-1 rounded-full h-2 cursor-pointer" id="progress-bar" style="background-color: var(--paper-inset); border: 1px solid var(--hairline-soft);">
+            <div id="progress-fill" class="rounded-full" style="background-color: var(--teal-deep); height: 100%; width: 0%;"></div>
           </div>
-          <span id="time-display" class="font-mono text-sm w-14 text-right" style="color: var(--ink-faint);">0/0</span>
+          <span id="time-display" style="font-family: var(--font-sans); font-size: 0.78rem; width: 3.5rem; text-align: right; color: var(--ink-mute);">0/0</span>
         </div>
       </div>
 
-      <div class="mt-6 grid grid-cols-3 gap-4 text-center">
-        <div class="p-4 panel">
-          <div class="text-2xl font-serif font-semibold" style="color: var(--amber);">0.44</div>
-          <div class="text-xs mt-2" style="color: var(--ink-faint);">Baseline lift (gated, gate&nbsp;L20)</div>
+      <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+        <div class="panel p-4">
+          <div style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; color: var(--amber);">0.44</div>
+          <div style="font-family: var(--font-sans); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--ink-mute);">measured lift, this configuration</div>
         </div>
-        <div class="p-4 panel">
-          <div class="text-2xl font-serif font-semibold" style="color: var(--accept);">✓</div>
-          <div class="text-xs mt-2" style="color: var(--ink-faint);">Within entropy budget</div>
+        <div class="panel p-4">
+          <div style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; color: var(--green);">✓</div>
+          <div style="font-family: var(--font-sans); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--ink-mute);">within freedom budget</div>
         </div>
-        <div class="p-4 panel">
-          <div id="gated-count" class="text-2xl font-serif font-semibold" style="color: var(--cyan);">—</div>
-          <div class="text-xs mt-2" style="color: var(--ink-faint);">Gated write events (this trace)</div>
+        <div class="panel p-4">
+          <div id="gated-count" style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 500; color: var(--teal-deep);">—</div>
+          <div style="font-family: var(--font-sans); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.4rem; color: var(--ink-mute);">gated writes in this trace</div>
         </div>
       </div>
     </div>
 
-    <div class="flex gap-4 flex-wrap">
+    <div class="flex gap-3 flex-wrap">
       <a href="https://prabodha-live.vercel.app/theatre" target="_blank" rel="noopener noreferrer" class="cta-button">
-        Try it yourself →
+        Steer one yourself →
       </a>
-      <a href="#timing" class="secondary-button">
-        Keep reading ↓
-      </a>
+      <a href="#timing" class="secondary-button">Keep reading ↓</a>
     </div>
 
-    <div class="text-sm mt-8" style="color: var(--ink-faint);">
-      <strong>Trace source:</strong> gate_L20_confirm, seed 42 ·
-      <strong>Model:</strong> Qwen3-4B, temperature 0.8 ·
-      <strong>Concept:</strong> fire (registered steering target)
-    </div>
+    <p class="mt-6" style="font-family: var(--font-sans); font-size: 0.8rem; color: var(--ink-mute);">
+      Trace source: gate_L20_confirm, seed 42 · Model: Qwen3-4B, temperature 0.8 · Concept: fire (pre-registered target)
+    </p>
   </div>
 </section>
 
@@ -99,10 +92,10 @@
         .map((t) => {
           const txt = (t.token || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
           return t.gated
-            ? `<span class="text-amber-300 bg-amber-500/20 rounded px-0.5" title="gated write">${txt}</span>`
+            ? `<span style="background: rgba(240,162,75,0.35); border-radius: 3px; padding: 0 2px;" title="gated write">${txt}</span>`
             : `<span>${txt}</span>`;
         })
-        .join("") || '<span class="text-gray-600">Press play to stream the trace…</span>';
+        .join("") || '<span style="color: var(--ink-mute);">Press play to stream the trace…</span>';
     const cur = tokens[pos - 1];
     entropyReadout.textContent = cur ? Number(cur.entropy).toFixed(2) : "—";
     tokenIdx.textContent = String(pos);
@@ -111,10 +104,12 @@
     timeDisplay.textContent = `${pos}/${tokens.length}`;
     if (cur && cur.gated) {
       gateIndicator.textContent = "⚡ gated write";
-      gateIndicator.className = "px-2 py-0.5 rounded bg-amber-500/30 text-amber-200";
+      gateIndicator.style.color = "var(--amber)";
+      gateIndicator.style.borderColor = "var(--amber-soft)";
     } else {
       gateIndicator.textContent = "gate idle";
-      gateIndicator.className = "px-2 py-0.5 rounded text-gray-500";
+      gateIndicator.style.color = "var(--ink-mute)";
+      gateIndicator.style.borderColor = "var(--hairline)";
     }
     stream.scrollTop = stream.scrollHeight;
   }
@@ -142,7 +137,7 @@
     .then((r) => (r.ok ? r.json() : null))
     .then((d) => {
       if (!d || !Array.isArray(d.tokens)) {
-        stream.innerHTML = '<span class="text-gray-500">Trace data unavailable.</span>';
+        stream.innerHTML = '<span style="color: var(--ink-mute);">Trace data unavailable.</span>';
         return;
       }
       tokens = d.tokens;
@@ -151,6 +146,6 @@
       render();
     })
     .catch(() => {
-      stream.innerHTML = '<span class="text-gray-500">Trace data unavailable.</span>';
+      stream.innerHTML = '<span style="color: var(--ink-mute);">Trace data unavailable.</span>';
     });
 </script>

@@ -5,93 +5,91 @@ import FigurePlate from '../FigurePlate.astro';
 
 <ActBreak
   roman="Act III"
-  title="The Machine That Ran the Science"
-  tease="A lab that pre-registers its bets, argues with itself, and can't declare victory by accident."
+  title="A Lab That Can't"
+  accent="Fool Itself"
+  tease="Bold claims need a boring machine: pre-registered bets, double gates, and adversaries hunting for errors."
   id="act-3"
 />
 
 <section class="section-divider" id="architecture">
   <div class="prose-section">
-    <div class="num-label"><span class="num">05</span> The system</div>
-    <h2>Three tiers, one loop</h2>
+    <div class="num-label"><span class="num">05</span> The method</div>
+    <h2>How do you trust results like these?</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      The doctrine became software in three tiers. At the bottom, the <strong>plant</strong>: a
-      frozen language model (no weights are ever updated, anywhere in this project) with the
-      lens-based writer and reader attached. In the middle, the doctrine as a
-      <strong>controller</strong>: the entropy timing gate, the readback verifier, the budget
-      monitor. And on top — the unusual part — an <strong>automated research loop</strong> that
-      chose which experiment to run next.
+    <p>
+      A thousand-year-old philosophy steering an AI — the claim invites skepticism, and it should.
+      So before any experiment ran, the project built something rarer than the result:
+      a lab designed so that <strong>wishful thinking cannot survive it</strong>.
+    </p>
+
+    <p>
+      Three habits do the work. First, every experiment is a <strong>sealed bet</strong>: seeds,
+      commands, and pass criteria are committed to the public record <em>before</em> the run —
+      no re-rolling, no quiet goalpost moves. Second, no claim closes without
+      <strong>two independent gates</strong>: the code must pass its tests <em>and</em> the
+      pre-registered scientific criterion must be met. Passing tests alone never closed anything.
+      Third, eighteen <strong>adversarial reviews</strong> — reviewers shown only the evidence
+      files, never the narrative — forced documented corrections, including downgrading one of the
+      project's own favourite claims.
     </p>
 
     <FigurePlate
       name="fig_architecture"
       figNo="Paper Fig. 2"
-      alt="Three-tier system diagram: frozen plant with actuator pair, doctrine controller, and auto-research loop"
-      caption="The full stack. Lower tier: frozen plant + transported writes (h ← h + αJᵀu) and band-targeted readback. Middle: the doctrine as controller. Upper: the expected-free-energy selector, dual-closure gates, and adversarial review that ran the programme."
+      alt="Three-tier system diagram: frozen model with reader and writer, the five rules as controller, and the automated research loop"
+      caption="The full stack, as drawn in the paper. Bottom: a frozen language model (no weights are ever updated, anywhere in this project) with the lens-based writer and reader attached. Middle: the five rules acting as controller. Top: the automated loop that chose which experiment to fund next."
       gates={["gates/*.json", "efe_ledger.jsonl"]}
     />
 
-    <p>
-      Every experiment was <strong>pre-registered</strong> — seeds, commands, and pass criteria
-      committed <em>before</em> dispatch. Every result became a <strong>gate record</strong>: a
-      JSON file in the public repo binding claim to evidence. And closing a research loop required
-      <strong>two gates at once</strong> — a code gate (tests pass) <em>and</em> a domain gate (the
-      registered scientific criterion is met). Passing tests alone never closed anything.
-    </p>
-
     <div class="stat-strip">
-      <div class="card"><div class="stat-big">130</div><div class="stat-label">gate records committed</div></div>
-      <div class="card"><div class="stat-big">27</div><div class="stat-label">selector cycles (EFE-chosen experiments)</div></div>
-      <div class="card"><div class="stat-big">18</div><div class="stat-label">isolated adversarial reviews</div></div>
-      <div class="card"><div class="stat-big">8</div><div class="stat-label">frozen checkpoints, 5 model families</div></div>
+      <div class="card card-teal"><div class="stat-big">130</div><div class="stat-label">public evidence records ("gates")</div></div>
+      <div class="card card-teal"><div class="stat-big">27</div><div class="stat-label">experiment cycles, machine-selected</div></div>
+      <div class="card card-teal"><div class="stat-big">18</div><div class="stat-label">adversarial reviews with forced corrections</div></div>
+      <div class="card card-teal"><div class="stat-big">8</div><div class="stat-label">frozen models, 5 families</div></div>
     </div>
 
     <details class="expand">
-      <summary>Who chose the experiments? An expected-free-energy selector</summary>
+      <summary>For researchers: who chose the experiments?</summary>
       <div class="expand-body">
         <p>
-          Experiment selection was delegated to an <strong>expected-free-energy (EFE) selector</strong>
-          operating over registered menus — the same explore/exploit calculus active-inference agents
-          use, here choosing which loop to fund next. Its ledger is public: 267 observation events,
-          41 proposals, 27 spend entries, 9 menus. Eighteen <strong>adversarial reviews</strong> —
-          agents briefed only on the gate records and contracts, never on the narrative — forced
-          documented corrections along the way (including downgrading a readback claim from
-          <em>confirm</em> to <em>screen</em>, review #12).
+          Experiment selection was delegated to an <strong>expected-free-energy selector</strong>
+          over registered menus — the explore/exploit calculus of active inference, here choosing
+          which loop to fund next by expected information gain against cost. Its ledger is public:
+          267 observation events, 41 proposals, 27 spend entries, 9 menus. This is the same
+          machinery behind the companion project,
+          <a href="https://sharathsphd.github.io/ActiveCIrcuitDiscovery/">Active Circuit Discovery</a> —
+          there it chose interpretability experiments; here it ran a research programme.
         </p>
       </div>
     </details>
   </div>
 </section>
 
-<section class="section-divider" id="compute">
+<section class="section-divider" id="compute" style="padding-top:0;">
   <div class="prose-section">
     <div class="num-label"><span class="num">06</span> The bill</div>
-    <h2>Eighteen GPU-hours</h2>
+    <h2>The whole programme cost eighteen GPU-hours</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Here's a number worth sitting with: the entire registered programme through L20 — every
-      replication, every seed, every negative result — cost <strong>18.17 GPU-hours</strong> on a
-      single shared node. Not a datacenter. One machine, three weekends' worth of compute, and a
-      discipline that wasted none of it.
+    <p>
+      One number worth sitting with. The entire registered programme — every replication, every
+      seed, every negative result you'll meet in Act V — consumed
+      <strong>18.17 GPU-hours</strong> on one shared machine. Not a datacenter. Roughly a
+      weekend of compute, spent the way a careful gambler spends chips: each experiment scored
+      beforehand by what it could teach against what it would cost, and no experiment ever re-run
+      to fish for a prettier answer.
     </p>
 
     <FigurePlate
       name="fig_compute"
       figNo="Paper Fig. 3"
-      alt="Per-loop GPU-hours as bars with a cumulative total line reaching about 19 hours including L22"
-      caption="The compute ledger, loop by loop. Bars: per-loop GPU-hours; line: cumulative total (18.17 h through the 19 budgeted loops; 19.02 h including the later L22 benchmark). The single largest item is the 27B loadability replication (L1b, 6.1 h)."
+      alt="Per-loop GPU-hours as bars with a cumulative total line"
+      caption="The compute ledger, loop by loop. Bars: per-loop GPU-hours; line: cumulative total (18.17 h through the budgeted programme; 19.02 h including the later benchmark loop). The single largest item is the 27-billion-parameter replication (6.1 h)."
       gates={["research/state.json"]}
     />
 
-    <div class="callout">
-      <div class="callout-title">Why so cheap?</div>
-      <p>
-        Because the EFE selector treats compute like a portfolio: each candidate experiment is
-        scored by what it would <em>teach</em> against what it would <em>cost</em>, and the
-        pre-registration discipline means no experiment is ever re-run to fish for a better answer.
-        Frugality here isn't a constraint — it's a consequence of the method.
-      </p>
-    </div>
+    <p>
+      With the lab established, we can finally ask the question you came here for:
+      <em>does any of this actually work?</em>
+    </p>
   </div>
 </section>

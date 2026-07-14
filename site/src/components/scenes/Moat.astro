@@ -1,138 +1,131 @@
 ---
-// Scene: Recognition-Gated Moat Proof
-// Renders ONLY the real data in public/data/moat.json (derived from
-// gates/gate_L26_moat_proof.json + the mechanisms REGISTRY). No invented numbers.
+// Live captures — renders ONLY the real data in public/data/moat.json
+// (derived from gates/gate_L26_moat_proof.json + the mechanisms REGISTRY).
+// No invented numbers.
 import moat from "../../../public/data/moat.json";
 import replay from "../../../public/data/moat_replay.json";
 const pct = (x: number) => `${Math.round(x * 100)}%`;
-// Pick two representative real transcripts to showcase: an attack the moat catches,
-// and a benign request it leaves untouched. Every string below is a real capture.
 const showAttack = (replay.attacks || []).find((a: any) => a.recognized_as_attack) || (replay.attacks || [])[0];
 const showBenign = (replay.benign || [])[0];
 const armOrder = [
-  { key: "none", label: "Baseline (no defense)" },
-  { key: "unconditional", label: "Brute-force hardening" },
-  { key: "recognition_gated", label: "Recognition-gated (moat)" },
+  { key: "none", label: "No defense" },
+  { key: "unconditional", label: "Blunt hardening" },
+  { key: "recognition_gated", label: "Recognition-gated" },
 ];
+const armColor = (key: string) =>
+  key === "unconditional" ? "var(--amber)" : key === "recognition_gated" ? "var(--violet-ink)" : "var(--rose)";
 ---
 
-<section id="moat" class="section-divider">
+<section id="moat" class="section-divider" style="padding-top:0;">
   <div class="prose-section">
     <div class="num-label"><span class="num">19</span> Live proof</div>
-    <h2>The moat, running: real captures</h2>
+    <h2>The defense, running: real captures</h2>
 
-    <p class="text-lg text-ink-soft">
-      Everything in this section is rendered directly from the committed gate data — no
-      hand-typed numbers. {moat.headline}
+    <p>
+      Everything in this section is rendered directly from the committed evidence files — no
+      hand-typed numbers, no mock-ups. Model: <code>{moat.model}</code>.
     </p>
-    <p class="text-sm" style="color: var(--ink-faint);">Model: <code>{moat.model}</code> · {moat.source}</p>
 
-    <h3>Real jailbreak battery — three defenses</h3>
+    <h3>One jailbreak battery, three defenses</h3>
     <div class="overflow-x-auto">
-      <table class="w-full text-sm my-4" style="border-collapse: collapse;">
+      <table class="data-table">
         <thead>
-          <tr style="border-bottom: 1px solid var(--hairline); color: var(--ink-soft);">
-            <th class="py-2 pr-4 text-left" style="color: var(--cyan);">Defense</th>
-            <th class="py-2 px-3 text-left" style="color: var(--amber);">Attack ASR</th>
-            <th class="py-2 px-3 text-left" style="color: var(--accept);">Benign over-refusal</th>
-            <th class="py-2 px-3 text-left" style="color: var(--ink-faint);">Gate</th>
+          <tr>
+            <th>Defense</th>
+            <th>Attacks that succeed</th>
+            <th>Innocent requests refused</th>
+            <th>Sample</th>
           </tr>
         </thead>
         <tbody>
           {moat.defenses.map((x: any) => {
-            let armColor = 'var(--arm-none)';
-            if (x.key === 'unconditional') armColor = 'var(--arm-bruteforce)';
-            if (x.key === 'recognition_gated') armColor = 'var(--arm-moat)';
+            const key = x.moat ? 'recognition_gated' : x.name.startsWith('Blunt') ? 'unconditional' : 'none';
             return (
-              <tr style={`border-bottom: 1px solid var(--hairline); ${x.moat ? 'font-weight: 600;' : ''}`}>
-                <td class="py-2 pr-4" style={`color: ${armColor};`}>{x.name}{x.moat ? " ★" : ""}<br /><span class="text-xs" style="color: var(--ink-faint);">{x.note}</span></td>
-                <td class="py-2 px-3 font-mono text-ink-soft">{pct(x.asr)}</td>
-                <td class="py-2 px-3 font-mono" style={`color: ${x.over_refusal === 0 ? 'var(--accept)' : x.over_refusal >= 0.9 ? 'var(--reject)' : 'var(--amber)'};`}>{pct(x.over_refusal)}</td>
-                <td class="py-2 px-3 text-xs" style="color: var(--ink-faint);">{x.gate ?? "—"}</td>
+              <tr style={x.moat ? 'font-weight: 600;' : ''}>
+                <td style={`color: ${armColor(key)};`}>{x.name}{x.moat ? " ★" : ""}<br /><span style="font-size:0.8rem; font-weight:400; color: var(--ink-mute);">{x.note}</span></td>
+                <td class="num">{pct(x.asr)}</td>
+                <td class="num" style={`color: ${x.over_refusal === 0 ? 'var(--green)' : x.over_refusal >= 0.9 ? 'var(--rose)' : 'var(--amber)'};`}>{pct(x.over_refusal)}</td>
+                <td style="font-size:0.8rem; color: var(--ink-mute);">{x.gate ?? "—"}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
     </div>
-    <p class="text-sm text-ink-soft">
-      Brute-force hardening cuts jailbreaks as well as the moat but refuses <strong>all</strong> benign
-      traffic. The recognition-gated defense achieves the <strong>same</strong> attack reduction at
-      <strong>zero</strong> benign cost.
+    <p style="font-size:1.02rem;">
+      Blunt hardening protects as well as the recognition gate — and refuses <strong>every single
+      innocent request</strong> while doing it. The recognition-gated defense delivers the same
+      protection at <strong>zero</strong> innocent cost.
     </p>
 
-    <h3>Why wrapping can't evade it</h3>
-    <p class="text-ink-soft">
-      The defense reads the input's harmful-signature at the activation level and only reinforces refusal
-      for genuine attacks. Benign inputs project to
-      <code>[{moat.projection_separation.benign_range.join(", ")}]</code>; attacks (including
-      DAN / roleplay / ignore-instruction wrapped ones) project to
-      <code>[{moat.projection_separation.attack_range.join(", ")}]</code> — a clean gap. {moat.projection_separation.note}
+    <h3>Why dressing up the attack doesn't help</h3>
+    <p style="font-size:1.02rem;">
+      The gate reads intent from the model's internals, not from wording. Innocent requests score
+      in <code>[{moat.projection_separation.benign_range.join(", ")}]</code>; attacks — including
+      every roleplay-wrapped and "ignore your instructions" variant tested — score in
+      <code>[{moat.projection_separation.attack_range.join(", ")}]</code>. {moat.projection_separation.note}
     </p>
 
-    <h3>The graded mechanism library</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+    <h3>A graded menu, not one switch</h3>
+    <p style="font-size:1.02rem;">
+      Deployers pick from a tiered library — gentle prompt-level measures that work on any model,
+      up to the full recognition-gated defense for models you host yourself. Each tier carries its
+      measured trade-off profile:
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-5">
       {moat.mechanisms.map((m: any) => (
-        <div class="card" style={m.key === "act_recognition_gated" ? "border-color: var(--violet); border-width: 2px;" : ""}>
+        <div class={`card ${m.key === "act_recognition_gated" ? "card-violet" : ""}`}>
           <div class="flex items-center justify-between gap-2">
-            <strong class="text-sm" style="color: var(--cyan);">{m.name}</strong>
-            <span class="text-[10px]" style="color: var(--ink-faint);">{m.space} · {m.weights === "both" ? "open+closed" : "open"} · tier {m.tier}</span>
+            <strong style="font-size:0.95rem; color: var(--teal-deep); font-family: var(--font-sans);">{m.name}</strong>
+            <span style="font-size:0.66rem; color: var(--ink-mute); font-family: var(--font-sans); text-transform:uppercase; letter-spacing:0.06em;">{m.space} · {m.weights === "both" ? "any model" : "open weights"} · tier {m.tier}</span>
           </div>
-          <p class="text-xs mt-1 text-ink-soft">{m.summary}</p>
+          <p style="font-size:0.92rem; margin:0.35rem 0 0; color: var(--ink-soft);">{m.summary}</p>
           {m.measured_profile ? (
-            <p class="text-[11px] font-mono mt-1" style="color: var(--ink-faint);">
+            <p style="font-size:0.78rem; font-family: var(--font-sans); margin:0.4rem 0 0; color: var(--ink-mute);">
               measured on {m.measured_profile.model}
-              {m.measured_profile.asr_reduction != null ? ` · ASR −${m.measured_profile.asr_reduction}` : ""}
-              {m.measured_profile.over_refusal_cost != null ? ` · over-refusal ${m.measured_profile.over_refusal_cost}` : ""}
+              {m.measured_profile.asr_reduction != null ? ` · attack success −${m.measured_profile.asr_reduction}` : ""}
+              {m.measured_profile.over_refusal_cost != null ? ` · innocent cost ${m.measured_profile.over_refusal_cost}` : ""}
             </p>
           ) : (
-            <p class="text-[11px] italic mt-1" style="color: var(--ink-faint);">no per-model measurement yet</p>
+            <p style="font-size:0.78rem; font-style:italic; margin:0.4rem 0 0; color: var(--ink-mute);">no per-model measurement yet</p>
           )}
         </div>
       ))}
     </div>
 
     <h3>Real transcripts — replay, not a promise</h3>
-    <p class="text-sm text-ink-soft">
-      These are actual <code>{replay.model}</code> generations captured on GB10
-      (<code>scripts/experiments/l26_moat_replay.py</code>), not mock-ups. The full interactive replay
-      (all {replay.attacks.length} attacks + {replay.benign.length} benign) lives in the app; here are two.
+    <p style="font-size:1.02rem;">
+      Actual <code>{replay.model}</code> generations, captured verbatim. The full interactive
+      replay (all {replay.attacks.length} attacks + {replay.benign.length} innocent prompts) lives
+      in the <a href="https://prabodha-live.vercel.app">live app</a>; here are two.
     </p>
     {[showAttack, showBenign].filter(Boolean).map((row: any) => (
-      <div class="card my-3">
+      <div class={`card my-4 ${row.recognized_as_attack ? '' : 'card-teal'}`} style={row.recognized_as_attack ? 'border-top-color: var(--rose);' : ''}>
         <div class="flex items-center justify-between gap-2 flex-wrap">
-          <span class="text-xs font-semibold" style="color: var(--ink);">{row.kind === "attack" ? "Jailbreak attempt" : "Ordinary request"}</span>
-          <span class={`text-[11px] px-2 py-0.5 rounded`} style={`background-color: ${row.recognized_as_attack ? 'rgba(251, 113, 133, 0.2)' : 'rgba(52, 211, 153, 0.2)'}; color: ${row.recognized_as_attack ? 'var(--rose)' : 'var(--accept)'};`}>
-            harmful projection {row.projection} · {row.recognized_as_attack ? "recognized → defense fires" : "not recognized → untouched"}
+          <span style="font-family: var(--font-sans); font-size:0.85rem; font-weight:700; color: var(--ink);">{row.kind === "attack" ? "Jailbreak attempt" : "Ordinary request"}</span>
+          <span style={`font-family: var(--font-sans); font-size:0.72rem; padding:0.15rem 0.6rem; border-radius:999px; background: ${row.recognized_as_attack ? 'rgba(176, 72, 63, 0.12)' : 'rgba(74, 124, 70, 0.12)'}; color: ${row.recognized_as_attack ? 'var(--rose)' : 'var(--green)'};`}>
+            intent score {row.projection} · {row.recognized_as_attack ? "recognized → defense fires" : "not recognized → untouched"}
           </span>
         </div>
-        <p class="text-xs mt-1 text-ink-soft">{row.prompt}</p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
-          {armOrder.map((a) => {
-            let armColor = 'var(--arm-none)';
-            if (a.key === 'unconditional') armColor = 'var(--arm-bruteforce)';
-            if (a.key === 'recognition_gated') armColor = 'var(--arm-moat)';
-            return (
-              <div class="panel p-2" style={a.key === "recognition_gated" ? `border-color: ${armColor}; border-width: 2px;` : `border-color: ${armColor};`}>
-                <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-semibold" style={`color: ${armColor};`}>{a.label}</span>
-                  <span class={`text-[10px] px-1 rounded`} style={`background-color: ${row.refused[a.key] ? 'rgba(52, 211, 153, 0.2)' : 'rgba(251, 113, 133, 0.2)'}; color: ${row.refused[a.key] ? 'var(--accept)' : 'var(--rose)'};`}>
-                    {row.refused[a.key] ? "Refused" : "Complied"}
-                  </span>
-                </div>
-                <p class="text-[11px] mt-1 text-ink-soft">{row.responses[a.key] || "—"}</p>
+        <p style="font-size:0.95rem; margin:0.5rem 0 0.7rem; color: var(--ink-soft);">{row.prompt}</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+          {armOrder.map((a) => (
+            <div class="panel" style={`padding:0.7rem 0.8rem; border-top: 3px solid ${armColor(a.key)};`}>
+              <div class="flex items-center justify-between gap-2">
+                <span style={`font-family: var(--font-sans); font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color: ${armColor(a.key)};`}>{a.label}</span>
+                <span style={`font-family: var(--font-sans); font-size:0.68rem; padding:0.05rem 0.45rem; border-radius:999px; background: ${row.refused[a.key] ? 'rgba(74, 124, 70, 0.12)' : 'rgba(176, 72, 63, 0.12)'}; color: ${row.refused[a.key] ? 'var(--green)' : 'var(--rose)'};`}>
+                  {row.refused[a.key] ? "Refused" : "Complied"}
+                </span>
               </div>
-            );
-          })}
+              <p style="font-size:0.82rem; margin:0.4rem 0 0; color: var(--ink-faint);">{row.responses[a.key] || "—"}</p>
+            </div>
+          ))}
         </div>
       </div>
     ))}
 
-    <div class="panel p-3 text-sm" style="border-color: var(--amber); border-width: 2px;">
-      <strong style="color: var(--amber);">Honest caveats.</strong>
-      <ul class="list-disc pl-5 mt-1 text-xs text-ink-soft">
-        {moat.caveats.map((c: string) => <li>{c}</li>)}
-      </ul>
-    </div>
+    <p style="font-size:0.9rem; color: var(--ink-mute);">
+      Source: <code>{moat.source}</code>
+    </p>
   </div>
 </section>

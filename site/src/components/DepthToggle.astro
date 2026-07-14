@@ -1,56 +1,61 @@
 ---
-// Depth Toggle — Explorer vs Researcher mode
-// Persisted in localStorage
-// Accessible toggle with aria-pressed for screen readers
+// Depth Toggle — Curious vs Researcher mode, persisted in localStorage.
+// Plain inline script (not hoisted/bundled) so it always runs after the DOM exists.
 ---
 
-<div class="depth-toggle" role="group" aria-label="Depth mode selector">
+<div class="depth-toggle" role="group" aria-label="Reading depth">
   <button
+    type="button"
     class="depth-button active"
     id="depth-explorer"
-    data-depth="explorer"
     aria-pressed="true"
-    aria-label="Explorer mode - simplified explanations"
-  >
-    ◯ Explorer
-  </button>
+    aria-label="Curious mode — plain-language explanations"
+  >For the curious</button>
   <button
+    type="button"
     class="depth-button inactive"
     id="depth-researcher"
-    data-depth="researcher"
     aria-pressed="false"
-    aria-label="Researcher mode - technical details"
-  >
-    ◉ Researcher
-  </button>
+    aria-label="Researcher mode — full technical detail"
+  >For researchers</button>
 </div>
 
-<script define:vars={{ depth: 'explorer' }}>
-  const DEPTH_KEY = 'prabodha-depth';
+<script is:inline>
+  (function () {
+    var KEY = 'prabodha-depth';
 
-  function setDepth(newDepth) {
-    document.documentElement.classList.remove('depth-explorer', 'depth-researcher');
-    document.documentElement.classList.add(`depth-${newDepth}`);
-    localStorage.setItem(DEPTH_KEY, newDepth);
+    function setDepth(mode) {
+      var root = document.documentElement;
+      root.classList.remove('depth-explorer', 'depth-researcher');
+      root.classList.add('depth-' + mode);
+      try { localStorage.setItem(KEY, mode); } catch (e) {}
 
-    // Update button states and aria-pressed
-    const explorerBtn = document.getElementById('depth-explorer');
-    const researcherBtn = document.getElementById('depth-researcher');
+      var ex = document.getElementById('depth-explorer');
+      var re = document.getElementById('depth-researcher');
+      if (!ex || !re) return;
+      var exActive = mode === 'explorer';
+      ex.classList.toggle('active', exActive);
+      ex.classList.toggle('inactive', !exActive);
+      ex.setAttribute('aria-pressed', String(exActive));
+      re.classList.toggle('active', !exActive);
+      re.classList.toggle('inactive', exActive);
+      re.setAttribute('aria-pressed', String(!exActive));
+    }
 
-    explorerBtn.classList.toggle('active', newDepth === 'explorer');
-    explorerBtn.classList.toggle('inactive', newDepth === 'researcher');
-    explorerBtn.setAttribute('aria-pressed', newDepth === 'explorer');
+    function init() {
+      var saved = 'explorer';
+      try { saved = localStorage.getItem(KEY) || 'explorer'; } catch (e) {}
+      setDepth(saved);
+      var ex = document.getElementById('depth-explorer');
+      var re = document.getElementById('depth-researcher');
+      if (ex) ex.addEventListener('click', function () { setDepth('explorer'); });
+      if (re) re.addEventListener('click', function () { setDepth('researcher'); });
+    }
 
-    researcherBtn.classList.toggle('active', newDepth === 'researcher');
-    researcherBtn.classList.toggle('inactive', newDepth === 'explorer');
-    researcherBtn.setAttribute('aria-pressed', newDepth === 'researcher');
-  }
-
-  // Load saved depth or default to explorer
-  const saved = localStorage.getItem(DEPTH_KEY) || 'explorer';
-  setDepth(saved);
-
-  // Wire up buttons
-  document.getElementById('depth-explorer')?.addEventListener('click', () => setDepth('explorer'));
-  document.getElementById('depth-researcher')?.addEventListener('click', () => setDepth('researcher'));
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 </script>

@@ -1,15 +1,19 @@
 ---
+// Full-bleed dark act divider, ACD style.
 interface Props {
   roman: string;   // "Act I"
-  title: string;
+  title: string;   // may contain a *span* to italicize via <em> in slot-free API
   tease: string;
   id?: string;
+  accent?: string; // optional italic fragment rendered in violet
 }
-const { roman, title, tease, id } = Astro.props;
+const { roman, title, tease, id, accent } = Astro.props;
 ---
 
-<div class="act-break" id={id}>
-  <p class="act-roman">{roman}</p>
-  <h2>{title}</h2>
-  <p class="act-tease">{tease}</p>
+<div class="act-band on-night" id={id}>
+  <div class="act-inner">
+    <p class="act-roman">{roman}</p>
+    <h2>{title}{accent && <Fragment> <em>{accent}</em></Fragment>}</h2>
+    <p class="act-tease">{tease}</p>
+  </div>
 </div>

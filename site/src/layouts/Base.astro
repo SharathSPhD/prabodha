@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title = 'prabodha — A thousand-year-old theory of mind, running inside a language model', description = 'An interactive essay on recognition-gated workspace steering for frozen language models, and the jailbreak defense built on it.' } = Astro.props;
+const { title = 'prabodha — An ancient manual for steering an AI\'s mind', description = 'An interactive essay: how a 10th-century theory of recognition became a tested control method for language models — and a jailbreak defense attackers can\'t talk their way past.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,24 +18,30 @@ const { title = 'prabodha — A thousand-year-old theory of mind, running inside
 
     <title>{title}</title>
 
-    <!-- Fonts -->
+    <!-- Fonts: Newsreader (display + body) · Space Grotesk (UI) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Iowan+Old+Style:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-    <!-- Reduced motion support -->
-    <style>
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
 
   <body>
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
     <slot />
+
+    <script is:inline>
+      // Scroll progress bar + nav background swap
+      (function () {
+        const bar = document.getElementById('scroll-progress');
+        const nav = document.querySelector('.site-nav');
+        function onScroll() {
+          const doc = document.documentElement;
+          const max = doc.scrollHeight - doc.clientHeight;
+          if (bar && max > 0) bar.style.width = (100 * doc.scrollTop / max).toFixed(2) + '%';
+          if (nav) nav.classList.toggle('scrolled', doc.scrollTop > window.innerHeight * 0.72);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      })();
+    </script>
   </body>
 </html>

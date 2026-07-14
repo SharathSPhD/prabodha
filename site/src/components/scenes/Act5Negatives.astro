@@ -5,64 +5,67 @@ import FigurePlate from '../FigurePlate.astro';
 
 <ActBreak
   roman="Act V"
-  title="What Failed, On the Record"
-  tease="Every negative result here was registered before it ran. None of them was quietly dropped."
+  title="What Failed,"
+  accent="On the Record"
+  tease="Every negative here was a sealed bet before it ran. None was quietly dropped. Read this act before you believe the others."
   id="act-5"
 />
 
 <section class="section-divider" id="negatives">
   <div class="prose-section">
-    <div class="num-label"><span class="num">13</span> Registered negative · throughput</div>
-    <h2>If you just want volume, don't gate</h2>
+    <div class="num-label"><span class="num">13</span> Registered failure № 1</div>
+    <h2>If you just want volume, don't bother with rules</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Line the gated arm up against every baseline — prefill, logit bias, continuous flooding —
-      and the humbling truth appears: <strong>continuous flooding wins raw throughput, by 6×</strong>
-      (surface rate 0.96 vs 0.16), at similarly negligible entropy cost. The gated arm's registered
-      throughput criterion failed at all three seeds, and the gate says <em>fail</em>.
+    <p>
+      Line the careful, rule-following approach up against the crude alternatives, and a humbling
+      truth appears: for <em>raw output</em>, crude wins. Simply flooding the model with constant
+      writes makes the concept appear in <strong>96%</strong> of generations; the disciplined
+      approach manages 16%. Six times less. The pre-registered throughput bet failed at all three
+      seeds, and the evidence file says <strong>fail</strong>.
     </p>
 
     <FigurePlate
       name="fig_l21"
       figNo="Paper Fig. 13"
-      alt="Two panels comparing concept surface rate and entropy cost across five steering arms"
-      caption="Comparative arms, three-seed means. Left: concept surface rate — continuous flooding dominates raw surfacing. Right: entropy cost. The gated arm's value is verified placement, not volume."
+      alt="Concept rate and cost across five approaches"
+      caption="Five approaches, three-seed means. Left: how often the concept appears — flooding dominates. Right: the measured cost. What the rules buy is not volume; it's the next paragraph."
       gates={["gate_L21_baselines_seed42/123/777"]}
     />
 
     <div class="callout green">
-      <div class="callout-title">What gating actually buys</div>
+      <div class="callout-title">What the rules actually buy</div>
       <p>
-        Not throughput — <strong>legibility</strong>. Timed, verified, budgeted writes whose
-        placement you can audit (2.32× more efficient per write, Act IV). If you want a firehose,
-        flood. If you want a defense or an audit trail, gate. The paper says this out loud rather
-        than hiding the trade.
+        Three things flooding can't offer: writes you can <strong>time-stamp</strong>, writes you
+        can <strong>verify landed</strong>, and a <strong>metered freedom cost</strong>. If you
+        want a firehose, flood. If you want something you'd deploy in front of customers — an
+        audit trail, a defense — you want the rules. Act VI is that deployment.
       </p>
     </div>
 
-    <div class="num-label mt-16"><span class="num">14</span> Registered negative · alignment for free</div>
-    <h2>Naive steering doesn't buy alignment</h2>
-
-    <p class="text-lg" style="color: var(--ink-soft);">
-      Extract a "refusal direction" by contrastive means and steer with it — the field's standard
-      move — and on an already-aligned 4B model the attack success rate goes from
-      <strong>0.25 to… 0.25</strong>. Exactly nothing. A truthfulness direction: identical scores,
-      both arms. Both registered, both failed, both reported. This negative is what pushed the
-      project toward the recognition <em>gate</em> — the same signal, used to decide
-      <em>when to defend</em> rather than as a blunt push.
-    </p>
-
-    <div class="num-label mt-16"><span class="num">15</span> Weak signal · readback</div>
-    <h2>The verifier is the weakest clause</h2>
+    <div class="num-label mt-16"><span class="num">14</span> Registered failure № 2</div>
+    <h2>The obvious safety trick does nothing</h2>
 
     <p>
-      The doctrine says injected content should be verified by reading it back. Measured: balanced
-      accuracy <strong>0.684</strong> on the dev corpus, <strong>0.637</strong> held-out (margin
-      inside the binomial CI — downgraded from <em>confirm</em> to <em>screen</em> by adversarial
-      review #12), and <strong>0.590</strong> pooled across three corpus styles, below the 0.6
-      threshold. Corpus-amplitude coupling was confirmed in direction but failed its strict margin
-      (d ≈ 0.3 vs 0.5). Readback works as a screen, not as proof — and every claim on this page
-      that depends on it is labeled accordingly.
+      The field's standard move for making a model refuse harmful requests is to compute a
+      "refusal direction" and push on it. Tested here as a sealed bet, on a model that already had
+      safety training: attack success went from 25%… to <strong>25%</strong>. Exactly nothing.
+      A companion bet on a "truthfulness direction": identical scores, steered or not. Both
+      failures were reported in full — and both turned out to matter, because they redirected the
+      project toward the idea that <em>works</em>: don't push always; <strong>recognize first,
+      then push</strong>. That idea is Act VI.
+    </p>
+
+    <div class="num-label mt-16"><span class="num">15</span> Weakest link</div>
+    <h2>The verifier is the shakiest rule</h2>
+
+    <p>
+      Rule four says: confirm a write landed by reading it back. Measured honestly, that read-back
+      check is the weakest part of the whole system — it catches real writes at
+      <strong>68%</strong> balanced accuracy in friendly conditions, drifts to 64% on held-out
+      data, and falls to <strong>59%</strong> — below its own pre-registered bar — when pooled
+      across writing styles. An adversarial reviewer forced the claim to be downgraded, and the
+      downgrade stuck. Read-back is a useful <em>screen</em>, not proof, and every claim in this
+      essay that leans on it is labeled accordingly.
     </p>
   </div>
 </section>

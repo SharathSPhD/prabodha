@@ -29,3 +29,7 @@ site/.astro/
 /research/journal.md
 .vercel
 .env*
+
+# macOS/SMB artifacts
+._*
+.smbdelete*

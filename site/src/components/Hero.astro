@@ -1,108 +1,178 @@
 ---
-// Hero: the essay's hook, over the animated J-space band visualization.
+// Hero — dark editorial opening, ACD style: huge Newsreader display,
+// italic violet accent, constellation background, left-aligned.
 ---
 
-<section id="top" class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: linear-gradient(135deg, #0a0e14 0%, #111824 50%, #0d1420 100%);">
-  <!-- Background visualization: J-space band with animated tokens -->
-  <div id="hero-band" class="absolute inset-0 opacity-70"></div>
+<header id="top" class="hero on-night">
+  <canvas id="hero-stars" aria-hidden="true"></canvas>
 
-  <!-- Content -->
-  <div class="relative z-10 prose-section text-center pt-24 pb-16">
-    <p class="scene-label mb-6">An interactive essay · prabodha — प्रबोध, “awakening”</p>
+  <div class="hero-inner">
+    <p class="scene-label" style="margin-bottom: 1.6rem;">An interactive essay · Prabodha · प्रबोध, “awakening”</p>
 
-    <h1 class="text-4xl md:text-6xl font-serif font-semibold mb-6 leading-tight" style="color: var(--ink);">
-      A Thousand-Year-Old Theory of Mind,<br class="hidden md:block" />
-      Running Inside a Language Model
+    <h1>
+      An Ancient Manual<br />
+      for <em>Steering an AI's Mind</em>
     </h1>
 
-    <p class="text-lg md:text-xl font-light mb-4 max-w-3xl mx-auto" style="color: var(--ink-soft);">
-      Interpretability researchers recently found the place where a language model
-      <em>talks to itself</em> — and built a pen that can write there. Nobody knew the grammar.
-      This is the story of borrowing one from a 10th-century Kashmiri philosophy of recognition,
-      turning it into falsifiable engineering, and ending up with a jailbreak defense
-      that lives where attackers can't reach.
+    <p class="hero-lede">
+      Researchers recently found the place where a language model
+      <em class="accent">talks to itself</em> — and built a pen that can write there.
+      Nobody knew the rules. This is the story of finding them in a
+      thousand-year-old philosophy of recognition, testing every one of them
+      to destruction, and ending up with a guardrail that jailbreaks
+      can't talk their way past.
     </p>
 
-    <p class="text-sm mb-10" style="color: var(--ink-faint);">
-      by <strong style="color: var(--ink-soft);">Sharath Sathish</strong> · a guided tour for the curious and the technical alike
+    <p class="hero-byline">
+      by <strong>Dr. Sharath Sathish</strong> · a guided tour for the curious and the technical alike
     </p>
 
-    <div class="flex gap-4 justify-center flex-wrap">
-      <a href="#act-1" class="cta-button">Scroll to begin ↓</a>
-      <a href="#act-6" class="secondary-button">Skip to the jailbreak moat</a>
-    </div>
-
-    <div class="mt-16 pt-8" style="border-top: 1px solid var(--hairline);">
-      <p class="text-sm" style="color: var(--ink-faint);">
-        v1.0.0 · 130 gate records · every number on this page traces to a committed gate file ·
-        core claim replicated at 6 seeds (p = 0.016)
-      </p>
-    </div>
+    <a href="#act-1" class="hero-scroll">Scroll to begin <span class="arr">↓</span></a>
   </div>
-</section>
-
-<script>
-  // Animated J-space band visualization
-  const canvas = document.getElementById('hero-band');
-  if (canvas && typeof window !== 'undefined') {
-    const svg = `
-      <svg viewBox="0 0 1200 400" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="bandGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#1d2d4d;stop-opacity:0.9" />
-            <stop offset="50%" style="stop-color:#2a3f5f;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#1a2a40;stop-opacity:0.9" />
-          </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
-
-        <!-- Band region with glow -->
-        <rect y="140" width="1200" height="120" fill="url(#bandGrad)" opacity="0.8" />
-
-        <!-- Workspace boundary lines -->
-        <line x1="0" y1="140" x2="1200" y2="140" stroke="#22d3ee" stroke-width="1" opacity="0.4" />
-        <line x1="0" y1="260" x2="1200" y2="260" stroke="#a855f7" stroke-width="1" opacity="0.3" />
-
-        <!-- Animated tokens with glow -->
-        <circle cx="100" cy="200" r="5" fill="#22d3ee" opacity="0.9" class="token" filter="url(#glow)" />
-        <circle cx="300" cy="185" r="4" fill="#22d3ee" opacity="0.6" class="token" />
-        <circle cx="500" cy="215" r="5" fill="#f59e0b" opacity="0.8" class="token" filter="url(#glow)" />
-        <circle cx="700" cy="200" r="4" fill="#22d3ee" opacity="0.5" class="token" />
-        <circle cx="900" cy="210" r="5" fill="#a855f7" opacity="0.7" class="token" filter="url(#glow)" />
-        <circle cx="1100" cy="190" r="4" fill="#22d3ee" opacity="0.4" class="token" />
-
-        <!-- Label -->
-        <text x="600" y="380" text-anchor="middle" fill="#aebacb" font-family="monospace" font-size="12">
-          the J-space workspace band — the late layers where representations become verbalizable
-        </text>
-      </svg>
-    `;
-    canvas.innerHTML = svg;
-  }
-</script>
+</header>
 
 <style>
-  #hero-band {
-    animation: fadeInUp 1s ease-out;
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 500px at 78% 12%, rgba(180, 155, 240, 0.08), transparent 60%),
+      radial-gradient(700px 420px at 8% 92%, rgba(79, 216, 206, 0.06), transparent 60%),
+      linear-gradient(160deg, #080b11 0%, #0a0d14 60%, #0b0e16 100%);
   }
 
-  .token {
-    animation: drift 5s infinite ease-in-out;
+  #hero-stars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--maxw-wide);
+    width: 100%;
+    margin: 0 auto;
+    padding: 7rem 1.6rem 5rem;
   }
 
-  @keyframes drift {
-    0%, 100% { transform: translateY(0); opacity: 0.6; }
-    50% { transform: translateY(-12px); opacity: 0.95; }
+  .hero h1 {
+    color: var(--night-ink);
+    font-size: clamp(2.9rem, 7.6vw, 5.7rem);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.03;
+    margin-bottom: 2.2rem;
+    max-width: 1050px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: #cdbdf6;
+  }
+
+  .hero-lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.3vw, 1.55rem);
+    line-height: 1.55;
+    color: var(--night-ink-soft);
+    max-width: 720px;
+    margin-bottom: 2.2rem;
+  }
+
+  .hero-lede .accent {
+    color: var(--violet);
+    font-style: italic;
+  }
+
+  .hero-byline {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--night-ink-faint);
+    margin-bottom: 4rem;
+  }
+
+  .hero-byline strong { color: var(--night-ink); font-weight: 600; }
+
+  .hero-scroll {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--night-ink-faint);
+    border-bottom: none;
+    transition: color 0.25s ease;
+  }
+
+  .hero-scroll:hover { color: var(--teal-bright); }
+
+  .hero-scroll .arr {
+    display: inline-block;
+    animation: bob 2.2s ease-in-out infinite;
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
   }
 </style>
+
+<script is:inline>
+  // Subtle constellation: drifting points, faint links — pure canvas, no deps.
+  (function () {
+    const c = document.getElementById('hero-stars');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    let w, h, pts;
+    const N = 70;
+
+    function reset() {
+      w = c.width = c.offsetWidth * devicePixelRatio;
+      h = c.height = c.offsetHeight * devicePixelRatio;
+      pts = Array.from({ length: N }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.12 * devicePixelRatio,
+        vy: (Math.random() - 0.5) * 0.12 * devicePixelRatio,
+        r: (Math.random() * 1.4 + 0.5) * devicePixelRatio,
+        tw: Math.random() * Math.PI * 2,
+      }));
+    }
+
+    function tick(t) {
+      ctx.clearRect(0, 0, w, h);
+      const linkDist = 130 * devicePixelRatio;
+      for (let i = 0; i < N; i++) {
+        const p = pts[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+        for (let j = i + 1; j < N; j++) {
+          const q = pts[j];
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const d = Math.hypot(dx, dy);
+          if (d < linkDist) {
+            ctx.strokeStyle = `rgba(140, 147, 163, ${(0.09 * (1 - d / linkDist)).toFixed(3)})`;
+            ctx.lineWidth = devicePixelRatio * 0.5;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        const glow = 0.35 + 0.3 * Math.sin(t / 1400 + p.tw);
+        ctx.fillStyle = `rgba(205, 210, 222, ${glow.toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      reset();
+      addEventListener('resize', reset);
+      requestAnimationFrame(tick);
+    }
+  })();
+</script>

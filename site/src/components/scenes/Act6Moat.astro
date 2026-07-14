@@ -6,81 +6,100 @@ import Moat from './Moat.astro';
 
 <ActBreak
   roman="Act VI"
-  title="The Moat"
-  tease="The concept becomes a product: a jailbreak defense that lives below the prompt."
+  title="A Guardrail Below"
+  accent="the Prompt"
+  tease="The payoff: a jailbreak defense that reads intent, not wording — so it can't be talked out of the way."
   id="act-6"
 />
 
 <section class="section-divider" id="harden">
   <div class="prose-section">
-    <div class="num-label"><span class="num">16</span> The wrong way first</div>
-    <h2>Brute force refuses everyone</h2>
+    <div class="num-label"><span class="num">16</span> The threat</div>
+    <h2>Every attacker comes through the same door</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      A deployed model's end users can only attack it through the <strong>prompt</strong> — they
-      have no access to its activations. So: use the actuator to harden refusal. The obvious way is
-      to push the refusal direction <em>all the time</em>. It works — and it's unusable. Brute-force
-      hardening cuts attacks, but on Gemma-2-2B it also refuses <strong>100% of benign
-      requests</strong>. On SmolLM2 it's worse than unusable: hardening <strong>backfires</strong>,
-      driving attack success from 0.583 to 0.917.
+    <p>
+      Step back and ask what all this research is <em>for</em>. Here's the answer, and it starts
+      with a simple observation: whoever attacks a deployed AI — trying to extract harmful
+      instructions with roleplay tricks, "ignore your instructions" gambits, jailbreak
+      wrappers — can only reach it through <strong>the prompt</strong>. The text box. That's the
+      one door. Everything you've read so far built the tools to guard it from a place the
+      attacker can't reach: <em>inside</em> the model, below the prompt.
+    </p>
+
+    <p>
+      First, the obvious approach — and its failure. Use the pen to push the model toward refusal
+      <em>all the time</em>, for everyone. It does cut attacks. It also refuses
+      <strong>100% of innocent requests</strong> on one model — a security guard who solves theft
+      by locking out all the customers. On another model it did something worse than nothing:
+      constant pushing made attacks <em>more</em> successful, 58% → 92%. Both failures were sealed
+      bets, both are on the record.
     </p>
 
     <FigurePlate
       name="fig_harden"
       figNo="Paper Fig. 14"
-      alt="Two panels: attack success and benign over-refusal per hardening arm, and writes per generation"
-      caption="The fused attacker-defender harden loop. Entropy-gated hardening matches naive hardening on benign generations at far fewer writes (11.8 vs 50 per generation) — but neither resists an activation-level attacker. A registered fail that motivated the recognition gate."
+      alt="Attack success and innocent-request refusal per defense strategy, plus writes per generation"
+      caption="The blunt approach on trial. Timed pushing matches naive constant pushing on normal traffic at a fifth of the writes (11.8 vs 50 per generation) — but neither survives a determined attacker. A registered fail that pointed to the real design."
       gates={["gate_L23_harden"]}
     />
 
-    <div class="num-label mt-16"><span class="num">17</span> The recognition gate</div>
-    <h2>Recognize the attack, then — and only then — defend</h2>
+    <div class="num-label mt-16"><span class="num">17</span> The idea that works</div>
+    <h2>Recognize first. Then — and only then — defend.</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      The fix is pure Pratyabhijñā: don't push always — <strong>recognize first</strong>. Jailbreak
-      prompts carry an activation-level signature at a specific read layer, and on the right models
-      it's cleanly separated from benign traffic: on Gemma-2-2B, benign prompts project in
-      <strong>[−53, −18]</strong>, attacks in <strong>[+4, +73]</strong>. Reinforce refusal only
-      when the projection crosses the threshold, and you get the brute-force attack cut at
-      <strong>zero</strong> benign collateral. Wrapping the attack in roleplay or
-      "ignore previous instructions" doesn't help the attacker — the signature lives below the
-      prompt, where they can't see or overwrite it.
+    <p>
+      The fix is the project's namesake idea — <em>recognition</em> — applied at the door.
+      A good bouncer doesn't frisk every guest; he reads intent. It turns out jailbreak prompts
+      carry a <strong>machine-readable signature of intent</strong> deep inside the model's
+      activations, at a specific layer — and on the right models, that signature is unmistakable.
+      On one test model, innocent requests all score in one range, attacks all in another, with
+      <strong>clear daylight between them</strong>.
+    </p>
+
+    <p>
+      So the defense fires <em>only</em> on recognition. The result on that model: attack success
+      halved — the same cut the customer-locking approach achieved — at
+      <strong>zero</strong> cost to innocent traffic. And because the signature is read from the
+      model's internals rather than the prompt's wording, dressing the attack up in roleplay or
+      "ignore previous instructions" costume changes nothing. The costume is words. The signature
+      isn't.
     </p>
 
     <FigurePlate
       name="fig_moat"
       figNo="Paper Fig. 15"
-      alt="Two panels: attack success rate and benign over-refusal across four models and three defenses"
-      caption="Four-model recognition-gated hardening. Left: attack success under no defense, unconditional hardening, and recognition-gated hardening. Right: benign over-refusal. Where the moat holds, recognition gating matches the unconditional attack cut at a fraction of the over-refusal cost."
+      alt="Attack success and innocent-refusal across four models and three defense strategies"
+      caption="Four models, three strategies. Left: attack success under no defense, constant pushing, and recognition-gated defense. Right: the price paid in refused innocent requests. Where the signature separates cleanly, recognition gating matches the blunt approach's protection at a fraction of its cost."
       gates={["gate_L26_moat_proof", "gate_L26_moat_llama", "gate_L26_moat_qwen", "gate_L26_moat_smol"]}
     />
 
-    <div class="num-label mt-16"><span class="num">18</span> The predictor</div>
-    <h2>Know before you deploy</h2>
+    <div class="num-label mt-16"><span class="num">18</span> Knowing the limits</div>
+    <h2>A pre-flight test tells you where it works</h2>
 
-    <p class="text-lg" style="color: var(--ink-soft);">
-      The moat is <em>not</em> universal — it worked on 2 of 4 model families. What makes it
-      shippable anyway is that the failure is <strong>predictable in advance</strong>. An offline
-      <strong>clean-gap test</strong> — do the benign and attack projection ranges separate at the
-      read layer? — called the outcome correctly on <strong>all four</strong> models. Gemma and
-      Llama separate: moat holds. Qwen2.5 and SmolLM2 overlap: don't deploy it there. An honest
-      generality bound, shipped as a pre-flight check.
+    <p>
+      Now the part that makes this <em>shippable</em> rather than just interesting: the defense is
+      not universal, and you can know in advance. Across four model families it protected two —
+      and on the other two, the innocent and attack signatures overlap, so the recognition gate
+      has nothing clean to read. The pre-deployment check is one offline measurement:
+      <strong>do the two ranges separate?</strong> That test called the outcome correctly on
+      <strong>all four</strong> models. Two passes, two fails — four correct predictions, made
+      before deploying anything.
     </p>
 
     <FigurePlate
       name="fig_cleangap"
       figNo="Paper Fig. 17"
-      alt="Horizontal ranges of benign and attack projections per model, showing separation or overlap"
-      caption="The clean-gap predictor. Benign (grey) and attack (coloured) projection ranges at each model's read layer, normalised per model. Separation predicts the moat: 4 predictions, 4 correct."
+      alt="Innocent and attack signature ranges per model, showing separation or overlap"
+      caption="The pre-flight test. Grey: where innocent requests score. Coloured: where attacks score, per model. Separation predicts protection: 4 predictions, 4 correct."
       gates={["gate_L26_moat_*", "gate_char_*"]}
     />
 
     <div class="callout rose">
       <div class="callout-title">Scope, honestly</div>
       <p>
-        These moat numbers are exploratory: n = 12 attacks and 10 benign prompts per model, single
-        seed, greedy decoding. What's confirmed is the mechanism and the predictor's 4-for-4 record
-        — not a benchmark-scale ASR claim. The live transcripts below are real, unedited captures.
+        These defense numbers are early-stage: a dozen attacks and ten innocent prompts per model,
+        one seed, deterministic decoding. What's established is the <em>mechanism</em> and the
+        pre-flight test's 4-for-4 record — not a benchmark-scale protection claim. The transcripts
+        below are real, unedited captures.
       </p>
     </div>
   </div>
