@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BarChart, LineChart } from "@/components/charts";
 import { BenchmarkPanel } from "@/components/BenchmarkPanel";
+import { SiteNav } from "@/components/SiteNav";
 
 // Matches the real shape emitted by scripts/tools/export_app_data.py:
 // { claims: [{ id, text, tier, gates: string[], numbers: { value, threshold, pass } }] }
@@ -49,23 +50,36 @@ export default function ResultsPage() {
   }, []);
 
   if (loading) return (
-    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-sm text-slate-500">Loading results...</p>
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
+      <SiteNav />
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="animate-pulse space-y-4">
+          <div className="h-10 w-48 rounded-lg bg-night-700" />
+          <div className="h-4 w-96 max-w-full rounded bg-night-700/70" />
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-32 rounded-xl bg-night-800/60" />
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );
   if (error) return (
-    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
-      <div className="mx-auto max-w-6xl">
-        <p className="text-sm text-red-300">{error}</p>
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
+      <SiteNav />
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="rounded-xl border border-rose-400/30 bg-rose-400/10 p-6">
+          <p className="text-sm text-rose-200">{error}</p>
+        </div>
       </div>
     </main>
   );
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
+      <SiteNav />
+      <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8 space-y-3">
           <h1 className="text-4xl font-serif font-bold text-gradient">Results</h1>
           <p className="text-sm text-slate-400">

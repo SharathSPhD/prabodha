@@ -178,25 +178,25 @@ export function JailbreakLab() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold mb-2">Jailbreak Resistance Lab</h2>
-        <p className="text-gray-600 text-sm mb-4">
+      <div className="card p-6">
+        <h2 className="mb-2 text-2xl font-serif font-bold text-slate-100">Jailbreak Resistance Lab</h2>
+        <p className="mb-4 text-sm text-slate-400">
           Test how refusal steering affects model behavior on adversarial
           prompts. Real results from the gateway using contrastive direction
           steering.
         </p>
 
         {!gatewayOnline && (
-          <div className="rounded-md bg-yellow-50 p-4 mb-4">
-            <p className="text-sm text-yellow-800">
+          <div className="mb-4 rounded-lg border border-saffron-500/30 bg-saffron-500/10 p-4">
+            <p className="text-sm text-saffron-200">
               <strong>Gateway offline</strong> — connect for live results
             </p>
           </div>
         )}
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4 mb-4">
-            <p className="text-sm text-red-800">{error}</p>
+          <div className="mb-4 rounded-lg border border-rose-400/30 bg-rose-400/10 p-4">
+            <p className="text-sm text-rose-200">{error}</p>
           </div>
         )}
       </div>
@@ -210,12 +210,12 @@ export function JailbreakLab() {
           return (
             <div
               key={item.id}
-              className="rounded-lg border border-gray-200 bg-white p-4"
+              className="rounded-xl border border-night-600 bg-night-800/40 p-4"
             >
               <div className="mb-4">
-                <p className="font-semibold text-gray-900 mb-1">Prompt:</p>
-                <p className="text-sm text-gray-700">{item.prompt}</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mb-1 font-semibold text-slate-200">Prompt:</p>
+                <p className="text-sm text-slate-400">{item.prompt}</p>
+                <p className="mt-1 text-xs text-slate-500">
                   Category: {item.category}
                 </p>
               </div>
@@ -223,49 +223,33 @@ export function JailbreakLab() {
               {result ? (
                 <div className="space-y-4">
                   <div>
-                    <p className="font-semibold text-sm text-gray-900 mb-1">
+                    <p className="mb-1 text-sm font-semibold text-slate-200">
                       Baseline (No Steering)
                     </p>
-                    <div className="rounded bg-gray-50 p-3 text-sm">
+                    <div className="rounded-lg border border-night-600 bg-night-950 p-3 text-sm text-slate-300">
                       {result.baselineText}
                     </div>
-                    <div className="mt-1 text-xs">
-                      <span
-                        className={`inline-block px-2 py-1 rounded ${
-                          checkRefusal(result.baselineText)
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {checkRefusal(result.baselineText)
-                          ? "Refused"
-                          : "Complied"}
+                    <div className="mt-1.5 text-xs">
+                      <span className={checkRefusal(result.baselineText) ? "pill-accept" : "pill-reject"}>
+                        {checkRefusal(result.baselineText) ? "Refused" : "Complied"}
                       </span>
                     </div>
                   </div>
 
                   <div>
-                    <p className="font-semibold text-sm text-gray-900 mb-1">
+                    <p className="mb-1 text-sm font-semibold text-slate-200">
                       Steered (Refusal Steering)
                     </p>
-                    <div className="rounded bg-blue-50 p-3 text-sm">
+                    <div className="rounded-lg border border-indigo-500/25 bg-indigo-500/5 p-3 text-sm text-slate-300">
                       {result.steeredText}
                     </div>
-                    <div className="mt-1 space-y-1 text-xs">
+                    <div className="mt-1.5 space-y-1 text-xs">
                       <div>
-                        <span
-                          className={`inline-block px-2 py-1 rounded ${
-                            checkRefusal(result.steeredText)
-                              ? "bg-green-100 text-green-800"
-                              : "bg-red-100 text-red-800"
-                          }`}
-                        >
-                          {checkRefusal(result.steeredText)
-                            ? "Refused"
-                            : "Complied"}
+                        <span className={checkRefusal(result.steeredText) ? "pill-accept" : "pill-reject"}>
+                          {checkRefusal(result.steeredText) ? "Refused" : "Complied"}
                         </span>
                       </div>
-                      <div className="text-gray-600">
+                      <div className="text-slate-500">
                         Direction: {result.directionSource}
                       </div>
                     </div>
@@ -275,9 +259,9 @@ export function JailbreakLab() {
                 <button
                   onClick={() => handleSteer(item.id, item.prompt)}
                   disabled={isLoading || !gatewayOnline}
-                  className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:bg-gray-400"
+                  className="btn-primary w-full justify-center"
                 >
-                  {isLoading ? "Testing..." : "Test Steering"}
+                  {isLoading ? "Testing…" : "Test Steering"}
                 </button>
               )}
             </div>
@@ -287,42 +271,42 @@ export function JailbreakLab() {
 
       {/* Summary statistics */}
       {(baselineASR !== null || steeredASR !== null) && (
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
-          <h3 className="font-semibold text-lg mb-4">Summary Statistics</h3>
+        <div className="card p-6">
+          <h3 className="mb-4 text-lg font-semibold text-slate-100">Summary Statistics</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-600">Baseline ASR</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-slate-400">Baseline ASR</p>
+              <p className="font-serif text-3xl font-bold text-slate-100">
                 {baselineASR !== null
                   ? `${(baselineASR * 100).toFixed(1)}%`
                   : "—"}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="mt-1 text-xs text-slate-500">
                 {baselineTexts.length} test(s)
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Steered ASR</p>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-sm text-slate-400">Steered ASR</p>
+              <p className="font-serif text-3xl font-bold text-teal-300">
                 {steeredASR !== null
                   ? `${(steeredASR * 100).toFixed(1)}%`
                   : "—"}
               </p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="mt-1 text-xs text-slate-500">
                 {steeredTexts.length} test(s)
               </p>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-4">
+          <p className="mt-4 text-xs text-slate-500">
             ASR = Attack Success Rate (fraction that comply with harmful
             requests).
           </p>
         </div>
       )}
 
-      <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-        <p className="text-xs text-amber-800">
-          <strong>Proxy metric warning:</strong> Refusal detection uses pattern
+      <div className="rounded-xl border border-saffron-500/25 bg-saffron-500/5 p-4">
+        <p className="text-xs text-saffron-200/90">
+          <strong className="text-saffron-200">Proxy metric warning:</strong> Refusal detection uses pattern
           matching; semantic understanding would be stronger but requires LLM
           evaluation. Results are for research screening only.
         </p>

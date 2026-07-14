@@ -5,13 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import ReplayTheatre from "@/components/theatre/ReplayTheatre";
 import LiveTheatre from "@/components/theatre/LiveTheatre";
 import BYOKTheatre from "@/components/theatre/BYOKTheatre";
+import { SiteNav } from "@/components/SiteNav";
 
 export default function TheatrePage() {
   const [mode, setMode] = useState<"replay" | "live" | "byok">("replay");
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
+      <SiteNav />
+      <div className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8 space-y-3">
           <h1 className="text-4xl font-serif font-bold text-gradient">
             J-space Theatre

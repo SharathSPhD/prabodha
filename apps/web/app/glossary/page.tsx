@@ -1,3 +1,5 @@
+import { SiteNav } from "@/components/SiteNav";
+
 export default function GlossaryPage() {
   const glossary = [
     {
@@ -68,7 +70,9 @@ export default function GlossaryPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900 py-12 px-6">
+    <main className="min-h-screen bg-gradient-to-b from-night-950 to-night-900">
+      <SiteNav />
+      <div className="px-6 py-12">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 space-y-3">
           <h1 className="text-4xl font-serif font-bold text-gradient">Glossary</h1>
@@ -100,6 +104,7 @@ export default function GlossaryPage() {
             </a>
           </p>
         </div>
+      </div>
       </div>
     </main>
   );

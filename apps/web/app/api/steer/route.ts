@@ -53,6 +53,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Bound inputs before forwarding to the GPU (defense in depth; the gateway also validates).
+    if (typeof body.prompt !== "string" || body.prompt.length > 4000) {
+      return NextResponse.json(
+        { error: "Prompt must be a string of at most 4000 characters" },
+        { status: 400 }
+      );
+    }
+    if (typeof body.concept !== "string" || body.concept.length > 200) {
+      return NextResponse.json(
+        { error: "Concept must be a string of at most 200 characters" },
+        { status: 400 }
+      );
+    }
+
     // Forward to the steer gateway with authentication
     const response = await fetch(`${STEER_GATEWAY_URL}/steer`, {
       method: "POST",
@@ -64,9 +78,11 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
+      // Log the gateway's detail server-side; don't leak it to the client.
+      const errorText = await response.text().catch(() => "");
+      console.error("Gateway error", response.status, errorText.slice(0, 500));
       return NextResponse.json(
-        { error: `Gateway error: ${response.statusText}`, details: errorText },
+        { error: `Gateway error (${response.status})` },
         { status: response.status }
       );
     }

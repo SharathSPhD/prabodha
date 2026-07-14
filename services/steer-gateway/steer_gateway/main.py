@@ -8,10 +8,17 @@ from typing import Optional
 
 from fastapi import FastAPI, Header, HTTPException
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from steer_gateway.manager import ModelManager
 from steer_gateway.schema import LiveEpisode, DirectionSpec
+
+# Request bounds — reject abusive inputs before they reach the GPU.
+MAX_PROMPT_CHARS = int(os.getenv("PRABODHA_MAX_PROMPT_CHARS", "4000"))
+MAX_CONCEPT_CHARS = int(os.getenv("PRABODHA_MAX_CONCEPT_CHARS", "200"))
+ALLOWED_ARMS = {"entropy_gated", "continuous", "prefill", "off"}
+# Hard ceiling on how long one streamed generation may run (seconds).
+GENERATION_TIMEOUT_S = float(os.getenv("PRABODHA_GENERATION_TIMEOUT_S", "120"))
 
 # Secure logging - never log secrets
 logger = logging.getLogger(__name__)
@@ -67,6 +74,40 @@ class SteerRequest(BaseModel):
     arm: str = "entropy_gated"
     direction_spec: Optional[DirectionSpec] = None  # Optional contrastive or vector steering
 
+    @field_validator("prompt")
+    @classmethod
+    def _prompt_bounds(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("prompt must not be empty")
+        if len(v) > MAX_PROMPT_CHARS:
+            raise ValueError(f"prompt exceeds {MAX_PROMPT_CHARS} characters")
+        return v
+
+    @field_validator("concept")
+    @classmethod
+    def _concept_bounds(cls, v: str) -> str:
+        v = (v or "").strip()
+        if not v:
+            raise ValueError("concept must not be empty")
+        if len(v) > MAX_CONCEPT_CHARS:
+            raise ValueError(f"concept exceeds {MAX_CONCEPT_CHARS} characters")
+        return v
+
+    @field_validator("alpha")
+    @classmethod
+    def _alpha_bounds(cls, v):
+        if v is not None and not (-20.0 <= v <= 20.0):
+            raise ValueError("alpha must be within [-20, 20]")
+        return v
+
+    @field_validator("arm")
+    @classmethod
+    def _arm_allowed(cls, v: str) -> str:
+        if v not in ALLOWED_ARMS:
+            raise ValueError(f"arm must be one of {sorted(ALLOWED_ARMS)}")
+        return v
+
 @app.get("/health")
 async def health_check():
     """Health check (no auth). Dynamic: reports which models are currently resident (may be none)."""
@@ -107,7 +148,9 @@ async def steer(
             loop = asyncio.get_event_loop()
             loaded = await loop.run_in_executor(None, manager.get, model_id)
             # Serialize episodes on one model (single GPU) via its lock; run the (sync) steering
-            # generation in a thread so the event loop stays responsive.
+            # generation in a thread so the event loop stays responsive. A hard deadline prevents
+            # a hung generation from pinning the GPU indefinitely.
+            deadline = loop.time() + GENERATION_TIMEOUT_S
             with loaded.lock:
                 episode = None
                 async for item in loaded.runtime.steer_stream(
@@ -115,15 +158,21 @@ async def steer(
                     alpha=request.alpha, arm=request.arm,
                     direction_spec=request.direction_spec,
                 ):
+                    if loop.time() > deadline:
+                        raise TimeoutError("generation exceeded time budget")
                     if isinstance(item, LiveEpisode):
                         episode = item
                         break
                     yield f"event: token\ndata: {item.model_dump_json()}\n\n"
                 if episode is not None:
                     yield f"event: done\ndata: {episode.model_dump_json()}\n\n"
-        except Exception as e:
-            logger.error("Streaming error: %s", e, exc_info=True)
-            yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
+        except TimeoutError:
+            logger.warning("Generation timed out for model %s", model_id)
+            yield f"event: error\ndata: {json.dumps({'error': 'generation timed out'})}\n\n"
+        except Exception:
+            # Log the full traceback server-side, but never leak internals to the client.
+            logger.error("Streaming error", exc_info=True)
+            yield f"event: error\ndata: {json.dumps({'error': 'internal steering error'})}\n\n"
 
     return StreamingResponse(
         generate(),
